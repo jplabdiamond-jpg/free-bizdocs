@@ -4,6 +4,7 @@ wrangler.toml
 *.md
 node_modules
 build-site.py
+build-en.py
 
 *.bak
 *.add
@@ -15,3 +16,11 @@ blog/img-src/
 *.bak-*
 index.new.html
 index.newlp.html
+
+# --- cloud auto-publish infra (not deployed) ---
+.github
+scripts
+blog/_drafts/
+blog/publish-state.json
+publish-result.json
+.gitignore

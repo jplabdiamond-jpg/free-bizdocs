@@ -234,9 +234,9 @@ async function buildPdf(D){
 
   /* ---- Parties ---- */
   var cols=K.shipTo&&(D.ship_to||D.kind==='delivery')?2:1; var cw=(W-2*M)/(cols===2?2:1);
-  function party(x,label,name,addr,email){ var yy=y; dr(label.toUpperCase(),x,yy,8,mut,bold); yy-=14; dr(ell(name||'—',11,cw-16,bold),x,yy,11,ink,bold); yy-=14; lines(addr).forEach(function(l){ dr(ell(l,9,cw-16),x,yy,9,ink); yy-=12; }); if(email){ dr(ell(email,9,cw-16),x,yy,9,mut); yy-=12; } return yy; }
+  function party(x,label,name,addr,email){ var yy=y; dr(label.toUpperCase(),x,yy,8,mut,bold); yy-=14; if(name!=null){ dr(ell(name||'—',11,cw-16,bold),x,yy,11,ink,bold); yy-=14; } lines(addr).forEach(function(l){ dr(ell(l,9,cw-16),x,yy,9,ink); yy-=12; }); if(email){ dr(ell(email,9,cw-16),x,yy,9,mut); yy-=12; } return yy; }
   var y1=party(M,K.partyLabel,D.client.name,D.client.addr,D.client.email), y2=y1;
-  if(cols===2) y2=party(M+cw,'Ship To',(D.ship_to?'':D.client.name),D.ship_to||D.client.addr,'');
+  if(cols===2) y2=party(M+cw,'Ship To',(D.ship_to?null:D.client.name),D.ship_to||D.client.addr,'');
   y=Math.min(y1,y2)-14;
 
   /* ---- Amount band ---- */
@@ -244,17 +244,20 @@ async function buildPdf(D){
   else y-=6;
 
   /* ---- Table ---- */
-  var cAmt=W-M, cTax=K.prices?cAmt-70:0, cPrice=K.prices?cTax-78:0, cQty=K.prices?cPrice-58:cAmt-60;
+  // right-edge anchors for each numeric column
+  var xAmt=W-M-6, xTax=xAmt-78, xPrice=xTax-64, xQty=K.prices?xPrice-74:W-M-10;
+  var descMax=(K.prices?xQty-48:xQty-40)-(M+8);
+  var taxHead=(R.mode==='fixed')?R.taxName.toUpperCase():'TAX';
   page.drawRectangle({x:M,y:y-20,width:W-2*M,height:20,color:head});
-  dr('DESCRIPTION',M+8,y-14,8,ink,bold); drR('QTY',cQty+32,y-14,8,ink,bold);
-  if(K.prices){ drR('UNIT PRICE',cPrice+66,y-14,8,ink,bold); drR(($('th-tax')?$('th-tax').textContent:'TAX').toUpperCase(),cTax+58,y-14,8,ink,bold); drR('AMOUNT',cAmt-6,y-14,8,ink,bold); }
+  dr('DESCRIPTION',M+8,y-14,8,ink,bold); drR('QTY',xQty,y-14,8,ink,bold);
+  if(K.prices){ drR('UNIT PRICE',xPrice,y-14,8,ink,bold); drR(taxHead,xTax,y-14,8,ink,bold); drR('AMOUNT',xAmt,y-14,8,ink,bold); }
   y-=20;
   var items=D.items, maxRows=Math.max(1,Math.floor((y-(M+170))/19)), ovf=0, draw=items;
   if(items.length>maxRows){ draw=items.slice(0,maxRows-1); ovf=items.length-draw.length; }
   function taxLabel(it){ if(it.tax==='none') return 'Exempt'; if(R.mode==='fixed'){ var o=R.taxOpts.filter(function(x){return x[0]===it.tax;})[0]; return o?o[1].replace(/^(VAT|GST) /,''):''; } return 'Taxable'; }
   draw.forEach(function(it,i){ var amt=r2((it.qty||0)*(it.unit_price||0)); if(i%2===1) page.drawRectangle({x:M,y:y-19,width:W-2*M,height:19,color:zebra});
-    dr(ell(it.name,9,cQty-M-14),M+8,y-13,9,ink); drR(String(it.qty),cQty+32,y-13,9);
-    if(K.prices){ drR(mny(it.unit_price),cPrice+66,y-13,9); drR(taxLabel(it),cTax+58,y-13,8,mut); drR(mny(amt),cAmt-6,y-13,9); }
+    dr(ell(it.name,9,descMax),M+8,y-13,9,ink); drR(String(it.qty),xQty,y-13,9);
+    if(K.prices){ drR(mny(it.unit_price),xPrice,y-13,9); drR(ell(taxLabel(it),8,xAmt-xTax-6),xTax,y-13,8,mut); drR(mny(amt),xAmt,y-13,9); }
     hline(y-19,0.4); y-=19; });
   if(ovf>0){ dr('+ '+ovf+' more line'+(ovf>1?'s':''),M+8,y-13,8.5,mut); hline(y-19,0.4); y-=19; }
   y-=18;
@@ -402,7 +405,7 @@ function injectCSS(){ var s=document.createElement('style'); s.textContent=
     var qt=null; try{ qt=new URLSearchParams(location.search).get('type'); }catch(e){}
     applyKind(qt||kind,true);
     if($('due')&&!$('due').value&&(KINDS[kind].due||KINDS[kind].valid)) $('due').value=plusDays(30);
-    setupPreview(); setupShare(); renderConvertBar(); refreshRemain();
+    setupPreview(); setupShare(); renderConvertBar(); refreshRemain(); schedulePv();
   }
   /* events */
   var regseg=$('regseg'); if(regseg) regseg.addEventListener('click',function(e){ var b=e.target.closest('button[data-region]'); if(!b)return; applyRegion(b.getAttribute('data-region')); saveDraft(); schedulePv(); });
