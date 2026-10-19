@@ -1,6 +1,10 @@
 {
-  "day": "",
-  "count": 0,
-  "lastEpoch": 0,
-  "slots": []
+  "day": "2026-10-19",
+  "count": 1,
+  "lastEpoch": 1792373263,
+  "slots": [
+    719,
+    846,
+    1009
+  ]
 }
