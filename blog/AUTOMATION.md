@@ -115,3 +115,20 @@ PY
 ## メモ
 - 既存の手書き記事（invoice-how-to, receipt-how-to, taishoku-how-to, rirekisho-motivation, quote-how-to, genzei-keisan, shokumu-how-to）は作成済みで、サムネは /og/*.png を使用。CSVの60本はSEO用の新規記事。
 - バンク済み（画像あり・未公開）: 優先度7〜23（invoice-freelance〜quote-discount の17本）。優先度24(quote-document-flow)は画像生成済みだがクレジット枯渇でDL未取得＝再取得待ち。
+
+---
+
+# 【確定】クラウド自動公開（GitHub Actions・Mac非依存）2026-10-19〜
+
+公開はMac・Claudeセッションに非依存で、GitHub Actionsが自動実行する。プロセスBの手動運用は原則不要。
+
+- **リポジトリ**: https://github.com/jplabdiamond-jpg/free-bizdocs （private、ホスティングはCloudflare Pagesに直接デプロイ。GitHubは恒久ソース＋CI）
+- **ワークフロー**: `.github/workflows/auto-publish.yml`（cron `*/30 0-13 * * *` = JST 9:00-22:30 / 手動 `workflow_dispatch` mode=force でテスト公開）
+- **公開ロジック**: `scripts/publish.mjs`（1回最大1本／1日3本／各2時間以上／ランダム時刻スロットを `blog/publish-state.json` で管理）
+- **公開対象**: CSV status「未」 かつ `blog/img-src/<slug>.png` あり かつ `blog/_drafts/<slug>.html` あり。いずれか欠ければスキップ（画像なし・本文なし公開は不可）。
+- **公開処理**: cwebp で `img-src/<slug>.png`→`img/<slug>.webp`、本文を `blog/<slug>.html` へ移動（`__PUBDATE__`/`__PUBDATE_JP__` を当日に置換）、blog.html 先頭にカード、sitemap 追加、CSV 済化、状態更新 → Cloudflare本番デプロイ → GitHubへcommit/push → IndexNow送信。
+- **Secrets/設定**: `CLOUDFLARE_API_TOKEN`（Pages:Edit）はGitHub Secret。Account ID `7969ecaa0a1b9bacae1861547c2ec3fe` はワークフローに直書き。
+- **デプロイ**: `npx wrangler@3 pages deploy . --project-name=seikyu-hub-demo --branch=main`（main=本番）。
+- **記事ドラフトの用意（唯一の手作業）**: `blog/_drafts/<slug>.html` を事前作成しておく。先頭に `<!--CARD tag=.. | h2=.. | desc=..-->`、日付は `__PUBDATE__`（YYYY-MM-DD）/`__PUBDATE_JP__`（○年○月○日）プレースホルダ、画像参照は `/blog/img/<slug>.webp`。テンプレは blog/invoice-send-manner.html 等に倣う。
+- **画像**: ユーザー提供のPNGを `blog/img-src/<slug>.png`（2560×1440）に置きpush。webp化は公開時に自動。
+- **手動テスト**: `gh workflow run auto-publish.yml -f mode=force`。
