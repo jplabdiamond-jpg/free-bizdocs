@@ -1,0 +1,10 @@
+node_modules/
+.wrangler/
+.fuse_hidden*
+*.bak
+*.add
+.DS_Store
+.dev.vars
+.env
+_push_tmp/
+fix2.py

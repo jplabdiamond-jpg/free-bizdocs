@@ -1,0 +1,17 @@
+*.sql
+wrangler.toml
+.assetsignore
+*.md
+node_modules
+build-site.py
+
+*.bak
+*.add
+
+*.zip
+*.csv
+
+blog/img-src/
+*.bak-*
+index.new.html
+index.newlp.html

@@ -1,0 +1,57 @@
+/*
+  X-Frame-Options: SAMEORIGIN
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+  Permissions-Policy: geolocation=(), microphone=(), camera=()
+
+/thumbs/*
+  Cache-Control: public, max-age=2592000, immutable
+
+/og/*
+  Cache-Control: public, max-age=2592000, immutable
+
+/*.css
+  Cache-Control: public, max-age=604800
+
+/*.js
+  Cache-Control: public, max-age=604800
+
+/promo.js
+  Cache-Control: public, max-age=300
+
+/*.jpg
+  Cache-Control: public, max-age=2592000
+
+/*.png
+  Cache-Control: public, max-age=2592000
+
+/*.webp
+  Cache-Control: public, max-age=2592000
+
+/*.woff2
+  Cache-Control: public, max-age=31536000, immutable
+
+/invoice
+  ! X-Frame-Options
+  Content-Security-Policy: frame-ancestors *
+
+/quote
+  ! X-Frame-Options
+  Content-Security-Policy: frame-ancestors *
+
+/delivery
+  ! X-Frame-Options
+  Content-Security-Policy: frame-ancestors *
+
+/purchase-order
+  ! X-Frame-Options
+  Content-Security-Policy: frame-ancestors *
+
+/receipt
+  ! X-Frame-Options
+  Content-Security-Policy: frame-ancestors *
+
+/demo-embed
+  ! X-Frame-Options
+  Content-Security-Policy: frame-ancestors https://free-bizdocs.com https://lp.free-bizdocs.com https://*.pages.dev

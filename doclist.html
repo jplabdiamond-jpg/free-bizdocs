@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>書類一覧｜Free BizDoc</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap');
+body{margin:0}
+.app{--ink:#171a21;--bg:#f6f6f2;--surf:#ffffff;--surf2:#fbfaf7;--mut:#6c6f78;--faint:#9a9ca3;--bd:#e6e4dd;--ac:#3a46a8;--ac-s:#e7e8f6;--good:#157a48;--good-s:#dcefe4;--over:#b23a2c;
+font-family:"Zen Kaku Gothic New",system-ui,sans-serif;color:var(--ink);background:var(--bg);display:flex;flex-wrap:wrap;width:100%;min-height:100vh;box-sizing:border-box}
+.side{width:236px;background:var(--surf);border-right:1px solid var(--bd);padding:22px 16px;display:flex;flex-direction:column;gap:22px;box-sizing:border-box}
+.brand{display:flex;align-items:center;gap:9px;padding:0 6px}
+.brand .pl{font-size:10px;font-weight:700;color:var(--ac);background:var(--ac-s);padding:2px 7px;border-radius:5px}
+.nav{display:flex;flex-direction:column;gap:2px}
+.nav .lb{font-size:10px;letter-spacing:.1em;color:var(--faint);font-weight:700;margin:10px 8px 4px}
+.nav a{display:flex;align-items:center;gap:10px;padding:9px 11px;border-radius:9px;color:var(--mut);text-decoration:none;font-size:14px;font-weight:500}
+.nav a:hover{background:var(--surf2);color:var(--ink)}
+.nav a.on{background:var(--ac-s);color:var(--ac);font-weight:700}
+.nav a .ic{width:17px;height:17px;flex:none}
+.main{flex:999 1 620px;min-width:0;display:flex;flex-direction:column}
+.top{min-height:62px;border-bottom:1px solid var(--bd);background:var(--surf);display:flex;align-items:center;gap:12px;padding:10px 26px;box-sizing:border-box;flex-wrap:wrap}
+.top h1{margin:0;font-size:20px;font-weight:700}.top .sp{flex:1}
+.btn{font-family:inherit;font-size:13px;font-weight:700;border-radius:9px;padding:9px 15px;border:1px solid var(--bd);background:var(--surf);color:var(--ink);cursor:pointer;display:inline-flex;align-items:center;gap:7px;text-decoration:none}
+.btn.pri{background:var(--ac);border-color:var(--ac);color:#fff}.btn.pri:hover{background:#30399a}
+.content{padding:22px 26px;display:flex;flex-direction:column;gap:16px}
+.card{background:var(--surf);border:1px solid var(--bd);border-radius:13px;overflow:hidden}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;font-size:11px;letter-spacing:.04em;color:var(--faint);font-weight:700;padding:12px 10px;border-bottom:1px solid var(--bd);background:var(--surf2)}
+td{padding:12px 10px;border-bottom:1px solid var(--bd)}
+tr:last-child td{border-bottom:none}
+tbody tr:hover td{background:var(--surf2)}
+td.n{font-variant-numeric:tabular-nums;text-align:right}
+td .no{font-weight:700}
+.pill{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:999px}
+.pill::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.pill.issued{background:var(--good-s);color:var(--good)}.pill.draft{background:#eceae4;color:var(--mut)}
+.rowact{display:flex;gap:6px;justify-content:flex-end}
+.ib{border:1px solid var(--bd);background:var(--surf);border-radius:7px;padding:5px 11px;font-size:11.5px;font-weight:700;display:inline-flex;align-items:center;gap:4px;color:var(--ac);cursor:pointer;text-decoration:none}
+.ib:hover{border-color:var(--ac);background:var(--ac-s)}
+.ib.del{color:var(--over);border-color:#eccdc8}.ib.del:hover{background:#f7e7e3;border-color:var(--over)}
+.muted{color:var(--faint);font-size:13px;padding:26px;text-align:center}
+@media(max-width:860px){.hideS{display:none}}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="side">
+    <div class="brand"><img src="/logo.png" alt="Free BizDoc" style="height:30px;width:auto;display:block"><span class="pl">PRO</span></div>
+    <nav class="nav">
+      <a href="/dashboard"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>ダッシュボード</a>
+      <div class="lb">書類</div>
+      <a href="/invoice-list"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2h9l5 5v15H6z"/><path d="M14 2v6h6"/></svg>請求書</a>
+      <a href="/quotes"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v12H4z"/><path d="M8 20h8"/></svg>見積書</a>
+      <a href="/recurring"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 4v5h-5"/></svg>定期請求</a>
+      <div class="lb">お金</div>
+      <a href="/payments"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>入金管理</a>
+      <a href="/reports"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>レポート</a>
+    </nav>
+  </aside>
+  <div class="main">
+    <header class="top">
+      <h1 id="h1">書類</h1><span class="sp"></span>
+      <a class="btn pri" id="createbtn" href="/invoice"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg><span id="createlbl">作成</span></a>
+    </header>
+    <div class="content">
+      <div class="card"><table><thead id="thead"></thead><tbody id="rows"><tr><td class="muted">読み込み中…</td></tr></tbody></table></div>
+    </div>
+  </div>
+</div>
+<script src="/api.js?v=20261019h"></script>
+<script>
+var LABEL={invoice:'請求書',quote:'見積書',delivery:'納品書',po:'発注書',receipt:'領収書',rirekisho:'履歴書',soufu:'送付状',inkan:'電子印鑑',shokumu:'職務経歴書',taishoku:'退職届',shiboudouki:'志望動機書',entrysheet:'エントリーシート',skillsheet:'スキルシート'};
+var TOOL={invoice:'/invoice',quote:'/quote',delivery:'/delivery',po:'/purchase-order',receipt:'/receipt',rirekisho:'/rirekisho',soufu:'/soufu',inkan:'/inkan',shokumu:'/shokumu',taishoku:'/taishoku',shiboudouki:'/shiboudouki',entrysheet:'/entrysheet',skillsheet:'/skillsheet'};
+var MEISAI={invoice:1,quote:1,delivery:1,po:1,receipt:1};
+var type=new URLSearchParams(location.search).get('type')||'delivery';
+if(!LABEL[type]) type='delivery';
+document.title=LABEL[type]+'一覧｜Free BizDoc';
+document.getElementById('h1').textContent=LABEL[type];
+document.getElementById('createlbl').textContent=LABEL[type]+'を作成';
+document.getElementById('createbtn').setAttribute('href', TOOL[type]);
+
+function meisai(){
+  document.getElementById('thead').innerHTML='<tr><th>番号</th><th>取引先</th><th class="hideS">発行日</th><th style="text-align:right">金額（税込）</th><th>状態</th><th style="width:150px"></th></tr>';
+  var tb=document.getElementById('rows');
+  tb.addEventListener('click',async function(e){ var p=e.target.closest('[data-pdf]'); if(!p)return; p.textContent='生成中…'; try{ await API.invoicePdf(p.getAttribute('data-pdf')); p.textContent='📄 PDF'; }catch(err){ p.textContent='失敗'; } });
+  API.get('/api/documents?type='+encodeURIComponent(type)+'&status=all').then(function(r){
+    var list=r.documents||[];
+    if(!list.length){ tb.innerHTML='<tr><td colspan="6" class="muted">まだ'+LABEL[type]+'がありません。「'+LABEL[type]+'を作成」から保存できます。</td></tr>'; return; }
+    tb.innerHTML=list.map(function(r){
+      var edit='<a class="ib" href="'+TOOL[type]+'?doc='+r.id+'">編集</a>';
+      var act=r.status==='draft'?'<div class="rowact">'+edit+'<span style="color:var(--faint);font-size:11.5px">下書き</span></div>':'<div class="rowact">'+edit+'<button class="ib" data-pdf="'+r.id+'">📄 PDF</button></div>';
+      var pill=r.status==='draft'?'<span class="pill draft">下書き</span>':'<span class="pill issued">発行済み</span>';
+      return '<tr><td><span class="no">'+API.esc(r.doc_no||'（下書き）')+'</span></td><td>'+API.esc(r.client_name||'—')+'</td><td class="hideS">'+API.esc(r.issue_date||'—')+'</td><td class="n">'+API.yen(r.total)+'</td><td>'+pill+'</td><td>'+act+'</td></tr>';
+    }).join('');
+  }).catch(function(e){ tb.innerHTML='<tr><td colspan="6" class="muted">読み込み失敗: '+API.esc(e.message)+'</td></tr>'; });
+}
+function generic(){
+  document.getElementById('thead').innerHTML='<tr><th>保存名</th><th class="hideS">保存日</th><th style="width:170px"></th></tr>';
+  var tb=document.getElementById('rows');
+  tb.addEventListener('click',async function(e){
+    var d=e.target.closest('[data-del]'); if(d){ if(!confirm('この保存データを削除しますか？'))return; try{ await API.del('/api/saved/'+d.getAttribute('data-del')); d.closest('tr').remove(); }catch(err){ alert('削除に失敗しました'); } }
+  });
+  API.get('/api/saved?type='+encodeURIComponent(type)).then(function(r){
+    var list=r.docs||[];
+    if(!list.length){ tb.innerHTML='<tr><td colspan="3" class="muted">まだ'+LABEL[type]+'がありません。「'+LABEL[type]+'を作成」から保存できます。</td></tr>'; return; }
+    tb.innerHTML=list.map(function(r){
+      return '<tr><td><span class="no">'+API.esc(r.label||LABEL[type])+'</span></td><td class="hideS">'+API.esc((r.created_at||'').slice(0,10))+'</td>'
+        +'<td><div class="rowact"><a class="ib" href="'+TOOL[type]+'?saved='+r.id+'">開く</a><button class="ib del" data-del="'+r.id+'">削除</button></div></td></tr>';
+    }).join('');
+  }).catch(function(e){ tb.innerHTML='<tr><td colspan="3" class="muted">読み込み失敗: '+API.esc(e.message)+'</td></tr>'; });
+}
+if(MEISAI[type]) meisai(); else generic();
+</script>
+<script src="/appshell.js?v=20261018b"></script>
+</body>
+</html>

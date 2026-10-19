@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="google-site-verification" content="ZrSYW5WfFv8M2shlSMnqrgu4Ma8VwazfDEjgIG-5G8c" />
+<meta name="google-site-verification" content="uY0oaZNx8eMuwmHM-ed3gafvi2vey539Ce_rkylSbws" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Free BizDoc｜無料ビジネス書類メーカー｜請求書・見積書・領収書を無料作成</title>
+<meta name="description" content="請求書・見積書・納品書・発注書・領収書・履歴書・職務経歴書・送付状を、登録不要・無料で作成。消費税と源泉徴収を自動計算し、インボイス対応の日本語PDFをその場でダウンロードできます。">
+<link rel="canonical" href="https://free-bizdocs.com/">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Free BizDoc｜無料ビジネス書類メーカー">
+<meta property="og:description" content="請求書・見積書・領収書などを登録不要・無料でその場でPDFに。インボイス・源泉徴収に対応。">
+<meta property="og:url" content="https://free-bizdocs.com/">
+<meta property="og:image" content="https://free-bizdocs.com/og/hero.jpg">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://free-bizdocs.com/og/hero.jpg">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"Free BizDoc","alternateName":"無料ビジネス書類メーカー","url":"https://free-bizdocs.com/","logo":"https://free-bizdocs.com/logo.png","description":"請求書・見積書・領収書など各種ビジネス書類を登録不要・無料で作成できるオンラインツール。"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Free BizDoc","alternateName":"無料ビジネス書類メーカー","url":"https://free-bizdocs.com/","publisher":{"@type":"Organization","name":"Free BizDoc"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"ItemList","name":"作れるビジネス書類","itemListElement":[{"@type":"ListItem","position":1,"name":"請求書","url":"https://free-bizdocs.com/invoice"},{"@type":"ListItem","position":2,"name":"見積書","url":"https://free-bizdocs.com/quote"},{"@type":"ListItem","position":3,"name":"納品書","url":"https://free-bizdocs.com/delivery"},{"@type":"ListItem","position":4,"name":"発注書","url":"https://free-bizdocs.com/purchase-order"},{"@type":"ListItem","position":5,"name":"領収書","url":"https://free-bizdocs.com/receipt"},{"@type":"ListItem","position":6,"name":"履歴書","url":"https://free-bizdocs.com/rirekisho"},{"@type":"ListItem","position":7,"name":"職務経歴書","url":"https://free-bizdocs.com/shokumu"},{"@type":"ListItem","position":8,"name":"送付状","url":"https://free-bizdocs.com/soufu"},{"@type":"ListItem","position":9,"name":"退職届・退職願","url":"https://free-bizdocs.com/taishoku"},{"@type":"ListItem","position":10,"name":"志望動機書","url":"https://free-bizdocs.com/shiboudouki"},{"@type":"ListItem","position":11,"name":"エントリーシート","url":"https://free-bizdocs.com/entrysheet"},{"@type":"ListItem","position":12,"name":"スキルシート","url":"https://free-bizdocs.com/skillsheet"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"本当に無料・登録不要ですか？","acceptedAnswer":{"@type":"Answer","text":"はい。アカウント登録なしで、請求書・見積書を作成してPDFをダウンロードできます。混雑防止のため作成は1時間に2枚までです。もっと使う場合はPROをご検討ください。"}},{"@type":"Question","name":"入力したデータは保存されますか？","acceptedAnswer":{"@type":"Answer","text":"いいえ。無料ツールでは請求内容をサーバーに保存しません（自社情報のみ、次回の入力を楽にするためお使いのブラウザにだけ保存します）。発行履歴の保存はPROの機能です。"}},{"@type":"Question","name":"インボイス（適格請求書）や源泉徴収に対応していますか？","acceptedAnswer":{"@type":"Answer","text":"対応しています。自社情報に登録番号（T＋13桁）を入れればPDFに記載されます。消費税は10%／8%を税率別に集計し、源泉徴収税（10.21%、100万円超は20.42%）も自動計算します。"}},{"@type":"Question","name":"日本語はきれいに表示されますか？","acceptedAnswer":{"@type":"Answer","text":"日本語フォントをPDFに埋め込んで生成するため、漢字・ひらがな・カタカナが文字化けせずに表示されます。"}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Free BizDoc｜無料ビジネス書類メーカー","url":"https://free-bizdocs.com/","applicationCategory":"BusinessApplication","operatingSystem":"Web browser（Windows, macOS, iOS, Android）","browserRequirements":"Requires JavaScript","inLanguage":"ja","description":"請求書・見積書・納品書・発注書・領収書・履歴書・職務経歴書など12種類のビジネス書類を、登録不要・無料でその場でPDF作成。消費税・源泉徴収を自動計算し、インボイス対応の日本語PDFをダウンロードできます。","offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"},"featureList":["登録不要で利用できる","日本語PDFを即ダウンロード","インボイス（適格請求書）対応","消費税10%/8%の自動計算","源泉徴収税の自動計算","12種類の書類テンプレート"],"publisher":{"@type":"Organization","name":"Free BizDoc","url":"https://free-bizdocs.com/"}}</script>
+<link rel="stylesheet" href="/suite.css?v=20261017c">
+<style>
+.tools-sec{max-width:1180px;margin:0 auto;padding:40px 20px 10px}
+.tools-sec h2{font-size:clamp(20px,3.4vw,26px);font-weight:900;text-align:center;margin:0 0 6px;letter-spacing:-.01em}
+.tools-sec .sub{text-align:center;color:var(--mut);font-size:14.5px;margin:0 0 26px}
+.tools{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.tool{display:flex;flex-direction:column;gap:5px;background:#e8f2fd;border:1px solid #cfe2f6;border-radius:14px;padding:18px 18px 16px;text-decoration:none;box-shadow:0 1px 2px rgba(19,38,59,.04),0 16px 34px -26px rgba(19,38,59,.26);transition:transform .12s,box-shadow .12s;overflow:hidden}
+.tool .thumb{display:block;width:calc(100% + 36px);height:132px;margin:-18px -18px 12px;object-fit:cover;object-position:top center;background:#fff;border-bottom:1px solid #cfe2f6}
+.tool:hover{transform:translateY(-2px);box-shadow:0 1px 2px rgba(19,38,59,.05),0 22px 44px -22px rgba(23,80,180,.4)}
+.tool .tl{font-size:17px;font-weight:900;color:var(--ink)}
+.tool .ds{font-size:12.5px;color:var(--mut);line-height:1.6;min-height:2.6em}
+.tool .go{font-size:12.5px;font-weight:800;color:var(--ac);margin-top:4px}
+@media(max-width:860px){.tools{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:460px){.tools{grid-template-columns:1fr}.tool .ds{min-height:0}}
+
+/* ===== ヒーロー：背景画像（青グラデ・淡め）＋左テキスト／右アニメ ===== */
+.hero-home{border-bottom:1px solid var(--bd);
+  background:linear-gradient(180deg, rgba(226,242,253,.74), rgba(232,245,254,.58)), url('/hero3.jpg') center / cover no-repeat}
+.hero-home .in{padding-top:46px;padding-bottom:42px}
+.hero-home .htext .btn{box-shadow:0 10px 24px -8px rgba(23,80,180,.4)}
+.hero-home .hd-cap{color:#1b4fb8}
+.hero-home .htext h1{font-size:clamp(34px,6vw,62px);line-height:1.16;font-weight:900;letter-spacing:-.025em;margin-bottom:16px}
+.hero-home .tags{gap:10px}
+.hero-home .tag{color:#fff;font-weight:700;border:1px solid rgba(130,170,225,.45);background:linear-gradient(160deg,#3a5f98 0%,#1e3f72 40%,#0e2653 72%,#091c40 100%);box-shadow:0 3px 9px -1px rgba(9,22,55,.45),inset 0 1px 0 rgba(255,255,255,.38),inset 0 -3px 7px rgba(0,0,0,.3);text-shadow:0 1px 1px rgba(0,0,0,.35);backdrop-filter:none}
+.hero-home .tag svg{background:linear-gradient(135deg,#e2edff,#9fc0ee);color:#0c2450}
+/* バッジのキラッ（約1秒間隔のスイープ） */
+.hero-home .tag{position:relative;overflow:hidden}
+.hero-home .tag::after{content:"";position:absolute;top:0;bottom:0;left:-80%;width:48%;
+  background:linear-gradient(100deg,transparent 0%,rgba(255,255,255,.7) 50%,transparent 100%);
+  transform:skewX(-20deg);pointer-events:none;animation:tagshine 1.6s ease-in-out infinite}
+.hero-home .tags .tag:nth-child(2)::after{animation-delay:.1s}
+.hero-home .tags .tag:nth-child(3)::after{animation-delay:.2s}
+.hero-home .tags .tag:nth-child(4)::after{animation-delay:.3s}
+@keyframes tagshine{0%{left:-80%}22%{left:135%}100%{left:135%}}
+/* CTA：一覧から書類を選んで作成 */
+.hcta{margin-top:24px}
+.hplabel{font-size:12.5px;font-weight:700;color:#2d4e7d;margin:0 0 9px 2px;letter-spacing:.01em}
+.hpick{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;max-width:560px}
+.pk{font-family:inherit;font-size:13.5px;font-weight:700;color:#274a78;background:rgba(255,255,255,.72);
+  border:1px solid #cbe0f6;border-radius:999px;padding:9px 16px;cursor:pointer;transition:transform .12s,background .15s,box-shadow .15s,color .15s;backdrop-filter:blur(3px)}
+.pk:hover{background:#fff;border-color:#9fc2ee;transform:translateY(-1px)}
+.pk:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+.pk.on{color:#fff;background:linear-gradient(120deg,#1766e6,#2f9bf0);border-color:transparent;box-shadow:0 7px 16px -5px rgba(23,102,230,.6)}
+.hgo{width:auto;font-size:16px;padding:15px 32px}
+@media(prefers-reduced-motion:reduce){.hero-home .tag::after{animation:none;display:none}}
+@media(min-width:861px){
+  .hero-home{background:
+    linear-gradient(90deg, rgba(224,241,253,.9) 0%, rgba(226,242,253,.66) 38%, rgba(228,243,253,.52) 62%, rgba(228,243,253,.48) 100%),
+    url('/hero3.jpg') center / cover no-repeat;}
+  .hero-home .in{display:grid !important;grid-template-columns:1.08fr .92fr;gap:28px;align-items:center;flex-direction:row}
+  .hero-home .htext{max-width:none;min-width:0}
+  .hero-home .herodemo{margin:0;max-width:560px;width:100%;justify-self:center}
+}
+/* モバイル：見出し2行＋見積書PDFデモを説明文の上へ */
+@media(max-width:860px){
+  .hero-home .in{display:flex;flex-direction:column;gap:0}
+  .hero-home .htext{display:contents}
+  .hero-home .ey{order:1}
+  .hero-home .htext h1{order:2;font-size:clamp(22px,6.3vw,30px);letter-spacing:-.03em;margin-bottom:0}
+  .hero-home .htext h1 .h1a{display:none}
+  .hero-home .herodemo{order:3;margin:14px 0 20px}
+  .hero-home .htext p{order:4}
+  .hero-home .htext .tags{order:5;margin-top:18px}
+  .hero-home .htext .hcta{order:6}
+}
+</style>
+</head>
+<body>
+<div class="promo"><div class="in">
+  <span class="bdg">PRO</span>
+  <span>保存・入金管理・消込まで、請求から回収をまるごと。月額 ¥3,000。</span>
+  <a href="/pricing">詳しく見る →</a>
+</div></div>
+
+<header class="hdr"><div class="in">
+  <a class="brand" href="/" style="text-decoration:none"><img src="/logo.png" alt="Free BizDocs" style="height:30px;width:auto;display:block"></a>
+  <span class="sp"></span>
+  <a class="pro" href="/pricing">PRO<span class="pro-ex">（保存・管理）へ</span></a>
+</div></header>
+
+
+<section class="hero hero-home"><div class="in">
+  <div class="htext">
+  <span class="ey">無料・登録不要のビジネス書類メーカー</span>
+  <h1>ビジネス書類を<br class="h1a">その場で作成、<br class="h1b">無料でPDFに</h1>
+  <p>請求書・見積書・納品書・発注書・領収書から履歴書・職務経歴書・送付状まで。様々なビジネス書類が項目を入れるだけで、消費税・源泉徴収を自動計算し、インボイス対応のPDFを無料で作成できます。登録不要。</p>
+  <div class="tags">
+    <span class="tag"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>登録不要</span>
+    <span class="tag"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>インボイス対応</span>
+    <span class="tag"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>源泉徴収 自動計算</span>
+    <span class="tag"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>日本語PDF即ダウンロード</span>
+  </div>
+  <div class="hcta">
+    <div class="hplabel">作成する書類を選んでください</div>
+    <div class="hpick" role="group" aria-label="作成する書類を選択"><button class="pk on" type="button" data-u="/invoice">請求書</button><button class="pk" type="button" data-u="/quote">見積書</button><button class="pk" type="button" data-u="/delivery">納品書</button><button class="pk" type="button" data-u="/purchase-order">発注書</button><button class="pk" type="button" data-u="/receipt">領収書</button><button class="pk" type="button" data-u="/inkan">電子印鑑</button><button class="pk" type="button" data-u="/rirekisho">履歴書</button><button class="pk" type="button" data-u="/shokumu">職務経歴書</button><button class="pk" type="button" data-u="/soufu">送付状</button><button class="pk" type="button" data-u="/taishoku">退職届</button><button class="pk" type="button" data-u="/shiboudouki">志望動機書</button><button class="pk" type="button" data-u="/entrysheet">ES</button><button class="pk" type="button" data-u="/skillsheet">スキルシート</button></div>
+    <a class="btn hgo" id="hgo" href="/invoice">無料で作成 →</a>
+  </div>
+  </div>
+  <div class="herodemo">
+    <iframe id="demoframe" src="/demo-embed" title="請求書が完成するまでのデモ" loading="lazy" scrolling="no"></iframe>
+  </div>
+</div></section>
+<section class="tools-sec">
+  <h2>作れるビジネス書類</h2>
+  <p class="sub">すべて登録不要・無料。クリックしてそのまま作成できます。</p>
+  <div class="tools"><a class="tool" href="/invoice"><img class="thumb" src="/thumbs/bizdoc-thumb-invoice.jpg" alt="請求書の作成サンプル" loading="lazy" width="360" height="132"><span class="tl">請求書</span><span class="ds">消費税・源泉徴収まで自動計算</span><span class="go">無料で作成 →</span></a><a class="tool" href="/quote"><img class="thumb" src="/thumbs/bizdoc-thumb-quote.jpg" alt="見積書の作成サンプル" loading="lazy" width="360" height="132"><span class="tl">見積書</span><span class="ds">そのまま請求書にも変換できる</span><span class="go">無料で作成 →</span></a><a class="tool" href="/delivery"><img class="thumb" src="/thumbs/bizdoc-thumb-delivery.jpg" alt="納品書の作成サンプル" loading="lazy" width="360" height="132"><span class="tl">納品書</span><span class="ds">納品の品目・数量をPDFに</span><span class="go">無料で作成 →</span></a><a class="tool" href="/purchase-order"><img class="thumb" src="/thumbs/bizdoc-thumb-purchase-order.jpg" alt="発注書の作成サンプル" loading="lazy" width="360" height="132"><span class="tl">発注書</span><span class="ds">発注内容をかんたんPDF</span><span class="go">無料で作成 →</span></a><a class="tool" href="/receipt"><img class="thumb" src="/thumbs/bizdoc-thumb-receipt.jpg" alt="領収書の作成サンプル" loading="lazy" width="360" height="132"><span class="tl">領収書</span><span class="ds">収入印紙欄・インボイス対応</span><span class="go">無料で作成 →</span></a><a class="tool" href="/inkan"><img class="thumb" src="/thumbs/bizdoc-thumb-inkan.jpg" alt="電子印鑑（社印・個人印）の作成サンプル" loading="lazy" width="360" height="132"><span class="tl">電子印鑑</span><span class="ds">丸印・角印・社判を透過PNGで</span><span class="go">無料で作成 →</span></a><a class="tool" href="/rirekisho"><img class="thumb" src="/thumbs/bizdoc-thumb-rirekisho.jpg" alt="履歴書の作成サンプル" loading="lazy" width="360" height="132"><span class="tl">履歴書</span><span class="ds">写真つき・JIS 2ページ様式</span><span class="go">無料で作成 →</span></a><a class="tool" href="/shokumu"><img class="thumb" src="/thumbs/bizdoc-thumb-shokumu.jpg" alt="職務経歴書の作成サンプル" loading="lazy" width="360" height="132"><span class="tl">職務経歴書</span><span class="ds">自動改ページで見やすく</span><span class="go">無料で作成 →</span></a><a class="tool" href="/soufu"><img class="thumb" src="/thumbs/bizdoc-thumb-soufu.jpg" alt="送付状の作成サンプル" loading="lazy" width="360" height="132"><span class="tl">送付状</span><span class="ds">添え状をすぐ作成</span><span class="go">無料で作成 →</span></a><a class="tool" href="/taishoku"><img class="thumb" src="/thumbs/bizdoc-thumb-taishoku.jpg" alt="退職届の作成サンプル" loading="lazy" width="360" height="132"><span class="tl">退職届・退職願</span><span class="ds">縦書き・定型文入り</span><span class="go">無料で作成 →</span></a><a class="tool" href="/shiboudouki"><img class="thumb" src="/thumbs/bizdoc-thumb-shiboudouki.jpg" alt="志望動機書の作成サンプル" loading="lazy" width="360" height="132"><span class="tl">志望動機書</span><span class="ds">応募先・志望動機をPDFに</span><span class="go">無料で作成 →</span></a><a class="tool" href="/entrysheet"><img class="thumb" src="/thumbs/bizdoc-thumb-entrysheet.jpg" alt="エントリーシートの作成サンプル" loading="lazy" width="360" height="132"><span class="tl">エントリーシート</span><span class="ds">自己PR・ガクチカ・志望動機</span><span class="go">無料で作成 →</span></a><a class="tool" href="/skillsheet"><img class="thumb" src="/thumbs/bizdoc-thumb-skillsheet.jpg" alt="スキルシートの作成サンプル" loading="lazy" width="360" height="132"><span class="tl">スキルシート</span><span class="ds">IT・エンジニア向け技術経歴</span><span class="go">無料で作成 →</span></a></div>
+</section>
+<section class="sell">
+  <div class="up">
+    <div>
+      <h3>保存・管理までしたくなったら PRO</h3>
+      <p>自動連番、取引先・発行履歴の保存、入金管理・消込、ダッシュボードまで。発行から回収までをまるごと。月額¥3,000。</p>
+    </div>
+    <span class="sp"></span>
+    <a href="/pricing">PROを見る</a>
+  </div>
+</section>
+<div class="faqwrap">
+  <div class="faq">
+    <h2>よくある質問</h2>
+    <div class="q"><h3>本当に無料・登録不要ですか？</h3><p>はい。アカウント登録なしで、請求書・見積書を作成してPDFをダウンロードできます。混雑防止のため作成は1時間に2枚までです。もっと使う場合はPROをご検討ください。</p></div>
+    <div class="q"><h3>入力したデータは保存されますか？</h3><p>いいえ。無料ツールでは請求内容をサーバーに保存しません（自社情報のみ、次回の入力を楽にするためお使いのブラウザにだけ保存します）。発行履歴の保存はPROの機能です。</p></div>
+    <div class="q"><h3>インボイス（適格請求書）や源泉徴収に対応していますか？</h3><p>対応しています。自社情報に登録番号（T＋13桁）を入れればPDFに記載されます。消費税は10%／8%を税率別に集計し、源泉徴収税（10.21%、100万円超は20.42%）も自動計算します。</p></div>
+    <div class="q"><h3>日本語はきれいに表示されますか？</h3><p>日本語フォントをPDFに埋め込んで生成するため、漢字・ひらがな・カタカナが文字化けせずに表示されます。</p></div>
+  </div>
+</div>
+<footer class="ft"><div class="in">
+  <div class="cols">
+    <div>
+      <div class="brand"><img src="/logo.png" alt="Free BizDocs" style="height:26px;width:auto;display:block;filter:brightness(0) invert(1)"></div>
+      <p>無料の請求書／見積書作成ツール。発行から入金管理まで、個人事業主と中小企業のバックオフィスをかんたんに。</p>
+    </div>
+    <div class="col">
+      <h4>書類を無料作成</h4>
+      <a href="/invoice">請求書</a>
+      <a href="/quote">見積書</a>
+      <a href="/delivery">納品書</a>
+      <a href="/purchase-order">発注書</a>
+      <a href="/receipt">領収書</a>
+      <a href="/inkan">電子印鑑</a>
+      <a href="/rirekisho">履歴書（写真つき）</a>
+      <a href="/shokumu">職務経歴書</a>
+      <a href="/soufu">送付状（添え状）</a>
+      <a href="/taishoku">退職届・退職願</a>
+      <a href="/shiboudouki">志望動機書</a>
+      <a href="/entrysheet">エントリーシート</a>
+      <a href="/skillsheet">スキルシート</a>
+      <a href="/pricing">PRO（保存・管理）</a>
+    </div>
+    <div class="col">
+      <h4>サポート</h4>
+      <a href="/login">ログイン</a>
+      <a href="/blog">お役立ち記事</a> ・ <a href="/feedback">ご意見・ご要望</a> ・ <a href="/contact">お問い合わせ</a>
+      <a href="/tokushoho">特定商取引法に基づく表記</a>
+      <a href="/privacy">プライバシーポリシー</a>
+    </div>
+  </div>
+  <div class="bot">
+    表示金額・税計算はあくまで作成支援であり、税務上の最終判断は専門家にご確認ください。<br>
+    © 2026 Free BizDoc
+  </div>
+</div></footer>
+<script>(function(){var f=document.getElementById("demoframe");if(!f)return;window.addEventListener("message",function(e){try{var d=e.data;if(d&&d.t==="demoH"&&d.h>200&&d.h<2200){f.style.height=d.h+"px";}}catch(_){}});})();</script>
+<script>(function(){var pk=document.querySelectorAll('.hpick .pk'),go=document.getElementById('hgo');if(!go)return;pk.forEach(function(b){b.addEventListener('click',function(){pk.forEach(function(x){x.classList.remove('on');});b.classList.add('on');go.setAttribute('href',b.getAttribute('data-u'));});});})();</script>
+<script src="/promo.js?v=20261016c"></script>
+</body>
+</html>

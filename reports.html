@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>レポート｜無料ビジネス書類メーカー</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap');
+body{margin:0}
+.app{--ink:#171a21;--bg:#f6f6f2;--surf:#ffffff;--surf2:#fbfaf7;--mut:#6c6f78;--faint:#9a9ca3;--bd:#e6e4dd;--ac:#3a46a8;--ac-s:#e7e8f6;--good:#157a48;--good-s:#dcefe4;--warn:#9c6b15;--warn-s:#f3e8cf;--over:#b23a2c;--over-s:#f2dcd7;
+font-family:"Zen Kaku Gothic New",system-ui,sans-serif;color:var(--ink);background:var(--bg);display:flex;flex-wrap:wrap;width:100%;min-height:940px;box-sizing:border-box}
+.side{width:236px;background:var(--surf);border-right:1px solid var(--bd);padding:22px 16px;display:flex;flex-direction:column;gap:22px;box-sizing:border-box}
+.brand{display:flex;align-items:center;gap:9px;padding:0 6px}
+.brand .mk{width:30px;height:30px;border-radius:8px;background:var(--ac);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px}
+.brand .nm{font-weight:700;font-size:17px}.brand .pl{font-size:10px;font-weight:700;color:var(--ac);background:var(--ac-s);padding:2px 7px;border-radius:5px}
+.nav{display:flex;flex-direction:column;gap:2px}
+.nav .lb{font-size:10px;letter-spacing:.1em;color:var(--faint);font-weight:700;margin:10px 8px 4px}
+.nav a{display:flex;align-items:center;gap:10px;padding:9px 11px;border-radius:9px;color:var(--mut);text-decoration:none;font-size:14px;font-weight:500}
+.nav a:hover{background:var(--surf2);color:var(--ink)}
+.nav a.on{background:var(--ac-s);color:var(--ac);font-weight:700}
+.nav a .ic{width:17px;height:17px;flex:none}
+.main{flex:999 1 620px;min-width:0;display:flex;flex-direction:column}
+.top{min-height:62px;border-bottom:1px solid var(--bd);background:var(--surf);display:flex;align-items:center;gap:12px;padding:10px 26px;box-sizing:border-box}
+.top h1{margin:0;font-size:20px;font-weight:700}.top .sp{flex:1}
+.btn{font-family:inherit;font-size:13px;font-weight:700;border-radius:9px;padding:9px 15px;border:1px solid var(--bd);background:var(--surf);color:var(--ink);cursor:pointer;display:inline-flex;align-items:center;gap:7px}
+.content{padding:22px 26px;display:flex;flex-direction:column;gap:18px}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.kpi{background:var(--surf);border:1px solid var(--bd);border-radius:13px;padding:16px 18px;display:flex;flex-direction:column;gap:6px}
+.kpi .k{font-size:12px;color:var(--mut);font-weight:500}.kpi .v{font-size:23px;font-weight:700;font-variant-numeric:tabular-nums}
+.kpi .d{font-size:11.5px;font-weight:600;color:var(--good)}
+.kpi.bar{border-top:3px solid var(--ac)}
+.row2{display:grid;grid-template-columns:1.4fr 1fr;gap:16px}
+.card{background:var(--surf);border:1px solid var(--bd);border-radius:13px;padding:18px 20px;min-width:0}
+.card h2{margin:0 0 16px;font-size:15px;font-weight:700}
+.chart{display:flex;align-items:flex-end;gap:12px;height:190px;padding-top:6px}
+.chart .col{flex:1;display:flex;flex-direction:column;align-items:center;gap:7px;height:100%;justify-content:flex-end}
+.chart .bk{width:68%;max-width:40px;background:var(--ac-s);border-radius:6px 6px 0 0}
+.chart .col.cur .bk{background:var(--ac)}
+.chart .cap{font-size:11px;color:var(--mut)}
+.chart .amt{font-size:10px;color:var(--faint);font-variant-numeric:tabular-nums}
+.bars{display:flex;flex-direction:column;gap:13px}
+.brow{display:flex;flex-direction:column;gap:5px}
+.brow .lab{display:flex;justify-content:space-between;font-size:12.5px}
+.brow .lab .nm{font-weight:600}.brow .lab .vl{font-variant-numeric:tabular-nums;color:var(--mut)}
+.track{height:9px;background:var(--surf2);border-radius:999px;overflow:hidden}
+.track .fill{height:100%;background:var(--ac);border-radius:999px}
+.note{font-size:12px;color:var(--faint);text-align:center;background:var(--surf2);border:1px dashed var(--bd);border-radius:10px;padding:12px}
+@media(max-width:980px){.kpis{grid-template-columns:repeat(2,1fr)}.row2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="side">
+    <div class="brand"><img src="/logo.png" alt="Free BizDocs" style="height:30px;width:auto;display:block"><span class="pl">PRO</span></div>
+    <nav class="nav">
+      <a href="/dashboard"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>ダッシュボード</a>
+      <div class="lb">書類</div>
+      <a href="/invoice-list"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 2h9l5 5v15H6z"/><path d="M14 2v6h6"/></svg>請求書</a>
+      <a href="/quotes"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 4h16v12H4z"/><path d="M8 20h8"/></svg>見積書</a>
+      <a href="/recurring"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 4v5h-5"/></svg>定期請求</a>
+      <div class="lb">お金</div>
+      <a href="/payments"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>入金管理</a>
+      <a class="on" href="/reports"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>レポート</a>
+    </nav>
+  </aside>
+
+  <div class="main">
+    <header class="top"><h1>レポート</h1><span class="sp"></span><button class="btn">2026年度 ▾</button><button class="btn">CSV出力</button></header>
+
+    <div class="content">
+      <div class="kpis">
+        <div class="kpi bar"><span class="k">年間売上（累計）</span><span class="v">¥28,640,000</span><span class="d">前年比 +18%</span></div>
+        <div class="kpi"><span class="k">発行枚数</span><span class="v">164 件</span><span class="d" style="color:var(--mut)">月平均 16.4件</span></div>
+        <div class="kpi"><span class="k">平均請求額</span><span class="v">¥174,600</span><span class="d">前月比 +4%</span></div>
+        <div class="kpi"><span class="k">平均入金日数</span><span class="v">23.4 日</span><span class="d">前月比 −1.8日</span></div>
+      </div>
+
+      <div class="row2">
+        <section class="card">
+          <h2>月次売上推移</h2>
+          <div class="chart">
+            <div class="col"><div class="bk" style="height:52%"></div><span class="amt">¥2.1M</span><span class="cap">5月</span></div>
+            <div class="col"><div class="bk" style="height:66%"></div><span class="amt">¥2.7M</span><span class="cap">6月</span></div>
+            <div class="col"><div class="bk" style="height:58%"></div><span class="amt">¥2.4M</span><span class="cap">7月</span></div>
+            <div class="col"><div class="bk" style="height:76%"></div><span class="amt">¥3.1M</span><span class="cap">8月</span></div>
+            <div class="col"><div class="bk" style="height:70%"></div><span class="amt">¥2.9M</span><span class="cap">9月</span></div>
+            <div class="col cur"><div class="bk" style="height:84%"></div><span class="amt">¥3.4M</span><span class="cap">10月</span></div>
+          </div>
+        </section>
+
+        <section class="card">
+          <h2>取引先別 売上（上位）</h2>
+          <div class="bars">
+            <div class="brow"><div class="lab"><span class="nm">株式会社ひらがな商事</span><span class="vl">¥8,240,000</span></div><div class="track"><div class="fill" style="width:100%"></div></div></div>
+            <div class="brow"><div class="lab"><span class="nm">株式会社あおぞら建設</span><span class="vl">¥5,180,000</span></div><div class="track"><div class="fill" style="width:63%"></div></div></div>
+            <div class="brow"><div class="lab"><span class="nm">有限会社カタカナ工業</span><span class="vl">¥3,960,000</span></div><div class="track"><div class="fill" style="width:48%"></div></div></div>
+            <div class="brow"><div class="lab"><span class="nm">みどりデザイン事務所</span><span class="vl">¥2,310,000</span></div><div class="track"><div class="fill" style="width:28%"></div></div></div>
+            <div class="brow"><div class="lab"><span class="nm">株式会社さくら物産</span><span class="vl">¥1,480,000</span></div><div class="track"><div class="fill" style="width:18%"></div></div></div>
+          </div>
+        </section>
+      </div>
+
+      <section class="card">
+        <h2>税区分別 集計（今年度）</h2>
+        <div class="bars">
+          <div class="brow"><div class="lab"><span class="nm">10%対象 課税売上</span><span class="vl">¥25,900,000</span></div><div class="track"><div class="fill" style="width:90%"></div></div></div>
+          <div class="brow"><div class="lab"><span class="nm">8%対象（軽減税率）</span><span class="vl">¥1,240,000</span></div><div class="track"><div class="fill" style="width:12%;background:var(--warn)"></div></div></div>
+          <div class="brow"><div class="lab"><span class="nm">源泉徴収税 合計</span><span class="vl">¥1,500,000</span></div><div class="track"><div class="fill" style="width:16%;background:var(--over)"></div></div></div>
+        </div>
+      </section>
+
+      <p class="note">※ 数値はサンプルです。本実装では発行データ・入金データから自動集計します。</p>
+    </div>
+  </div>
+</div>
+<script src="app.js"></script>
+<script src="/appshell.js?v=20261018b"></script>
+</body>
+</html>

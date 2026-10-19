@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>入金管理・消込｜無料ビジネス書類メーカー</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap');
+body{margin:0}
+.app{--ink:#171a21;--bg:#f6f6f2;--surf:#ffffff;--surf2:#fbfaf7;--mut:#6c6f78;--faint:#9a9ca3;--bd:#e6e4dd;--ac:#3a46a8;--ac-s:#e7e8f6;--good:#157a48;--good-s:#dcefe4;--warn:#9c6b15;--warn-s:#f3e8cf;--over:#b23a2c;--over-s:#f2dcd7;
+font-family:"Zen Kaku Gothic New",system-ui,sans-serif;color:var(--ink);background:var(--bg);display:flex;flex-wrap:wrap;width:100%;min-height:940px;box-sizing:border-box}
+.side{width:236px;background:var(--surf);border-right:1px solid var(--bd);padding:22px 16px;display:flex;flex-direction:column;gap:22px;box-sizing:border-box}
+.brand{display:flex;align-items:center;gap:9px;padding:0 6px}
+.brand .mk{width:30px;height:30px;border-radius:8px;background:var(--ac);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px}
+.brand .nm{font-weight:700;font-size:17px}.brand .pl{font-size:10px;font-weight:700;color:var(--ac);background:var(--ac-s);padding:2px 7px;border-radius:5px}
+.nav{display:flex;flex-direction:column;gap:2px}
+.nav .lb{font-size:10px;letter-spacing:.1em;color:var(--faint);font-weight:700;margin:10px 8px 4px}
+.nav a{display:flex;align-items:center;gap:10px;padding:9px 11px;border-radius:9px;color:var(--mut);text-decoration:none;font-size:14px;font-weight:500}
+.nav a:hover{background:var(--surf2);color:var(--ink)}
+.nav a.on{background:var(--ac-s);color:var(--ac);font-weight:700}
+.nav a .ic{width:17px;height:17px;flex:none}
+.main{flex:999 1 620px;min-width:0;display:flex;flex-direction:column}
+.top{min-height:62px;border-bottom:1px solid var(--bd);background:var(--surf);display:flex;align-items:center;gap:12px;padding:10px 26px;box-sizing:border-box}
+.top h1{margin:0;font-size:20px;font-weight:700}.top .sp{flex:1}
+.btn{font-family:inherit;font-size:13px;font-weight:700;border-radius:9px;padding:9px 15px;border:1px solid var(--bd);background:var(--surf);color:var(--ink);cursor:pointer;display:inline-flex;align-items:center;gap:7px}
+.btn.pri{background:var(--ac);border-color:var(--ac);color:#fff}.btn.pri:hover{background:#30399a}
+.btn:disabled{opacity:.55;cursor:default}
+.content{padding:22px 26px;display:flex;flex-direction:column;gap:18px}
+.kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.kpi{background:var(--surf);border:1px solid var(--bd);border-radius:13px;padding:15px 18px;display:flex;flex-direction:column;gap:5px}
+.kpi .k{font-size:12px;color:var(--mut);font-weight:500}.kpi .v{font-size:23px;font-weight:700;font-variant-numeric:tabular-nums}
+.kpi.w{border-top:3px solid var(--warn)}.kpi.w .v{color:var(--warn)}
+.kpi.o{border-top:3px solid var(--over)}.kpi.o .v{color:var(--over)}
+.kpi.g{border-top:3px solid var(--good)}.kpi.g .v{color:var(--good)}
+.split{display:grid;grid-template-columns:1.55fr 1fr;gap:16px;align-items:start}
+.card{background:var(--surf);border:1px solid var(--bd);border-radius:13px;min-width:0}
+.card .hd{padding:14px 18px;border-bottom:1px solid var(--bd);font-size:14px;font-weight:700;display:flex;align-items:center;gap:8px}
+.card .hd .sp{flex:1}.card .bd{padding:6px 0}
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+th{text-align:left;font-size:10.5px;letter-spacing:.03em;color:var(--faint);font-weight:700;padding:8px 14px;border-bottom:1px solid var(--bd)}
+td{padding:11px 14px;border-bottom:1px solid var(--bd)}tr:last-child td{border-bottom:none}
+tbody tr.on td{background:var(--ac-s)}
+td.n{font-variant-numeric:tabular-nums;text-align:right}
+.sm{font-size:11px;color:var(--mut)}
+.pill{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px}
+.pill::before{content:"";width:5px;height:5px;border-radius:50%;background:currentColor}
+.pill.pend{background:var(--warn-s);color:var(--warn)}.pill.over{background:var(--over-s);color:var(--over)}.pill.partial{background:var(--ac-s);color:var(--ac)}
+.recbtn{font-family:inherit;font-size:11.5px;font-weight:700;border:1px solid var(--ac);background:var(--surf);color:var(--ac);border-radius:7px;padding:5px 10px;cursor:pointer}
+.recbtn:hover{background:var(--ac-s)}.recbtn.on{background:var(--ac);color:#fff}
+.panel{position:sticky;top:16px}
+.fl{display:flex;flex-direction:column;gap:5px;font-size:12px;color:var(--mut);font-weight:600;margin-bottom:12px}
+input,select{font-family:inherit;font-size:13.5px;padding:9px 11px;border:1px solid var(--bd);border-radius:8px;background:var(--surf);color:var(--ink);box-sizing:border-box;width:100%}
+.match{background:var(--surf2);border:1px solid var(--bd);border-radius:10px;padding:13px 15px;margin-bottom:12px}
+.match .r{display:flex;justify-content:space-between;font-size:12.5px;padding:3px 0}
+.match .r.diff{font-weight:700;border-top:1px dashed var(--bd);margin-top:5px;padding-top:7px}
+.tol{display:flex;align-items:center;gap:8px;font-size:11.5px;color:var(--mut);background:var(--good-s);border-radius:8px;padding:8px 11px;margin-bottom:12px}
+.note{font-size:11px;color:var(--faint);margin-top:4px}
+.msg{font-size:12px;padding:8px 11px;border-radius:8px;margin-top:10px;display:none}
+.msg.ok{display:block;background:var(--good-s);color:var(--good)}.msg.err{display:block;background:var(--over-s);color:var(--over)}
+.muted{color:var(--faint);font-size:13px;padding:22px;text-align:center}
+@media(max-width:980px){.split{grid-template-columns:1fr}.kpis{grid-template-columns:1fr}.panel{position:static}}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="side">
+    <div class="brand"><img src="/logo.png" alt="Free BizDocs" style="height:30px;width:auto;display:block"><span class="pl">PRO</span></div>
+    <nav class="nav">
+      <a href="/dashboard"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>ダッシュボード</a>
+      <div class="lb">書類</div>
+      <a href="/invoice-list"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 2h9l5 5v15H6z"/><path d="M14 2v6h6"/></svg>請求書</a>
+      <a href="/quotes"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 4h16v12H4z"/><path d="M8 20h8"/></svg>見積書</a>
+      <a href="/recurring"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 4v5h-5"/></svg>定期請求</a>
+      <div class="lb">お金</div>
+      <a class="on" href="/payments"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>入金管理</a>
+      <a href="/reports"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>レポート</a>
+    </nav>
+  </aside>
+
+  <div class="main">
+    <header class="top"><h1>入金管理・消込</h1><span class="sp"></span></header>
+
+    <div class="content">
+      <div class="kpis">
+        <div class="kpi w"><span class="k">未入金（売掛残）</span><span class="v" id="k-unpaid">—</span></div>
+        <div class="kpi o"><span class="k">期限超過</span><span class="v" id="k-overdue">—</span></div>
+        <div class="kpi g"><span class="k">今月の入金</span><span class="v" id="k-paid">—</span></div>
+      </div>
+
+      <div class="split">
+        <section class="card">
+          <div class="hd">未入金の請求書<span class="sp"></span><span class="sm">期限が近い順</span></div>
+          <div class="bd">
+            <table>
+              <thead><tr><th>請求書 / 取引先</th><th style="text-align:right">残額</th><th>期限</th><th>状態</th><th></th></tr></thead>
+              <tbody id="rows"><tr><td colspan="5" class="muted">読み込み中…</td></tr></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="card panel" id="panel" style="display:none">
+          <div class="hd" id="rec-header">入金を記録</div>
+          <div style="padding:16px 18px">
+            <div class="match">
+              <div class="r"><span>差引請求額</span><span class="n" id="m-payable"></span></div>
+              <div class="r"><span>入金済み</span><span class="n" id="m-paid"></span></div>
+              <div class="r diff"><span>残額</span><span class="n" id="m-remain"></span></div>
+            </div>
+            <div class="tol" id="tol" style="display:none"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>誤差許容（±¥550）内のため「入金済み」になります</div>
+            <label class="fl">入金日<input type="date" id="pdate"></label>
+            <label class="fl">入金額<input id="pamount" inputmode="numeric"></label>
+            <label class="fl">入金方法<select id="pmethod"><option>銀行振込</option><option>現金</option><option>クレジット</option><option>相殺</option></select></label>
+            <label class="fl">メモ<input id="pmemo" placeholder="任意"></label>
+            <button class="btn pri" id="rec-submit" style="width:100%;justify-content:center">消込して記録する</button>
+            <div class="msg" id="rec-msg"></div>
+            <p class="note">記録すると残額に応じて状態（入金済み／一部入金）が自動更新されます。</p>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="api.js?v=20261019h"></script>
+<script>
+var unpaid=[], sel=null;
+function remain(r){ return (r.payable||0)-(r.paid_total||0); }
+function pillOf(r){ if(r.overdue)return '<span class="pill over">超過</span>'; if(r.status==='partial')return '<span class="pill partial">一部入金</span>'; return '<span class="pill pend">待ち</span>'; }
+function render(){
+  var tb=document.getElementById('rows');
+  if(!unpaid.length){ tb.innerHTML='<tr><td colspan="5" class="muted">未入金の請求書はありません。</td></tr>'; return; }
+  tb.innerHTML=unpaid.map(function(r){
+    return '<tr data-id="'+r.id+'"'+(sel&&sel.id===r.id?' class="on"':'')+'><td><b>'+API.esc(r.doc_no||'—')+'</b><div class="sm">'+API.esc(r.client_name||'')+'</div></td>'
+      +'<td class="n">'+API.yen(remain(r))+'</td><td'+(r.overdue?' style="color:var(--over);font-weight:700"':'')+'>'+API.esc(r.due_date||'—')+'</td>'
+      +'<td>'+pillOf(r)+'</td><td><button class="recbtn'+(sel&&sel.id===r.id?' on':'')+'" data-rec="'+r.id+'">入金記録</button></td></tr>';
+  }).join('');
+}
+function select(r){
+  sel=r; render();
+  document.getElementById('panel').style.display='';
+  document.getElementById('rec-header').textContent='入金を記録 — '+(r.doc_no||'');
+  document.getElementById('m-payable').textContent=API.yen(r.payable);
+  document.getElementById('m-paid').textContent=API.yen(r.paid_total);
+  var rem=remain(r);
+  document.getElementById('m-remain').textContent=API.yen(rem);
+  document.getElementById('pamount').value=rem;
+  document.getElementById('pdate').value=new Date().toISOString().slice(0,10);
+  document.getElementById('tol').style.display = rem<=550 ? 'flex':'none';
+  document.getElementById('rec-msg').className='msg';
+}
+document.getElementById('rows').addEventListener('click',function(e){
+  var b=e.target.closest('[data-rec]'); if(!b)return;
+  var id=b.getAttribute('data-rec'); select(unpaid.filter(function(x){return x.id==id;})[0]);
+});
+document.getElementById('rec-submit').addEventListener('click',async function(){
+  if(!sel)return; var amt=parseInt(String(document.getElementById('pamount').value).replace(/[^0-9.-]/g,''),10)||0;
+  var m=document.getElementById('rec-msg');
+  if(!amt){ m.textContent='入金額を入力してください'; m.className='msg err'; return; }
+  this.disabled=true;
+  try{
+    var r=await API.post('/api/documents/'+sel.id+'/payments',{amount:amt,paid_date:document.getElementById('pdate').value,method:document.getElementById('pmethod').value,memo:document.getElementById('pmemo').value});
+    m.textContent=(r.status==='paid'?'入金済みにしました':'一部入金として記録しました')+'（残額 '+API.yen(r.remaining)+'）';
+    m.className='msg ok';
+    await load(); 
+    if(r.status==='paid'){ document.getElementById('panel').style.display='none'; sel=null; }
+    else { sel=unpaid.filter(function(x){return x.id==r && false;})[0]||sel; }
+  }catch(e){ m.textContent='記録に失敗しました: '+e.message; m.className='msg err'; }
+  this.disabled=false;
+});
+async function load(){
+  var d=await API.get('/api/dashboard');
+  document.getElementById('k-unpaid').textContent=API.yen(d.unpaid_amount);
+  document.getElementById('k-overdue').textContent=API.yen(d.overdue_amount)+(d.overdue_count?'（'+d.overdue_count+'件）':'');
+  document.getElementById('k-paid').textContent=API.yen(d.paid_amount);
+  var r=await API.get('/api/documents?type=invoice&status=unpaid');
+  unpaid=(r.documents||[]).sort(function(a,b){ return (a.due_date||'9999')<(b.due_date||'9999')?-1:1; });
+  render();
+}
+(async function(){ try{ await load(); }catch(e){ document.getElementById('rows').innerHTML='<tr><td colspan="5" class="muted">読み込み失敗: '+API.esc(e.message)+'</td></tr>'; } })();
+</script>
+<script src="/appshell.js?v=20261018b"></script>
+</body>
+</html>

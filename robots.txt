@@ -1,0 +1,35 @@
+User-agent: *
+Allow: /
+Disallow: /login.html
+Disallow: /index.html
+Disallow: /invoice-list.html
+Disallow: /invoice-create.html
+Disallow: /payments.html
+Disallow: /recurring.html
+Disallow: /quotes.html
+Disallow: /reports.html
+
+# AI検索・回答エンジン（AEO）を明示的に許可（非公開のアプリ画面のみ除外）
+User-agent: GPTBot
+User-agent: OAI-SearchBot
+User-agent: ChatGPT-User
+User-agent: ClaudeBot
+User-agent: Claude-Web
+User-agent: anthropic-ai
+User-agent: PerplexityBot
+User-agent: Perplexity-User
+User-agent: Google-Extended
+User-agent: Applebot-Extended
+User-agent: Bingbot
+User-agent: CCBot
+Allow: /
+Disallow: /login.html
+Disallow: /index.html
+Disallow: /invoice-list.html
+Disallow: /invoice-create.html
+Disallow: /payments.html
+Disallow: /recurring.html
+Disallow: /quotes.html
+Disallow: /reports.html
+
+Sitemap: https://free-bizdocs.com/sitemap.xml

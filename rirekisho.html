@@ -1,0 +1,433 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>無料 履歴書メーカー｜写真アップロード対応・登録不要・PDFダウンロード</title>
+<meta name="description" content="登録不要・無料で履歴書を作成。証明写真をアップロードしてPDFに貼り付け、日本語フォント埋め込みでその場でダウンロード。学歴・職歴・免許資格・志望動機まで。写真はサーバーに保存しません。">
+<link rel="canonical" href="https://free-bizdocs.com/rirekisho">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:title" content="無料 履歴書メーカー（写真つき）｜登録不要・PDF">
+<meta property="og:description" content="証明写真をアップロードしてPDFに貼り付け。JIS規格2ページの履歴書を登録不要で作成。">
+<meta property="og:url" content="https://free-bizdocs.com/rirekisho">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap');
+:root{
+  --ink:#13263b;--bg:#ffffff;--soft:#f4f8ff;--surf:#ffffff;--surf2:#f7fafe;
+  --mut:#5a6b7d;--faint:#93a3b5;--bd:#e2eaf4;
+  --ac:#1766e6;--ac-d:#0f53c4;--ac-s:#e8f1ff;--sky:#36a7f0;--sky-s:#e3f4ff;--navy:#0e2742;
+  --good:#1a9e5f;--warn:#9c6b15;--warn-s:#fbf0d6;--over:#c0392b;--over-s:#f7e3df;
+}
+*{box-sizing:border-box}
+html{overflow-x:hidden}
+body{margin:0;font-family:"Zen Kaku Gothic New",system-ui,sans-serif;color:var(--ink);background:var(--bg);line-height:1.6;overflow-x:hidden}
+a{color:var(--ac)}
+.promo{background:linear-gradient(110deg,#0f2f7a,#1766e6 52%,#2f9bf0);color:#fff;position:relative;overflow:hidden}
+.promo::after{content:"";position:absolute;top:-60px;right:8%;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.16),transparent 70%);pointer-events:none}
+.promo .in{position:relative;max-width:1180px;margin:0 auto;padding:9px 20px;display:flex;align-items:center;justify-content:center;gap:12px;font-size:13px;font-weight:600;flex-wrap:wrap;text-align:center}
+.promo .bdg{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.32);padding:3px 11px;border-radius:999px;font-size:11px;font-weight:800;letter-spacing:.05em}
+.promo a{color:#fff;font-weight:700;text-decoration:none;border-bottom:1px solid rgba(255,255,255,.55);padding-bottom:1px}
+.hdr{background:var(--surf);border-bottom:1px solid var(--bd);position:sticky;top:0;z-index:20}
+.hdr .in{max-width:1180px;margin:0 auto;padding:13px 20px;display:flex;align-items:center;gap:12px}
+.brand{display:flex;align-items:center;gap:9px;text-decoration:none}
+.brand .mk{width:33px;height:33px;border-radius:10px;background:linear-gradient(135deg,#1766e6,#36c6f0);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:16px;box-shadow:0 4px 12px -3px rgba(23,102,230,.55)}
+.brand .nm{font-weight:700;font-size:15px;letter-spacing:.01em;color:var(--ink)}
+.hdr .sp{flex:1}
+.hdr .nav{display:flex;gap:6px}
+.hdr .nav a{font-size:12.5px;font-weight:700;color:var(--mut);text-decoration:none;padding:7px 12px;border-radius:999px}
+.hdr .nav a.on{color:var(--ac);background:var(--ac-s)}
+.hero{position:relative;overflow:hidden;background:linear-gradient(180deg,#eaf2ff,#fff 68%);border-bottom:1px solid var(--bd)}
+.hero::before{content:"";position:absolute;top:-130px;right:-70px;width:440px;height:440px;border-radius:50%;background:radial-gradient(circle,rgba(54,167,240,.26),transparent 68%);pointer-events:none}
+.hero .in{position:relative;max-width:1180px;margin:0 auto;padding:44px 20px 38px}
+.hero .ey{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:700;color:#1b4fb8;background:#fff;border:1px solid #d6e4fb;padding:6px 15px;border-radius:999px;margin-bottom:16px;box-shadow:0 3px 12px -3px rgba(23,102,230,.18)}
+.hero .ey::before{content:"";width:8px;height:8px;border-radius:50%;background:linear-gradient(135deg,#1766e6,#36c6f0);box-shadow:0 0 0 4px rgba(54,167,240,.18)}
+.hero h1{font-size:clamp(26px,4.4vw,42px);line-height:1.2;margin:0 0 13px;font-weight:900;letter-spacing:-.02em;background:linear-gradient(100deg,#132742 15%,#1b56c9 75%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{color:var(--mut);font-size:15.5px;margin:0;max-width:60ch}
+.hero .tags{display:flex;gap:9px;flex-wrap:wrap;margin-top:18px}
+.hero .tag{font-size:12.5px;font-weight:600;color:#274863;background:rgba(255,255,255,.85);border:1px solid #e0e9f6;border-radius:999px;padding:7px 14px 7px 8px;display:inline-flex;align-items:center;gap:8px;box-shadow:0 2px 8px -2px rgba(19,38,59,.08)}
+.hero .tag svg{width:17px;height:17px;padding:3px;border-radius:50%;background:linear-gradient(135deg,#1766e6,#36c6f0);color:#fff;flex:none}
+.wrap{max-width:1180px;margin:0 auto;padding:28px 20px 46px;display:grid;grid-template-columns:1.05fr .95fr;gap:22px;align-items:start}
+.card{background:var(--surf);border:1px solid #e8eef7;border-radius:18px;box-shadow:0 1px 2px rgba(19,38,59,.04),0 18px 40px -24px rgba(19,38,59,.22);min-width:0}
+.card.pad{padding:24px}
+.card.right{position:sticky;top:84px;overflow:hidden}
+.card.right .pvhd{background:linear-gradient(120deg,#1766e6,#2f9bf0 58%,#36c6f0);color:#fff;padding:13px 20px;font-size:12.5px;font-weight:700;letter-spacing:.03em;display:flex;align-items:center;gap:8px}
+.card.right .pvbody{padding:18px 20px;max-height:720px;overflow:auto}
+.fs{margin-bottom:20px}
+.fs .lg{font-size:11px;letter-spacing:.07em;color:var(--faint);font-weight:700;text-transform:uppercase;display:block;margin-bottom:10px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+label.fl{display:flex;flex-direction:column;gap:5px;font-size:12px;color:var(--mut);font-weight:600;min-width:0;margin-bottom:10px}
+input,select,textarea{font-family:inherit;font-size:13.5px;padding:10px 12px;border:1px solid var(--bd);border-radius:9px;background:var(--surf);color:var(--ink);width:100%;min-width:0;transition:.12s}
+textarea{resize:vertical;min-height:70px;line-height:1.6}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--ac);box-shadow:0 0 0 3px var(--ac-s)}
+input::placeholder,textarea::placeholder{color:#b4c0cd}
+/* 写真アップロード */
+.photo{display:flex;gap:14px;align-items:center}
+.photo .box{width:84px;height:112px;border:1.5px dashed #c6d3e6;border-radius:8px;display:flex;align-items:center;justify-content:center;text-align:center;font-size:10px;color:var(--faint);overflow:hidden;flex:none;background:var(--surf2)}
+.photo .box img{width:100%;height:100%;object-fit:cover}
+.photo .pctl{min-width:0}
+.photo .pbtn{display:inline-block;font-size:12.5px;font-weight:700;color:var(--ac);background:var(--ac-s);border:none;border-radius:9px;padding:9px 14px;cursor:pointer}
+.photo input[type=file]{display:none}
+.photo .note{font-size:11px;color:var(--faint);margin-top:7px;line-height:1.5}
+/* 可変行テーブル */
+.rows{border:1px solid var(--bd);border-radius:11px;overflow:hidden}
+.rows .hd,.rows .rw{display:grid;grid-template-columns:62px 48px 1fr 26px;gap:6px;align-items:center;padding:8px 10px}
+.rows .hd{background:var(--surf2);color:var(--faint);font-weight:700;font-size:10px;border-bottom:1px solid var(--bd)}
+.rows .rw{border-bottom:1px solid var(--bd)}.rows .rw:last-child{border-bottom:none}
+.rows .rw input{padding:7px 8px;font-size:12px}
+.rows .del{background:none;border:none;color:var(--faint);cursor:pointer;font-size:16px}
+.rows .del:hover{color:var(--over)}
+.addrow{font-size:12.5px;color:var(--ac);background:var(--ac-s);border:none;border-radius:9px;padding:9px 14px;font-weight:700;cursor:pointer;margin-top:10px}
+.cta{margin-top:18px}
+.btn{width:100%;font-family:inherit;font-size:15.5px;font-weight:700;border:none;border-radius:12px;padding:15px;background:linear-gradient(120deg,#1766e6,#2f8cf0 60%,#36b0f0);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 8px 22px -6px rgba(23,102,230,.55);transition:transform .12s,filter .12s}
+.btn:hover{filter:brightness(1.04);transform:translateY(-1px)}.btn:disabled{opacity:.55;cursor:default;box-shadow:none;transform:none}
+.remain{font-size:12.5px;color:var(--mut);text-align:center;margin-top:10px}.remain b{color:var(--ink)}
+.limitbox{display:none;background:var(--warn-s);border:1px solid #ecdcae;border-radius:10px;padding:13px 15px;margin-top:11px;font-size:13px}
+.limitbox a{font-weight:700}
+.msg{font-size:12.5px;padding:9px 12px;border-radius:9px;margin-top:11px;display:none}
+.msg.err{display:block;background:var(--over-s);color:var(--over)}
+/* プレビュー（履歴書ミニ） */
+.rv{font-size:11px;color:#171a21;line-height:1.45}.rv-page{background:#fff;border:1px solid #c7cdd6;border-radius:4px;padding:16px;margin-bottom:14px;position:relative}.rv-page:last-child{margin-bottom:0}.rv-pnum{position:absolute;top:6px;right:9px;font-size:8px;color:#aeb4bd;letter-spacing:.05em}.rv-ttl{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:10px}.rv-ttl h2{margin:0;font-size:18px;letter-spacing:.3em;font-weight:900;color:#171a21}.rv-ttl .dt{font-size:9px;color:#6b6660}.rv .cell{display:flex;align-items:center;gap:7px;padding:5px 8px;min-height:22px}.rv .cell .k{font-size:7.5px;color:#6b6660;flex:none}.rv .cell .v{font-size:11px;color:#171a21;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.rv .cell .v.nm{font-size:17px;font-weight:700}.rv-top{display:flex}.rv-idbox{flex:1;min-width:0;border:1px solid #3a3d42;border-right:none}.rv-idbox .cell+.cell{border-top:1px dashed #b9bec6}.rv-idbox .cell.name{min-height:52px}.rv-photo{width:74px;flex:none;border:1px dashed #9aa0a8;display:flex;align-items:center;justify-content:center;text-align:center;font-size:7.5px;color:#9a948a;background:#fcfbf7;line-height:1.5}.rv-photo img{width:100%;height:100%;object-fit:cover}.rv-row2{display:flex;border:1px solid #3a3d42;border-top:none}.rv-row2 .rv-birth{flex:1;display:flex;align-items:center;justify-content:center;font-size:11px;padding:6px 4px;text-align:center}.rv-row2 .rv-sex{width:112px;flex:none;border-left:1px solid #3a3d42;display:flex;align-items:center;gap:8px;padding:6px 10px}.rv-row2 .rv-sex .k{font-size:8px;color:#6b6660}.rv-ab{display:flex;border:1px solid #3a3d42;border-top:none}.rv-ab .l{flex:1;min-width:0;border-right:1px solid #3a3d42}.rv-ab .l .fu{border-bottom:1px dashed #b9bec6}.rv-ab .l .ad{display:flex;flex-direction:column;align-items:flex-start;gap:1px;padding:5px 8px;min-height:40px;justify-content:center}.rv-ab .l .ad .k{font-size:7.5px;color:#6b6660}.rv-ab .l .ad .z{font-size:8.5px;color:#6b6660}.rv-ab .l .ad .v{font-size:10.5px}.rv-ab .r{width:192px;flex:none;display:flex;flex-direction:column}.rv-ab .r .cell{flex:1}.rv-ab .r .tel{border-bottom:1px solid #3a3d42}.rv-tb{width:100%;border-collapse:collapse;margin-top:12px;table-layout:fixed}.rv-tb th{background:var(--docbg,#eef2f7);color:#171a21;font-weight:700;font-size:8.5px;padding:4px 6px;border:1px solid #3a3d42;text-align:center}.rv-tb td{border:1px solid #6f747c;padding:3px 7px;font-size:10px;color:#171a21;height:19px;text-align:left}.rv-tb td.cy,.rv-tb td.cm{text-align:center;font-variant-numeric:tabular-nums}.rv-tb th.cy,.rv-tb td.cy{width:44px}.rv-tb th.cm,.rv-tb td.cm{width:30px}.rv-band{background:var(--docbg,#eef2f7);border:1px solid #3a3d42;border-bottom:none;font-size:8.5px;font-weight:700;color:#171a21;padding:4px 8px;margin-top:12px}.rv-box{border:1px solid #3a3d42;padding:7px 9px;font-size:10px;color:#171a21;white-space:pre-wrap;min-height:30px}.rv-box.mot{min-height:52px}.rv-jis{display:none;border:1px solid #3a3d42;border-top:none;margin-top:12px}.rv-jis.on{display:block}.rv-jis .r{display:flex}.rv-jis .r+.r{border-top:1px solid #3a3d42}.rv-jis .c{flex:1;display:flex;align-items:center;gap:8px;padding:6px 10px;font-size:9.5px}.rv-jis .c+.c{border-left:1px solid #3a3d42}.rv-jis .c .k{font-size:8px;color:#6b6660}#jisfields{display:none}#jisfields.on{display:block}
+.sell{max-width:1180px;margin:0 auto;padding:6px 20px 48px}
+.sell .up{position:relative;overflow:hidden;background:linear-gradient(115deg,#0f2f7a,#1766e6 52%,#2f9bf0);color:#fff;border-radius:18px;padding:28px 30px;display:flex;gap:16px;align-items:center;flex-wrap:wrap;box-shadow:0 20px 44px -20px rgba(23,102,230,.5)}
+.sell .up h3{margin:0 0 6px;font-size:18px;font-weight:900}
+.sell .up p{margin:0;font-size:13px;opacity:.94;max-width:58ch}
+.sell .up .sp{flex:1}
+.sell .up a{background:#fff;color:#1256cf;font-weight:800;text-decoration:none;padding:12px 20px;border-radius:11px;white-space:nowrap;font-size:13.5px}
+.ft{background:linear-gradient(180deg,#123154,#0b1f38);color:#c6d4e2;border-top:3px solid transparent;border-image:linear-gradient(90deg,#1766e6,#36c6f0) 1}
+.ft .in{max-width:1180px;margin:0 auto;padding:30px 20px 24px;font-size:12px;line-height:1.9}
+.ft a{color:#c6d4e2}
+@media(max-width:860px){.wrap{grid-template-columns:1fr}.card.right{position:static}.card.right .pvbody{max-height:none}}
+@media(max-width:600px){.hdr .nav a{padding:7px 9px}}
+.brand .nm{display:inline-flex;flex-direction:column;line-height:1.08;gap:1px}.brand .nm .bn{font-weight:900;font-size:16px;font-style:normal;color:inherit}.brand .nm .sb{font-size:9px;font-weight:700;font-style:normal;color:#9aa8b8}.ft .brand .nm .sb{color:#9fb1c4}
+.segbtn{font-family:inherit;font-size:12.5px;font-weight:700;padding:8px 14px;border-radius:999px;border:1px solid var(--bd);background:var(--surf);color:var(--mut);cursor:pointer}.segbtn.on{background:var(--ac);border-color:var(--ac);color:#fff}.faqwrap{max-width:1180px;margin:0 auto;padding:6px 20px 44px}.faq{background:var(--surf,#fff);border:1px solid var(--bd,#e2eaf4);border-radius:18px;padding:24px 26px;box-shadow:0 1px 2px rgba(19,38,59,.04),0 18px 40px -26px rgba(19,38,59,.2)}.faq h2{font-size:clamp(18px,3vw,23px);font-weight:900;margin:0 0 14px;letter-spacing:-.01em}.faq .q{padding:13px 0;border-top:1px solid var(--bd,#eef2f7)}.faq .q:first-of-type{border-top:none}.faq .q h3{font-size:14px;font-weight:700;margin:0 0 6px;color:var(--ink,#13263b)}.faq .q p{font-size:13.5px;color:var(--mut,#5a6b7d);margin:0;line-height:1.75}</style>
+  <meta property="og:image" content="https://free-bizdocs.com/og/rirekisho.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:image" content="https://free-bizdocs.com/og/rirekisho.png">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "無料 履歴書作成", "applicationCategory": "BusinessApplication", "operatingSystem": "Web", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "JPY"}, "url": "https://free-bizdocs.com/rirekisho"}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "履歴書は無料で作成できますか？", "acceptedAnswer": {"@type": "Answer", "text": "はい。登録不要・無料で、写真つきの履歴書（厚生労働省様式・A4 2ページ）を作成しPDFでダウンロードできます。"}}, {"@type": "Question", "name": "証明写真は入れられますか？", "acceptedAnswer": {"@type": "Answer", "text": "JPEG／PNG画像をアップロードすると写真欄に配置されます。画像はお使いのブラウザ内だけで処理し、サーバーには送信しません。"}}, {"@type": "Question", "name": "転職用・新卒用・アルバイト用で使い分けできますか？", "acceptedAnswer": {"@type": "Answer", "text": "できます。用途の切り替えで、学歴・職歴やアピール欄の構成を3タイプから選べます。"}}, {"@type": "Question", "name": "手書き用に空欄のまま印刷できますか？", "acceptedAnswer": {"@type": "Answer", "text": "できます。必要な項目だけ入力し、残りは空欄のままPDF化・印刷してご利用いただけます。"}}]}</script>
+</head>
+<body>
+
+<div class="promo"><div class="in">
+  <span class="bdg">無料</span>
+  <span>証明写真をアップロードしてPDFに貼り付け。登録不要・その場でダウンロード。</span>
+  <a href="/invoice">請求書などの書類はこちら →</a>
+</div></div>
+
+<header class="hdr"><div class="in">
+  <a class="brand" href="/invoice"><img src="/logo.png" alt="Free BizDocs" style="height:30px;width:auto;display:block"></a>
+  <span class="sp"></span>
+  
+</div></header>
+
+<nav id="docnav" class="docnav" aria-label="書類の種類"></nav>
+<script src="/docnav.js?v=20261017" defer></script>
+
+<section class="hero"><div class="in">
+  <span class="ey">無料・登録不要の履歴書メーカー</span>
+  <h1>無料 履歴書作成（写真つき）</h1>
+  <p>証明写真をアップロードして、そのままPDFに貼り付け。JIS規格の2ページ構成（1枚目＝学歴・職歴、2枚目＝免許資格・志望動機・本人希望）で、日本語フォント埋め込みのきれいな履歴書をその場でダウンロードできます。</p>
+  <div class="tags">
+    <span class="tag"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>写真アップロード対応</span>
+    <span class="tag"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>登録不要</span>
+    <span class="tag"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>写真はサーバーに保存しません</span>
+  </div>
+</div></section>
+
+<div class="wrap">
+  <div class="card pad">
+    <div class="fs">
+      <span class="lg">様式（日本標準）</span>
+      <div class="seg" id="rfmt" style="display:flex;gap:8px;flex-wrap:wrap">
+        <button type="button" class="segbtn on" data-v="mhlw">厚生労働省様式</button>
+        <button type="button" class="segbtn" data-v="jis">JIS様式</button>
+      </div>
+      <div class="note" style="font-size:11px;color:var(--mut,#5a6b7d);margin-top:6px">厚労省様式＝性別は任意・シンプル。JIS様式＝配偶者・扶養家族・通勤時間の欄あり。</div>
+    </div>
+    <div class="fs">
+      <span class="lg">用途（レイアウトが変わります）</span>
+      <div class="seg" id="rvar" style="display:flex;gap:8px;flex-wrap:wrap">
+        <button type="button" class="segbtn on" data-v="chuto">転職・一般用</button>
+        <button type="button" class="segbtn" data-v="shinsotsu">新卒用</button>
+        <button type="button" class="segbtn" data-v="arbeit">アルバイト用</button>
+      </div>
+    </div>
+    <div class="fs">
+      <span class="lg">証明写真</span>
+      <div class="photo">
+        <div class="box" id="photo-box">写真<br>30×40mm</div>
+        <div class="pctl">
+          <button class="pbtn" id="photo-btn" type="button">画像を選ぶ</button>
+          <input type="file" id="photo" accept="image/jpeg,image/png">
+          <div class="note">JPEG / PNG に対応。iPhoneのHEICは変換してからお使いください。画像はお使いのブラウザ内だけで処理し、サーバーには送信しません。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="fs">
+      <span class="lg">基本情報</span>
+      <label class="fl">記入日<input type="date" id="date"></label>
+      <div class="grid2">
+        <label class="fl">ふりがな（氏名）<input id="furi-name" placeholder="やまだ たろう"></label>
+        <label class="fl">氏名<input id="name" placeholder="山田 太郎"></label>
+      </div>
+      <div class="grid3">
+        <label class="fl">生年月日<input type="date" id="birth"></label>
+        <label class="fl">満年齢<input id="age" placeholder="自動" readonly></label>
+        <label class="fl">性別<select id="gender"><option value="">—</option><option>男</option><option>女</option><option>回答しない</option></select></label>
+      </div>
+    </div>
+
+    <div class="fs">
+      <span class="lg">連絡先</span>
+      <label class="fl">ふりがな（現住所）<input id="furi-addr" placeholder="とうきょうと ..."></label>
+      <div class="grid2">
+        <label class="fl">郵便番号<input id="zip" placeholder="000-0000"></label>
+        <label class="fl">電話<input id="tel" placeholder="090-0000-0000"></label>
+      </div>
+      <label class="fl">現住所<input id="addr" placeholder="東京都○○区..."></label>
+      <label class="fl">メール<input id="email" placeholder="you@example.com"></label>
+    </div>
+
+    <div class="fs">
+      <span class="lg">学歴・職歴</span>
+      <div class="rows"><div class="hd"><span>年</span><span>月</span><span>内容</span><span></span></div><div id="hist"></div></div>
+      <button class="addrow" id="add-hist" type="button">＋ 行を追加</button>
+    </div>
+
+    <div class="fs">
+      <span class="lg">免許・資格</span>
+      <div class="rows"><div class="hd"><span>年</span><span>月</span><span>内容</span><span></span></div><div id="lic"></div></div>
+      <button class="addrow" id="add-lic" type="button">＋ 行を追加</button>
+    </div>
+
+    <label class="fl">志望の動機・特技・自己PR など<textarea id="motivation" placeholder="貴社の○○に魅力を感じ..."></textarea></label>
+    <label class="fl">本人希望記入欄<textarea id="request" placeholder="職種・勤務時間・勤務地などの希望"></textarea></label>
+
+    <div class="fs">
+      <span class="lg">連絡先（任意）</span>
+      <label class="fl">連絡先（現住所以外に希望する場合のみ）<input id="contact" placeholder="〒・住所・電話など"></label>
+    </div>
+    <div class="fs" id="jisfields">
+      <span class="lg">JIS様式の追加項目</span>
+      <div class="grid3">
+        <label class="fl">通勤時間（時）<input id="commute-h" inputmode="numeric" placeholder="1"></label>
+        <label class="fl">通勤時間（分）<input id="commute-m" inputmode="numeric" placeholder="10"></label>
+        <label class="fl">扶養家族数（配偶者を除く）<input id="dependents" inputmode="numeric" placeholder="0"></label>
+      </div>
+      <div class="grid2">
+        <label class="fl">配偶者<select id="spouse"><option value="">—</option><option>有</option><option>無</option></select></label>
+        <label class="fl">配偶者の扶養義務<select id="spouse-support"><option value="">—</option><option>有</option><option>無</option></select></label>
+      </div>
+    </div>
+  </div>
+
+  <div class="card right">
+    <div class="pvhd"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>プレビュー（リアルタイム）</div>
+    <div class="pvbody">
+      <div class="rv">
+        <div class="rv-page">
+          <span class="rv-pnum">1 / 2</span>
+          <div class="rv-ttl"><h2>履 歴 書</h2><span class="dt" id="rv-date">— 年 — 月 — 日 現在</span></div>
+          <div class="rv-top">
+            <div class="rv-idbox">
+              <div class="cell furi"><span class="k">ふりがな</span><span class="v" id="rv-furi">—</span></div>
+              <div class="cell name"><span class="k">氏 名</span><span class="v nm" id="rv-name">氏名</span></div>
+            </div>
+            <div class="rv-photo" id="rv-photo">写真<br>36×24mm</div>
+          </div>
+          <div class="rv-row2">
+            <div class="rv-birth" id="rv-birth">— 年 — 月 — 日生　（満 — 歳）</div>
+            <div class="rv-sex"><span class="k">性別</span><span id="rv-gender">—</span></div>
+          </div>
+          <div class="rv-ab">
+            <div class="l">
+              <div class="cell fu"><span class="k">ふりがな</span><span class="v" id="rv-furi-addr">—</span></div>
+              <div class="ad"><span class="k">現住所</span><span class="z" id="rv-zip">〒 —</span><span class="v" id="rv-addr">—</span></div>
+            </div>
+            <div class="r">
+              <div class="cell tel"><span class="k">電話</span><span id="rv-tel">—</span></div>
+              <div class="cell mail"><span class="k">E-mail</span><span id="rv-email">—</span></div>
+            </div>
+          </div>
+          <div class="rv-ab">
+            <div class="l">
+              <div class="cell fu"><span class="k">ふりがな</span><span class="v">　</span></div>
+              <div class="ad"><span class="k">連絡先</span><span class="v" id="rv-contact2">（現住所以外に連絡を希望する場合のみ）</span></div>
+            </div>
+            <div class="r">
+              <div class="cell tel"><span class="k">電話</span><span>　</span></div>
+              <div class="cell mail"><span class="k">E-mail</span><span>　</span></div>
+            </div>
+          </div>
+          <table class="rv-tb"><thead><tr><th class="cy">年</th><th class="cm">月</th><th>学 歴 ・ 職 歴</th></tr></thead><tbody id="rv-hist"></tbody></table>
+        </div>
+        <div class="rv-page">
+          <span class="rv-pnum">2 / 2</span>
+          <table class="rv-tb"><thead><tr><th class="cy">年</th><th class="cm">月</th><th>免 許 ・ 資 格</th></tr></thead><tbody id="rv-lic"></tbody></table>
+          <div class="rv-band" id="rv-mot-label">志望の動機・特技・自己PR・アピールポイント など</div>
+          <div class="rv-box mot" id="rv-mot">—</div>
+          <div class="rv-band" id="rv-req-label">本人希望記入欄（給料・職種・勤務時間・勤務地 などの希望）</div>
+          <div class="rv-box" id="rv-extra">—</div>
+          <div class="rv-jis" id="rv-jis">
+            <div class="r"><div class="c"><span class="k">通勤時間</span><span id="rv-commute">約 — 時間 — 分</span></div><div class="c"><span class="k">扶養家族数（配偶者を除く）</span><span id="rv-dep">— 人</span></div></div>
+            <div class="r"><div class="c"><span class="k">配偶者</span><span id="rv-spouse">有・無</span></div><div class="c"><span class="k">配偶者の扶養義務</span><span id="rv-spouse2">有・無</span></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cta">
+        <button class="btn" id="make"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 3v12M8 11l4 4 4-4M4 21h16"/></svg>履歴書PDFを作成（無料）</button>
+        <div class="remain" id="remain"></div>
+        <div class="limitbox" id="limitbox"></div>
+        <div class="msg" id="msg"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="sell"><div class="up">
+  <div><h3>請求書・見積書・納品書・発注書・領収書も無料で</h3><p>「無料ビジネス書類メーカー」なら、ビジネス書類もまとめて作成できます。登録不要・インボイス対応。</p></div>
+  <span class="sp"></span>
+  <a href="/invoice">ビジネス書類を作る</a>
+</div></section>
+
+
+<div class="faqwrap"><div class="faq"><h2>よくある質問</h2><div class="q"><h3>履歴書は無料で作成できますか？</h3><p>はい。登録不要・無料で、写真つきの履歴書（厚生労働省様式・A4 2ページ）を作成しPDFでダウンロードできます。</p></div><div class="q"><h3>証明写真は入れられますか？</h3><p>JPEG／PNG画像をアップロードすると写真欄に配置されます。画像はお使いのブラウザ内だけで処理し、サーバーには送信しません。</p></div><div class="q"><h3>転職用・新卒用・アルバイト用で使い分けできますか？</h3><p>できます。用途の切り替えで、学歴・職歴やアピール欄の構成を3タイプから選べます。</p></div><div class="q"><h3>手書き用に空欄のまま印刷できますか？</h3><p>できます。必要な項目だけ入力し、残りは空欄のままPDF化・印刷してご利用いただけます。</p></div>
+    <p style="font-size:13.5px;color:var(--mut,#5a6b7b);margin-top:14px">あわせて読みたい： <a href="/blog/rirekisho-motivation" style="color:var(--ac,#1766e6);font-weight:700">志望動機の書き方</a> ・ <a href="/blog/shokumu-how-to" style="color:var(--ac,#1766e6);font-weight:700">職務経歴書の書き方</a></p></div></div>
+<footer class="ft"><div class="in">
+  <a class="brand" href="/invoice" style="margin-bottom:8px"><img src="/logo.png" alt="Free BizDocs" style="height:30px;width:auto;display:block"></a><br>
+  <a href="/invoice">請求書・見積書・納品書・発注書・領収書</a> ・ <a href="/rirekisho">履歴書</a><br>
+  <a href="/tokushoho">特定商取引法に基づく表記</a> ・ <a href="https://calc.free-bizdocs.com/templates/">無料テンプレート（Excel/PDF）</a>
+      <a href="https://calc.free-bizdocs.com/">ビジネス計算ツール（源泉徴収・消費税）</a>
+      <a href="/privacy">プライバシーポリシー</a> ・ <a href="/feedback">ご意見・ご要望</a> ・ <a href="/contact">お問い合わせ</a><br>\n  表示内容は作成支援であり、記載の正確性は必ずご本人でご確認ください。<br>© 2026 Free BizDoc
+</div></footer>
+
+<script src="api.js?v=20261019h"></script>
+<script src="/theme.js"></script>
+<script>
+var LS='free_resume', photo=null;
+function val(id){return document.getElementById(id).value;}
+function showErr(t){var m=document.getElementById('msg');m.textContent=t;m.className='msg err';}
+function parts(v){ if(!v)return {}; var p=v.split('-'); return {y:p[0], m:String(parseInt(p[1],10)), d:String(parseInt(p[2],10))}; }
+function nonEmpty(x){return x.y||x.m||x.text;}
+
+// 写真
+document.getElementById('photo-btn').addEventListener('click',function(){document.getElementById('photo').click();});
+document.getElementById('photo').addEventListener('change',function(e){
+  var f=e.target.files[0]; if(!f)return; var t=f.type;
+  if(t!=='image/jpeg'&&t!=='image/png'){ showErr('写真はJPEGまたはPNGを選んでください（iPhoneのHEICは変換が必要です）'); this.value=''; return; }
+  document.getElementById('msg').className='msg';
+  var rd=new FileReader();
+  rd.onload=function(){ photo={bytes:new Uint8Array(rd.result), type:(t==='image/png'?'png':'jpg')};
+    var url=URL.createObjectURL(f);
+    document.getElementById('photo-box').innerHTML='<img src="'+url+'">';
+    document.getElementById('rv-photo').innerHTML='<img src="'+url+'">';
+  };
+  rd.readAsArrayBuffer(f);
+});
+
+// 可変行
+function rowHtml(r){r=r||{};return '<div class="rw"><input class="r-y" value="'+API.esc(r.y||'')+'" placeholder="2020"><input class="r-m" value="'+API.esc(r.m||'')+'" placeholder="4"><input class="r-t" value="'+API.esc(r.text||'')+'" placeholder="○○大学 ○○学部 卒業"><button class="del" type="button" aria-label="削除">×</button></div>';}
+function addRow(cont,r){document.getElementById(cont).insertAdjacentHTML('beforeend',rowHtml(r));recompute();}
+function collectRows(cont){return [].slice.call(document.querySelectorAll('#'+cont+' .rw')).map(function(rw){return {y:rw.querySelector('.r-y').value,m:rw.querySelector('.r-m').value,text:rw.querySelector('.r-t').value};});}
+
+function calcAge(){var b=val('birth'),d=val('date')||new Date().toISOString().slice(0,10); if(!b){document.getElementById('age').value='';return;} var bd=new Date(b),dd=new Date(d),a=dd.getFullYear()-bd.getFullYear(),m=dd.getMonth()-bd.getMonth(); if(m<0||(m===0&&dd.getDate()<bd.getDate()))a--; document.getElementById('age').value=(a>=0&&isFinite(a))?a:'';}
+
+function rowsPv(rows){ var r=rows.filter(nonEmpty); var min=4; var out=r.map(function(x){return '<tr><td class="cy">'+API.esc(x.y||'')+'</td><td class="cm">'+API.esc(x.m||'')+'</td><td>'+API.esc(x.text||'')+'</td></tr>';}); for(var i=r.length;i<min;i++) out.push('<tr><td class="cy"></td><td class="cm"></td><td></td></tr>'); return out.join(''); }
+
+function recompute(){
+  calcAge();
+  var _t=new Date();document.getElementById('rv-date').textContent=_t.getFullYear()+' 年 '+(_t.getMonth()+1)+' 月 '+_t.getDate()+' 日 現在';
+  document.getElementById('rv-furi').textContent=val('furi-name')||'—';
+  document.getElementById('rv-name').textContent=val('name')||'氏名';
+  var bp=parts(val('birth'));
+  document.getElementById('rv-birth').textContent=(bp.y?bp.y+' 年 '+bp.m+' 月 '+bp.d+' 日生':'— 年 — 月 — 日生')+'　（満 '+(val('age')||'—')+' 歳）';
+  document.getElementById('rv-gender').textContent=val('gender')||'—';
+  document.getElementById('rv-furi-addr').textContent=val('furi-addr')||'—';
+  document.getElementById('rv-zip').textContent='〒 '+(val('zip')||'—');
+  document.getElementById('rv-addr').textContent=val('addr')||'—';
+  document.getElementById('rv-tel').textContent=val('tel')||'—';
+  document.getElementById('rv-email').textContent=val('email')||'—';
+  document.getElementById('rv-contact2').textContent=val('contact')||'（現住所以外に連絡を希望する場合のみ）';
+  document.getElementById('rv-hist').innerHTML=rowsPv(collectRows('hist'));
+  document.getElementById('rv-lic').innerHTML=rowsPv(collectRows('lic'));
+  document.getElementById('rv-mot').textContent=val('motivation')||'—';
+  document.getElementById('rv-extra').textContent=val('request')||'—';
+  var v=window.__rvar||'chuto';
+  var ml=document.getElementById('rv-mot-label'), rl=document.getElementById('rv-req-label');
+  if(ml) ml.textContent=(v==='shinsotsu')?'志望の動機・特技・自己PR・得意科目・ゼミ・趣味 など':'志望の動機・特技・自己PR・アピールポイント など';
+  if(rl) rl.textContent=(v==='arbeit')?'本人希望記入欄（希望勤務日・時間・勤務地 などの希望）':'本人希望記入欄（給料・職種・勤務時間・勤務地 などの希望）';
+  var fmt=window.__rformat||'mhlw';
+  var jb=document.getElementById('rv-jis'), jf=document.getElementById('jisfields');
+  if(jb) jb.classList.toggle('on', fmt==='jis');
+  if(jf) jf.classList.toggle('on', fmt==='jis');
+  if(fmt==='jis'){
+    document.getElementById('rv-commute').textContent='約 '+(val('commute-h')||'—')+' 時間 '+(val('commute-m')||'—')+' 分';
+    document.getElementById('rv-dep').textContent=(val('dependents')||'—')+' 人';
+    document.getElementById('rv-spouse').textContent=val('spouse')||'有・無';
+    document.getElementById('rv-spouse2').textContent=val('spouse-support')||'有・無';
+  }
+  saveLs();
+}
+
+
+window.__rvar='chuto';
+(function(){
+  var seg=document.getElementById('rvar'); if(!seg)return;
+  seg.addEventListener('click',function(e){ var b=e.target.closest('button'); if(!b)return;
+    [].forEach.call(this.children,function(x){x.classList.remove('on');}); b.classList.add('on');
+    window.__rvar=b.getAttribute('data-v'); recompute();
+  });
+})();
+window.__rformat='mhlw';
+(function(){
+  var seg=document.getElementById('rfmt'); if(!seg)return;
+  function applyFmt(v){ window.__rformat=v; [].forEach.call(seg.children,function(x){x.classList.toggle('on', x.getAttribute('data-v')===v);}); recompute(); }
+  seg.addEventListener('click',function(e){ var b=e.target.closest('button'); if(!b)return; applyFmt(b.getAttribute('data-v')); });
+  try{ var s=JSON.parse(localStorage.getItem(LS)||'null'); if(s&&s.format) applyFmt(s.format); }catch(e){}
+})();
+var FIELDS=['date','furi-name','name','birth','gender','furi-addr','zip','tel','addr','email','motivation','request','contact','commute-h','commute-m','dependents','spouse','spouse-support'];
+function saveLs(){ try{ var o={fields:{},format:(window.__rformat||'mhlw'),hist:collectRows('hist'),lic:collectRows('lic')}; FIELDS.forEach(function(id){o.fields[id]=val(id);}); localStorage.setItem(LS,JSON.stringify(o)); }catch(e){} }
+
+function buildData(){ return { variant:window.__rvar||'chuto', format:(window.__rformat||'mhlw'), theme:(window.__theme||'mono'), date:parts(val('date')), furi_name:val('furi-name'), name:val('name'), birth:parts(val('birth')), age:val('age'), gender:val('gender'), furi_addr:val('furi-addr'), zip:val('zip'), addr:val('addr'), tel:val('tel'), email:val('email'), histories:collectRows('hist').filter(nonEmpty), licenses:collectRows('lic').filter(nonEmpty), motivation:val('motivation'), request:val('request'), contact:val('contact'), commute_h:val('commute-h'), commute_m:val('commute-m'), dependents:val('dependents'), spouse:val('spouse'), spouse_support:val('spouse-support'), photo:photo }; }
+
+async function refreshRemain(){ try{ var r=await API.get('/api/free/check'); document.getElementById('remain').innerHTML='この1時間であと <b>'+r.remaining+'</b> 枚まで無料で作成できます'; }catch(e){} }
+document.getElementById('make').addEventListener('click',async function(){
+  var m=document.getElementById('msg'); m.className='msg';
+  if(!val('name')){ m.textContent='氏名を入力してください'; m.className='msg err'; return; }
+  var btn=this; btn.disabled=true; btn.textContent='作成中…';
+  try{
+    var chk=await fetch('/api/free/check',{method:'POST'}); var cj=await chk.json();
+    if(chk.status===429||!cj.ok){ var lb=document.getElementById('limitbox'); lb.style.display='block'; lb.innerHTML='無料ツールは1時間に2枚までです。あと約 <b>'+(cj.retry_min||60)+'分</b> で再び作成できます。'; btn.disabled=false; btn.textContent='履歴書PDFを作成（無料）'; return; }
+    await API.resumePdf(buildData());
+    document.getElementById('remain').innerHTML='この1時間であと <b>'+cj.remaining+'</b> 枚まで無料で作成できます';
+    if(cj.remaining<=0){ var lb2=document.getElementById('limitbox'); lb2.style.display='block'; lb2.innerHTML='今回で今の時間枠は終了です。しばらくお待ちください。'; }
+  }catch(e){ m.textContent='PDF作成に失敗しました: '+e.message; m.className='msg err'; }
+  btn.disabled=false; btn.textContent='履歴書PDFを作成（無料）';
+});
+
+(function(){
+  document.getElementById('date').value=new Date().toISOString().slice(0,10);
+  FIELDS.forEach(function(id){var el=document.getElementById(id);el.addEventListener('input',recompute);el.addEventListener('change',recompute);});
+  document.getElementById('add-hist').addEventListener('click',function(){addRow('hist',{});});
+  document.getElementById('add-lic').addEventListener('click',function(){addRow('lic',{});});
+  ['hist','lic'].forEach(function(c){var el=document.getElementById(c); el.addEventListener('input',recompute); el.addEventListener('click',function(e){var d=e.target.closest('.del'); if(d){d.closest('.rw').remove();recompute();}});});
+  var loaded=false;
+  try{ var s=JSON.parse(localStorage.getItem(LS)||'null'); if(s){ Object.keys(s.fields||{}).forEach(function(id){var el=document.getElementById(id); if(el&&s.fields[id]!=null)el.value=s.fields[id];}); (s.hist&&s.hist.length?s.hist:[{}]).forEach(function(r){addRow('hist',r);}); (s.lic&&s.lic.length?s.lic:[{}]).forEach(function(r){addRow('lic',r);}); loaded=true; } }catch(e){}
+  if(!loaded){ addRow('hist',{}); addRow('hist',{}); addRow('lic',{}); }
+  calcAge(); recompute(); refreshRemain();
+})();
+</script>
+<script src="/promo.js?v=20261017a"></script>
+<script src="/livepv.js?v=20261019a"></script>
+<script src="/siteheader.js?v=20261018b"></script>
+<script src="/accountsave.js?v=20261019a"></script>
+</body>
+</html>

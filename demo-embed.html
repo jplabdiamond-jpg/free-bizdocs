@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>作成イメージ（デモ）</title>
+<style>
+:root{
+  color-scheme: light;
+  --ink:#13263b;--mut:#5a6b7d;--faint:#93a3b5;--bd:#e2eaf4;--surf2:#f7fafe;
+  --ac:#1766e6;--ac-d:#0f53c4;--ac-s:#e8f1ff;--sky:#36c6f0;--mint:#10b981;--mint-d:#0e9f72;--mint-s:#e7f8f1;
+  --sh:0 22px 54px -30px rgba(23,80,180,.4);
+  --font:"Zen Kaku Gothic New",system-ui,-apple-system,"Hiragino Sans",sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:transparent;color:var(--ink);font-family:var(--font);overflow:hidden}
+.wrap{max-width:780px;margin:0 auto;padding:4px 6px 8px}
+
+.stage{position:relative}
+.app{background:#fff;border:1px solid #dbe6f5;border-radius:16px;overflow:hidden;box-shadow:var(--sh);transition:opacity .55s ease,transform .55s ease}
+.app.out{opacity:0;transform:scale(.97) translateY(-14px);pointer-events:none}
+
+.pdfstage{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:11px;pointer-events:none;opacity:0;transition:opacity .4s ease}
+.pdfstage.show{opacity:1}
+.a4{height:min(86%,452px);aspect-ratio:210/297;max-width:92%;background:#fff;border:1px solid #e4ecf8;border-radius:6px;
+  box-shadow:0 44px 80px -28px rgba(15,40,80,.5),0 4px 14px rgba(19,38,59,.1);
+  padding:6.8% 6.4% 5.8%;display:flex;flex-direction:column;color:#33404d;font-size:clamp(5px,1.05vw,7px);line-height:1.7;font-weight:500;
+  opacity:0;transform:translateY(52px) scale(.97);transition:opacity .7s ease .1s,transform .78s cubic-bezier(.2,.85,.25,1) .1s}
+.pdfstage.show .a4{opacity:1;transform:translateY(0) scale(1)}
+.a4 .a4top{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:1.5px solid #1766e6;padding-bottom:7px}
+.a4 .a4ttl{font-size:2.7em;font-weight:900;letter-spacing:.28em;color:var(--ink);line-height:1.1}
+.a4 .a4en{font-size:.82em;font-weight:700;color:#1766e6;letter-spacing:.3em;margin-top:3px}
+.a4 .a4meta{text-align:right;color:#7f8ea0;font-size:1em;font-variant-numeric:tabular-nums;line-height:1.75}
+.a4 .a4party{display:flex;justify-content:space-between;gap:14px;margin-top:14px}
+.a4 .a4to{flex:1;min-width:0}
+.a4 .a4lbl{font-size:.9em;color:#9aa8b8;font-weight:700;margin-bottom:3px}
+.a4 .a4to b{display:inline-block;font-size:1.32em;font-weight:700;color:var(--ink);border-bottom:1px solid #c9d4e0;padding-bottom:2px;white-space:nowrap}
+.a4 .a4from{text-align:right;color:#60707e;line-height:1.85}
+.a4 .a4from b{color:var(--ink);font-size:1.08em}
+.a4 .a4from .rg{color:#60707e;font-weight:500}
+.a4 .a4amt{margin-top:13px;background:#f5f7fc;border:1px solid #e6ddce;border-radius:3px;padding:9px 13px;display:flex;justify-content:space-between;align-items:center}
+.a4 .a4amt span{font-size:1.05em;font-weight:700;color:#44586c}
+.a4 .a4amt b{font-size:1.72em;font-weight:900;color:#1766e6;font-variant-numeric:tabular-nums}
+.a4 table{width:100%;border-collapse:collapse;margin-top:14px;font-size:1em}
+.a4 th{background:#171a21;color:#fff;text-align:left;font-weight:700;padding:5px 7px;font-size:.9em;letter-spacing:.02em}
+.a4 th.n,.a4 td.n{text-align:right;font-variant-numeric:tabular-nums}
+.a4 td{padding:6px 7px;border-bottom:1px solid #efe8da;white-space:nowrap}
+.a4 tbody tr:nth-child(even) td{background:#f5f7fc}
+.a4 .a4sum{margin:10px 0 0 auto;width:55%;font-size:1em}
+.a4 .a4sum>div{display:flex;justify-content:space-between;padding:3.5px 0;color:#55657a}
+.a4 .a4sum .tot{border-top:1px solid #1766e6;margin-top:4px;padding-top:6px;font-weight:800;color:var(--ink)}
+.a4 .a4sum .tot b{color:#1766e6;font-size:1.22em}
+.a4 .a4foot{margin-top:auto;display:flex;justify-content:space-between;align-items:flex-end;padding:11px 13px;border:1px solid #d9d1c7;border-radius:3px;background:#fcfbf7}
+.a4 .a4bank{color:#6a7784;font-size:.98em;line-height:1.8}
+.a4 .a4seal{flex:none;width:4em;height:4em;border:1.5px solid #cf6a6a;border-radius:50%;color:#cf6a6a;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1.05em;transform:rotate(-7deg);opacity:.8}
+.pdflabel{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:800;color:var(--ink);background:#fff;border:1px solid #d7e4f3;border-radius:999px;padding:7px 14px;box-shadow:0 10px 26px -12px rgba(19,38,59,.3)}
+.pdflabel .ck{width:16px;height:16px;border-radius:5px;background:linear-gradient(135deg,var(--mint),var(--sky));color:#fff;display:flex;align-items:center;justify-content:center}
+.pdflabel .ck svg{width:10px;height:10px}
+.pdflabel .dl{color:var(--ac);font-weight:700}
+
+.bar{display:flex;align-items:center;gap:9px;padding:11px 16px;border-bottom:1px solid var(--bd);background:linear-gradient(180deg,#fbfdff,#f3f8fe)}
+.bar .dots{display:flex;gap:6px}.bar .dots i{width:10px;height:10px;border-radius:50%;display:block}
+.bar .dots i:nth-child(1){background:#ff5f57}.bar .dots i:nth-child(2){background:#febc2e}.bar .dots i:nth-child(3){background:#28c840}
+.bar .mk{width:22px;height:22px;border-radius:7px;background:linear-gradient(135deg,var(--ac),var(--sky));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:12px;margin-left:6px}
+.bar .nm{font-size:12.5px;font-weight:700;color:var(--ink)}
+.bar .url{margin-left:auto;font-size:11px;color:var(--faint);font-variant-numeric:tabular-nums}
+
+.rail{display:flex;gap:8px;padding:14px 16px;border-bottom:1px solid var(--bd);background:var(--surf2)}
+.pstep{flex:1;display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700;color:var(--faint);padding:8px 10px;border-radius:10px;background:#fff;border:1px solid var(--bd);transition:.35s;min-width:0}
+.pstep .n{flex:none;width:21px;height:21px;border-radius:7px;background:#e7edf5;color:#9fb0c2;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;transition:.35s}
+.pstep .n svg{width:12px;height:12px;display:none}
+.pstep span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pstep.on{color:var(--ink);border-color:#bcd6fb;box-shadow:0 4px 12px -6px rgba(23,102,230,.3)}
+.pstep.on .n{background:linear-gradient(135deg,var(--ac),var(--sky));color:#fff}
+.pstep.done{color:var(--mint-d);background:var(--mint-s);border-color:#bfe9d6;box-shadow:none}
+.pstep.done .n{background:linear-gradient(135deg,var(--mint),var(--sky));color:#fff}
+.pstep.cur:not(.done){color:var(--ink)}
+.pstep.done .n .num{display:none}.pstep.done .n svg{display:block}
+
+.body{display:grid;grid-template-columns:1fr 1fr;gap:0}
+.col{padding:20px 18px;min-width:0}
+.col.inp{border-right:1px solid var(--bd)}
+.lg{font-size:10px;letter-spacing:.07em;color:var(--faint);font-weight:800;text-transform:uppercase;display:block;margin:0 0 9px}
+.fld{margin-bottom:14px}
+.fld label{display:block;font-size:11px;color:var(--mut);font-weight:700;margin-bottom:5px}
+.inpbox{height:36px;border:1px solid var(--bd);border-radius:9px;background:#fff;display:flex;align-items:center;padding:0 11px;font-size:13px;color:var(--ink);transition:border-color .2s,box-shadow .2s}
+.inpbox.active{border-color:var(--ac);box-shadow:0 0 0 3px var(--ac-s)}
+.cap{display:inline-block;min-height:1em}
+.cap.typing::after{content:"";display:inline-block;width:2px;height:1.05em;background:var(--ac);margin-left:1px;vertical-align:-2px;animation:blink .8s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.items{border:1px solid var(--bd);border-radius:10px;overflow:hidden}
+.ihd,.irow{display:grid;grid-template-columns:1fr 34px 76px;gap:8px;align-items:center;padding:8px 11px;font-size:11.5px}
+.ihd{background:var(--surf2);color:var(--faint);font-weight:800;font-size:10px;border-bottom:1px solid var(--bd)}
+.irow{border-bottom:1px solid var(--bd);opacity:0;transform:translateY(6px);transition:opacity .35s,transform .35s}
+.irow:last-child{border-bottom:none}
+.irow.show{opacity:1;transform:none}
+.irow .q,.irow .p{text-align:right;font-variant-numeric:tabular-nums;color:var(--mut)}
+.irow .q.pop,.irow .p.pop{animation:pop .4s ease}
+@keyframes pop{0%{transform:scale(.6);opacity:0}60%{transform:scale(1.12)}100%{transform:scale(1);opacity:1}}
+
+.pv{position:relative}
+.pvhd{background:linear-gradient(120deg,var(--ac),#2f9bf0 60%,var(--sky));color:#fff;margin:-20px -18px 16px;padding:11px 18px;font-size:11.5px;font-weight:800;letter-spacing:.03em;display:flex;align-items:center;gap:7px}
+.doc .dt{display:flex;align-items:baseline;gap:7px;border-bottom:2px solid var(--ac);padding-bottom:9px}
+.doc .dt h2{margin:0;font-size:17px;font-weight:900;letter-spacing:.08em}
+.doc .dt .en{font-size:9px;font-weight:800;color:var(--ac);letter-spacing:.14em}
+.doc .to{font-size:12.5px;font-weight:700;margin:12px 0}
+.amt{background:linear-gradient(120deg,#eaf2ff,#e2f4ff);border:1px solid #cfe1fb;border-radius:10px;padding:11px 13px;display:flex;justify-content:space-between;align-items:center;margin-bottom:13px}
+.amt .lb{font-size:11px;font-weight:800;color:#33506f}
+.amt .vl{font-size:18px;font-weight:900;color:var(--ac);font-variant-numeric:tabular-nums}
+.sum{font-size:11px}
+.sr{display:flex;justify-content:space-between;padding:4px 0;color:#53626f;opacity:0;transform:translateY(4px);transition:.3s}
+.sr.show{opacity:1;transform:none}
+.sr b{font-variant-numeric:tabular-nums;font-weight:600}
+.badges{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+.bdg{font-size:10px;font-weight:800;color:var(--mint-d);background:var(--mint-s);border:1px solid #bfe9d6;border-radius:999px;padding:4px 9px;display:inline-flex;align-items:center;gap:5px;opacity:0;transform:scale(.7);transition:.3s}
+.bdg.show{opacity:1;transform:none}
+.bdg::before{content:"";width:6px;height:6px;border-radius:50%;background:linear-gradient(135deg,var(--mint),var(--sky))}
+.act{margin-top:16px}
+.genbtn{width:100%;height:42px;border:none;border-radius:11px;color:#fff;font-family:inherit;font-size:13.5px;font-weight:800;background:linear-gradient(120deg,var(--ac),#2f8cf0 60%,#36b0f0);display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 10px 22px -8px rgba(23,102,230,.55);position:relative;overflow:hidden;transition:transform .12s}
+.genbtn.press{transform:translateY(1px) scale(.99)}
+.genbtn .ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,.5);transform:scale(0);animation:rip .6s ease-out}
+@keyframes rip{to{transform:scale(4);opacity:0}}
+.prog{height:6px;border-radius:999px;background:#e6eef8;margin-top:12px;overflow:hidden;opacity:0;transition:opacity .25s}
+.prog.show{opacity:1}
+.prog i{display:block;height:100%;width:0;border-radius:999px;background:linear-gradient(90deg,var(--ac),var(--sky))}
+.proglb{font-size:10.5px;color:var(--mut);text-align:center;margin-top:6px;opacity:0;transition:.25s;font-variant-numeric:tabular-nums}
+.proglb.show{opacity:1}
+.done{margin-top:13px;border:1px solid #bfe9d6;background:var(--mint-s);border-radius:12px;padding:13px 15px;display:flex;align-items:center;gap:12px;opacity:0;transform:translateY(8px) scale(.98);transition:.4s cubic-bezier(.2,.9,.3,1.3)}
+.done.show{opacity:1;transform:none}
+.done .ck{flex:none;width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--mint),var(--sky));color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 14px -4px rgba(16,185,129,.5)}
+.done .ck svg{width:18px;height:18px}
+.done .tx b{display:block;font-size:13px;font-weight:800;color:var(--mint-d)}
+.done .tx span{font-size:11px;color:#4e7a66;font-variant-numeric:tabular-nums}
+@media(max-width:600px){
+  .wrap{padding:2px 5px 5px}
+  .app{border-radius:13px}
+  .bar{padding:9px 14px}
+  .body{grid-template-columns:1fr}
+  .col.inp{display:none}
+  .col{padding:13px 15px 9px}
+  .pvhd{margin:-13px -15px 11px;padding:9px 15px}
+  .rail{padding:9px 11px;gap:6px}
+  .rail .pstep{padding:6px 6px;gap:5px;font-size:11px;border-radius:9px}
+  .rail .pstep .n{width:18px;height:18px;font-size:10px}
+  .rail .pstep span{font-size:10.5px}
+  .doc .dt h2{font-size:16px}
+  .doc .to{margin:9px 0}
+  .doc .amt{padding:9px 12px;margin-bottom:9px}
+  .doc .amt .vl{font-size:16px}
+  .badges{margin-top:8px}
+  .act{margin-top:12px;min-height:44px;display:flex;flex-direction:column;justify-content:center}
+  .prog{display:none;margin:0}
+  .prog.show{display:block}
+  .proglb{display:none;margin-top:6px}
+  .proglb.show{display:block}
+  #done{display:none}
+  .act:has(.prog.show) .genbtn{display:none}
+  .pdfstage{justify-content:flex-start;align-items:center;gap:7px;padding-top:2px}
+  .a4{height:auto;aspect-ratio:auto;width:84%;max-width:84%}
+  .pdflabel{font-size:10.5px;padding:5px 11px}
+}
+@media(prefers-reduced-motion:reduce){
+  .irow,.sr,.bdg,.done,.app,.pdfstage,.a4{transition:none}
+  .cap.typing::after{animation:none}
+}
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap">
+<div class="wrap">
+  <div class="stage">
+  <div class="app">
+    <div class="bar">
+      <div class="dots"><i></i><i></i><i></i></div>
+      <div class="mk">書</div><div class="nm">Free BizDoc</div>
+      <div class="url">free-bizdocs.com</div>
+    </div>
+    <div class="rail">
+      <div class="pstep" data-s="0"><span class="n"><span class="num">1</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></span><span>項目を入力</span></div>
+      <div class="pstep" data-s="1"><span class="n"><span class="num">2</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></span><span>税・源泉を自動計算</span></div>
+      <div class="pstep" data-s="2"><span class="n"><span class="num">3</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></span><span>PDFが完成</span></div>
+    </div>
+    <div class="body">
+      <div class="col inp">
+        <span class="lg">請求先・明細</span>
+        <div class="fld">
+          <label>取引先名</label>
+          <div class="inpbox" id="clbox"><span class="cap" id="client">株式会社サンプル</span></div>
+        </div>
+        <div class="items">
+          <div class="ihd"><span>品目・摘要</span><span style="text-align:right">数量</span><span style="text-align:right">単価</span></div>
+          <div class="irow" data-r="0"><span class="cap nm" data-nm>Webサイト制作一式</span><span class="q">1</span><span class="p">¥280,000</span></div>
+          <div class="irow" data-r="1"><span class="cap nm" data-nm>保守サポート（月額）</span><span class="q">1</span><span class="p">¥18,000</span></div>
+        </div>
+      </div>
+      <div class="col pv">
+        <div class="pvhd"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>プレビュー（リアルタイム）</div>
+        <div class="doc">
+          <div class="dt"><h2>請求書</h2><span class="en">INVOICE</span></div>
+          <div class="to"><span id="pvto">株式会社サンプル 御中</span></div>
+          <div class="amt"><span class="lb">ご請求金額（税込）</span><span class="vl" id="total">¥327,800</span></div>
+          <div class="sum">
+            <div class="sr" data-sr="0"><span>小計</span><b>¥298,000</b></div>
+            <div class="sr" data-sr="1"><span>消費税（10%）</span><b>¥29,800</b></div>
+          </div>
+          <div class="badges">
+            <span class="bdg" data-b="0">消費税 自動</span>
+            <span class="bdg" data-b="1">源泉徴収 自動</span>
+            <span class="bdg" data-b="2">インボイス対応</span>
+          </div>
+          <div class="act">
+            <button class="genbtn" id="gen" type="button" tabindex="-1" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0 4-4m-4 4-4-4"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>PDFを作成（無料）</button>
+            <div class="prog" id="prog"><i></i></div>
+            <div class="proglb" id="proglb">PDFを生成中… 0%</div>
+            <div class="done" id="done">
+              <span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></span>
+              <span class="tx"><b>請求書.pdf 作成完了</b><span>A4・日本語・インボイス対応 ／ 所要 約10秒</span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div><!-- /.app -->
+  <div class="pdfstage" aria-hidden="true">
+    <div class="a4">
+      <div class="a4top">
+        <div><div class="a4ttl">請求書</div><div class="a4en">INVOICE</div></div>
+        <div class="a4meta">No. 2026-014<br>発行日 2026年10月14日</div>
+      </div>
+      <div class="a4party">
+        <div class="a4to"><div class="a4lbl">請求先</div><b>株式会社サンプル 御中</b></div>
+        <div class="a4from"><b>サンプルデザイン</b><br><span class="rg">登録番号 T1234567890123</span><br>info@example.com</div>
+      </div>
+      <div class="a4amt"><span>ご請求金額（税込）</span><b>¥327,800</b></div>
+      <table>
+        <thead><tr><th>品目・摘要</th><th class="n">数量</th><th>単位</th><th class="n">単価</th><th class="n">金額</th></tr></thead>
+        <tbody>
+          <tr><td>Webサイト制作一式</td><td class="n">1</td><td>式</td><td class="n">¥280,000</td><td class="n">¥280,000</td></tr>
+          <tr><td>保守サポート（月額）</td><td class="n">1</td><td>式</td><td class="n">¥18,000</td><td class="n">¥18,000</td></tr>
+        </tbody>
+      </table>
+      <div class="a4sum">
+        <div><span>小計</span><b>¥298,000</b></div>
+        <div><span>消費税（10%）</span><b>¥29,800</b></div>
+        <div class="tot"><span>合計</span><b>¥327,800</b></div>
+      </div>
+      <div class="a4foot">
+        <div class="a4bank">お振込先：○○銀行 ○○支店 普通 1234567<br>お支払期限：2026年11月13日</div>
+        <div class="a4seal">印</div>
+      </div>
+    </div>
+    <div class="pdflabel"><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></span>請求書.pdf<span class="dl">ダウンロード完了</span></div>
+  </div>
+  </div><!-- /.stage -->
+</div>
+
+<script>
+(function(){
+  var $=function(s,r){return (r||document).querySelector(s)};
+  var $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+  var steps=$$('.pstep'), rows=$$('.irow'), srs=$$('.sr'), bdgs=$$('.bdg');
+  var client=$('#client'), clbox=$('#clbox'), total=$('#total'), pvto=$('#pvto');
+  var gen=$('#gen'), prog=$('#prog'), progBar=$('#prog i'), proglb=$('#proglb'), done=$('#done');
+  var app=$('.app'), pdfstage=$('.pdfstage');
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var CLIENT='株式会社サンプル';
+  var ITEMS=['Webサイト制作一式','保守サポート（月額）'];
+  var TOTAL=327800;
+  var timers=[], rafs=[];
+  function T(fn,ms){var id=setTimeout(fn,ms);timers.push(id);return id;}
+  function clearAll(){timers.forEach(clearTimeout);timers=[];rafs.forEach(cancelAnimationFrame);rafs=[];}
+  function yen(n){return '¥'+Math.round(n).toLocaleString('ja-JP');}
+  function type(el,text,per,cb){
+    el.textContent=''; el.classList.add('typing'); var i=0;
+    (function tick(){ if(i<=text.length){ el.textContent=text.slice(0,i); i++; T(tick,per);} else { el.classList.remove('typing'); cb&&cb(); } })();
+  }
+  function countUp(el,to,dur){ var start=null;
+    function fr(ts){ if(start===null){start=ts; rafs.push(requestAnimationFrame(fr)); return;}
+      var p=Math.min((ts-start)/dur,1), e=1-Math.pow(1-p,3); el.textContent=yen(to*e);
+      if(p<1){ rafs.push(requestAnimationFrame(fr)); } else { el.textContent=yen(to); } }
+    rafs.push(requestAnimationFrame(fr));
+  }
+  function fill(el,dur,end){ var start=null;
+    function fr(ts){ if(start===null){start=ts; rafs.push(requestAnimationFrame(fr)); return;}
+      var p=Math.min((ts-start)/dur,1), e=p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2, v=Math.round(e*100);
+      progBar.style.width=v+'%'; proglb.textContent='PDFを生成中… '+v+'%';
+      if(p<1){ rafs.push(requestAnimationFrame(fr)); } else { progBar.style.width='100%'; proglb.textContent='完成しました'; end&&end(); } }
+    rafs.push(requestAnimationFrame(fr));
+  }
+  function showFinal(){
+    steps.forEach(function(s){s.classList.add('on','done');});
+    client.textContent=CLIENT; rows.forEach(function(r,i){ r.classList.add('show'); $('[data-nm]',r).textContent=ITEMS[i]; });
+    pvto.textContent=CLIENT+' 御中'; srs.forEach(function(s){s.classList.add('show');}); bdgs.forEach(function(b){b.classList.add('show');});
+    total.textContent=yen(TOTAL); app.classList.add('out'); pdfstage.classList.add('show');
+  }
+  function reset(){
+    app.classList.remove('out'); pdfstage.classList.remove('show'); clearAll();
+    steps.forEach(function(s){s.classList.remove('on','done','cur');});
+    client.textContent=''; clbox.classList.remove('active');
+    rows.forEach(function(r){ r.classList.remove('show'); $('[data-nm]',r).textContent=''; $('.q',r).classList.remove('pop'); $('.p',r).classList.remove('pop'); });
+    pvto.textContent='（取引先）御中'; srs.forEach(function(s){s.classList.remove('show');}); bdgs.forEach(function(b){b.classList.remove('show');});
+    total.textContent='¥0'; gen.classList.remove('press');
+    prog.classList.remove('show'); progBar.style.width='0%'; proglb.classList.remove('show'); proglb.textContent='PDFを生成中… 0%'; done.classList.remove('show');
+  }
+  function setStep(n){ steps.forEach(function(s,i){ s.classList.toggle('on', i<=n); s.classList.toggle('cur', i===n); if(i<n)s.classList.add('done'); else s.classList.remove('done'); }); }
+  function run(){
+    if(reduce){ showFinal(); return; }
+    reset(); setStep(0);
+    T(function(){ clbox.classList.add('active'); type(client,CLIENT,55); }, 500);
+    T(function(){ clbox.classList.remove('active'); pvto.textContent=CLIENT+' 御中'; }, 1500);
+    T(function(){ rows[0].classList.add('show'); type($('[data-nm]',rows[0]),ITEMS[0],45,function(){ $('.q',rows[0]).classList.add('pop'); $('.p',rows[0]).classList.add('pop'); }); }, 1700);
+    T(function(){ rows[1].classList.add('show'); type($('[data-nm]',rows[1]),ITEMS[1],45,function(){ $('.q',rows[1]).classList.add('pop'); $('.p',rows[1]).classList.add('pop'); }); }, 2700);
+    T(function(){ setStep(1); }, 3700);
+    T(function(){ srs[0].classList.add('show'); }, 3950);
+    T(function(){ srs[1].classList.add('show'); }, 4150);
+    T(function(){ bdgs[0].classList.add('show'); }, 4300);
+    T(function(){ bdgs[1].classList.add('show'); }, 4420);
+    T(function(){ bdgs[2].classList.add('show'); }, 4540);
+    T(function(){ countUp(total,TOTAL,950); }, 4300);
+    T(function(){ setStep(2); gen.classList.add('press');
+      var r=document.createElement('span'); r.className='ripple'; r.style.left='50%'; r.style.top='50%'; r.style.width='40px'; r.style.height='40px'; r.style.marginLeft='-20px'; r.style.marginTop='-20px';
+      gen.appendChild(r); T(function(){ r.remove(); }, 650);
+    }, 5450);
+    T(function(){ gen.classList.remove('press'); prog.classList.add('show'); proglb.classList.add('show'); fill(prog,1300); }, 5750);
+    T(function(){ steps[2].classList.add('done'); }, 7100);
+    T(function(){ app.classList.add('out'); pdfstage.classList.add('show'); }, 7250);
+    T(function(){ app.classList.remove('out'); pdfstage.classList.remove('show'); }, 10400);
+    T(function(){ run(); }, 11100);
+  }
+  // report height to parent for iframe auto-size
+  function reportH(){ try{ var h=Math.ceil($('.wrap').getBoundingClientRect().height)+2; parent.postMessage({t:'demoH',h:h},'*'); }catch(e){} }
+  window.addEventListener('load', function(){ reportH(); T(reportH,300); });
+  window.addEventListener('resize', reportH);
+  if(reduce){ showFinal(); } else { T(function(){ run(); }, 400); }
+})();
+</script>
+</body>
+</html>

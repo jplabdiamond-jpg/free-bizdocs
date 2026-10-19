@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>請求書一覧｜無料ビジネス書類メーカー</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap');
+body{margin:0}
+.app{--ink:#171a21;--bg:#f6f6f2;--surf:#ffffff;--surf2:#fbfaf7;--mut:#6c6f78;--faint:#9a9ca3;--bd:#e6e4dd;--ac:#3a46a8;--ac-s:#e7e8f6;--good:#157a48;--good-s:#dcefe4;--warn:#9c6b15;--warn-s:#f3e8cf;--over:#b23a2c;--over-s:#f2dcd7;
+font-family:"Zen Kaku Gothic New",system-ui,sans-serif;color:var(--ink);background:var(--bg);display:flex;flex-wrap:wrap;width:100%;min-height:940px;box-sizing:border-box}
+.side{width:236px;background:var(--surf);border-right:1px solid var(--bd);padding:22px 16px;display:flex;flex-direction:column;gap:22px;box-sizing:border-box}
+.brand{display:flex;align-items:center;gap:9px;padding:0 6px}
+.brand .mk{width:30px;height:30px;border-radius:8px;background:var(--ac);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px}
+.brand .nm{font-weight:700;font-size:17px}.brand .pl{font-size:10px;font-weight:700;color:var(--ac);background:var(--ac-s);padding:2px 7px;border-radius:5px}
+.nav{display:flex;flex-direction:column;gap:2px}
+.nav .lb{font-size:10px;letter-spacing:.1em;color:var(--faint);font-weight:700;margin:10px 8px 4px}
+.nav a{display:flex;align-items:center;gap:10px;padding:9px 11px;border-radius:9px;color:var(--mut);text-decoration:none;font-size:14px;font-weight:500}
+.nav a:hover{background:var(--surf2);color:var(--ink)}
+.nav a.on{background:var(--ac-s);color:var(--ac);font-weight:700}
+.nav a .ic{width:17px;height:17px;flex:none}
+.main{flex:999 1 620px;min-width:0;display:flex;flex-direction:column}
+.top{min-height:62px;border-bottom:1px solid var(--bd);background:var(--surf);display:flex;align-items:center;gap:12px;padding:10px 26px;box-sizing:border-box;flex-wrap:wrap}
+.top h1{margin:0;font-size:20px;font-weight:700}.top .sp{flex:1}
+.btn{font-family:inherit;font-size:13px;font-weight:700;border-radius:9px;padding:9px 15px;border:1px solid var(--bd);background:var(--surf);color:var(--ink);cursor:pointer;display:inline-flex;align-items:center;gap:7px;text-decoration:none}
+.btn.pri{background:var(--ac);border-color:var(--ac);color:#fff}.btn.pri:hover{background:#30399a}
+.content{padding:22px 26px;display:flex;flex-direction:column;gap:16px}
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--bd);flex-wrap:wrap}
+.tabs button{font-family:inherit;font-size:13.5px;font-weight:700;border:none;background:none;color:var(--mut);padding:10px 15px;cursor:pointer;border-bottom:2.5px solid transparent;margin-bottom:-1px}
+.tabs button:hover{color:var(--ink)}
+.tabs button.on{color:var(--ac);border-bottom-color:var(--ac)}
+.tabs .ct{font-size:11px;background:var(--surf2);color:var(--faint);border-radius:999px;padding:1px 7px;margin-left:5px}
+.tabs button.on .ct{background:var(--ac-s);color:var(--ac)}
+.bulkbar{display:none;align-items:center;gap:12px;background:var(--ac-s);border:1px solid var(--ac);border-radius:10px;padding:10px 15px;font-size:13px;color:var(--ac);font-weight:700}
+.bulkbar .sp{flex:1}.bulkbar .btn{border-color:var(--ac);color:var(--ac)}
+.card{background:var(--surf);border:1px solid var(--bd);border-radius:13px;overflow:hidden}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;font-size:11px;letter-spacing:.04em;color:var(--faint);font-weight:700;padding:12px 10px;border-bottom:1px solid var(--bd);background:var(--surf2)}
+td{padding:12px 10px;border-bottom:1px solid var(--bd)}
+tr:last-child td{border-bottom:none}
+tbody tr:hover td{background:var(--surf2)}
+tr.sel td{background:var(--ac-s)}tr.sel:hover td{background:var(--ac-s)}
+td.n{font-variant-numeric:tabular-nums;text-align:right}
+td .no{font-weight:700}
+input[type=checkbox]{width:16px;height:16px;cursor:pointer;accent-color:var(--ac)}
+.pill{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:999px}
+.pill::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.pill.paid{background:var(--good-s);color:var(--good)}.pill.pend{background:var(--warn-s);color:var(--warn)}
+.pill.over{background:var(--over-s);color:var(--over)}.pill.draft{background:#eceae4;color:var(--mut)}.pill.partial{background:var(--ac-s);color:var(--ac)}
+.rowact{display:flex;gap:6px;justify-content:flex-end}
+.ib{border:1px solid var(--bd);background:var(--surf);border-radius:7px;padding:4px 9px;font-size:11.5px;font-weight:700;display:inline-flex;align-items:center;gap:4px;color:var(--mut);cursor:pointer}
+.ib:hover{border-color:var(--ac);color:var(--ac)}
+.muted{color:var(--faint);font-size:13px;padding:22px;text-align:center}
+@media(max-width:860px){.hideS{display:none}}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="side">
+    <div class="brand"><img src="/logo.png" alt="Free BizDocs" style="height:30px;width:auto;display:block"><span class="pl">PRO</span></div>
+    <nav class="nav">
+      <a href="/dashboard"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>ダッシュボード</a>
+      <div class="lb">書類</div>
+      <a class="on" href="/invoice-list"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 2h9l5 5v15H6z"/><path d="M14 2v6h6"/></svg>請求書</a>
+      <a href="/quotes"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 4h16v12H4z"/><path d="M8 20h8"/></svg>見積書</a>
+      <a href="/recurring"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 4v5h-5"/></svg>定期請求</a>
+      <div class="lb">お金</div>
+      <a href="/payments"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>入金管理</a>
+      <a href="/reports"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>レポート</a>
+    </nav>
+  </aside>
+
+  <div class="main">
+    <header class="top">
+      <h1>請求書</h1><span class="sp"></span>
+      <a class="btn pri" href="/invoice-create"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>請求書を作成</a>
+    </header>
+
+    <div class="content">
+      <div class="tabs" id="tabs">
+        <button class="on" data-tab="all">すべて<span class="ct" id="c-all">0</span></button>
+        <button data-tab="draft">下書き<span class="ct" id="c-draft">0</span></button>
+        <button data-tab="pending">入金待ち<span class="ct" id="c-pending">0</span></button>
+        <button data-tab="paid">入金済み<span class="ct" id="c-paid">0</span></button>
+        <button data-tab="overdue">期限超過<span class="ct" id="c-overdue">0</span></button>
+      </div>
+
+      <div class="bulkbar" id="bulkbar"><span id="bulkcount">0</span>件を選択中<span class="sp"></span><button class="btn" id="bulk-pdf">選択をPDF出力</button></div>
+
+      <div class="card">
+        <table>
+          <thead><tr>
+            <th style="width:36px"><input type="checkbox" id="selall" aria-label="すべて選択"></th>
+            <th>番号</th><th>取引先</th><th class="hideS">発行日</th><th style="text-align:right">差引請求</th><th>支払期限</th><th>状態</th><th style="width:150px"></th>
+          </tr></thead>
+          <tbody id="rows"><tr><td colspan="8" class="muted">読み込み中…</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="api.js?v=20261019h"></script>
+<script>
+var all=[], cur='all';
+var STAT={paid:['paid','入金済み'],pending:['pend','入金待ち'],partial:['partial','一部入金'],draft:['draft','下書き']};
+function pill(r){ if(r.overdue) return '<span class="pill over">期限超過</span>'; var s=STAT[r.status]||['pend',r.status]; return '<span class="pill '+s[0]+'">'+s[1]+'</span>'; }
+function match(r,tab){ if(tab==='all')return true; if(tab==='overdue')return !!r.overdue; if(tab==='pending')return r.status==='pending'&&!r.overdue; return r.status===tab; }
+function render(){
+  var list=all.filter(function(r){return match(r,cur);});
+  var tb=document.getElementById('rows');
+  if(!list.length){ tb.innerHTML='<tr><td colspan="8" class="muted">該当する請求書がありません。</td></tr>'; refreshBulk(); return; }
+  tb.innerHTML=list.map(function(r){
+    var _e='<a class="ib" href="/invoice?doc='+r.id+'">編集</a>';
+    var act = r.status==='draft'
+      ? '<div class="rowact">'+_e+'<span style="color:var(--faint);font-size:11.5px">下書き</span></div>'
+      : '<div class="rowact">'+_e+'<button class="ib" data-pdf="'+r.id+'">📄 PDF</button></div>';
+    return '<tr data-id="'+r.id+'"><td><input type="checkbox" data-rc'+(r.status==='draft'?' disabled':'')+' aria-label="選択"></td>'
+      +'<td><span class="no">'+API.esc(r.doc_no||'（下書き）')+'</span></td>'
+      +'<td>'+API.esc(r.client_name||'')+'</td>'
+      +'<td class="hideS">'+API.esc(r.issue_date||'—')+'</td>'
+      +'<td class="n">'+API.yen(r.payable)+'</td>'
+      +'<td>'+API.esc(r.due_date||'—')+'</td>'
+      +'<td>'+pill(r)+'</td><td>'+act+'</td></tr>';
+  }).join('');
+  refreshBulk();
+}
+function counts(){
+  var c={all:all.length,draft:0,pending:0,paid:0,overdue:0};
+  all.forEach(function(r){ if(r.overdue)c.overdue++; if(r.status==='draft')c.draft++; else if(r.status==='paid')c.paid++; else if((r.status==='pending'||r.status==='partial')&&!r.overdue)c.pending++; });
+  ['all','draft','pending','paid','overdue'].forEach(function(k){ document.getElementById('c-'+k).textContent=c[k]; });
+}
+function rowChecks(){ return Array.prototype.slice.call(document.querySelectorAll('[data-rc]:not([disabled])')); }
+function refreshBulk(){
+  var rc=rowChecks(), n=rc.filter(function(c){return c.checked;}).length;
+  rc.forEach(function(c){ c.closest('tr').classList.toggle('sel',c.checked); });
+  document.getElementById('bulkbar').style.display=n>0?'flex':'none';
+  document.getElementById('bulkcount').textContent=n;
+  var sa=document.getElementById('selall'); sa.checked=n>0&&n===rc.length; sa.indeterminate=n>0&&n<rc.length;
+}
+document.getElementById('selall').addEventListener('change',function(){ rowChecks().forEach(function(c){c.checked=document.getElementById('selall').checked;}); refreshBulk(); });
+document.getElementById('rows').addEventListener('change',function(e){ if(e.target.hasAttribute('data-rc')) refreshBulk(); });
+document.getElementById('rows').addEventListener('click',async function(e){
+  var p=e.target.closest('[data-pdf]'); if(p){ p.textContent='生成中…'; try{ await API.invoicePdf(p.getAttribute('data-pdf')); p.textContent='📄 PDF'; }catch(err){ p.textContent='失敗'; } }
+});
+document.getElementById('tabs').addEventListener('click',function(e){ var b=e.target.closest('button'); if(!b)return;
+  Array.prototype.forEach.call(this.children,function(x){x.classList.remove('on');}); b.classList.add('on'); cur=b.getAttribute('data-tab'); render(); });
+document.getElementById('bulk-pdf').addEventListener('click',async function(){
+  var ids=rowChecks().filter(function(c){return c.checked;}).map(function(c){return c.closest('tr').getAttribute('data-id');});
+  this.disabled=true; var t=this; t.textContent='生成中…';
+  for(var i=0;i<ids.length;i++){ try{ await API.invoicePdf(ids[i]); }catch(e){} }
+  t.disabled=false; t.textContent='選択をPDF出力';
+});
+(async function(){
+  try{ var r=await API.get('/api/documents?type=invoice&status=all'); all=r.documents||[]; counts(); render(); }
+  catch(e){ document.getElementById('rows').innerHTML='<tr><td colspan="8" class="muted">読み込み失敗: '+API.esc(e.message)+'</td></tr>'; }
+})();
+</script>
+<script src="/appshell.js?v=20261018b"></script>
+</body>
+</html>

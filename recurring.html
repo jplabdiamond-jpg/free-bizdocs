@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>定期請求｜無料ビジネス書類メーカー</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap');
+body{margin:0}
+.app{--ink:#171a21;--bg:#f6f6f2;--surf:#ffffff;--surf2:#fbfaf7;--mut:#6c6f78;--faint:#9a9ca3;--bd:#e6e4dd;--ac:#3a46a8;--ac-s:#e7e8f6;--good:#157a48;--good-s:#dcefe4;--warn:#9c6b15;--warn-s:#f3e8cf;--over:#b23a2c;--over-s:#f2dcd7;
+font-family:"Zen Kaku Gothic New",system-ui,sans-serif;color:var(--ink);background:var(--bg);display:flex;flex-wrap:wrap;width:100%;min-height:940px;box-sizing:border-box}
+.side{width:236px;background:var(--surf);border-right:1px solid var(--bd);padding:22px 16px;display:flex;flex-direction:column;gap:22px;box-sizing:border-box}
+.brand{display:flex;align-items:center;gap:9px;padding:0 6px}
+.brand .mk{width:30px;height:30px;border-radius:8px;background:var(--ac);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px}
+.brand .nm{font-weight:700;font-size:17px}.brand .pl{font-size:10px;font-weight:700;color:var(--ac);background:var(--ac-s);padding:2px 7px;border-radius:5px}
+.nav{display:flex;flex-direction:column;gap:2px}
+.nav .lb{font-size:10px;letter-spacing:.1em;color:var(--faint);font-weight:700;margin:10px 8px 4px}
+.nav a{display:flex;align-items:center;gap:10px;padding:9px 11px;border-radius:9px;color:var(--mut);text-decoration:none;font-size:14px;font-weight:500}
+.nav a:hover{background:var(--surf2);color:var(--ink)}
+.nav a.on{background:var(--ac-s);color:var(--ac);font-weight:700}
+.nav a .ic{width:17px;height:17px;flex:none}
+.main{flex:999 1 620px;min-width:0;display:flex;flex-direction:column}
+.top{min-height:62px;border-bottom:1px solid var(--bd);background:var(--surf);display:flex;align-items:center;gap:12px;padding:10px 26px;box-sizing:border-box}
+.top h1{margin:0;font-size:20px;font-weight:700}.top .sp{flex:1}
+.btn{font-family:inherit;font-size:13px;font-weight:700;border-radius:9px;padding:9px 15px;border:1px solid var(--bd);background:var(--surf);color:var(--ink);cursor:pointer;display:inline-flex;align-items:center;gap:7px}
+.btn.pri{background:var(--ac);border-color:var(--ac);color:#fff}.btn.pri:hover{background:#30399a}
+.content{padding:22px 26px;display:flex;flex-direction:column;gap:18px}
+.banner{display:flex;align-items:center;gap:13px;background:var(--ac-s);border:1px solid #cdd1f0;border-radius:12px;padding:14px 18px}
+.banner .ic{width:38px;height:38px;border-radius:10px;background:var(--ac);color:#fff;display:flex;align-items:center;justify-content:center;flex:none}
+.banner .tx{flex:1;font-size:13.5px}.banner .tx b{font-weight:700}
+.banner .sm{font-size:11.5px;color:var(--mut)}
+.card{background:var(--surf);border:1px solid var(--bd);border-radius:13px;overflow:hidden}
+.card .hd{padding:14px 18px;border-bottom:1px solid var(--bd);font-size:14px;font-weight:700;display:flex;align-items:center;gap:8px}
+.card .hd .sp{flex:1}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;font-size:11px;letter-spacing:.03em;color:var(--faint);font-weight:700;padding:11px 14px;border-bottom:1px solid var(--bd);background:var(--surf2)}
+td{padding:13px 14px;border-bottom:1px solid var(--bd);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+td.n{font-variant-numeric:tabular-nums;text-align:right}
+.cl{font-weight:700}.sm{font-size:11.5px;color:var(--mut)}
+.cyc{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:var(--ac);background:var(--ac-s);padding:3px 10px;border-radius:999px}
+.mode{font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px}
+.mode.auto{background:var(--good-s);color:var(--good)}.mode.draft{background:var(--warn-s);color:var(--warn)}
+.next{font-weight:700;font-variant-numeric:tabular-nums}
+.soon{color:var(--ac)}
+/* toggle */
+.sw{position:relative;width:40px;height:23px;flex:none;display:inline-block}
+.sw input{opacity:0;width:0;height:0;position:absolute}
+.sw .tk{position:absolute;inset:0;background:#cfceC7;border-radius:999px;transition:.15s}
+.sw .tk::before{content:"";position:absolute;width:17px;height:17px;border-radius:50%;background:#fff;top:3px;left:3px;transition:.15s}
+.sw input:checked + .tk{background:var(--good)}
+.sw input:checked + .tk::before{transform:translateX(17px)}
+.due{background:var(--warn-s);border:1px solid #e6d2a4;border-radius:12px;padding:14px 18px;display:flex;align-items:center;gap:13px}
+.due .tx{flex:1;font-size:13px}.due b{font-weight:700}
+@media(max-width:860px){.hideS{display:none}}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="side">
+    <div class="brand"><img src="/logo.png" alt="Free BizDocs" style="height:30px;width:auto;display:block"><span class="pl">PRO</span></div>
+    <nav class="nav">
+      <a href="/dashboard"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>ダッシュボード</a>
+      <div class="lb">書類</div>
+      <a href="/invoice-list"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 2h9l5 5v15H6z"/><path d="M14 2v6h6"/></svg>請求書</a>
+      <a href="/quotes"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 4h16v12H4z"/><path d="M8 20h8"/></svg>見積書</a>
+      <a class="on" href="/recurring"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 4v5h-5"/></svg>定期請求</a>
+      <div class="lb">お金</div>
+      <a href="/payments"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>入金管理</a>
+      <a href="/reports"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>レポート</a>
+    </nav>
+  </aside>
+
+  <div class="main">
+    <header class="top"><h1>定期請求</h1><span class="sp"></span><button class="btn pri"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>定期請求を追加</button></header>
+
+    <div class="content">
+      <div class="banner">
+        <span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 4v5h-5"/></svg></span>
+        <div class="tx"><b>毎月の請求書を自動で生成します。</b><div class="sm">顧問料・保守費・家賃など、繰り返す請求を登録しておけば、指定日に自動で作成されます。</div></div>
+      </div>
+
+      <div class="due">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--warn)" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+        <div class="tx"><b>今日生成される定期請求が 3件</b> あります（うち自動発行 2件・下書き 1件）</div>
+        <button class="btn">内容を確認</button>
+      </div>
+
+      <div class="card">
+        <div class="hd">登録中の定期請求<span class="sp"></span><span class="sm">5件</span></div>
+        <table>
+          <thead><tr><th>取引先 / 内容</th><th>サイクル</th><th class="hideS" style="text-align:right">金額（税込）</th><th>次回生成</th><th>発行方法</th><th style="text-align:center">有効</th></tr></thead>
+          <tbody>
+            <tr><td><span class="cl">株式会社ひらがな商事</span><div class="sm">月額顧問料・運用サポート</div></td><td><span class="cyc">毎月 25日</span></td><td class="n hideS">¥330,000</td><td class="next soon">10/25</td><td><span class="mode auto">自動発行</span></td><td style="text-align:center"><label class="sw"><input type="checkbox" checked aria-label="有効"><span class="tk"></span></label></td></tr>
+            <tr><td><span class="cl">有限会社カタカナ工業</span><div class="sm">サーバー保守費</div></td><td><span class="cyc">毎月 末日</span></td><td class="n hideS">¥55,000</td><td class="next soon">10/31</td><td><span class="mode auto">自動発行</span></td><td style="text-align:center"><label class="sw"><input type="checkbox" checked aria-label="有効"><span class="tk"></span></label></td></tr>
+            <tr><td><span class="cl">みどりデザイン事務所</span><div class="sm">共同オフィス 賃料</div></td><td><span class="cyc">毎月 1日</span></td><td class="n hideS">¥88,000</td><td class="next">11/01</td><td><span class="mode draft">下書きで作成</span></td><td style="text-align:center"><label class="sw"><input type="checkbox" checked aria-label="有効"><span class="tk"></span></label></td></tr>
+            <tr><td><span class="cl">株式会社あおぞら建設</span><div class="sm">保守・点検 契約</div></td><td><span class="cyc">3ヶ月ごと 10日</span></td><td class="n hideS">¥132,000</td><td class="next">12/10</td><td><span class="mode auto">自動発行</span></td><td style="text-align:center"><label class="sw"><input type="checkbox" checked aria-label="有効"><span class="tk"></span></label></td></tr>
+            <tr><td><span class="cl">佐藤司法書士事務所</span><div class="sm">記帳代行（停止中）</div></td><td><span class="cyc">毎月 20日</span></td><td class="n hideS">¥22,000</td><td class="next" style="color:var(--faint)">— 停止中</td><td><span class="mode draft">下書きで作成</span></td><td style="text-align:center"><label class="sw"><input type="checkbox" aria-label="有効"><span class="tk"></span></label></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="/appshell.js?v=20261018b"></script>
+</body>
+</html>

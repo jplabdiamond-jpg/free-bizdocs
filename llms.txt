@@ -1,0 +1,37 @@
+# Free BizDoc（無料ビジネス書類メーカー）
+
+> 請求書・見積書・納品書・発注書・領収書から履歴書・職務経歴書・送付状まで、12種類のビジネス書類を登録不要・完全無料で作成できるオンラインツール。項目を入力するだけで、消費税（10%／8%）と源泉徴収（10.21%、100万円超は20.42%）を自動計算し、インボイス（適格請求書）対応の日本語PDFをその場でダウンロードできます。アカウント登録は不要です。
+
+## 特徴
+
+- 登録不要・無料：アカウント作成なしで作成からPDFダウンロードまで完結（無料枠は1時間に2枚まで）
+- インボイス対応：登録番号（T＋13桁）を入力するとPDFに記載
+- 自動計算：消費税を税率別に集計、源泉徴収税も自動計算
+- 日本語PDF：日本語フォントを埋め込み、文字化けなく生成
+- データは非保存：入力した書類内容はサーバーに保存しない（自社情報のみブラウザに保存）
+
+## 作成できる書類（無料・登録不要）
+
+- [請求書](https://free-bizdocs.com/invoice)：消費税・源泉徴収まで自動計算
+- [見積書](https://free-bizdocs.com/quote)：そのまま請求書に変換可能
+- [納品書](https://free-bizdocs.com/delivery)：納品の品目・数量をPDFに
+- [発注書](https://free-bizdocs.com/purchase-order)：発注内容をかんたんPDF
+- [領収書](https://free-bizdocs.com/receipt)：収入印紙欄・インボイス対応
+- [履歴書](https://free-bizdocs.com/rirekisho)：写真つき・JIS 2ページ様式
+- [職務経歴書](https://free-bizdocs.com/shokumu)：自動改ページで見やすく
+- [送付状](https://free-bizdocs.com/soufu)：添え状をすぐ作成
+- [退職届・退職願](https://free-bizdocs.com/taishoku)：縦書き・定型文入り
+- [志望動機書](https://free-bizdocs.com/shiboudouki)：応募先・志望動機をPDFに
+- [エントリーシート](https://free-bizdocs.com/entrysheet)：自己PR・ガクチカ・志望動機
+- [スキルシート](https://free-bizdocs.com/skillsheet)：IT・エンジニア向け技術経歴
+
+## お役立ち記事
+
+- [請求書の書き方](https://free-bizdocs.com/blog/invoice-how-to)：記載項目・インボイス・消費税・源泉徴収
+- [領収書の書き方](https://free-bizdocs.com/blog/receipt-how-to)：収入印紙・但し書き・インボイス対応
+- [退職届と退職願の違い](https://free-bizdocs.com/blog/taishoku-how-to)：書き方・縦書き文例・出すタイミング
+- [履歴書の志望動機の書き方](https://free-bizdocs.com/blog/rirekisho-motivation)：例文とコツ（転職・新卒・アルバイト）
+
+## そのほか
+
+- [料金・PROプラン](https://free-bizdocs.com/pricing)：保存・入金管理・定期請求まで対応する有料プラン（月額¥3,000）

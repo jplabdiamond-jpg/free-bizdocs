@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>無料の請求書作成ツールをあなたのサイトに埋め込む｜Free BizDoc 埋め込みウィジェット</title>
+<meta name="description" content="請求書・見積書・納品書・発注書・領収書の無料作成ツールを、HTMLタグをコピーするだけであなたのブログや会社サイトに設置できます。登録不要・無料・商用利用OK。">
+<link rel="canonical" href="https://free-bizdocs.com/embed">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://free-bizdocs.com/embed">
+<meta property="og:title" content="無料の請求書作成ツールをあなたのサイトに埋め込む｜Free BizDoc">
+<meta property="og:description" content="HTMLタグをコピーするだけ。請求書・見積書・領収書の無料ツールをブログや会社サイトに設置できます。">
+<meta property="og:image" content="https://free-bizdocs.com/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#16213A">
+<link rel="icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@700;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+ {"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Free BizDoc","item":"https://free-bizdocs.com/"},{"@type":"ListItem","position":2,"name":"埋め込みウィジェット","item":"https://free-bizdocs.com/embed"}]},
+ {"@type":"HowTo","name":"無料の請求書作成ツールを自分のサイトに埋め込む方法","step":[
+  {"@type":"HowToStep","name":"書類と形式を選ぶ","text":"埋め込みたい書類（請求書・見積書など）と、ツール本体／バナー／テキストリンクのいずれかを選びます。"},
+  {"@type":"HowToStep","name":"タグをコピーする","text":"表示されたHTMLタグを「コピー」ボタンでコピーします。"},
+  {"@type":"HowToStep","name":"サイトに貼り付ける","text":"ブログ記事やページのHTML編集画面に貼り付けて保存すれば完了です。"}]},
+ {"@type":"FAQPage","mainEntity":[
+  {"@type":"Question","name":"埋め込みは無料ですか？商用サイトでも使えますか？","acceptedAnswer":{"@type":"Answer","text":"無料で、商用サイト・ブログ・社内ポータルいずれでもご利用いただけます。申請も登録も不要です。"}},
+  {"@type":"Question","name":"訪問者が入力したデータはどこに保存されますか？","acceptedAnswer":{"@type":"Answer","text":"埋め込んだツール内の入力内容はサーバーに保存されません。PDFは訪問者のブラウザ上で生成されます。"}},
+  {"@type":"Question","name":"WordPressでも使えますか？","acceptedAnswer":{"@type":"Answer","text":"はい。ブロックエディタの「カスタムHTML」ブロック、またはクラシックエディタのテキスト（コード）モードに貼り付けてください。"}}]}
+]}
+</script>
+<style>
+:root{--paper:#fff;--bg:#F3F5F8;--ink:#16213A;--ink-soft:#4A5568;--ink-mute:#7B8794;--ai:#1E4DD8;--ai-deep:#163CA8;--ai-wash:#E8EEFF;--shu:#C8302B;--mist:#D9E0EA;--mist-soft:#EDF1F6;--radius:14px;--shadow:0 1px 2px rgba(22,33,58,.06),0 12px 32px -8px rgba(22,33,58,.18);--fd:"Shippori Mincho B1","Hiragino Mincho ProN","Yu Mincho",serif;--fb:"Noto Sans JP","Hiragino Sans","Yu Gothic",sans-serif;--w:1100px;--g:clamp(16px,4vw,40px);--ease:cubic-bezier(.2,.7,.2,1)}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--fb);font-size:16px;line-height:1.8;font-feature-settings:"palt";letter-spacing:.02em;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}button{font:inherit;cursor:pointer;color:inherit;background:none;border:0;padding:0}
+h1,h2,h3{font-family:var(--fd);font-weight:800;line-height:1.3;margin:0}p{margin:0}ul,ol{margin:0;padding:0;list-style:none}
+:focus-visible{outline:3px solid var(--ai);outline-offset:3px;border-radius:4px}
+.container{width:min(var(--w),100% - var(--g)*2);margin-inline:auto}
+.header{position:sticky;top:0;z-index:50;background:rgba(243,245,248,.88);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid rgba(217,224,234,.7)}
+.header .container{display:flex;align-items:center;justify-content:space-between;min-height:64px;gap:20px}
+.wordmark{font-family:var(--fd);font-weight:800;font-size:19px}.wordmark small{display:block;font-family:var(--fb);font-weight:500;font-size:10.5px;letter-spacing:.12em;color:var(--ink-mute);line-height:1;margin-top:3px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:46px;padding:0 22px;border-radius:999px;font-weight:700;font-size:14px;transition:.25s var(--ease);white-space:nowrap}
+.btn-primary{background:var(--ai);color:#fff;box-shadow:0 10px 24px -8px rgba(30,77,216,.6)}.btn-primary:hover{background:var(--ai-deep);transform:translateY(-2px)}
+.btn-ink{background:var(--ink);color:#fff}.btn-ink:hover{background:#0F1730}
+.btn-ghost{box-shadow:inset 0 0 0 1.5px var(--mist)}.btn-ghost:hover{box-shadow:inset 0 0 0 1.5px var(--ink)}
+.hero{padding:clamp(48px,7vw,88px) 0 clamp(36px,5vw,56px);position:relative;overflow:hidden;background:radial-gradient(800px 500px at 90% -10%,rgba(30,77,216,.14),transparent 60%),var(--bg)}
+.crumb{font-size:12.5px;color:var(--ink-mute);display:flex;gap:8px;margin-bottom:22px}.crumb a:hover{color:var(--ink)}
+.kicker{display:inline-flex;align-items:center;gap:10px;font-size:13px;font-weight:500;color:var(--ai);letter-spacing:.08em;margin-bottom:18px}.kicker::before{content:"";width:28px;height:2px;background:var(--shu)}
+.hero h1{font-size:clamp(28px,4.4vw,50px);line-height:1.25;text-wrap:balance;max-width:20em}
+.hero p.lead{margin-top:22px;color:var(--ink-soft);max-width:36em;font-size:15.5px;line-height:2}
+.hero .who{margin-top:26px;display:flex;flex-wrap:wrap;gap:8px}
+.hero .who span{font-size:13px;background:var(--paper);box-shadow:inset 0 0 0 1px var(--mist);padding:6px 14px;border-radius:999px;color:var(--ink-soft)}
+.section{padding:clamp(40px,5vw,64px) 0}
+.builder{background:var(--paper);border-radius:20px;box-shadow:var(--shadow);overflow:hidden;display:grid;grid-template-columns:400px 1fr}
+.b-side{padding:30px 28px;border-right:1px solid var(--mist);display:flex;flex-direction:column;gap:26px}
+.b-main{padding:30px 32px;background:#FAFBFD;min-width:0}
+.lbl{font-size:12.5px;font-weight:700;letter-spacing:.1em;color:var(--ink-mute);margin-bottom:10px;display:flex;align-items:center;gap:10px}
+.lbl .n{width:22px;height:22px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center;font-family:var(--fd);font-size:12px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{padding:8px 14px;border-radius:999px;background:var(--paper);box-shadow:inset 0 0 0 1px var(--mist);font-size:13.5px;font-weight:500;color:var(--ink-soft);transition:.2s}
+.chip:hover{box-shadow:inset 0 0 0 1px var(--ink);color:var(--ink)}.chip[aria-pressed="true"]{background:var(--ink);color:#fff;box-shadow:none}
+.types{display:grid;gap:10px}
+.type{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start;padding:14px 16px;border-radius:12px;box-shadow:inset 0 0 0 1px var(--mist);text-align:left;transition:.2s;background:var(--paper)}
+.type:hover{box-shadow:inset 0 0 0 1px var(--ink)}.type[aria-pressed="true"]{box-shadow:inset 0 0 0 2px var(--ai);background:var(--ai-wash)}
+.type .ic{width:34px;height:34px;border-radius:9px;background:var(--ink);color:#fff;display:grid;place-items:center}.type .ic svg{width:18px;height:18px}
+.type[aria-pressed="true"] .ic{background:var(--ai)}
+.type b{display:block;font-size:14.5px}.type span{display:block;font-size:12.5px;color:var(--ink-soft);line-height:1.6;margin-top:2px}
+.field input{width:100%;font:inherit;font-size:14px;padding:11px 14px;border:1.5px solid var(--mist);border-radius:10px;background:var(--paper);color:var(--ink)}
+.field input:focus{outline:0;border-color:var(--ai);box-shadow:0 0 0 4px var(--ai-wash)}
+.field small{display:block;margin-top:6px;font-size:12px;color:var(--ink-mute)}
+.codebox{position:relative;background:var(--ink);color:#DCE4F2;border-radius:14px;padding:18px 18px 18px;font:12.5px/1.65 ui-monospace,Menlo,Consolas,monospace;letter-spacing:0;white-space:pre-wrap;word-break:break-all;max-height:300px;overflow:auto}
+.codebox .k{color:#9FB5FF}.codebox .v{color:#F5D28A}
+.copy{position:absolute;top:12px;right:12px;background:#fff;color:var(--ink);border-radius:999px;padding:7px 14px;font-size:12.5px;font-weight:700;display:inline-flex;align-items:center;gap:6px;transition:.2s}
+.copy:hover{background:var(--ai);color:#fff}.copy.ok{background:#1A8F4E;color:#fff}
+.copy svg{width:14px;height:14px}
+.prev-lbl{margin:26px 0 10px;font-size:12.5px;font-weight:700;letter-spacing:.1em;color:var(--ink-mute)}
+.preview{background:var(--paper);border:1px dashed var(--mist);border-radius:14px;padding:18px;min-height:120px}
+.preview iframe{width:100%;border:0;border-radius:10px;min-height:520px;background:#fff}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:28px}
+.step{background:var(--paper);border-radius:var(--radius);padding:22px 22px 20px;box-shadow:0 0 0 1px var(--mist)}
+.step .num{font-family:var(--fd);font-size:26px;font-weight:800;color:var(--shu);line-height:1}
+.step h3{font-size:16.5px;margin:10px 0 6px}.step p{font-size:13.5px;color:var(--ink-soft);line-height:1.8}
+.why{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,5vw,64px);align-items:center}
+.why h2{font-size:clamp(24px,3vw,36px)}
+.why p{margin-top:16px;color:var(--ink-soft);line-height:2;font-size:15.5px}
+.why ul{display:grid;gap:12px;margin-top:8px}
+.why li{display:flex;gap:12px;align-items:flex-start;font-size:15px;background:var(--paper);padding:14px 16px;border-radius:12px;box-shadow:0 0 0 1px var(--mist)}
+.why li svg{width:20px;height:20px;flex:none;color:var(--ai);margin-top:3px}
+.faq{max-width:800px;margin-inline:auto}
+.faq details{border-bottom:1px solid var(--mist)}.faq details:first-of-type{border-top:1px solid var(--mist)}
+.faq summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;gap:16px;padding:20px 4px;font-weight:700;font-size:15.5px}.faq summary::-webkit-details-marker{display:none}
+.faq summary .q{font-family:var(--fd);color:var(--shu);margin-right:12px}
+.faq .a{padding:0 8px 22px 32px;color:var(--ink-soft);font-size:14.5px;line-height:2}
+.section h2.c{text-align:center;font-size:clamp(24px,3vw,34px);margin-bottom:26px}
+.footer{background:var(--ink);color:rgba(255,255,255,.75);padding:40px 0 28px;font-size:13.5px;margin-top:40px}
+.footer .container{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;align-items:center}
+.footer a:hover{color:#fff}.footer .links{display:flex;gap:18px;flex-wrap:wrap}
+@media (max-width:900px){.builder{grid-template-columns:1fr}.b-side{border-right:0;border-bottom:1px solid var(--mist)}.steps{grid-template-columns:1fr}.why{grid-template-columns:1fr}.b-main{padding:22px var(--g)}.b-side{padding:22px var(--g)}}
+@media (max-width:640px){.header .btn{display:none}}
+</style>
+</head>
+<body>
+<header class="header"><div class="container">
+  <a class="wordmark" href="/">Free BizDoc<small>無料ビジネス書類メーカー</small></a>
+  <a class="btn btn-primary" href="/invoice">請求書を無料で作る</a>
+</div></header>
+
+<section class="hero"><div class="container">
+  <nav class="crumb" aria-label="パンくず"><a href="/">Free BizDoc</a><span>/</span><span>埋め込みウィジェット</span></nav>
+  <p class="kicker">埋め込みウィジェット・無料</p>
+  <h1>あなたのサイトに、<br>請求書作成ツールを置く。</h1>
+  <p class="lead">タグをひとつ貼るだけで、請求書・見積書・納品書・発注書・領収書の無料作成ツールを自分のサイトに設置できます。訪問者はページを離れずにその場でPDFを作成。登録も、申請も、費用もいりません。</p>
+  <div class="who"><span>士業・会計事務所のサイトに</span><span>フリーランス向けブログに</span><span>コワーキング・商工会のポータルに</span><span>社内イントラに</span></div>
+</div></section>
+
+<section class="section" style="padding-top:0"><div class="container">
+  <div class="builder">
+    <div class="b-side">
+      <div>
+        <p class="lbl"><span class="n">1</span>埋め込む書類</p>
+        <div class="chips" id="docs">
+          <button class="chip" aria-pressed="true" data-doc="invoice" data-name="請求書">請求書</button>
+          <button class="chip" aria-pressed="false" data-doc="quote" data-name="見積書">見積書</button>
+          <button class="chip" aria-pressed="false" data-doc="delivery" data-name="納品書">納品書</button>
+          <button class="chip" aria-pressed="false" data-doc="purchase-order" data-name="発注書">発注書</button>
+          <button class="chip" aria-pressed="false" data-doc="receipt" data-name="領収書">領収書</button>
+        </div>
+      </div>
+      <div>
+        <p class="lbl"><span class="n">2</span>埋め込みの形式</p>
+        <div class="types" id="types">
+          <button class="type" aria-pressed="true" data-type="iframe"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M8 13h5"/></svg></span><span><b>ツール本体を埋め込む</b><span>訪問者がページ内でそのまま入力・PDF化。高さは自動調整。</span></span></button>
+          <button class="type" aria-pressed="false" data-type="banner"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="7" width="18" height="10" rx="2"/><path d="M7 12h6"/></svg></span><span><b>バナーカード</b><span>記事の末尾やサイドバーに置くリンクカード。画像不要・軽量。</span></span></button>
+          <button class="type" aria-pressed="false" data-type="text"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h10M4 17h7"/></svg></span><span><b>テキストリンク</b><span>文中にさりげなく。「請求書は無料ツールで作成できます」など。</span></span></button>
+        </div>
+      </div>
+      <div class="field">
+        <p class="lbl"><span class="n">3</span>設置先サイト名（任意）</p>
+        <input id="ref" type="text" placeholder="例：example.com" autocomplete="off" inputmode="url">
+        <small>タグに記録され、紹介元として集計されます。空欄のままでも動作します。</small>
+      </div>
+    </div>
+    <div class="b-main">
+      <p class="lbl">このタグをコピーして貼り付け</p>
+      <div class="codebox" id="code"></div>
+      <button class="copy" id="copyBtn" style="position:static;margin-top:12px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>タグをコピー</span></button>
+      <p class="prev-lbl">表示イメージ</p>
+      <div class="preview" id="preview"></div>
+    </div>
+  </div>
+
+  <div class="steps">
+    <div class="step"><div class="num">1</div><h3>書類と形式を選ぶ</h3><p>左のパネルで埋め込みたい書類と、ツール本体／バナー／テキストリンクを選びます。</p></div>
+    <div class="step"><div class="num">2</div><h3>タグをコピー</h3><p>「タグをコピー」を押すと、そのまま貼り付けられるHTMLがクリップボードに入ります。</p></div>
+    <div class="step"><div class="num">3</div><h3>サイトに貼り付ける</h3><p>WordPressなら「カスタムHTML」ブロック、その他のCMSやHTMLファイルならbody内の好きな位置へ。</p></div>
+  </div>
+</div></section>
+
+<section class="section"><div class="container why">
+  <div>
+    <p class="kicker">設置するメリット</p>
+    <h2>読者に「作れる場所」を渡すと、<br>記事の価値が変わる。</h2>
+    <p>「請求書の書き方」を解説した記事の末尾に、その場で作れるツールがあれば、読者はテンプレートを探しに離脱しません。滞在時間が伸び、記事の評価も上がります。</p>
+  </div>
+  <ul>
+    <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg><span><b>ずっと無料・申請不要</b><br><span style="font-size:13.5px;color:var(--ink-soft)">商用サイト・ブログ・社内ポータルで自由に。費用も審査もありません。</span></span></li>
+    <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg><span><b>訪問者のデータは残らない</b><br><span style="font-size:13.5px;color:var(--ink-soft)">入力内容はサーバーに保存されず、PDFは訪問者のブラウザで生成されます。</span></span></li>
+    <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg><span><b>常に最新・メンテ不要</b><br><span style="font-size:13.5px;color:var(--ink-soft)">インボイス制度や税率の変更にはこちらで対応します。貼り替えは不要です。</span></span></li>
+    <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg><span><b>軽量・デザインを壊さない</b><br><span style="font-size:13.5px;color:var(--ink-soft)">外部CSSを読み込まず、幅はコンテナに合わせて自動で収まります。</span></span></li>
+  </ul>
+</div></section>
+
+<section class="section"><div class="container">
+  <h2 class="c">よくある質問</h2>
+  <div class="faq">
+    <details open><summary><span><span class="q">Q</span>埋め込みは無料ですか？商用サイトでも使えますか？</span></summary><div class="a">無料で、商用サイト・ブログ・社内ポータルいずれでもご利用いただけます。申請も登録も不要です。ツール下部に小さく「Free BizDocが提供」と表示される点だけご了承ください。</div></details>
+    <details><summary><span><span class="q">Q</span>訪問者が入力したデータはどこに保存されますか？</span></summary><div class="a">埋め込んだツール内の入力内容はサーバーに保存されません。PDFは訪問者のブラウザ上で生成されます。訪問者が自社情報の記憶を選んだ場合のみ、その訪問者のブラウザにだけ保存されます。</div></details>
+    <details><summary><span><span class="q">Q</span>WordPressでも使えますか？</span></summary><div class="a">はい。ブロックエディタの「カスタムHTML」ブロック、またはクラシックエディタのテキスト（コード）モードに貼り付けてください。note や Ameba など外部HTMLを許可していないサービスでは、テキストリンク形式をお使いください。</div></details>
+    <details><summary><span><span class="q">Q</span>高さや幅は調整できますか？</span></summary><div class="a">幅は親要素いっぱいに広がります（max-width を指定すれば制限できます）。高さはツールの内容に合わせて自動で調整されるスクリプトが含まれています。</div></details>
+    <details><summary><span><span class="q">Q</span>履歴書や職務経歴書も埋め込めますか？</span></summary><div class="a">現在埋め込みに対応しているのは請求書・見積書・納品書・発注書・領収書の5種類です。履歴書などはバナーカードまたはテキストリンクでご案内ください。</div></details>
+  </div>
+</div></section>
+
+<footer class="footer"><div class="container">
+  <a class="wordmark" href="/" style="color:#fff">Free BizDoc<small style="color:rgba(255,255,255,.5)">無料ビジネス書類メーカー</small></a>
+  <div class="links"><a href="/">トップ</a><a href="/invoice">請求書を作る</a><a href="/pricing">PRO</a><a href="/contact">お問い合わせ</a><a href="https://calc.free-bizdocs.com/templates/">無料テンプレート（Excel/PDF）</a>
+      <a href="https://calc.free-bizdocs.com/">ビジネス計算ツール（源泉徴収・消費税）</a>
+      <a href="/privacy">プライバシーポリシー</a></div>
+  <span style="font-size:12px;color:rgba(255,255,255,.5)">© 2026 Free BizDoc</span>
+</div></footer>
+
+<script>
+(function(){
+  var ORIGIN='https://free-bizdocs.com';
+  var state={doc:'invoice',name:'請求書',type:'iframe',ref:''};
+  var code=document.getElementById('code'),prev=document.getElementById('preview'),copyBtn=document.getElementById('copyBtn');
+  function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+  function refQ(){return state.ref?'&ref='+encodeURIComponent(state.ref):'';}
+  function utm(m){return '?utm_source=embed&utm_medium='+m+(state.ref?'&utm_campaign='+encodeURIComponent(state.ref):'');}
+  function snippet(){
+    var d=state.doc,n=state.name;
+    if(state.type==='iframe'){
+      return '<!-- Free BizDoc 無料'+n+'作成ツール（埋め込み） -->\n'
+        +'<iframe src="'+ORIGIN+'/'+d+'?embed=1'+refQ()+'" title="無料'+n+'作成ツール - Free BizDoc" style="width:100%;min-height:900px;border:0;border-radius:12px" loading="lazy"></iframe>\n'
+        +'<p style="font-size:12px;color:#6c7a8a;margin:6px 0 0">提供：<a href="'+ORIGIN+'/'+d+utm('iframe')+'" target="_blank" rel="noopener">Free BizDoc｜'+n+'を無料で作成</a></p>\n'
+        +'<script>window.addEventListener("message",function(e){if(e.origin!=="'+ORIGIN+'")return;var d=e.data;if(d&&d.t==="fbH"){var f=document.querySelector(\'iframe[src^="'+ORIGIN+'/'+d+'"]\');if(f&&d.h>300)f.style.minHeight=d.h+"px";}});<\/script>';
+    }
+    if(state.type==='banner'){
+      return '<!-- Free BizDoc バナーカード -->\n'
+        +'<a href="'+ORIGIN+'/'+d+utm('banner')+'" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:16px;padding:18px 20px;border:1px solid #D9E0EA;border-radius:14px;background:#fff;text-decoration:none;color:#16213A;font-family:-apple-system,BlinkMacSystemFont,\'Hiragino Sans\',\'Noto Sans JP\',sans-serif;max-width:640px">\n'
+        +'  <span style="flex:none;width:52px;height:52px;border-radius:12px;background:#1E4DD8;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;letter-spacing:.05em">PDF</span>\n'
+        +'  <span style="flex:1;min-width:0"><span style="display:block;font-weight:700;font-size:16px;line-height:1.4">'+n+'を無料で作成する（登録不要）</span><span style="display:block;font-size:13px;color:#4A5568;margin-top:4px;line-height:1.6">消費税・源泉徴収を自動計算、インボイス対応の日本語PDFを3分で。Free BizDoc</span></span>\n'
+        +'  <span style="flex:none;color:#1E4DD8;font-weight:700;font-size:14px">作る →</span>\n'
+        +'</a>';
+    }
+    return '<!-- Free BizDoc テキストリンク -->\n'
+      +'<a href="'+ORIGIN+'/'+d+utm('text')+'" target="_blank" rel="noopener">'+n+'を無料で作成できるツール（Free BizDoc・登録不要）</a>';
+  }
+  function hl(s){return esc(s).replace(/(&lt;\/?)([a-z!-]+)/g,'$1<span class="k">$2</span>').replace(/="([^"]*)"/g,'="<span class="v">$1</span>"');}
+  function render(){
+    var s=snippet(); code.innerHTML=hl(s); code.dataset.raw=s;
+    if(state.type==='iframe'){ prev.innerHTML='<iframe src="/'+state.doc+'?embed=1'+refQ()+'" title="プレビュー" loading="lazy"></iframe>'; }
+    else { var tmp=document.createElement('div'); tmp.innerHTML=s; tmp.querySelectorAll('script').forEach(function(x){x.remove();}); prev.innerHTML=tmp.innerHTML; }
+  }
+  document.querySelectorAll('#docs .chip').forEach(function(c){c.addEventListener('click',function(){document.querySelectorAll('#docs .chip').forEach(function(x){x.setAttribute('aria-pressed','false');});c.setAttribute('aria-pressed','true');state.doc=c.dataset.doc;state.name=c.dataset.name;render();});});
+  document.querySelectorAll('#types .type').forEach(function(t){t.addEventListener('click',function(){document.querySelectorAll('#types .type').forEach(function(x){x.setAttribute('aria-pressed','false');});t.setAttribute('aria-pressed','true');state.type=t.dataset.type;render();});});
+  var tm; document.getElementById('ref').addEventListener('input',function(e){clearTimeout(tm);tm=setTimeout(function(){state.ref=e.target.value.trim().replace(/^https?:\/\//,'').replace(/\/.*$/,'');render();},300);});
+  copyBtn.addEventListener('click',function(){
+    var raw=code.dataset.raw||'';
+    function done(){copyBtn.classList.add('ok');copyBtn.querySelector('span').textContent='コピーしました';setTimeout(function(){copyBtn.classList.remove('ok');copyBtn.querySelector('span').textContent='タグをコピー';},1800);}
+    if(navigator.clipboard){navigator.clipboard.writeText(raw).then(done);}else{var ta=document.createElement('textarea');ta.value=raw;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();done();}
+  });
+  window.addEventListener('message',function(e){var d=e.data;if(d&&d.t==='fbH'){var f=prev.querySelector('iframe');if(f&&d.h>300)f.style.minHeight=d.h+'px';}});
+  render();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+name = "seikyu-hub-demo"
+pages_build_output_dir = "."
+compatibility_date = "2026-10-01"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "seikyu-hub"
+database_id = "14b3c4d2-1c53-4f26-82dc-bc06f60db08b"

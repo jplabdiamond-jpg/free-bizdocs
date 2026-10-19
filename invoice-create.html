@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>請求書を作成｜無料ビジネス書類メーカー</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap');
+body{margin:0}
+.app{--ink:#171a21;--bg:#f6f6f2;--surf:#ffffff;--surf2:#fbfaf7;--mut:#6c6f78;--faint:#9a9ca3;--bd:#e6e4dd;--ac:#3a46a8;--ac-s:#e7e8f6;--good:#157a48;--good-s:#dcefe4;--warn:#9c6b15;--warn-s:#f3e8cf;--over:#b23a2c;--over-s:#f2dcd7;
+font-family:"Zen Kaku Gothic New",system-ui,sans-serif;color:var(--ink);background:var(--bg);display:flex;flex-wrap:wrap;width:100%;min-height:940px;box-sizing:border-box}
+.side{width:236px;background:var(--surf);border-right:1px solid var(--bd);padding:22px 16px;display:flex;flex-direction:column;gap:22px;box-sizing:border-box}
+.brand{display:flex;align-items:center;gap:9px;padding:0 6px}
+.brand .mk{width:30px;height:30px;border-radius:8px;background:var(--ac);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px}
+.brand .nm{font-weight:700;font-size:17px}.brand .pl{font-size:10px;font-weight:700;color:var(--ac);background:var(--ac-s);padding:2px 7px;border-radius:5px}
+.nav{display:flex;flex-direction:column;gap:2px}
+.nav .lb{font-size:10px;letter-spacing:.1em;color:var(--faint);font-weight:700;margin:10px 8px 4px}
+.nav a{display:flex;align-items:center;gap:10px;padding:9px 11px;border-radius:9px;color:var(--mut);text-decoration:none;font-size:14px;font-weight:500}
+.nav a:hover{background:var(--surf2);color:var(--ink)}
+.nav a.on{background:var(--ac-s);color:var(--ac);font-weight:700}
+.nav a .ic{width:17px;height:17px;flex:none}
+.main{flex:999 1 620px;min-width:0;display:flex;flex-direction:column}
+.top{min-height:62px;border-bottom:1px solid var(--bd);background:var(--surf);display:flex;align-items:center;gap:12px;padding:10px 26px;box-sizing:border-box;flex-wrap:wrap}
+.top h1{margin:0;font-size:18px;font-weight:700}.top .sp{flex:1}
+.btn{font-family:inherit;font-size:13px;font-weight:700;border-radius:9px;padding:9px 15px;border:1px solid var(--bd);background:var(--surf);color:var(--ink);cursor:pointer;display:inline-flex;align-items:center;gap:7px}
+.btn.pri{background:var(--ac);border-color:var(--ac);color:#fff}.btn.pri:hover{background:#30399a}
+.btn:disabled{opacity:.55;cursor:default}
+.seg{display:inline-flex;background:var(--surf2);border:1px solid var(--bd);border-radius:9px;padding:3px}
+.seg button{font-family:inherit;font-size:13px;font-weight:700;border:none;background:none;color:var(--mut);padding:6px 14px;border-radius:7px;cursor:pointer}
+.seg button.on{background:var(--ac);color:#fff}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:0;flex:1;min-height:0}
+.form{padding:22px 24px;display:flex;flex-direction:column;gap:18px;border-right:1px solid var(--bd);min-width:0}
+.pvwrap{padding:22px 24px;background:var(--surf2);min-width:0}
+.fs{display:flex;flex-direction:column;gap:10px}
+.fs .lg{font-size:11px;letter-spacing:.06em;color:var(--faint);font-weight:700;text-transform:uppercase}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+label.fl{display:flex;flex-direction:column;gap:5px;font-size:12px;color:var(--mut);font-weight:600;min-width:0}
+input,select{font-family:inherit;font-size:13.5px;padding:9px 11px;border:1px solid var(--bd);border-radius:8px;background:var(--surf);color:var(--ink);box-sizing:border-box;width:100%}
+input:focus,select:focus{outline:2px solid var(--ac-s);border-color:var(--ac)}
+.items{border:1px solid var(--bd);border-radius:10px;overflow:hidden}
+.items .hd,.items .rw{display:grid;grid-template-columns:1fr 48px 42px 86px 58px 30px 26px;gap:7px;align-items:center;padding:8px 10px;font-size:12px}
+.items .hd{background:var(--surf2);color:var(--faint);font-weight:700;font-size:10.5px;border-bottom:1px solid var(--bd)}
+.items .rw{border-bottom:1px solid var(--bd)}
+.items .rw:last-child{border-bottom:none}
+.items .rw input,.items .rw select{padding:6px 7px;font-size:12px}
+.items .rw .n{text-align:right;font-variant-numeric:tabular-nums}
+.items .gen{display:flex;align-items:center;justify-content:center}
+.items .del{background:none;border:none;color:var(--faint);cursor:pointer;font-size:16px}
+.items .del:hover{color:var(--over)}
+.addrow{align-self:flex-start;font-size:12.5px;color:var(--ac);background:var(--ac-s);border:none;border-radius:8px;padding:8px 13px;font-weight:700;cursor:pointer}
+.msg{font-size:12.5px;padding:9px 12px;border-radius:8px;display:none}
+.msg.err{display:block;background:var(--over-s);color:var(--over)}
+.msg.ok{display:block;background:var(--good-s);color:var(--good)}
+/* preview */
+.pv{background:#fff;border:1px solid var(--bd);border-radius:10px;padding:24px 26px;box-shadow:0 2px 14px rgba(20,22,30,.05);font-size:12px;color:#222}
+.pv .pt{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:2px solid var(--ac);padding-bottom:12px}
+.pv .pt h2{margin:0;font-size:21px;letter-spacing:.08em}.pv .pt .en{color:var(--ac);font-size:10px;font-weight:700;margin-left:6px}
+.pv .meta{font-size:10px;color:#666;text-align:right;line-height:1.7}
+.pv .to{margin:13px 0 3px;font-size:14px;font-weight:700}
+.pv .co{text-align:right;font-size:10.5px;margin-top:-26px}.pv .co .nm{font-weight:700;font-size:12px}.pv .co .rg{color:var(--ac);font-weight:700}
+.pv .bn{background:var(--surf2);border-radius:7px;padding:10px 13px;display:flex;justify-content:space-between;align-items:center;margin:14px 0}
+.pv .bn .lb{font-size:12px;font-weight:700}.pv .bn .vl{font-size:18px;font-weight:700;color:var(--ac);font-variant-numeric:tabular-nums}
+.pv table{width:100%;border-collapse:collapse;font-size:10px;margin-top:4px}
+.pv th{background:#171a21;color:#fff;padding:5px 6px;text-align:left;font-weight:700;font-size:9.5px}
+.pv td{padding:5px 6px;border-bottom:1px solid #eee}.pv td.n{text-align:right;font-variant-numeric:tabular-nums}
+.pv .sum{margin-left:auto;width:64%;margin-top:8px;font-size:10px}
+.pv .sum .sr{display:flex;justify-content:space-between;padding:3px 0;color:#444}
+.pv .sum .sr.wh{color:var(--over)}
+.pv .sum .tot{display:flex;justify-content:space-between;border-top:1.5px solid var(--ac);margin-top:5px;padding-top:6px;font-weight:700;font-size:13px}.pv .sum .tot .v{color:var(--ac);font-variant-numeric:tabular-nums}
+@media(max-width:980px){.split{grid-template-columns:1fr}.form{border-right:none;border-bottom:1px solid var(--bd)}}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="side">
+    <div class="brand"><img src="/logo.png" alt="Free BizDocs" style="height:30px;width:auto;display:block"><span class="pl">PRO</span></div>
+    <nav class="nav">
+      <a href="/dashboard"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>ダッシュボード</a>
+      <div class="lb">書類</div>
+      <a class="on" href="/invoice-list"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 2h9l5 5v15H6z"/><path d="M14 2v6h6"/></svg>請求書</a>
+      <a href="/quotes"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 4h16v12H4z"/><path d="M8 20h8"/></svg>見積書</a>
+      <a href="/recurring"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 4v5h-5"/></svg>定期請求</a>
+      <div class="lb">お金</div>
+      <a href="/payments"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>入金管理</a>
+      <a href="/reports"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>レポート</a>
+    </nav>
+  </aside>
+
+  <div class="main">
+    <header class="top">
+      <h1>請求書を作成</h1>
+      <div class="seg" id="seg"><button class="on" data-type="invoice">請求書</button><button data-type="quote">見積書</button></div>
+      <span class="sp"></span>
+      <button class="btn" id="save-draft">下書き保存</button>
+      <button class="btn pri" id="issue">発行する</button>
+    </header>
+
+    <div class="split">
+      <div class="form">
+        <div class="msg" id="msg"></div>
+        <div class="fs">
+          <span class="lg">宛先・日付</span>
+          <div class="grid2">
+            <label class="fl">取引先<select id="client"></select></label>
+            <label class="fl">支払期限<input type="date" id="due"></label>
+          </div>
+          <label class="fl">発行日<input type="date" id="issue-date"></label>
+        </div>
+
+        <div class="fs">
+          <span class="lg">明細（源 = 源泉徴収の対象）</span>
+          <div class="items">
+            <div class="hd"><span>品目・摘要</span><span>数量</span><span>単位</span><span>単価</span><span>税率</span><span style="text-align:center">源</span><span></span></div>
+            <div id="rows"></div>
+          </div>
+          <button class="addrow" id="addrow" type="button">＋ 明細行を追加</button>
+        </div>
+
+        <div class="fs">
+          <span class="lg">振込先・備考</span>
+          <label class="fl">振込先<input id="bank"></label>
+          <label class="fl">備考<input id="notes" value="振込手数料は御社にてご負担ください"></label>
+        </div>
+      </div>
+
+      <div class="pvwrap">
+        <div class="pv">
+          <div class="pt"><div><h2 id="pv-title">請求書<span class="en" id="pv-en">INVOICE</span></h2></div><div class="meta"><span id="pv-no">新規</span><br>発行 <span id="pv-issue"></span><br>期限 <span id="pv-due">—</span></div></div>
+          <div class="to" id="pv-to">取引先　御中</div>
+          <div class="co"><div class="nm" id="pv-conm"></div><div class="rg" id="pv-coreg"></div><span id="pv-coemail"></span></div>
+          <div class="bn"><span class="lb">ご請求金額（税込）</span><span class="vl" id="pv-total">¥0</span></div>
+          <table><thead><tr><th>品目</th><th style="text-align:right">数量</th><th style="text-align:right">単価</th><th style="text-align:right">金額</th></tr></thead>
+            <tbody id="pv-rows"></tbody></table>
+          <div class="sum" id="pv-sum"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="api.js?v=20261019h"></script>
+<script>
+var clients=[], company={}, docType='invoice';
+var rowsEl=document.getElementById('rows');
+
+function rowHtml(it){
+  it=it||{};
+  return '<div class="rw">'
+    +'<input class="i-name" value="'+API.esc(it.name||'')+'" placeholder="品目を入力">'
+    +'<input class="i-qty n" value="'+(it.qty!=null?it.qty:1)+'">'
+    +'<input class="i-unit" value="'+API.esc(it.unit||'式')+'">'
+    +'<input class="i-price n" value="'+(it.unit_price!=null?it.unit_price:0)+'">'
+    +'<select class="i-rate"><option value="10">10%</option><option value="8">8%</option><option value="0">非課税</option></select>'
+    +'<span class="gen"><input type="checkbox" class="i-wh" style="width:15px;height:15px;accent-color:var(--ac)"></span>'
+    +'<button class="del" type="button" aria-label="行を削除">×</button>'
+    +'</div>';
+}
+function addRow(it){ rowsEl.insertAdjacentHTML('beforeend', rowHtml(it)); recompute(); }
+function collect(){
+  return Array.prototype.slice.call(rowsEl.querySelectorAll('.rw')).map(function(rw){
+    return {
+      name: rw.querySelector('.i-name').value,
+      qty: parseFloat(rw.querySelector('.i-qty').value)||0,
+      unit: rw.querySelector('.i-unit').value,
+      unit_price: parseInt(String(rw.querySelector('.i-price').value).replace(/[^0-9.-]/g,''),10)||0,
+      tax_rate: parseInt(rw.querySelector('.i-rate').value,10),
+      withholding: rw.querySelector('.i-wh').checked ? 1 : 0
+    };
+  });
+}
+function recompute(){
+  var items=collect(), c=API.calc(items);
+  document.getElementById('pv-total').textContent=API.yen(docType==='invoice'?c.payable:c.total);
+  var cl=clients.filter(function(x){return x.id==document.getElementById('client').value;})[0]||{};
+  document.getElementById('pv-to').textContent=(cl.name||'取引先')+'　'+(cl.honorific||'御中');
+  document.getElementById('pv-issue').textContent=document.getElementById('issue-date').value||'';
+  document.getElementById('pv-due').textContent=document.getElementById('due').value||'—';
+  document.getElementById('pv-rows').innerHTML=items.map(function(it){
+    var amt=Math.round((it.qty||0)*(it.unit_price||0));
+    return '<tr><td>'+API.esc(it.name||'')+'</td><td class="n">'+it.qty+'</td><td class="n">'+API.yen(it.unit_price)+'</td><td class="n">'+API.yen(amt)+'</td></tr>';
+  }).join('');
+  var s='';
+  if(c.sub10>0){ s+='<div class="sr"><span>10%対象 小計</span><span>'+API.yen(c.sub10)+'</span></div><div class="sr"><span>消費税（10%）</span><span>'+API.yen(c.tax10)+'</span></div>'; }
+  if(c.sub8>0){ s+='<div class="sr"><span>8%対象 小計（軽減）</span><span>'+API.yen(c.sub8)+'</span></div><div class="sr"><span>消費税（8%）</span><span>'+API.yen(c.tax8)+'</span></div>'; }
+  if(c.withholding>0) s+='<div class="sr wh"><span>源泉徴収税（10.21%）</span><span>− '+API.yen(c.withholding)+'</span></div>';
+  s+='<div class="tot"><span>'+(docType==='invoice'?'差引ご請求額':'合計（税込）')+'</span><span class="v">'+API.yen(docType==='invoice'?c.payable:c.total)+'</span></div>';
+  document.getElementById('pv-sum').innerHTML=s;
+}
+rowsEl.addEventListener('input', recompute);
+rowsEl.addEventListener('change', recompute);
+rowsEl.addEventListener('click', function(e){ var d=e.target.closest('.del'); if(d){ d.closest('.rw').remove(); recompute(); } });
+document.getElementById('addrow').addEventListener('click', function(){ addRow({unit:'式',unit_price:0}); });
+document.getElementById('client').addEventListener('change', recompute);
+document.getElementById('issue-date').addEventListener('change', recompute);
+document.getElementById('due').addEventListener('change', recompute);
+
+document.getElementById('seg').addEventListener('click', function(e){
+  var b=e.target.closest('button'); if(!b) return;
+  Array.prototype.forEach.call(this.children,function(x){x.classList.remove('on');}); b.classList.add('on');
+  docType=b.getAttribute('data-type');
+  document.getElementById('pv-title').childNodes[0].nodeValue=(docType==='invoice'?'請求書':'見積書');
+  document.getElementById('pv-en').textContent=(docType==='invoice'?'INVOICE':'QUOTE');
+  document.querySelector('.top h1').textContent=(docType==='invoice'?'請求書を作成':'見積書を作成');
+  recompute();
+});
+
+function msg(t,cls){ var m=document.getElementById('msg'); m.textContent=t; m.className='msg '+cls; if(cls==='ok') setTimeout(function(){m.className='msg';},4000); }
+async function save(status){
+  var items=collect().filter(function(it){return it.name||it.unit_price;});
+  if(!items.length){ msg('明細を1行以上入力してください','err'); return; }
+  var payload={ type:docType, status:status, client_id:document.getElementById('client').value||null,
+    issue_date:document.getElementById('issue-date').value, due_date:document.getElementById('due').value||null,
+    bank:document.getElementById('bank').value, notes:document.getElementById('notes').value, items:items };
+  document.getElementById('issue').disabled=true; document.getElementById('save-draft').disabled=true;
+  try{
+    var r=await API.post('/api/documents', payload);
+    msg((status==='draft'?'下書きを保存しました':'発行しました')+'（'+(r.doc_no||'下書き')+'）。一覧へ移動します…','ok');
+    setTimeout(function(){ location.href='invoice-list.html'; }, 900);
+  }catch(e){ document.getElementById('issue').disabled=false; document.getElementById('save-draft').disabled=false;
+    if(e&&e.status===403&&e.data&&e.data.upsell){ showUpsell(); }
+    else { msg('保存に失敗しました: '+e.message,'err'); } }
+}
+document.getElementById('issue').addEventListener('click', function(){ save('pending'); });
+document.getElementById('save-draft').addEventListener('click', function(){ save('draft'); });
+
+(async function(){
+  var today=new Date().toISOString().slice(0,10);
+  var due=new Date(Date.now()+1000*60*60*24*30).toISOString().slice(0,10);
+  document.getElementById('issue-date').value=today;
+  document.getElementById('due').value=due;
+  try{
+    var cr=await API.get('/api/clients'); clients=cr.clients||[];
+    document.getElementById('client').innerHTML=clients.map(function(c){return '<option value="'+c.id+'">'+API.esc(c.name)+'</option>';}).join('');
+    var co=await API.get('/api/company'); company=co.company||{};
+    document.getElementById('pv-conm').textContent=company.company_name||'';
+    document.getElementById('pv-coreg').textContent=company.reg_number?('登録番号 '+company.reg_number):'';
+    document.getElementById('pv-coemail').textContent=company.email||'';
+    document.getElementById('bank').value=company.default_bank||'';
+  }catch(e){ msg('読み込みエラー: '+e.message,'err'); }
+  addRow({name:'',unit:'式',unit_price:0});
+  recompute();
+})();
+</script>
+<div id="upsell" class="upsell-ov" style="display:none">
+  <div class="upsell-card">
+    <div class="uc-badge">🔒 無料プランの保存上限</div>
+    <h3>保存できる書類は5件までです</h3>
+    <p>無料プランでは書類を<b>5件まで</b>保存できます。6件目以降も保存するには、PRO プランにアップグレードしてください。</p>
+    <ul class="uc-feat"><li>書類の保存が<b>無制限</b></li><li>取引先マスタ・発行履歴の管理</li><li>入金管理・消込・ダッシュボード</li></ul>
+    <a class="uc-cta" href="/pricing">PROにアップグレード（期間限定 月¥2,000）→</a>
+    <button class="uc-later" type="button" data-close>あとで</button>
+  </div>
+</div>
+<style>
+.upsell-ov{position:fixed;inset:0;background:rgba(15,23,42,.55);display:flex;align-items:center;justify-content:center;z-index:9999;padding:20px}
+.upsell-card{background:#fff;border-radius:18px;max-width:420px;width:100%;padding:26px 26px 22px;box-shadow:0 30px 80px -20px rgba(15,23,42,.5);text-align:center;font-family:"Zen Kaku Gothic New",system-ui,sans-serif}
+.uc-badge{display:inline-block;font-size:12px;font-weight:800;color:#9c6b15;background:#f6ecd2;border-radius:999px;padding:5px 13px;margin-bottom:12px}
+.upsell-card h3{font-size:20px;font-weight:900;margin:0 0 8px;color:#171a21}
+.upsell-card p{font-size:14px;color:#51606f;line-height:1.8;margin:0 0 14px}
+.uc-feat{list-style:none;padding:0;margin:0 0 18px;text-align:left;display:inline-block}
+.uc-feat li{font-size:13.5px;color:#243;padding:5px 0 5px 24px;position:relative}
+.uc-feat li::before{content:"✓";position:absolute;left:0;color:#1766e6;font-weight:900}
+.uc-cta{display:block;background:linear-gradient(120deg,#1766e6,#2f9bf0);color:#fff;text-decoration:none;font-weight:800;font-size:15.5px;padding:14px;border-radius:12px;box-shadow:0 10px 24px -8px rgba(23,102,230,.5)}
+.uc-later{margin-top:12px;background:none;border:none;color:#8294a8;font-size:13px;font-family:inherit;cursor:pointer;text-decoration:underline}
+</style>
+<script>
+function showUpsell(){var m=document.getElementById('upsell');if(m)m.style.display='flex';}
+function hideUpsell(){var m=document.getElementById('upsell');if(m)m.style.display='none';}
+document.getElementById('upsell').addEventListener('click',function(e){if(e.target.id==='upsell'||(e.target.dataset&&e.target.dataset.close!=null))hideUpsell();});
+(async function(){try{var me=await (await fetch('/api/auth/me')).json();
+  if(me.authed&&me.plan!=='pro'){var sd=document.getElementById('save-draft');
+    if(sd){var b=document.createElement('span');b.style.cssText='font-size:12px;font-weight:700;color:'+(me.remaining<=0?'#b23a2c':'#6c6f78')+';align-self:center;margin-right:2px';
+      b.textContent='保存 '+me.doc_count+'/'+me.limit+'件';sd.parentNode.insertBefore(b,sd);}}}catch(_){}})();
+</script>
+<script src="/appshell.js?v=20261018b"></script>
+</body>
+</html>
