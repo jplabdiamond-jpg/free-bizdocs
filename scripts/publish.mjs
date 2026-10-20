@@ -85,7 +85,7 @@ fs.rmSync(path.join(DRAFTS, slug + '.html'));
 
 // --- blog.html: 一覧先頭にカード追加 ---
 let idx = fs.readFileSync(BLOG_INDEX, 'utf8');
-const card = `<a class="bcard" href="/blog/${slug}"><img class="th" src="/blog/img/${slug}.webp" alt="" loading="lazy" width="400" height="225"><span class="tag">${cardTag}</span><h2>${cardH2}</h2><p>${cardDesc}…</p></a>`;
+const card = `<a class="bcard" href="/blog/${slug}"><img class="th" src="/blog/img/${slug}.webp" alt="" loading="lazy" width="400" height="225"><span class="tag">${cardTag}</span><h2>${cardH2}</h2><p>${cardDesc}…</p><time class="bdate">${today.replace(/-/g, '.')}</time></a>`;
 idx = idx.replace(/<div class="blist">\s*\n?/, (m) => m + card + '\n');
 fs.writeFileSync(BLOG_INDEX, idx);
 
