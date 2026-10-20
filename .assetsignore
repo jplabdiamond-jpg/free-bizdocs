@@ -28,3 +28,5 @@ publish-result.json
 .gitignore
 publish-result-en.json
 blog/publish-state-en.json
+
+logo.orig.png

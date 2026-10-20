@@ -60,6 +60,43 @@
 .limited-note{font-size:12.5px;font-weight:800;color:#e11d48;margin:0 0 12px}
 .plan.pro .rib{background:linear-gradient(120deg,#e11d48,#ff7a59)}
 @media(max-width:760px){.plans{grid-template-columns:1fr}.fgrid{grid-template-columns:1fr}}
+.plan .freereg{display:block;text-align:center;margin-top:10px;font-size:12.5px;font-weight:700;color:var(--ac);text-decoration:none}
+.plan .freereg:hover{text-decoration:underline}
+/* PRO dashboard preview */
+.dprev{margin:16px 0 6px}
+.dpv{display:flex;border:1px solid var(--bd);border-radius:16px;overflow:hidden;background:#f6f6f2;box-shadow:0 24px 50px -28px rgba(19,38,59,.5);font-size:12px}
+.dpv-side{width:150px;flex:none;background:#fff;border-right:1px solid #e6e4dd;padding:14px 10px;display:flex;flex-direction:column;gap:10px}
+.dpv-logo{display:flex;align-items:center;gap:6px;font-weight:900;font-size:12px}
+.dpv-logo .mk{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:6px;background:var(--ac);color:#fff;font-size:11px}
+.dpv-nav{display:flex;flex-direction:column;gap:1px}
+.dpv-nav span{padding:7px 9px;border-radius:7px;color:#6c6f78;font-weight:500}
+.dpv-nav span.on{background:#e7effb;color:var(--ac);font-weight:800}
+.dpv-main{flex:1;min-width:0;display:flex;flex-direction:column}
+.dpv-top{display:flex;align-items:center;gap:8px;padding:11px 14px;background:#fff;border-bottom:1px solid #e6e4dd;font-size:13px}
+.dpv-top b{flex:1}
+.dpv-btn{background:var(--ac);color:#fff;font-weight:800;border-radius:7px;padding:6px 10px;font-size:11px}
+.dpv-body{padding:14px;display:flex;flex-direction:column;gap:11px}
+.dpv-plan{background:linear-gradient(120deg,#0f2f7a,#1766e6);color:#fff;border-radius:12px;padding:13px 15px}
+.dpv-plan .t{font-size:10.5px;opacity:.9}.dpv-plan .n{font-size:15px;font-weight:900;margin:1px 0}.dpv-plan .u{font-size:11px;opacity:.95}
+.dpv-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}
+.dpv-kpis .k{background:#fff;border:1px solid #e6e4dd;border-radius:10px;padding:10px 11px}
+.dpv-kpis .kk{font-size:10px;color:#6c6f78;font-weight:700}
+.dpv-kpis .kv{font-size:15px;font-weight:900;margin-top:4px;font-variant-numeric:tabular-nums}
+.dpv-kpis .ks{font-size:10px;color:#9a9ca3;margin-top:1px;min-height:12px}
+.dpv-kpis .k.over .kv{color:#b23a2c}
+.dpv-panel{background:#fff;border:1px solid #e6e4dd;border-radius:10px;overflow:hidden}
+.dpv-panel .ph{font-size:12px;font-weight:800;padding:10px 13px;border-bottom:1px solid #e6e4dd}
+.dpv-panel .pr{display:flex;align-items:center;gap:10px;padding:9px 13px;border-bottom:1px solid #f0efe9;font-size:11.5px}
+.dpv-panel .pr:last-child{border-bottom:none}
+.dpv-panel .pr span:nth-child(1){font-weight:700;width:70px;flex:none}
+.dpv-panel .pr span:nth-child(2){flex:1;color:#2b3a4b;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dpv-panel .pr .amt{font-weight:800;font-variant-numeric:tabular-nums}
+.dprev .st{font-size:10px;font-weight:800;padding:2px 8px;border-radius:999px;flex:none}
+.dprev .st.paid{background:#dcefe4;color:#157a48}
+.dprev .st.pending{background:#f3e8cf;color:#9c6b15}
+.dprev .st.overdue{background:#f2dcd7;color:#b23a2c}
+.dprev-cap{text-align:center;font-size:12px;color:var(--mut);margin-top:10px}
+@media(max-width:620px){.dpv-side{display:none}.dpv-kpis{grid-template-columns:1fr 1fr}}
 </style>
   <meta property="og:image" content="https://free-bizdocs.com/og/hero.jpg">
   <meta property="og:image:width" content="1200">
@@ -68,7 +105,7 @@
 </head>
 <body>
 <div class="promo"><div class="in"><span class="bdg">PRO</span><span>発行から入金管理・消込まで、請求業務をまるごと効率化。</span><a href="#signup">今すぐPROに申し込む →</a></div></div>
-<header class="hdr"><div class="in"><a class="brand" href="/invoice"><img src="/logo.png" alt="Free BizDocs" style="height:30px;width:auto;display:block"></a><span class="sp"></span><nav class="nav"><a href="/invoice">請求書ほか</a><a href="/rirekisho">履歴書</a><a href="/soufu">送付状</a><a href="/login">ログイン</a></nav></div></header>
+<header class="hdr"><div class="in"><a class="brand" href="/invoice"><img src="/logo.png?v=20261021" alt="Free BizDocs" style="height:30px;width:auto;display:block"></a><span class="sp"></span><nav class="nav"><a href="/invoice">請求書ほか</a><a href="/rirekisho">履歴書</a><a href="/soufu">送付状</a><a href="/login">ログイン</a></nav></div></header>
 <nav id="docnav" class="docnav" aria-label="書類の種類"></nav>
 <script src="/docnav.js?v=20261017" defer></script>
 
@@ -91,10 +128,12 @@
       <li>履歴書・職務経歴書・送付状の作成</li>
       <li>消費税・源泉徴収の自動計算、インボイス対応</li>
       <li>日本語PDFのダウンロード</li>
+      <li>無料登録で<b>書類を5件まで保存</b>・再編集</li>
       <li class="no">作成は1時間に2枚まで</li>
-      <li class="no">データ保存・管理機能はなし</li>
+      <li class="no">取引先・入金管理／自動連番はPRO</li>
     </ul>
     <a class="ghost" href="/invoice">無料で使う</a>
+    <a class="freereg" href="/login?mode=signup">または無料登録して保存する →</a>
   </div>
   <div class="plan pro">
     <span class="rib">🔥 期間限定 ¥2,000</span>
@@ -119,6 +158,40 @@
 <section class="feat">
   <h2>PROでできること</h2>
   <p class="sub">「作る」で終わらず、発行から回収までをひとつに。</p>
+  <div class="dprev">
+    <div class="dpv" role="img" aria-label="PROのダッシュボード画面イメージ。今月の請求額・未入金・期限超過と直近の請求書一覧が表示されています。">
+      <div class="dpv-side">
+        <div class="dpv-logo"><span class="mk">書</span>Free BizDoc</div>
+        <div class="dpv-nav">
+          <span class="on">ダッシュボード</span>
+          <span>請求書</span>
+          <span>見積書</span>
+          <span>定期請求</span>
+          <span>入金管理</span>
+          <span>レポート</span>
+        </div>
+      </div>
+      <div class="dpv-main">
+        <div class="dpv-top"><b>ダッシュボード</b><span class="dpv-btn">＋ 請求書を作成</span></div>
+        <div class="dpv-body">
+          <div class="dpv-plan"><div class="t">現在のプラン</div><div class="n">PRO プラン</div><div class="u">書類の保存は無制限です。</div></div>
+          <div class="dpv-kpis">
+            <div class="k"><div class="kk">今月の請求額</div><div class="kv">¥1,284,000</div><div class="ks">12 件</div></div>
+            <div class="k"><div class="kk">未入金（売掛）</div><div class="kv">¥438,000</div><div class="ks">5 件</div></div>
+            <div class="k over"><div class="kk">期限超過</div><div class="kv">¥96,000</div><div class="ks">1 件</div></div>
+            <div class="k"><div class="kk">今月の入金</div><div class="kv">¥846,000</div><div class="ks"></div></div>
+          </div>
+          <div class="dpv-panel">
+            <div class="ph">直近の請求書</div>
+            <div class="pr"><span>INV-0042</span><span>株式会社あおば</span><span class="st paid">入金済</span><span class="amt">¥330,000</span></div>
+            <div class="pr"><span>INV-0041</span><span>みどり商事</span><span class="st pending">未入金</span><span class="amt">¥132,000</span></div>
+            <div class="pr"><span>INV-0040</span><span>さくらデザイン</span><span class="st overdue">期限超過</span><span class="amt">¥96,000</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="dprev-cap">PROのダッシュボード（イメージ）。ログイン直後に請求・入金状況をひと目で把握できます。</div>
+  </div>
   <div class="fgrid">
     <div class="fcard"><div class="h">保存・自動連番・再発行</div><p>作成した書類をクラウドに保存。請求書番号は自動で連番になり、過去分の再発行もかんたんです。</p></div>
     <div class="fcard"><div class="h">取引先マスタ・発行履歴</div><p>取引先を登録しておけば宛先入力は一瞬。いつ・いくら発行したかを一覧で把握できます。</p></div>
@@ -145,13 +218,14 @@
   <div class="q"><h3>料金はいくらですか？</h3><p>通常は月額¥3,000（税込）ですが、ただいま<b>期間限定キャンペーンで月額¥2,000（税込）</b>でご利用いただけます。お申し込み時から課金が始まり、毎月自動で更新されます。</p></div>
   <div class="q"><h3>支払い方法は？</h3><p>クレジットカード・Apple Pay・Link（Stripe）に対応しています。決済はStripeの安全なページで行われます。</p></div>
   <div class="q"><h3>解約できますか？</h3><p>はい、いつでもご自身で解約できます。<a href="https://billing.stripe.com/p/login/bJe8wP3xjczwbbA3Hs9sk00" target="_blank" rel="noopener"><b>契約の管理・解約ページ</b></a>から、登録メールアドレスで本人確認のうえ、その場で解約や支払い方法の変更ができます。うまくいかない場合は<a href="/contact">お問い合わせ</a>ください。</p></div>
-  <div class="q"><h3>無料プランはこのまま使えますか？</h3><p>はい。無料の書類作成ツールは今後も無料で使えます。保存・管理まで必要になったらPROをご検討ください。</p></div>
+  <div class="q"><h3>無料プランはこのまま使えますか？</h3><p>はい。無料の書類作成ツールは今後も無料で使えます。無料アカウントなら書類を5件まで保存でき、保存を無制限にして取引先・入金管理まで使いたくなったらPROをご検討ください。</p></div>
+  <div class="q"><h3>なぜ無料で使えるの？</h3><p>基本の書類作成を無料で公開しているのは、できるだけ多くの方に使っていただくためです。サーバーレス構成で運用コストを抑えているため無料で提供でき、保存・取引先管理・入金管理といった発展機能をPRO（有料）としてご利用いただくことで運営しています。無料のままずっとお使いいただけます。</p></div>
 </section>
 
 <footer class="ft"><div class="in">
   <div class="row"><a class="brand" href="/invoice" style="display:inline-flex"><span class="mk">書</span><span class="nm" style="color:#fff"><b class="bn">Free BizDoc</b><em class="sb">無料ビジネス書類メーカー</em></span></a></div>
   <div class="row"><a href="/invoice">請求書</a> ・ <a href="/quote">見積書</a> ・ <a href="/delivery">納品書</a> ・ <a href="/purchase-order">発注書</a> ・ <a href="/receipt">領収書</a> ・ <a href="/rirekisho">履歴書</a> ・ <a href="/shokumu">職務経歴書</a> ・ <a href="/soufu">送付状</a> ・ <a href="/pricing">料金・PRO</a></div>
-  <div class="row"><a href="/tokushoho">特定商取引法に基づく表記</a> ・ <a href="https://calc.free-bizdocs.com/templates/">無料テンプレート（Excel/PDF）</a>
+  <div class="row"><a href="/compare">ツール比較</a> ・ <a href="/tokushoho">特定商取引法に基づく表記</a> ・ <a href="https://calc.free-bizdocs.com/templates/">無料テンプレート（Excel/PDF）</a>
       <a href="https://calc.free-bizdocs.com/">ビジネス計算ツール（源泉徴収・消費税）</a>
       <a href="/privacy">プライバシーポリシー</a> ・ <a href="/feedback">ご意見・ご要望</a> ・ <a href="/contact">お問い合わせ</a> ・ <a href="https://billing.stripe.com/p/login/bJe8wP3xjczwbbA3Hs9sk00" target="_blank" rel="noopener">契約の管理・解約</a></div>
   <div class="row" style="color:#8097ad">© 2026 Free BizDoc</div>

@@ -29,7 +29,7 @@
   // ---- ヘッダー ----
   var hdr=document.createElement('header'); hdr.className='fb-hdr';
   hdr.innerHTML='<div class="in">'
-    +'<a class="brand" href="/"><img src="/logo.png" alt="Free BizDoc"></a>'
+    +'<a class="brand" href="/"><img src="/logo.png?v=20261021" alt="Free BizDoc"></a>'
     +'<nav class="nav"><a href="/invoice">書類を作成</a><a href="/blog">お役立ち</a><a href="/pricing">料金・PRO</a></nav>'
     +'<span class="sp"></span>'
     +'<a class="lang-sw" href="/en/?lang=en" lang="en" title="English version">English</a>'

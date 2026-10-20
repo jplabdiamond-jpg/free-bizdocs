@@ -29,7 +29,7 @@
   // ---- Header ----
   var hdr=document.createElement('header'); hdr.className='fb-hdr';
   hdr.innerHTML='<div class="in">'
-    +'<a class="brand" href="/en/"><img src="/logo.png" alt="Free BizDoc"></a>'
+    +'<a class="brand" href="/en/"><img src="/logo.png?v=20261021" alt="Free BizDoc"></a>'
     +'<nav class="nav"><a href="/en/invoice">Create document</a><a href="/en/blog">Blog</a><a href="/en/pricing">Pricing &amp; PRO</a></nav>'
     +'<span class="sp"></span>'
     +'<a class="lang-sw" href="/?lang=ja" lang="ja" title="Japanese version">日本語</a>'
