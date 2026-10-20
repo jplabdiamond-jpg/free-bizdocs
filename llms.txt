@@ -35,3 +35,14 @@
 ## そのほか
 
 - [料金・PROプラン](https://free-bizdocs.com/pricing)：保存・入金管理・定期請求まで対応する有料プラン（月額¥3,000）
+
+## English version (US / UK / AU / CA)
+
+> Free BizDoc also offers an English edition for English-speaking countries. Create invoices, estimates/quotes, receipts, purchase orders and packing slips as PDFs — free, no sign-up. Currency, paper size, date format and tax (US sales tax, UK VAT, Australian GST / "tax invoice", Canadian GST/HST/PST/QST by province) adapt to the country you choose. Documents are generated in your browser and never uploaded.
+
+- [Invoice generator](https://free-bizdocs.com/en/invoice): itemised invoice with tax, due date, payment terms, bank details
+- [Estimate / Quote generator](https://free-bizdocs.com/en/estimate): priced scope of work with a valid-until date and acceptance line
+- [Receipt generator](https://free-bizdocs.com/en/receipt): proof of payment with amount paid, method and PAID stamp
+- [Purchase order generator](https://free-bizdocs.com/en/purchase-order): PO number, vendor, ship-to address, delivery date
+- [Packing slip / Delivery note generator](https://free-bizdocs.com/en/packing-slip): items and quantities shipped (no prices), received-by line
+- [English home](https://free-bizdocs.com/en/) · [Contact](https://free-bizdocs.com/en/contact) · [Privacy](https://free-bizdocs.com/en/privacy)

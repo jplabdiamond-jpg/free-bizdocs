@@ -4,7 +4,7 @@
 import json, os, datetime
 ROOT = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(ROOT, 'en')
-V = datetime.date.today().strftime('%Y%m%d')
+V = datetime.date.today().strftime('%Y%m%d') + 'g'  # bump suffix on each JS/asset change to bust browser cache
 BASE = 'https://free-bizdocs.com'
 
 PAGES = [
@@ -112,6 +112,8 @@ def head(p, url):
       f'<link rel="alternate" hreflang="x-default" href="{url}">\n'
       '<link rel="icon" href="/favicon.ico" sizes="any">\n<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">\n<link rel="apple-touch-icon" href="/apple-touch-icon.png">\n'
       '<meta property="og:type" content="website">\n'
+      '<meta property="og:site_name" content="Free BizDoc">\n'
+      '<meta property="og:locale" content="en_US">\n<meta property="og:locale:alternate" content="ja_JP">\n'
       f'<meta property="og:title" content="{p["title"]}">\n<meta property="og:description" content="{p["desc"]}">\n'
       f'<meta property="og:url" content="{url}">\n<meta property="og:image" content="{BASE}/og.jpg">\n'
       '<meta name="twitter:card" content="summary_large_image">\n'
@@ -120,10 +122,12 @@ def head(p, url):
       f'<script type="application/ld+json">{faqj}</script>\n'
       '</head>\n<body>')
 
+# Fallback header (no-JS). siteheader-en.js replaces it with the full shared
+# header (nav + language switch + login/account auth), matching the JA site.
 HEADER = ('<header class="hdr"><div class="in">\n'
   '  <a class="brand" href="/en/" style="text-decoration:none"><img src="/logo.png" alt="Free BizDoc" style="height:30px;width:auto;display:block"></a>\n'
   '  <span class="sp"></span>\n'
-  '  <a class="pro" href="/" lang="ja" title="Japanese version">日本語</a>\n'
+  '  <a class="pro" href="/?lang=ja" lang="ja" title="Japanese version">日本語</a>\n'
   '</div></header>\n<nav id="docnav-en" aria-label="Documents"></nav>')
 
 def hero(p):
@@ -153,7 +157,7 @@ def tool(p):
         </div>
         <div class="grid2">
           <label class="fl">Phone (optional)<input id="co-phone" placeholder="+1 555 123 4567"></label>
-          <label class="fl">Logo (optional)<input type="file" id="co-logo" accept="image/png,image/jpeg"></label>
+          <label class="fl">Logo (optional)<span class="filebtn" id="co-logo-btn">Choose image&hellip;</span><input type="file" id="co-logo" accept="image/png,image/jpeg" class="filein"></label>
         </div>
         <label class="fl">Address (optional)<textarea id="co-addr" rows="2"></textarea></label>
         <label class="fl" id="bank-wrap">Payment details - printed on invoices (optional)<textarea id="co-bank" rows="3"></textarea><span class="hint">Bank name, routing / sort code / BSB / transit number, account number, or "Pay by card at ...".</span></label>
@@ -211,6 +215,7 @@ def tool(p):
         <div class="remain" id="remain"></div>
         <div class="limitbox" id="limitbox"></div>
         <div class="msg" id="msg"></div>
+        <div id="savebox" class="savebox"></div>
         <div id="sharebox" class="sharebox"></div>
         <button type="button" id="clearbtn" style="display:block;margin:10px auto 0;background:none;border:none;color:#8294a8;font-size:12.5px;cursor:pointer;text-decoration:underline">Clear and start a new document</button>
       </div>
@@ -234,9 +239,12 @@ FOOTER = '''<footer class="ft"><div class="in">
     </div>
     <div class="col">
       <h4>More</h4>
-      <a href="/" lang="ja">日本語版（請求書・見積書・履歴書ほか）</a>
-      <a href="/contact">Contact</a>
-      <a href="/privacy">Privacy policy</a>
+      <a href="/en/blog">Blog</a>
+      <a href="/en/pricing">Pricing &amp; PRO</a>
+      <a href="/en/account">Account</a>
+      <a href="/?lang=ja" lang="ja">日本語</a>
+      <a href="/en/contact">Contact</a>
+      <a href="/en/privacy">Privacy policy</a>
     </div>
   </div>
   <div class="bot">
@@ -249,7 +257,8 @@ def page(p):
     url = f"{BASE}/en/{p['slug']}"
     parts = [head(p, url), HEADER, hero(p), tool(p),
       f'<article class="art">{ARTICLES[p["slug"]]}</article>', faq_html(FAQS[p['slug']]), FOOTER,
-      f'<script src="/en/en.js?v={V}"></script>', '</body>', '</html>', '']
+      f'<script src="/en/en.js?v={V}"></script>',
+      f'<script src="/en/siteheader-en.js?v={V}"></script>', '</body>', '</html>', '']
     return '\n'.join(parts)
 
 def index():
@@ -278,7 +287,33 @@ def index():
       'var s=document.createElement("style");s.textContent="#docnav-en{background:#fff;border-bottom:1px solid #e6ebf2;overflow-x:auto}#docnav-en .t{display:flex;gap:8px;width:max-content;padding:12px 16px;margin:0 auto}#docnav-en a{font-size:13px;font-weight:700;color:#5a6b80;text-decoration:none;padding:8px 15px;border-radius:999px;background:#f1f5fb;border:1px solid #dce5f0;white-space:nowrap}";document.head.appendChild(s);'
       'h.innerHTML="<div class=\\"t\\">"+D.map(function(d){return "<a href=\\""+d[0]+"\\">"+d[1]+"</a>";}).join("")+"</div>";})();</script>')
     hd = head(p, url).replace('%s/en/' % BASE, url)
-    parts = [hd, HEADER, hero(p), css, f'<div class="dgrid">{grid}</div>', regions, art, faq_html(INDEX_FAQ), FOOTER, nav, '</body>', '</html>', '']
+    # Hero with the "fill in → PDF" demo. On mobile the demo is ordered right
+    # after the headline so it lands in the first view.
+    tags = ''.join('<span class="tag"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>%s</span>' % t for t in p['tags'])
+    hero_css = ('<style>'
+      '.hero-en .in{max-width:1180px;margin:0 auto;padding:46px 20px 42px;display:grid;grid-template-columns:1.04fr .96fr;gap:40px;align-items:center}'
+      '.hero-en .herodemo{width:100%;max-width:560px;margin:0 auto}'
+      '.hero-en #demoframe{width:100%;height:560px;border:0;display:block;background:transparent;overflow:hidden}'
+      '@media(max-width:860px){.hero-en .in{grid-template-columns:1fr;gap:22px}}'
+      '@media(max-width:600px){'
+      '.hero-en .in{display:flex;flex-direction:column;gap:0;padding:26px 20px 24px}'
+      '.hero-en .htext{display:contents}'
+      '.hero-en .ey{order:1;margin-bottom:10px}'
+      '.hero-en h1{order:2;margin:0 0 10px;font-size:clamp(23px,6.4vw,32px)}'
+      '.hero-en .herodemo{order:3;margin:4px 0 14px}'
+      '.hero-en p{order:4}'
+      '.hero-en .tags{order:5;margin-top:16px}'
+      '.hero-en #demoframe{height:430px}'
+      '}</style>')
+    hero_html = ('<section class="hero hero-en"><div class="in">'
+      '<div class="htext">'
+      f'<span class="ey">{p["ey"]}</span><h1>{p["h1"]}</h1><p>{p["lead"]}</p>'
+      f'<div class="tags">{tags}</div>'
+      '</div>'
+      '<div class="herodemo"><iframe id="demoframe" src="/en/demo-embed" title="See an invoice created in seconds" loading="lazy" scrolling="no"></iframe></div>'
+      '</div></section>')
+    demo_script = '<script>(function(){var f=document.getElementById("demoframe");if(!f)return;window.addEventListener("message",function(e){try{var d=e.data;if(d&&d.t==="demoH"&&d.h>200&&d.h<2200){f.style.height=d.h+"px";}}catch(_){}});})();</script>'
+    parts = [hd, hero_css, HEADER, hero_html, css, f'<div class="dgrid">{grid}</div>', regions, art, faq_html(INDEX_FAQ), FOOTER, nav, demo_script, f'<script src="/en/siteheader-en.js?v={V}"></script>', '</body>', '</html>', '']
     return '\n'.join(parts)
 
 os.makedirs(OUT, exist_ok=True)

@@ -132,3 +132,19 @@ PY
 - **記事ドラフトの用意（唯一の手作業）**: `blog/_drafts/<slug>.html` を事前作成しておく。先頭に `<!--CARD tag=.. | h2=.. | desc=..-->`、日付は `__PUBDATE__`（YYYY-MM-DD）/`__PUBDATE_JP__`（○年○月○日）プレースホルダ、画像参照は `/blog/img/<slug>.webp`。テンプレは blog/invoice-send-manner.html 等に倣う。
 - **画像**: ユーザー提供のPNGを `blog/img-src/<slug>.png`（2560×1440）に置きpush。webp化は公開時に自動。
 - **手動テスト**: `gh workflow run auto-publish.yml -f mode=force`。
+
+---
+
+# 【確定】英語ブログ（/en/blog）自動公開 2026-10-19〜
+
+方針: **日本語記事の直訳はしない**。英語圏（米英豪加）向けのトピックで Claude が書き下ろす（例: JA「請求書の書き方」→ EN "How to write an invoice (US/UK/AU/CA)"）。日本固有テーマ（インボイス制度・源泉徴収・履歴書等）は英語側ではスキップ。
+
+- **EN記事は画像不要**。各記事はインラインのグラデーション・ヒーロー（カテゴリ色）。`suite.css` ＋ 共通ヘッダー `en/siteheader-en.js` でENサイトと一体化。
+- **一覧**: `/en/blog`（`en/blog.html`）。記事: `/en/blog/<slug>`（`en/blog/<slug>.html`）。
+- **生成元**: `build-en-blog.py`。`ARTICLES` に公開済み記事、`DRAFTS` にこれから自動公開する記事を定義。
+  - `python3 build-en-blog.py` で ARTICLES の記事HTMLを生成し、`DRAFTS` の各記事を **`en/blog/_drafts/<slug>.html`**（`__PUBDATE__`/`__PUBDATE_EN__` プレースホルダ＋先頭に `<!--ENCARD tag=|h2=|desc=|c1=|c2=-->`）として書き出す。
+  - **`en/blog.html`（一覧）は初回のみ生成**。以後は自動公開パイプラインがカードを挿入して維持するので通常は上書きしない（デザイン変更時のみ `python3 build-en-blog.py --force-index`。その場合 ARTICLES に公開済み全記事が入っていること）。
+- **自動公開**: `scripts/publish-en.mjs`（JAの `publish.mjs` と独立）。`en/blog/_drafts/` のドラフトを slug 昇順で1本、1日最大3本・各2時間以上・ランダム時刻スロット（状態 `blog/publish-state-en.json`）で公開。公開処理＝日付置換→`en/blog/<slug>.html` へ移動→`en/blog.html` の `#blist` 先頭にカード挿入→sitemap追加。
+- **ワークフロー**: `auto-publish.yml` が JA(`publish.mjs`)＋EN(`publish-en.mjs`)を両方実行し、**どちらかが公開したら** Cloudflareデプロイ＋commit/push＋IndexNow（JA/EN両URL）。
+- **運用ルール（Claude）**: JA記事を作る／公開運用する際、対応する英語圏向けEN記事を `build-en-blog.py` の `DRAFTS` に追加して `python3 build-en-blog.py` を実行し、`en/blog/_drafts/` にドラフトを用意しておく。あとはパイプラインが自動公開する（＝JA投稿に続いてENも自動で公開される）。公開済みにしたENトピックは次回以降 `ARTICLES` 側へ移してもよい（--force-index で一覧を再生成する場合は必須）。
+- **シード済み(2026-10-19)**: how-to-write-an-invoice / estimate-vs-quote / payment-terms-explained / receipt-vs-invoice の4本。

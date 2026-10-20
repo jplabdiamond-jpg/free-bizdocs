@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Your account｜Free BizDoc</title>
+<meta name="description" content="Your Free BizDoc account: plan, saved documents, and billing.">
+<meta name="robots" content="noindex">
+<link rel="canonical" href="https://free-bizdocs.com/en/account">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="stylesheet" href="/suite.css?v=20261017d">
+<style>
+.ac-wrap{max-width:820px;margin:0 auto;padding:36px 20px 30px}
+.ac-top{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:22px}
+.ac-top h1{font-size:24px;font-weight:900;letter-spacing:-.02em;margin:0}
+.ac-top .email{font-size:13.5px;color:var(--mut);margin-top:3px}
+.logout{font-size:13px;font-weight:700;color:var(--mut);background:#f3f6fb;border:1px solid var(--bd);border-radius:9px;padding:9px 15px;cursor:pointer;font-family:inherit}
+.logout:hover{background:#eceff5}
+.pcard{background:#fff;border:1px solid var(--bd);border-radius:16px;padding:22px 22px;margin-bottom:22px}
+.pcard.pro{border:2px solid var(--ac);box-shadow:0 14px 34px -22px rgba(23,102,230,.4)}
+.pl-row{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.badge{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:800;padding:6px 13px;border-radius:999px}
+.badge.free{background:#eef1f6;color:#5a6b80}
+.badge.pro{background:linear-gradient(120deg,var(--ac),#2f9bf0);color:#fff}
+.pl-row h2{font-size:17px;font-weight:900;margin:0}
+.pl-meta{font-size:13px;color:var(--mut);margin:6px 0 0}
+.pl-meta b{color:var(--ink)}
+.acbtn{display:inline-flex;align-items:center;justify-content:center;gap:7px;font-size:14px;font-weight:800;border-radius:11px;padding:11px 18px;cursor:pointer;text-decoration:none;border:none;font-family:inherit}
+.acbtn.pri{color:#fff;background:linear-gradient(120deg,var(--ac),#2f8cf0);box-shadow:0 8px 18px -8px rgba(23,102,230,.5)}
+.acbtn.sec{color:var(--ac);background:#fff;border:1.5px solid #d4e3fb}
+.acbtn.sec:hover{background:#eef4ff}
+.meter{height:7px;background:#eef1f6;border-radius:99px;overflow:hidden;margin-top:14px}
+.meter>i{display:block;height:100%;background:linear-gradient(90deg,var(--ac),#36b0f0);border-radius:99px}
+.sec-h{display:flex;align-items:baseline;justify-content:space-between;margin:28px 2px 12px}
+.sec-h h2{font-size:17px;font-weight:900;margin:0}
+.sec-h a{font-size:13px;font-weight:700;color:var(--ac);text-decoration:none}
+.docs{display:flex;flex-direction:column;gap:10px}
+.doc{display:flex;align-items:center;gap:14px;background:#fff;border:1px solid var(--bd);border-radius:13px;padding:13px 15px}
+.doc .ic{width:38px;height:38px;border-radius:9px;background:var(--ac-s);color:var(--ac);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;flex-shrink:0}
+.doc .mid{flex:1;min-width:0}
+.doc .mid .t{font-size:14.5px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.doc .mid .s{font-size:12px;color:var(--faint);margin-top:2px}
+.doc .act{display:flex;gap:8px;flex-shrink:0}
+.doc .act a,.doc .act button{font-size:12.5px;font-weight:700;border-radius:8px;padding:7px 12px;text-decoration:none;cursor:pointer;font-family:inherit;border:1px solid var(--bd);background:#fff;color:var(--ink)}
+.doc .act a:hover{background:#f5f8fc}
+.doc .act .del{color:var(--over);border-color:#f0d9d6;background:#fff}
+.doc .act .del:hover{background:#fdf3f2}
+.empty{text-align:center;color:var(--faint);font-size:14px;background:#fff;border:1px dashed var(--bd);border-radius:14px;padding:30px 20px}
+.empty a{color:var(--ac);font-weight:700;text-decoration:none}
+.loading{text-align:center;color:var(--faint);padding:40px;font-size:14px}
+:root{--over:#b23a2c}
+</style>
+</head>
+<body>
+<header class="hdr"><div class="in">
+  <a class="brand" href="/en/" style="text-decoration:none"><img src="/logo.png" alt="Free BizDoc" style="height:30px;width:auto;display:block"></a>
+  <span class="sp"></span>
+  <a class="pro" href="/?lang=ja" lang="ja" title="Japanese version">日本語</a>
+</div></header>
+
+<section class="ac-wrap" id="root">
+  <div class="loading" id="loading">Loading your account…</div>
+  <div id="main" style="display:none">
+    <div class="ac-top">
+      <div>
+        <h1>Your account</h1>
+        <div class="email" id="email"></div>
+      </div>
+      <button class="logout" id="logout">Sign out</button>
+    </div>
+
+    <div class="pcard" id="plancard">
+      <div class="pl-row">
+        <div>
+          <h2><span id="planbadge" class="badge free">FREE</span></h2>
+          <div class="pl-meta" id="planmeta"></div>
+        </div>
+        <div id="planaction"></div>
+      </div>
+      <div class="meter" id="metwrap" style="display:none"><i id="met" style="width:0%"></i></div>
+    </div>
+
+    <div class="sec-h">
+      <h2>Saved documents</h2>
+      <a href="/en/invoice">+ New document</a>
+    </div>
+    <div class="docs" id="docs"></div>
+  </div>
+</section>
+
+<footer class="ft"><div class="in">
+  <div class="cols">
+    <div>
+      <div class="brand"><img src="/logo.png" alt="Free BizDoc" style="height:26px;width:auto;display:block;filter:brightness(0) invert(1)"></div>
+      <p>Free, no-sign-up business document generator.</p>
+    </div>
+    <div class="col">
+      <h4>Free documents</h4>
+      <a href="/en/invoice">Invoice</a>
+      <a href="/en/estimate">Estimate / Quote</a>
+      <a href="/en/receipt">Receipt</a>
+      <a href="/en/purchase-order">Purchase Order</a>
+      <a href="/en/packing-slip">Packing Slip / Delivery Note</a>
+    </div>
+    <div class="col">
+      <h4>More</h4>
+      <a href="/en/blog">Blog</a>
+      <a href="/en/pricing">Pricing &amp; PRO</a>
+      <a href="/en/contact">Contact</a>
+      <a href="/en/privacy">Privacy policy</a>
+      <a href="/?lang=ja" lang="ja">日本語版</a>
+    </div>
+  </div>
+  <div class="bot">&copy; 2026 Free BizDoc</div>
+</div></footer>
+
+<script>
+(function(){
+  var PORTAL_URL="https://billing.stripe.com/p/login/bJe8wP3xjczwbbA3Hs9sk00";
+  var KIND_LABEL={ 'en_invoice':'Invoice','en_estimate':'Estimate','en_receipt':'Receipt','en_purchase-order':'Purchase Order','en_packing-slip':'Packing Slip' };
+  var KIND_ABBR={ 'en_invoice':'INV','en_estimate':'EST','en_receipt':'RCPT','en_purchase-order':'PO','en_packing-slip':'PS' };
+  function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+
+  var me=null;
+  fetch('/api/auth/me',{credentials:'same-origin'}).then(function(r){return r.json();}).then(function(m){
+    if(!m || !m.authed){ location.href='/en/login'; return; }
+    me=m;
+    document.getElementById('loading').style.display='none';
+    document.getElementById('main').style.display='block';
+    document.getElementById('email').textContent=m.email||'';
+    var pro=(m.plan==='pro');
+    var badge=document.getElementById('planbadge');
+    var meta=document.getElementById('planmeta');
+    var action=document.getElementById('planaction');
+    var card=document.getElementById('plancard');
+    if(pro){
+      card.classList.add('pro');
+      badge.className='badge pro'; badge.textContent='PRO';
+      meta.innerHTML='Unlimited PDF downloads and saved documents.';
+      action.innerHTML='<a class="acbtn sec" href="'+PORTAL_URL+'" target="_blank" rel="noopener">Manage billing</a>';
+    } else {
+      badge.className='badge free'; badge.textContent='FREE';
+      var used=m.doc_count||0, lim=m.limit||5;
+      meta.innerHTML='<b>'+used+' / '+lim+'</b> saved documents used. Upgrade for unlimited downloads and saves.';
+      action.innerHTML='<a class="acbtn pri" href="/en/pricing">Upgrade to PRO</a>';
+      var mw=document.getElementById('metwrap'); mw.style.display='block';
+      document.getElementById('met').style.width=Math.min(100,Math.round(used/lim*100))+'%';
+    }
+    loadDocs();
+  }).catch(function(){ location.href='/en/login'; });
+
+  function loadDocs(){
+    fetch('/api/saved',{credentials:'same-origin'}).then(function(r){return r.json();}).then(function(j){
+      var all=(j&&j.docs)||[];
+      var docs=all.filter(function(d){ return String(d.type||'').indexOf('en_')===0; });
+      var wrap=document.getElementById('docs');
+      if(!docs.length){
+        wrap.innerHTML='<div class="empty">No saved documents yet.<br><a href="/en/invoice">Create your first document →</a></div>';
+        return;
+      }
+      wrap.innerHTML=docs.map(function(d){
+        var page='/en/'+String(d.type).slice(3); // en_invoice -> /en/invoice
+        var lbl=d.label||KIND_LABEL[d.type]||'Document';
+        var dt=d.created_at?new Date(d.created_at.replace(' ','T')+'Z'):null;
+        var dts=dt&&!isNaN(dt)?dt.toLocaleDateString('en-US',{year:'numeric',month:'short',day:'numeric'}):'';
+        return '<div class="doc" data-id="'+d.id+'">'+
+          '<div class="ic">'+(KIND_ABBR[d.type]||'DOC')+'</div>'+
+          '<div class="mid"><div class="t">'+esc(lbl)+'</div><div class="s">'+esc(KIND_LABEL[d.type]||'')+(dts?(' · '+dts):'')+'</div></div>'+
+          '<div class="act"><a href="'+page+'?doc='+d.id+'">Open</a>'+
+          '<button class="del" data-id="'+d.id+'">Delete</button></div>'+
+        '</div>';
+      }).join('');
+      wrap.querySelectorAll('.del').forEach(function(btn){
+        btn.addEventListener('click',function(){
+          var id=btn.getAttribute('data-id');
+          if(!confirm('Delete this saved document?')) return;
+          btn.disabled=true;
+          fetch('/api/saved/'+id,{method:'DELETE',credentials:'same-origin'}).then(function(){
+            var row=wrap.querySelector('.doc[data-id="'+id+'"]'); if(row) row.remove();
+            if(!wrap.querySelector('.doc')) wrap.innerHTML='<div class="empty">No saved documents yet.<br><a href="/en/invoice">Create your first document →</a></div>';
+          }).catch(function(){ btn.disabled=false; });
+        });
+      });
+    }).catch(function(){});
+  }
+
+  document.getElementById('logout').addEventListener('click',function(){
+    fetch('/api/auth/logout',{method:'POST',credentials:'same-origin'}).then(function(){ location.href='/en/'; }).catch(function(){ location.href='/en/'; });
+  });
+})();
+</script>
+<script src="/en/siteheader-en.js?v=20261019g"></script>
+</body>
+</html>

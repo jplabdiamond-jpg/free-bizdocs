@@ -21,7 +21,9 @@
   +'.fb-ft-auth .ttl{color:#8097ad;font-weight:700}'
   +'.fb-ft-auth a,.fb-ft-auth button{color:#dbe7f5;font-weight:700;text-decoration:none;font-family:inherit;font-size:13px;background:none;border:none;cursor:pointer;padding:0}'
   +'.fb-ft-auth a:hover,.fb-ft-auth button:hover{text-decoration:underline}'
-  +'@media(max-width:640px){.fb-hdr .nav{display:none}.fb-hdr .em{display:none}.fb-hdr .auth a,.fb-hdr .auth button{padding:8px 12px}}';
+  +'.fb-hdr .lang-sw{font-size:12.5px;font-weight:700;color:#45607a;text-decoration:none;border:1px solid #dce5f0;border-radius:999px;padding:6px 12px;white-space:nowrap;margin-right:2px}'
+  +'.fb-hdr .lang-sw:hover{background:#f1f5fb;color:#1766e6;border-color:#c7d6e8}'
+  +'@media(max-width:640px){.fb-hdr .nav{display:none}.fb-hdr .em{display:none}.fb-hdr .auth a,.fb-hdr .auth button{padding:8px 12px}.fb-hdr .lang-sw{padding:6px 10px}}';
   var st=document.createElement('style'); st.textContent=css; document.head.appendChild(st);
 
   // ---- ヘッダー ----
@@ -30,6 +32,7 @@
     +'<a class="brand" href="/"><img src="/logo.png" alt="Free BizDoc"></a>'
     +'<nav class="nav"><a href="/invoice">書類を作成</a><a href="/blog">お役立ち</a><a href="/pricing">料金・PRO</a></nav>'
     +'<span class="sp"></span>'
+    +'<a class="lang-sw" href="/en/?lang=en" lang="en" title="English version">English</a>'
     +'<div class="auth" id="fbAuth">'
     +'<a class="lgn" href="/login">ログイン</a><a class="sgn" href="/login?mode=signup">新規登録（無料）</a>'
     +'</div></div>';

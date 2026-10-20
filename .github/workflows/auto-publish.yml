@@ -35,51 +35,63 @@ jobs:
       - name: Install webp (cwebp)
         run: sudo apt-get update && sudo apt-get install -y webp
 
-      - name: Decide & stage next article
+      - name: Decide & stage next article (JA)
         env:
           PUBLISH_MODE: ${{ github.event.inputs.mode }}
         run: node scripts/publish.mjs
 
-      - name: Read result
+      - name: Decide & stage next article (EN)
+        env:
+          PUBLISH_MODE: ${{ github.event.inputs.mode }}
+        run: node scripts/publish-en.mjs
+
+      - name: Read results
         id: res
         run: |
-          node -e "const r=JSON.parse(require('fs').readFileSync('publish-result.json','utf8'));console.log('published='+(r.published?'yes':'no'));console.log('slug='+(r.slug||''));console.log('reason='+(r.reason||''));" >> "$GITHUB_OUTPUT"
-          echo "---- result ----"; cat publish-result.json
+          node -e "const fs=require('fs');const r=fs.existsSync('publish-result.json')?JSON.parse(fs.readFileSync('publish-result.json','utf8')):{};const e=fs.existsSync('publish-result-en.json')?JSON.parse(fs.readFileSync('publish-result-en.json','utf8')):{};const any=(r.published||e.published)?'yes':'no';const out=['published='+((r.published)?'yes':'no'),'slug='+(r.slug||''),'reason='+(r.reason||''),'en_published='+((e.published)?'yes':'no'),'en_slug='+(e.slug||''),'en_reason='+(e.reason||''),'any='+any];require('fs').appendFileSync(process.env.GITHUB_OUTPUT,out.join('\n')+'\n');" 
+          echo "---- JA ----"; cat publish-result.json 2>/dev/null || true
+          echo "---- EN ----"; cat publish-result-en.json 2>/dev/null || true
 
       - name: Deploy to Cloudflare Pages
-        if: steps.res.outputs.published == 'yes'
+        if: steps.res.outputs.any == 'yes'
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: "7969ecaa0a1b9bacae1861547c2ec3fe"
         run: npx --yes wrangler@3 pages deploy . --project-name=seikyu-hub-demo --branch=main --commit-dirty=true
 
       - name: Commit & push state
-        if: steps.res.outputs.published == 'yes'
+        if: steps.res.outputs.any == 'yes'
         run: |
-          rm -f publish-result.json
+          rm -f publish-result.json publish-result-en.json
           git config user.name "free-bizdocs-bot"
           git config user.email "bot@users.noreply.github.com"
           git add -A
-          git commit -m "auto-publish: ${{ steps.res.outputs.slug }}"
+          git commit -m "auto-publish: ja=${{ steps.res.outputs.slug }} en=${{ steps.res.outputs.en_slug }}"
           git pull --rebase --autostash origin main || true
           git push origin HEAD:main
 
       - name: IndexNow ping
-        if: steps.res.outputs.published == 'yes'
+        if: steps.res.outputs.any == 'yes'
         run: |
           node -e '
           const https=require("https");
-          const slug=process.env.SLUG;
           const key="a443fe2d01c64cdaa0d1e4a37a44edb3aac13d4e7e36461ab60734c6ac1bb773";
-          const body=JSON.stringify({host:"free-bizdocs.com",key,keyLocation:`https://free-bizdocs.com/${key}.txt`,urlList:[`https://free-bizdocs.com/blog/${slug}`,"https://free-bizdocs.com/blog"]});
+          const urls=[];
+          const ja=process.env.SLUG, en=process.env.EN_SLUG;
+          if(ja){urls.push(`https://free-bizdocs.com/blog/${ja}`,"https://free-bizdocs.com/blog");}
+          if(en){urls.push(`https://free-bizdocs.com/en/blog/${en}`,"https://free-bizdocs.com/en/blog");}
+          if(!urls.length)process.exit(0);
+          const body=JSON.stringify({host:"free-bizdocs.com",key,keyLocation:`https://free-bizdocs.com/${key}.txt`,urlList:urls});
           const req=https.request("https://api.indexnow.org/indexnow",{method:"POST",headers:{"Content-Type":"application/json; charset=utf-8"}},r=>{console.log("IndexNow status",r.statusCode);r.resume();});
           req.on("error",e=>console.log("IndexNow error",e.message));
           req.write(body);req.end();
           '
         env:
           SLUG: ${{ steps.res.outputs.slug }}
+          EN_SLUG: ${{ steps.res.outputs.en_slug }}
 
       - name: Summary
         if: always()
         run: |
-          echo "published=${{ steps.res.outputs.published }}  slug=${{ steps.res.outputs.slug }}  reason=${{ steps.res.outputs.reason }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "JA published=${{ steps.res.outputs.published }} slug=${{ steps.res.outputs.slug }} reason=${{ steps.res.outputs.reason }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "EN published=${{ steps.res.outputs.en_published }} slug=${{ steps.res.outputs.en_slug }} reason=${{ steps.res.outputs.en_reason }}" >> "$GITHUB_STEP_SUMMARY"

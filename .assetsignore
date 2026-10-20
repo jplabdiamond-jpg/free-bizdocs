@@ -1,6 +1,8 @@
 *.sql
 wrangler.toml
 .assetsignore
+.dev.vars
+.env
 *.md
 node_modules
 build-site.py
@@ -24,3 +26,5 @@ blog/_drafts/
 blog/publish-state.json
 publish-result.json
 .gitignore
+publish-result-en.json
+blog/publish-state-en.json

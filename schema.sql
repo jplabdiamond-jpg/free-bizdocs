@@ -11,10 +11,19 @@ CREATE TABLE IF NOT EXISTS users (
   password_hash TEXT,
   pw_salt TEXT,
   plan TEXT NOT NULL DEFAULT 'free',          -- free / pro
+  stripe_customer_id TEXT,                     -- Stripe の顧客ID（解約イベント照合用）
   invoice_seq INTEGER NOT NULL DEFAULT 0,
   created_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
 CREATE UNIQUE INDEX IF NOT EXISTS idx_users_email ON users(email);
+CREATE INDEX IF NOT EXISTS idx_users_stripe_cust ON users(stripe_customer_id);
+
+-- Stripe で支払い済みだがまだアカウント未登録のメール。登録/ログイン時に照合して pro 昇格する。
+CREATE TABLE IF NOT EXISTS stripe_pending (
+  email TEXT PRIMARY KEY,
+  customer_id TEXT,
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
 
 CREATE TABLE IF NOT EXISTS clients (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -82,3 +91,18 @@ CREATE TABLE IF NOT EXISTS contacts (
   body TEXT NOT NULL,
   ts INTEGER NOT NULL
 );
+
+-- Saved documents for logged-in users. Generic store keyed by type:
+-- Japanese generic docs (rirekisho, soufu, ...) and English docs (en_invoice,
+-- en_estimate, en_receipt, en_purchase-order, en_packing-slip). `data` is the
+-- full document JSON produced by the client.
+CREATE TABLE IF NOT EXISTS saved_docs (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id INTEGER NOT NULL,
+  type TEXT NOT NULL,
+  label TEXT DEFAULT '',
+  data TEXT NOT NULL DEFAULT '{}',
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE INDEX IF NOT EXISTS idx_saved_user ON saved_docs(user_id);
+CREATE INDEX IF NOT EXISTS idx_saved_user_type ON saved_docs(user_id, type);

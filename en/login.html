@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sign in / Create account｜Free BizDoc</title>
+<meta name="description" content="Sign in to Free BizDoc or create a free account to save and reopen your documents. Free plan saves up to 5 documents.">
+<meta name="robots" content="noindex">
+<link rel="canonical" href="https://free-bizdocs.com/en/login">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<style>
+:root{--ink:#171a21;--bg:#f6f6f2;--surf:#fff;--mut:#6c6f78;--faint:#9a9ca3;--bd:#e6e4dd;--ac:#1766e6;--ac-s:#e7effb;--over:#b23a2c}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+.card{background:var(--surf);border:1px solid var(--bd);border-radius:16px;padding:30px 28px;width:100%;max-width:400px;box-shadow:0 8px 30px rgba(20,22,30,.06)}
+.brand{display:flex;align-items:center;gap:10px;justify-content:center;margin-bottom:4px}
+.brand img{height:30px;width:auto;display:block}
+.sub{text-align:center;color:var(--mut);font-size:13px;margin:6px 0 18px}
+.tabs{display:flex;background:#f1f3f7;border-radius:10px;padding:3px;margin-bottom:18px}
+.tabs button{flex:1;font-family:inherit;font-size:13.5px;font-weight:700;border:none;background:none;color:var(--mut);padding:9px;border-radius:8px;cursor:pointer}
+.tabs button.on{background:#fff;color:var(--ac);box-shadow:0 1px 3px rgba(20,22,30,.08)}
+label{display:block;font-size:12px;font-weight:600;color:var(--mut);margin:12px 0 5px}
+input{width:100%;font-family:inherit;font-size:15px;padding:11px 13px;border:1px solid var(--bd);border-radius:9px;background:#fff;color:var(--ink)}
+input:focus{outline:2px solid var(--ac-s);border-color:var(--ac)}
+.btn{width:100%;margin-top:18px;font-family:inherit;font-size:15px;font-weight:800;border:none;border-radius:9px;padding:12px;background:var(--ac);color:#fff;cursor:pointer}
+.btn:hover{background:#1257ca}.btn:disabled{opacity:.6;cursor:default}
+.gbtn{width:100%;margin-top:10px;font-family:inherit;font-size:14px;font-weight:700;border:1px solid var(--bd);border-radius:9px;padding:11px;background:#fff;color:var(--ink);display:flex;align-items:center;justify-content:center;gap:9px;cursor:pointer;position:relative}
+.gbtn:hover{background:#f7f9fc;border-color:#cfd6e0}
+.or{display:flex;align-items:center;gap:10px;color:var(--faint);font-size:11.5px;margin:16px 0 2px}
+.or::before,.or::after{content:"";height:1px;background:var(--bd);flex:1}
+.err{color:var(--over);font-size:13px;margin-top:12px;text-align:center;min-height:18px}
+.hint{font-size:11.5px;color:var(--faint);margin-top:6px}
+.note{text-align:center;font-size:11.5px;color:var(--faint);margin-top:18px;line-height:1.7}
+.note a{color:var(--ac);font-weight:700;text-decoration:none}
+.plan{text-align:center;font-size:12px;color:var(--mut);background:var(--ac-s);border-radius:9px;padding:9px 12px;margin-bottom:16px}
+.plan b{color:var(--ac)}
+.lang{text-align:center;margin-top:14px}.lang a{color:var(--faint);font-size:11.5px;text-decoration:none}
+</style>
+</head>
+<body>
+  <form class="card" id="f" autocomplete="on">
+    <div class="brand"><a href="/en/"><img src="/logo.png" alt="Free BizDoc"></a></div>
+    <p class="sub" id="sub">Sign in to save and manage your documents</p>
+    <div class="plan" id="signupNote" style="display:none">The free plan saves <b>up to 5 documents</b>. Sign-up is free.</div>
+    <div class="tabs"><button type="button" id="tab-login" class="on">Sign in</button><button type="button" id="tab-signup">Create account</button></div>
+    <label for="email">Email address</label>
+    <input type="email" id="email" autocomplete="email" placeholder="you@example.com" required>
+    <label for="pw">Password</label>
+    <input type="password" id="pw" autocomplete="current-password" placeholder="At least 8 characters" required>
+    <div class="hint" id="pwhint" style="display:none">Use at least 8 characters.</div>
+    <button class="btn" id="b" type="submit">Sign in</button>
+    <div class="or">or</div>
+    <button class="gbtn" type="button" id="google"><svg width="17" height="17" viewBox="0 0 48 48"><path fill="#4285F4" d="M45 24c0-1.5-.1-2.9-.4-4.3H24v8.1h11.8c-.5 2.8-2 5.1-4.3 6.7v5.5h7C42.6 36.4 45 30.7 45 24z"/><path fill="#34A853" d="M24 46c5.9 0 10.8-2 14.4-5.3l-7-5.5c-2 1.3-4.5 2.1-7.4 2.1-5.7 0-10.5-3.8-12.2-9H4.5v5.6C8.1 41.1 15.5 46 24 46z"/><path fill="#FBBC05" d="M11.8 28.3c-.4-1.3-.7-2.6-.7-4.3s.3-3 .7-4.3v-5.6H4.5C3 17.1 2 20.4 2 24s1 6.9 2.5 9.9l7.3-5.6z"/><path fill="#EA4335" d="M24 10.5c3.2 0 6.1 1.1 8.4 3.3l6.3-6.3C34.8 4 29.9 2 24 2 15.5 2 8.1 6.9 4.5 14.1l7.3 5.6c1.7-5.2 6.5-9.2 12.2-9.2z"/></svg>Continue with Google</button>
+    <div class="err" id="e"></div>
+    <p class="note"><a href="/en/invoice">Use the free tools without an account →</a></p>
+    <div class="lang"><a href="/?lang=ja" lang="ja">日本語でログイン</a></div>
+  </form>
+<script>
+var mode='login';
+var sub=document.getElementById('sub'), b=document.getElementById('b'), e=document.getElementById('e'),
+    pwhint=document.getElementById('pwhint'), signupNote=document.getElementById('signupNote'),
+    pw=document.getElementById('pw');
+// where to go after auth
+var NEXT='/en/account';
+try{ var qs0=new URLSearchParams(location.search); if(qs0.get('next')==='pricing') NEXT='/en/pricing'; }catch(_){}
+function setMode(m){
+  mode=m; e.textContent='';
+  document.getElementById('tab-login').classList.toggle('on',m==='login');
+  document.getElementById('tab-signup').classList.toggle('on',m==='signup');
+  b.textContent=(m==='login'?'Sign in':'Create free account');
+  sub.textContent=(m==='login'?'Sign in to save and manage your documents':'Create a free account');
+  pwhint.style.display=(m==='signup'?'block':'none');
+  signupNote.style.display=(m==='signup'?'block':'none');
+  pw.setAttribute('autocomplete', m==='signup'?'new-password':'current-password');
+}
+document.getElementById('tab-login').addEventListener('click',function(){setMode('login');});
+document.getElementById('tab-signup').addEventListener('click',function(){setMode('signup');});
+document.getElementById('f').addEventListener('submit', async function(ev){
+  ev.preventDefault(); e.textContent=''; b.disabled=true; b.textContent='Please wait…';
+  var email=document.getElementById('email').value.trim(), password=pw.value;
+  try{
+    var r=await fetch(mode==='signup'?'/api/auth/signup':'/api/auth/login',
+      {method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({email:email,password:password})});
+    var j=await r.json().catch(function(){return{};});
+    if(r.ok){ location.href=NEXT; return; }
+    e.textContent=j.error||'Something went wrong. Please try again.';
+  }catch(err){ e.textContent='A network error occurred.'; }
+  b.disabled=false; b.textContent=(mode==='login'?'Sign in':'Create free account');
+});
+document.getElementById('google').addEventListener('click',function(){
+  var gnext=(NEXT==='/en/pricing')?'/en/pricing':'/en/account';
+  location.href='/api/auth/google/start?next='+encodeURIComponent(gnext);
+});
+try{ var qs=new URLSearchParams(location.search);
+  if(qs.get('mode')==='signup') setMode('signup');
+  if(qs.get('err')) e.textContent='Google sign-in failed. Please try again.';
+}catch(_){}
+</script>
+</body>
+</html>

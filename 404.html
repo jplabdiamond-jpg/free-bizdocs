@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ページが見つかりません / Page not found｜Free BizDoc</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<style>
+:root{--ink:#13263b;--mut:#5a6b7d;--faint:#93a3b5;--bd:#e2eaf4;--ac:#1766e6;--sky:#36c6f0;--surf2:#f3f8ff}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:"Zen Kaku Gothic New",system-ui,-apple-system,"Hiragino Sans",sans-serif;color:var(--ink);
+  background:linear-gradient(180deg,#eaf2ff,#fff 70%);min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 20px;text-align:center}
+.brand{display:inline-flex;align-items:center;gap:8px;margin-bottom:28px;text-decoration:none}
+.brand img{height:30px;width:auto;display:block}
+.code{font-size:clamp(56px,16vw,96px);font-weight:900;letter-spacing:-.03em;line-height:1;
+  background:linear-gradient(100deg,#132742 15%,#1b56c9 80%);-webkit-background-clip:text;background-clip:text;color:transparent;margin:0}
+h1{font-size:clamp(17px,4.4vw,21px);font-weight:800;margin:14px 0 4px}
+h1 .en{display:block;font-size:.72em;font-weight:700;color:var(--mut);margin-top:3px}
+p{color:var(--mut);font-size:14.5px;max-width:34ch;margin:10px auto 0;line-height:1.7}
+p .en{display:block;color:var(--faint);font-size:13px;margin-top:2px}
+.btns{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:26px}
+.btn{text-decoration:none;font-size:14px;font-weight:800;border-radius:11px;padding:12px 20px;line-height:1;white-space:nowrap}
+.btn.pri{color:#fff;background:linear-gradient(120deg,var(--ac),#2f8cf0 60%,var(--sky));box-shadow:0 10px 22px -8px rgba(23,102,230,.5)}
+.btn.sec{color:var(--ac);background:#fff;border:1px solid #d4e3fb}
+.btn.sec:hover{background:var(--surf2)}
+.links{margin-top:26px;font-size:13px;color:var(--faint)}
+.links a{color:var(--ac);font-weight:700;text-decoration:none;margin:0 7px}
+.links a:hover{text-decoration:underline}
+@media(prefers-color-scheme:dark){body{background:#0f1720;color:#e7eef7}p{color:#9fb2c6}.btn.sec{background:#182230;border-color:#2a3a4d;color:#7fb0ff}}
+</style>
+</head>
+<body>
+  <a class="brand" href="/"><img src="/logo.png" alt="Free BizDoc"></a>
+  <p class="code">404</p>
+  <h1>ページが見つかりませんでした<span class="en">This page could not be found</span></h1>
+  <p>URLが変更されたか、削除された可能性があります。<span class="en">The page may have moved or no longer exists.</span></p>
+  <div class="btns">
+    <a class="btn pri" href="/">トップへ戻る</a>
+    <a class="btn sec" href="/en/">English home</a>
+  </div>
+  <div class="links">
+    <span lang="ja">書類を作成：</span>
+    <a href="/invoice">請求書</a>・<a href="/quote">見積書</a>・<a href="/rirekisho">履歴書</a>
+    <br>
+    <span lang="en" style="display:inline-block;margin-top:8px">Create a document:</span>
+    <a href="/en/invoice">Invoice</a>・<a href="/en/estimate">Estimate</a>・<a href="/en/receipt">Receipt</a>
+  </div>
+</body>
+</html>

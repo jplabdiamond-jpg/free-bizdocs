@@ -10,12 +10,44 @@ export async function onRequest(context) {
     return Response.redirect(url.toString(), 301);
   }
   const p = url.pathname;
+
+  // --- 言語ルーティング（ブラウザ言語で日本語 / English を振り分け）---
+  // 手動切替（?lang=ja|en）はCookieに記憶し、以後は自動判定より優先する。
+  const qlang = url.searchParams.get('lang');
+  if (qlang === 'ja' || qlang === 'en') {
+    url.searchParams.delete('lang');
+    const dest = url.origin + url.pathname + url.search + url.hash;
+    return new Response(null, {
+      status: 302,
+      headers: {
+        'Location': dest,
+        'Set-Cookie': `site_lang=${qlang}; Path=/; Max-Age=31536000; SameSite=Lax`,
+        'Cache-Control': 'no-store',
+      },
+    });
+  }
+  // トップ（apex ルート）のみ自動振り分け。各ツール/記事の直リンク・検索流入はそのまま。
+  if (p === '/' && request.method === 'GET') {
+    const choice = getCookie(request, 'site_lang');
+    if (choice === 'en') {
+      return new Response(null, { status: 302, headers: { 'Location': url.origin + '/en/', 'Cache-Control': 'no-store', 'Vary': 'Cookie' } });
+    }
+    if (!choice) {
+      // Accept-Language の最優先タグが日本語でなければ英語版へ（ヘッダー無しのbot等は振り分けない）
+      const al = request.headers.get('Accept-Language') || '';
+      const primary = al.split(',')[0].trim().toLowerCase().split('-')[0];
+      if (primary && primary !== 'ja') {
+        return new Response(null, { status: 302, headers: { 'Location': url.origin + '/en/', 'Cache-Control': 'no-store', 'Vary': 'Accept-Language' } });
+      }
+    }
+  }
+
   // 旧 .html URL を新クリーンURLへ 301
   const LEGACY = { '/free.html': '/invoice', '/ryoshusho.html': '/receipt', '/nouhinsho.html': '/delivery', '/mitsumorisho.html': '/quote', '/hacchusho.html': '/purchase-order' };
   if (LEGACY[p]) return Response.redirect(url.origin + LEGACY[p], 301);
 
   // 公開API（認証・無料ツール・問い合わせ等）
-  const PUBLIC_API = ['/api/auth/signup', '/api/auth/login', '/api/auth/logout', '/api/auth/me', '/api/auth/google/start', '/api/auth/google/callback', '/api/waitlist', '/api/contact', '/api/feedback'];
+  const PUBLIC_API = ['/api/auth/signup', '/api/auth/login', '/api/auth/logout', '/api/auth/me', '/api/auth/google/start', '/api/auth/google/callback', '/api/waitlist', '/api/contact', '/api/feedback', '/api/stripe/webhook'];
   if (PUBLIC_API.indexOf(p) >= 0) return next();
   if (p.startsWith('/api/free/')) return next();
 

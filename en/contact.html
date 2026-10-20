@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Contact｜Free BizDoc</title>
+<meta name="description" content="Contact Free BizDoc — report a bug, request a feature, or ask a question about the free invoice, estimate, receipt, purchase order and packing slip tools.">
+<link rel="canonical" href="https://free-bizdocs.com/en/contact">
+<link rel="alternate" hreflang="en" href="https://free-bizdocs.com/en/contact">
+<link rel="alternate" hreflang="ja" href="https://free-bizdocs.com/contact">
+<link rel="alternate" hreflang="x-default" href="https://free-bizdocs.com/en/contact">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Free BizDoc">
+<meta property="og:locale" content="en_US">
+<meta property="og:title" content="Contact｜Free BizDoc">
+<meta property="og:url" content="https://free-bizdocs.com/en/contact">
+<meta property="og:image" content="https://free-bizdocs.com/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="/suite.css?v=20261017d">
+<style>
+.legal{max-width:640px;margin:0 auto;padding:40px 20px 24px}
+.legal h1{font-size:clamp(24px,4vw,32px);font-weight:900;margin:0 0 6px;letter-spacing:-.01em}
+.legal .lead{font-size:15px;color:var(--mut);margin:0 0 24px;line-height:1.7}
+.fld{margin-bottom:16px}
+.fld label{display:block;font-size:13.5px;font-weight:700;color:var(--ink);margin-bottom:6px}
+.fld label .req{color:#d33;font-size:12px;margin-left:4px}
+.fld input,.fld textarea{width:100%;border:1px solid var(--bd);border-radius:10px;padding:12px 14px;font-size:15px;font-family:inherit;color:var(--ink);background:#fff;min-width:0}
+.fld input:focus,.fld textarea:focus{outline:none;border-color:var(--ac);box-shadow:0 0 0 3px var(--ac-s)}
+.fld textarea{resize:vertical;min-height:150px;line-height:1.7}
+.sub{display:inline-flex;align-items:center;gap:8px;font-size:15.5px;font-weight:800;border:none;border-radius:12px;padding:14px 30px;background:linear-gradient(120deg,#1766e6,#2f8cf0 60%,#36b0f0);color:#fff;cursor:pointer;box-shadow:0 8px 22px -6px rgba(23,102,230,.5)}
+.sub:disabled{opacity:.6;cursor:default}
+.msg{border-radius:10px;padding:13px 16px;font-size:14px;margin-bottom:18px;display:none}
+.msg.ok{display:block;background:#e6f6ec;border:1px solid #b6e0c4;color:#1d7a40}
+.msg.err{display:block;background:#fdecec;border:1px solid #f3bcbc;color:#b23131}
+.pnote{font-size:12.5px;color:var(--faint);margin-top:14px;line-height:1.7}
+.pnote a{color:var(--ac)}
+</style>
+</head>
+<body>
+<header class="hdr"><div class="in">
+  <a class="brand" href="/en/" style="text-decoration:none"><img src="/logo.png" alt="Free BizDoc" style="height:30px;width:auto;display:block"></a>
+  <span class="sp"></span>
+  <a class="pro" href="/?lang=ja" lang="ja" title="Japanese version">日本語</a>
+</div></header>
+<nav id="docnav-en" aria-label="Documents"></nav>
+
+<section class="legal">
+  <h1>Contact</h1>
+  <p class="lead">Report a bug, request a feature, or ask a question about the tools. We usually reply within 3 business days to the email address you provide.</p>
+
+  <div class="msg" id="msg"></div>
+
+  <form id="cform" novalidate>
+    <div class="fld">
+      <label for="c-name">Name<span class="req">*</span></label>
+      <input id="c-name" type="text" maxlength="100" autocomplete="name" placeholder="Jane Smith">
+    </div>
+    <div class="fld">
+      <label for="c-email">Email<span class="req">*</span></label>
+      <input id="c-email" type="email" maxlength="200" autocomplete="email" placeholder="you@example.com">
+    </div>
+    <div class="fld">
+      <label for="c-body">Message<span class="req">*</span></label>
+      <textarea id="c-body" maxlength="2000" placeholder="How can we help?"></textarea>
+    </div>
+    <button class="sub" id="c-sub" type="submit">Send</button>
+    <p class="pnote">By sending, you agree to our <a href="/en/privacy">Privacy Policy</a>. We use your information only to respond to your message.</p>
+  </form>
+</section>
+
+<footer class="ft"><div class="in">
+  <div class="cols">
+    <div>
+      <div class="brand"><img src="/logo.png" alt="Free BizDoc" style="height:26px;width:auto;display:block;filter:brightness(0) invert(1)"></div>
+      <p>Free, no-sign-up business document generator. Generated in your browser, never stored on our servers.</p>
+    </div>
+    <div class="col">
+      <h4>Free documents</h4>
+      <a href="/en/invoice">Invoice</a>
+      <a href="/en/estimate">Estimate / Quote</a>
+      <a href="/en/receipt">Receipt</a>
+      <a href="/en/purchase-order">Purchase Order</a>
+      <a href="/en/packing-slip">Packing Slip / Delivery Note</a>
+    </div>
+    <div class="col">
+      <h4>More</h4>
+      <a href="/en/blog">Blog</a>
+      <a href="/en/pricing">Pricing &amp; PRO</a>
+      <a href="/?lang=ja" lang="ja">日本語</a>
+      <a href="/en/contact">Contact</a>
+      <a href="/en/privacy">Privacy policy</a>
+    </div>
+  </div>
+  <div class="bot">&copy; 2026 Free BizDoc</div>
+</div></footer>
+
+<script>
+(function(){
+  var f=document.getElementById('cform'), msg=document.getElementById('msg'), sub=document.getElementById('c-sub');
+  var reMail=/^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+  function show(type,text){ msg.className='msg '+type; msg.textContent=text; }
+  f.addEventListener('submit', async function(e){
+    e.preventDefault();
+    var name=document.getElementById('c-name').value.trim();
+    var email=document.getElementById('c-email').value.trim();
+    var body=document.getElementById('c-body').value.trim();
+    if(!name){ show('err','Please enter your name.'); return; }
+    if(!reMail.test(email)){ show('err','Please enter a valid email address.'); return; }
+    if(body.length<5){ show('err','Please enter your message.'); return; }
+    sub.disabled=true; sub.textContent='Sending…'; msg.className='msg';
+    try{
+      var r=await fetch('/api/contact',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({name:name,email:email,body:body})});
+      var j={}; try{ j=await r.json(); }catch(_){}
+      if(r.ok && j.ok){
+        f.reset();
+        show('ok','Thanks — your message has been sent. We usually reply within 3 business days.');
+        sub.textContent='Sent';
+      }else{
+        show('err','Something went wrong. Please try again in a moment.');
+        sub.disabled=false; sub.textContent='Send';
+      }
+    }catch(err){
+      show('err','A network error occurred. Please try again in a moment.');
+      sub.disabled=false; sub.textContent='Send';
+    }
+  });
+})();
+</script>
+<script>(function(){var h=document.getElementById("docnav-en");if(!h)return;var D=[["/en/invoice","Invoice"],["/en/estimate","Estimate / Quote"],["/en/receipt","Receipt"],["/en/purchase-order","Purchase Order"],["/en/packing-slip","Packing Slip / Delivery Note"]];var s=document.createElement("style");s.textContent="#docnav-en{background:#fff;border-bottom:1px solid #e6ebf2;overflow-x:auto}#docnav-en .t{display:flex;gap:8px;width:max-content;padding:12px 16px;margin:0 auto}#docnav-en a{font-size:13px;font-weight:700;color:#5a6b80;text-decoration:none;padding:8px 15px;border-radius:999px;background:#f1f5fb;border:1px solid #dce5f0;white-space:nowrap}";document.head.appendChild(s);h.innerHTML="<div class=\"t\">"+D.map(function(d){return "<a href=\""+d[0]+"\">"+d[1]+"</a>";}).join("")+"</div>";})();</script>
+<script src="/en/siteheader-en.js?v=20261019g"></script>
+</body>
+</html>

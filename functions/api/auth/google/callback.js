@@ -51,9 +51,15 @@ export async function onRequestGet(context) {
     uid = r.meta.last_row_id;
   }
   const token = await makeSession(env.SESSION_SECRET, uid);
+  // ログイン後の遷移先（英語フローは /en/account 等）。安全な自サイトパスのみ許可。
+  let dest = '/dashboard';
+  let gn = getCookie(request, 'gnext') || '';
+  try { gn = decodeURIComponent(gn); } catch (e) {}
+  if (gn && /^\/(en\/account|en\/pricing|dashboard)$/.test(gn)) dest = gn;
   const h = new Headers();
-  h.append('Location', '/dashboard');
+  h.append('Location', dest);
   h.append('Set-Cookie', sessionCookie(token, 60 * 60 * 24 * 30));
   h.append('Set-Cookie', 'gstate=; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=0');
+  h.append('Set-Cookie', 'gnext=; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=0');
   return new Response(null, { status: 302, headers: h });
 }
