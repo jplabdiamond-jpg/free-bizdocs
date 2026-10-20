@@ -5,7 +5,10 @@ wrangler.toml
 .env
 *.md
 node_modules
-*.py
+build-site.py
+build-en.py
+build-en-blog.py
+build-segments.py
 
 *.bak
 *.add
