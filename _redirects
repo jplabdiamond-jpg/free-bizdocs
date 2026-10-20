@@ -23,3 +23,7 @@
 /seal              /inkan            301
 /denshi-inkan      /inkan            301
 /stamp             /inkan            301
+/build-segments.py   /   301
+/build-en.py         /   301
+/build-en-blog.py    /   301
+/build-site.py       /   301
