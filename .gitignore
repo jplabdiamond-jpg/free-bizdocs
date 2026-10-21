@@ -8,3 +8,4 @@ node_modules/
 .env
 _push_tmp/
 fix2.py
+__pycache__/
