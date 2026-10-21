@@ -240,6 +240,7 @@ FOOTER = '''<footer class="ft"><div class="in">
     <div class="col">
       <h4>More</h4>
       <a href="/en/blog">Blog</a>
+      <a href="/en/compare">Compare tools</a>
       <a href="/en/pricing">Pricing &amp; PRO</a>
       <a href="/en/account">Account</a>
       <a href="/?lang=ja" lang="ja">日本語</a>
