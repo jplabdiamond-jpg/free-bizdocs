@@ -15,6 +15,9 @@ CAT_COLOR = {
   'Invoicing': ('#1766e6', '#36b0f0'),
   'Getting paid': ('#0f8a5f', '#13a06f'),
   'Quoting': ('#7a39c4', '#a46be0'),
+  'Tax': ('#0e7490', '#2bb3c0'),
+  'Purchasing': ('#b4530f', '#e0863a'),
+  'Industries': ('#9d2b6b', '#d45a9a'),
   'Guides': ('#13263b', '#2f5a8a'),
 }
 
@@ -462,6 +465,537 @@ DRAFTS = [
    ('When do I need the buyer&rsquo;s details on a tax invoice?', 'For taxable sales of $1,000 or more (including GST), the tax invoice must include the buyer&rsquo;s identity or ABN. For smaller sales it&rsquo;s optional.'),
   ],
   related=[('/en/invoice','Free invoice generator'),('/en/blog/how-to-write-an-invoice','How to write an invoice'),('/en/blog/uk-vat-invoice-requirements','UK VAT invoice requirements')],
+ ),
+ dict(
+  slug='canadian-invoice-gst-hst', cat='Tax', tool='/en/invoice',
+  title='Canadian Invoices: GST, HST, PST &amp; QST Explained',
+  desc='How sales tax works on Canadian invoices — GST, HST, PST and QST by province, when to register, and what to show on the invoice.',
+  date='2026-10-21',
+  body='''
+<p class="lead">Canada has one of the more layered sales-tax systems: a federal tax plus provincial taxes that differ by province. If you&rsquo;re registered, your invoices need to apply the right combination and show your tax number. Here&rsquo;s how it works in plain terms.</p>
+<h2>GST, HST, PST and QST</h2>
+<ul>
+<li><b>GST</b> &mdash; the 5% federal Goods and Services Tax, charged across Canada.</li>
+<li><b>HST</b> &mdash; the Harmonized Sales Tax, which combines GST and provincial tax into one rate in provinces like Ontario and the Atlantic provinces.</li>
+<li><b>PST</b> &mdash; a separate Provincial Sales Tax in provinces such as British Columbia, Saskatchewan and Manitoba, charged on top of GST.</li>
+<li><b>QST</b> &mdash; Quebec&rsquo;s provincial tax, administered alongside GST.</li>
+</ul>
+<h2>What to show on the invoice</h2>
+<p>When you charge sales tax, show your <b>GST/HST number</b>, the tax applied per rate, and the totals before and after tax in CAD. If a sale involves both GST and a separate PST, list each as its own line so the customer can see the breakdown.</p>
+<h2>When do you register?</h2>
+<p>Most small businesses must register for GST/HST once revenue crosses the small-supplier threshold (generally $30,000 over four quarters). Below that you may register voluntarily. Provincial PST registration has its own rules by province.</p>
+<div class="note">This is general guidance, not tax advice. Rates and thresholds change and vary by province &mdash; confirm with the CRA, your province, or your accountant.</div>
+<h2>Create a Canadian invoice free</h2>
+<p>Our <a href="/en/invoice">free invoice generator</a> has a Canada mode: pick your province and it applies GST / HST / PST / QST at the right rates, shows your GST/HST number, and formats the invoice in CAD &mdash; no sign-up.</p>
+''',
+  faqs=[
+   ('What sales tax do I charge on a Canadian invoice?', 'It depends on the province: 5% GST everywhere, HST (a combined rate) in provinces like Ontario, or GST plus a separate PST/QST in provinces like BC and Quebec. Charge based on where the sale is taxable and show your GST/HST number.'),
+   ('Do I need a GST/HST number to invoice in Canada?', 'You must register once you pass the small-supplier threshold (generally $30,000 in revenue). Once registered, your GST/HST number must appear on invoices where you charge the tax.'),
+   ('What is the difference between GST and HST?', 'GST is the 5% federal tax charged nationwide. HST is a single harmonized rate that bundles GST with provincial tax in participating provinces, so you charge one combined rate instead of two.'),
+  ],
+  related=[('/en/invoice','Free invoice generator'),('/en/blog/how-to-write-an-invoice','How to write an invoice'),('/en/blog/vat-gst-sales-tax-difference','VAT vs GST vs sales tax')],
+ ),
+ dict(
+  slug='how-to-invoice-without-a-vat-number', cat='Tax', tool='/en/invoice',
+  title='How to Invoice Without a VAT Number (UK)',
+  desc='Not VAT-registered? You can still send proper invoices. Here is what to include, what to leave off, and when you must register for VAT.',
+  date='2026-10-21',
+  body='''
+<p class="lead">If you&rsquo;re a UK sole trader or small business below the VAT threshold, you don&rsquo;t charge VAT &mdash; and you shouldn&rsquo;t show a VAT number or VAT amount on your invoices. You can still send clean, professional invoices; they just look a little simpler.</p>
+<h2>What to include (without VAT)</h2>
+<ul>
+<li>The word <b>&ldquo;Invoice&rdquo;</b> and a unique invoice number.</li>
+<li>Your name or business name and address.</li>
+<li>The customer&rsquo;s name and address.</li>
+<li>The invoice date and payment due date.</li>
+<li>A description of the goods or services, with the amount for each.</li>
+<li>The total due &mdash; with no VAT line.</li>
+<li>How to pay (bank details or a link).</li>
+</ul>
+<h2>What to leave off</h2>
+<p>Don&rsquo;t show a VAT registration number (you don&rsquo;t have one) and don&rsquo;t add a VAT line or charge VAT. Doing so when you&rsquo;re not registered is not allowed. Your prices are simply the amount payable.</p>
+<h2>When must you register for VAT?</h2>
+<p>You must register once your VAT-taxable turnover passes the UK registration threshold over a rolling 12 months (or if you expect to pass it soon). You can also register voluntarily, which lets you reclaim VAT on purchases but means charging VAT to customers.</p>
+<div class="note">This is general guidance, not tax advice. The VAT threshold changes &mdash; check the current figure on GOV.UK or with your accountant.</div>
+<h2>Create a no-VAT invoice free</h2>
+<p>Our <a href="/en/invoice">free invoice generator</a> lets you issue a clean UK invoice with no VAT line &mdash; just leave the tax fields blank. No sign-up needed.</p>
+''',
+  faqs=[
+   ('Can I send an invoice without being VAT-registered?', 'Yes. If you&rsquo;re below the VAT threshold you issue a normal invoice with no VAT number and no VAT line &mdash; the total is simply the amount payable. You must not charge VAT unless you&rsquo;re registered.'),
+   ('Do I need a VAT number to invoice in the UK?', 'No. A VAT number is only required once you&rsquo;re VAT-registered. Below the threshold you invoice without one.'),
+   ('When do I have to register for VAT?', 'When your VAT-taxable turnover passes the UK registration threshold over a rolling 12-month period, or you expect to pass it soon. Check the current threshold on GOV.UK.'),
+  ],
+  related=[('/en/invoice','Free invoice generator'),('/en/blog/uk-vat-invoice-requirements','UK VAT invoice requirements'),('/en/blog/how-to-invoice-as-a-freelancer','How to invoice as a freelancer')],
+ ),
+ dict(
+  slug='do-i-need-an-abn-to-invoice', cat='Tax', tool='/en/invoice',
+  title='Do You Need an ABN to Invoice? (Australia)',
+  desc='Whether you need an ABN to invoice in Australia, what happens if you don’t have one, and how it relates to GST and tax invoices.',
+  date='2026-10-21',
+  body='''
+<p class="lead">In Australia, you can invoice without an ABN, but it usually isn&rsquo;t a good idea. Without one, the business paying you generally has to withhold tax from your payment &mdash; so most people who invoice regularly get an ABN. Here&rsquo;s how it works.</p>
+<h2>ABN vs GST registration</h2>
+<p>An <b>ABN</b> (Australian Business Number) identifies your business; it&rsquo;s free and separate from GST. <b>GST registration</b> is a further step, required once your turnover reaches the GST threshold (currently $75,000). You can have an ABN without being registered for GST.</p>
+<h2>What happens if you invoice without an ABN</h2>
+<p>If you don&rsquo;t quote an ABN on your invoice, the payer may be required to withhold a large portion of the payment under &ldquo;no-ABN withholding&rdquo; rules and send it to the ATO. To avoid that, provide your ABN &mdash; or, for a one-off, a &ldquo;Statement by a supplier&rdquo; form in limited cases.</p>
+<h2>Tax invoice vs regular invoice</h2>
+<p>If you&rsquo;re registered for GST, you issue a <b>tax invoice</b> that shows the words &ldquo;Tax Invoice&rdquo;, your ABN and the GST. If you&rsquo;re not registered for GST, you issue a regular invoice with your ABN but no GST.</p>
+<div class="note">This is general guidance, not tax advice. Thresholds and rules change &mdash; check the ATO website or your accountant.</div>
+<h2>Create an Australian invoice free</h2>
+<p>Our <a href="/en/invoice">free invoice generator</a> adds your ABN and, if you charge GST, titles the document &ldquo;Tax Invoice&rdquo; and applies 10% GST &mdash; no sign-up.</p>
+''',
+  faqs=[
+   ('Can I invoice without an ABN in Australia?', 'You can, but the business paying you may have to withhold tax from the payment under no-ABN withholding rules. Most people who invoice regularly get an ABN (it&rsquo;s free) to avoid this.'),
+   ('Do I need to be registered for GST to have an ABN?', 'No. An ABN and GST registration are separate. You can hold an ABN without being GST-registered; GST registration is required once your turnover reaches the $75,000 threshold.'),
+   ('Is an ABN the same as a tax invoice?', 'No. An ABN is your business number; a tax invoice is a document you issue when registered for GST. A valid tax invoice shows your ABN plus the words &ldquo;Tax Invoice&rdquo; and the GST.'),
+  ],
+  related=[('/en/invoice','Free invoice generator'),('/en/blog/australian-tax-invoice-requirements','Australian tax invoice requirements'),('/en/blog/how-to-invoice-as-a-freelancer','How to invoice as a freelancer')],
+ ),
+ dict(
+  slug='vat-gst-sales-tax-difference', cat='Tax', tool='/en/invoice',
+  title='VAT vs GST vs Sales Tax: What&rsquo;s the Difference?',
+  desc='A simple explanation of the three main consumption taxes — US sales tax, UK VAT and GST — and how each one appears on an invoice.',
+  date='2026-10-21',
+  body='''
+<p class="lead">VAT, GST and sales tax all tax what people buy, but they work differently &mdash; which matters when you invoice customers in different countries. Here&rsquo;s the short version of how each one behaves and shows up on an invoice.</p>
+<h2>US sales tax</h2>
+<p>Sales tax is charged once, at the point of sale to the final customer, and is set by each US state (and sometimes city or county). There&rsquo;s no federal sales tax. You only charge it where you have a tax obligation (&ldquo;nexus&rdquo;) and the item is taxable. On the invoice it&rsquo;s a single line added to the subtotal.</p>
+<h2>VAT (UK and much of the world)</h2>
+<p>VAT (Value Added Tax) is charged at each stage of the supply chain, but businesses reclaim the VAT they pay, so the net effect falls on the final consumer. VAT-registered sellers show their VAT number, the rate (20% / 5% / 0% in the UK) and the VAT amount on the invoice.</p>
+<h2>GST (Australia, Canada and others)</h2>
+<p>GST (Goods and Services Tax) works much like VAT &mdash; charged along the chain with credits for businesses. Australia uses a single 10% GST and calls the document a &ldquo;Tax Invoice&rdquo;; Canada layers GST with provincial taxes (HST/PST/QST).</p>
+<div class="note">This is general information, not tax advice. Rates and rules vary and change &mdash; confirm with the relevant tax authority or your accountant.</div>
+<h2>One tool, the right tax for each</h2>
+<p>Our <a href="/en/invoice">free invoice generator</a> handles all three: pick the US, UK, Australia or Canada and it applies the correct tax model automatically &mdash; no sign-up.</p>
+''',
+  faqs=[
+   ('What is the difference between VAT and sales tax?', 'Sales tax is charged once, at the final sale, and is set by US states. VAT is charged at each stage of the supply chain with businesses reclaiming what they pay, so it&rsquo;s collected gradually but ultimately borne by the consumer.'),
+   ('Is GST the same as VAT?', 'They&rsquo;re very similar &mdash; both are multi-stage consumption taxes with credits for businesses. &ldquo;GST&rdquo; is the name used in countries like Australia and Canada; &ldquo;VAT&rdquo; is used in the UK and much of Europe.'),
+   ('Which tax do I put on my invoice?', 'The one for the country where the sale is taxable: US sales tax, UK VAT, or GST in Australia/Canada. A good invoice tool switches the model automatically when you choose the country.'),
+  ],
+  related=[('/en/invoice','Free invoice generator'),('/en/blog/sales-tax-on-invoices','Sales tax on invoices (US)'),('/en/blog/uk-vat-invoice-requirements','UK VAT invoice requirements')],
+ ),
+ dict(
+  slug='invoice-for-contractors', cat='Industries', tool='/en/invoice',
+  title='How to Invoice as a Contractor (Trades &amp; Construction)',
+  desc='Invoicing for trades and construction — progress payments, materials vs labour, retention, and what to put on a contractor invoice to get paid on time.',
+  date='2026-10-21',
+  body='''
+<p class="lead">Contractor invoicing has a few wrinkles other trades don&rsquo;t: progress payments across a long job, materials billed separately from labour, and sometimes retention held back until completion. Get these right and you&rsquo;ll keep cash flowing on bigger jobs.</p>
+<h2>Separate labour, materials and other costs</h2>
+<p>List labour (hours or a fixed amount), materials, equipment hire and any disposal or permit fees as separate lines. Clients and their accountants find the breakdown easier to approve, and it makes variations simpler to add.</p>
+<h2>Progress payments and milestones</h2>
+<p>For long jobs, invoice in stages tied to milestones (for example deposit, first fix, second fix, completion) rather than waiting until the end. Reference the stage and the contract on each invoice so it&rsquo;s clear what&rsquo;s being billed.</p>
+<h2>Retention, variations and tax</h2>
+<p>If the contract holds retention, show it as a deduction and note when it&rsquo;s released. Add approved variations as their own lines. Apply the right tax for your country &mdash; US sales tax rules differ for materials vs labour by state; UK/AU/CA add VAT/GST once registered (watch for construction-specific VAT rules in the UK).</p>
+<h2>Create a contractor invoice free</h2>
+<p>Use our <a href="/en/invoice">free invoice generator</a> to itemise labour and materials, add a job reference and due date, and produce a clean PDF &mdash; no sign-up.</p>
+''',
+  faqs=[
+   ('How do contractors invoice for progress payments?', 'Invoice in stages tied to agreed milestones (deposit, first fix, completion, etc.) rather than only at the end. Reference the stage and the contract on each invoice so the client knows exactly what they&rsquo;re paying for.'),
+   ('Should materials and labour be on separate lines?', 'Yes. Listing labour, materials, hire and fees separately makes the invoice easier to approve and keeps variations clear. It also helps with tax, which can treat materials and labour differently.'),
+   ('What is retention on a contractor invoice?', 'Retention is a percentage the client holds back until the job is complete (or a defects period ends). Show it as a deduction on the invoice and note when it will be released.'),
+  ],
+  related=[('/en/invoice','Free invoice generator'),('/en/purchase-order','Free purchase order template'),('/en/blog/how-to-write-an-invoice','How to write an invoice')],
+ ),
+ dict(
+  slug='invoice-for-consultants', cat='Industries', tool='/en/invoice',
+  title='How to Invoice as a Consultant',
+  desc='Consultant invoicing done right — hourly vs fixed vs retainer, expenses, milestones, and how to present it so clients pay promptly.',
+  date='2026-10-21',
+  body='''
+<p class="lead">Consulting work gets billed in a few different shapes &mdash; by the hour, by project, or on a monthly retainer &mdash; and your invoice should make the arrangement obvious. Clear, well-structured invoices also signal the professionalism clients are paying for.</p>
+<h2>Match the invoice to your billing model</h2>
+<ul>
+<li><b>Hourly</b> &mdash; show hours, rate and a short description per block of work.</li>
+<li><b>Fixed project</b> &mdash; one line for the agreed fee, or milestone lines (e.g. 50% on start, 50% on delivery).</li>
+<li><b>Retainer</b> &mdash; a recurring monthly line (&ldquo;Advisory retainer &mdash; October&rdquo;), with any overage billed separately.</li>
+</ul>
+<h2>Expenses and disbursements</h2>
+<p>Bill travel, software or subcontractor costs as separate lines, and keep receipts. Agree in advance whether expenses are billed at cost or with a markup so there are no surprises.</p>
+<h2>Terms that get you paid</h2>
+<p>Keep payment terms short (Net 14 is common for consultants), state the actual due date, and for new clients consider a deposit or part-payment up front. Add any tax (sales tax, VAT or GST) as a separate line depending on your country and registration.</p>
+<h2>Create a consultant invoice free</h2>
+<p>Our <a href="/en/invoice">free invoice generator</a> handles hourly, fixed and retainer lines, expenses and the right tax model for your country &mdash; no sign-up.</p>
+''',
+  faqs=[
+   ('How do consultants usually bill clients?', 'Three common models: hourly (hours &times; rate), fixed project fee (often split into milestones), and monthly retainer. Your invoice should clearly show which one applies for the period.'),
+   ('Should I charge a deposit as a consultant?', 'For new clients or larger projects, yes &mdash; a deposit or milestone payment up front reduces risk and improves cash flow. State it on a quote or the first invoice.'),
+   ('How do I bill expenses on a consulting invoice?', 'List travel, software and subcontractor costs as separate lines, keep receipts, and agree beforehand whether they&rsquo;re billed at cost or with a markup.'),
+  ],
+  related=[('/en/invoice','Free invoice generator'),('/en/blog/payment-terms-explained','Payment terms explained'),('/en/blog/how-to-invoice-as-a-freelancer','How to invoice as a freelancer')],
+ ),
+ dict(
+  slug='invoice-for-graphic-designers', cat='Industries', tool='/en/invoice',
+  title='How to Invoice as a Graphic Designer',
+  desc='Design invoicing that protects you — deposits, revision limits, usage/licensing, and transferring files only after payment.',
+  date='2026-10-21',
+  body='''
+<p class="lead">Design invoices are about more than the fee &mdash; they&rsquo;re where you set expectations on revisions, usage rights and when files are handed over. A tidy invoice with the right notes prevents the most common payment disputes in creative work.</p>
+<h2>Deposit first, files on final payment</h2>
+<p>Take a deposit before starting (often 30&ndash;50%), and release final, print-ready or source files only after the balance is paid. State this on your quote and invoice so it&rsquo;s understood up front.</p>
+<h2>Revisions and scope</h2>
+<p>Note how many revision rounds are included and your rate for extra rounds, then bill additional revisions as their own line. This keeps &ldquo;just one more tweak&rdquo; from eroding your time for free.</p>
+<h2>Usage, licensing and tax</h2>
+<p>If you&rsquo;re licensing artwork rather than selling it outright, say so in the notes (medium, territory, duration). Apply the right tax for your country &mdash; in the US, design services are taxable in some states; in the UK/AU/CA you add VAT/GST once registered. Design fees can also be subject to withholding in some countries when paid to individuals.</p>
+<h2>Create a designer invoice free</h2>
+<p>Our <a href="/en/invoice">free invoice generator</a> lets you itemise design fees and revisions, add usage notes, and produce a clean PDF &mdash; no sign-up.</p>
+''',
+  faqs=[
+   ('Should graphic designers take a deposit?', 'Yes &mdash; a deposit of around 30&ndash;50% before starting is standard. It commits the client and protects your time, with final files released after the balance is paid.'),
+   ('How do I charge for extra design revisions?', 'State the number of revision rounds included, then bill extra rounds as a separate line at an agreed rate. Putting this on the quote and invoice prevents scope creep.'),
+   ('Do I charge tax on design work?', 'It depends on your country and registration. In the US, taxability of design services varies by state; in the UK, Australia and Canada you add VAT/GST once registered. Show tax as a separate line.'),
+  ],
+  related=[('/en/invoice','Free invoice generator'),('/en/estimate','Free estimate &amp; quote generator'),('/en/blog/how-to-invoice-as-a-freelancer','How to invoice as a freelancer')],
+ ),
+ dict(
+  slug='invoice-for-photographers', cat='Industries', tool='/en/invoice',
+  title='How to Invoice as a Photographer',
+  desc='Photography invoicing — booking deposits, shoot vs editing fees, image licensing and delivery, and the tax to apply.',
+  date='2026-10-21',
+  body='''
+<p class="lead">Whether you shoot weddings, products or portraits, your invoice does double duty: it collects payment and sets the terms around deposits, usage and delivery. Here&rsquo;s how to structure one that protects your time and your images.</p>
+<h2>Booking deposit and balance</h2>
+<p>Take a non-refundable booking deposit to hold the date, then invoice the balance before or on delivery of the final images. Make the deposit and balance clear on the invoice, along with the shoot date.</p>
+<h2>Itemise the shoot and the extras</h2>
+<p>Separate the shoot fee from editing/retouching, extra hours, prints, albums and travel. If you offer packages, show the package as one line and any add-ons separately so clients see what they chose.</p>
+<h2>Licensing and delivery</h2>
+<p>Say whether the client gets personal or commercial usage, and for how long &mdash; commercial licensing is usually priced higher. Deliver final high-resolution files after full payment. Apply the right tax for your country (US sales tax varies by state; UK/AU/CA add VAT/GST once registered).</p>
+<h2>Create a photography invoice free</h2>
+<p>Our <a href="/en/invoice">free invoice generator</a> lets you add a deposit, itemise the shoot and extras, note usage rights, and produce a clean PDF &mdash; no sign-up.</p>
+''',
+  faqs=[
+   ('How much deposit should a photographer take?', 'A booking deposit (often non-refundable) to secure the date is standard &mdash; commonly 20&ndash;50% of the fee. Invoice the balance before or on delivery of the final images.'),
+   ('Should I license or sell photos on the invoice?', 'Usually you license usage rather than sell outright. Note the usage (personal or commercial) and duration on the invoice; commercial licensing is typically priced higher.'),
+   ('When should I deliver the final images?', 'After full payment. State on the invoice that final high-resolution files are delivered once the balance is cleared to avoid chasing payment afterwards.'),
+  ],
+  related=[('/en/invoice','Free invoice generator'),('/en/receipt','Free receipt generator'),('/en/blog/how-to-invoice-as-a-freelancer','How to invoice as a freelancer')],
+ ),
+ dict(
+  slug='invoice-for-cleaning-business', cat='Industries', tool='/en/invoice',
+  title='How to Invoice for a Cleaning Business',
+  desc='Invoicing for cleaning services — one-off vs recurring jobs, per-visit vs hourly, supplies, and getting paid on a regular schedule.',
+  date='2026-10-21',
+  body='''
+<p class="lead">Cleaning work is often recurring &mdash; weekly offices, fortnightly homes, end-of-tenancy one-offs &mdash; so the real win is invoicing on a predictable schedule that gets you paid without chasing. Here&rsquo;s how to set it up.</p>
+<h2>Per-visit, hourly or monthly</h2>
+<p>Decide how you bill: a fixed price per visit, an hourly rate, or a monthly amount for a set schedule. For recurring clients, a single monthly invoice listing each visit (or a flat monthly fee) is usually cleanest.</p>
+<h2>What to itemise</h2>
+<p>Show the service and dates (e.g. &ldquo;Office clean &mdash; 4 visits in October&rdquo;), any extras like carpet or window cleaning as separate lines, and supplies if you bill them. Note the property or site so multi-site clients can match invoices.</p>
+<h2>Terms and tax</h2>
+<p>Keep terms short and consistent (Net 7 or Net 14 works well for recurring work), send the invoice on the same day each cycle, and make payment easy. Apply sales tax, VAT or GST depending on your country and registration.</p>
+<h2>Create a cleaning invoice free</h2>
+<p>Our <a href="/en/invoice">free invoice generator</a> lets you list visits, add extras and supplies, and produce a clean PDF each cycle &mdash; no sign-up.</p>
+''',
+  faqs=[
+   ('How do I invoice recurring cleaning clients?', 'Invoice on a fixed cycle &mdash; for example one monthly invoice listing each visit, or a flat monthly fee. Sending it the same day each cycle with short terms (Net 7&ndash;14) keeps payments predictable.'),
+   ('Should I charge per visit or per hour for cleaning?', 'Either works. A fixed price per visit is simple for clients to budget; hourly suits variable jobs. Pick one per client and show it clearly on the invoice.'),
+   ('Do I charge tax on cleaning services?', 'It depends on your country and registration. Some US states tax cleaning services; in the UK, Australia and Canada you add VAT/GST once registered. Show it as a separate line.'),
+  ],
+  related=[('/en/invoice','Free invoice generator'),('/en/blog/recurring-invoices-explained','Recurring invoices explained'),('/en/blog/payment-terms-explained','Payment terms explained')],
+ ),
+ dict(
+  slug='invoice-for-tutors', cat='Industries', tool='/en/invoice',
+  title='How to Invoice as a Tutor',
+  desc='Tutoring invoices made simple — per-session vs block booking, monthly billing for regular students, cancellations, and the tax to apply.',
+  date='2026-10-21',
+  body='''
+<p class="lead">Tutoring usually means regular sessions with the same students, so the goal is a simple, repeatable invoice &mdash; ideally one per month per student or family &mdash; that&rsquo;s easy to pay and easy to track.</p>
+<h2>Per-session, blocks, or monthly</h2>
+<p>Bill per session, sell blocks of sessions up front (often at a small discount), or send a monthly invoice listing the sessions held. For regular students, monthly billing in arrears (or blocks in advance) reduces admin.</p>
+<h2>What to show</h2>
+<p>List the student&rsquo;s name, the subject, and the dates and length of each session, with your rate. If you bill a parent for multiple children, group by student so it&rsquo;s clear. Note your cancellation policy (for example, sessions cancelled with less than 24 hours&rsquo; notice are chargeable).</p>
+<h2>Terms and tax</h2>
+<p>Keep terms short and send invoices on a set day. Many independent tutors are below VAT/GST thresholds, but apply tax if you&rsquo;re registered (education can have specific exemptions in some countries &mdash; check locally).</p>
+<h2>Create a tutoring invoice free</h2>
+<p>Our <a href="/en/invoice">free invoice generator</a> lets you list sessions by student and date, add your rate, and produce a clean monthly PDF &mdash; no sign-up.</p>
+''',
+  faqs=[
+   ('How should tutors invoice regular students?', 'A monthly invoice per student (or family) listing the sessions held is simplest, or sell blocks of sessions in advance. Send it on a set day each month with short payment terms.'),
+   ('Should I charge for cancelled tutoring sessions?', 'Many tutors charge for late cancellations (for example, less than 24 hours&rsquo; notice). State your policy up front and note it on the invoice so it&rsquo;s clear.'),
+   ('Do tutors charge VAT or sales tax?', 'Only if registered. Many independent tutors are below VAT/GST thresholds. Note that education services can have specific tax exemptions in some countries &mdash; check your local rules.'),
+  ],
+  related=[('/en/invoice','Free invoice generator'),('/en/blog/recurring-invoices-explained','Recurring invoices explained'),('/en/blog/how-to-invoice-as-a-freelancer','How to invoice as a freelancer')],
+ ),
+ dict(
+  slug='invoice-for-virtual-assistants', cat='Industries', tool='/en/invoice',
+  title='How to Invoice as a Virtual Assistant',
+  desc='VA invoicing — hourly vs package vs retainer, tracking time across clients, and billing on a schedule that keeps cash flow steady.',
+  date='2026-10-21',
+  body='''
+<p class="lead">As a virtual assistant you often juggle several clients and billing models at once, so a clean, consistent invoice per client &mdash; sent on a regular schedule &mdash; is what keeps the admin light and the payments flowing.</p>
+<h2>Hourly, package or retainer</h2>
+<ul>
+<li><b>Hourly</b> &mdash; log time per task and show hours &times; rate.</li>
+<li><b>Package</b> &mdash; a set number of hours per month at a fixed price.</li>
+<li><b>Retainer</b> &mdash; a recurring monthly fee for ongoing availability, with overage billed separately.</li>
+</ul>
+<h2>Track time and show the work</h2>
+<p>Keep a simple log of hours or tasks per client so each invoice reflects what you actually did. Grouping work into a few clear lines (e.g. &ldquo;Inbox &amp; calendar management&rdquo;, &ldquo;Research&rdquo;) reads better than a long list of tiny entries.</p>
+<h2>Terms and tax</h2>
+<p>Invoice on the same day each month, keep terms short (Net 7&ndash;14), and bill in your client&rsquo;s currency where it makes sense. Apply sales tax, VAT or GST only if you&rsquo;re registered in your country.</p>
+<h2>Create a VA invoice free</h2>
+<p>Our <a href="/en/invoice">free invoice generator</a> handles hourly, package and retainer lines and produces a clean PDF per client &mdash; no sign-up.</p>
+''',
+  faqs=[
+   ('How do virtual assistants usually bill?', 'By the hour, by a monthly package of hours, or on a retainer for ongoing availability. Pick one model per client and send a consistent invoice each cycle.'),
+   ('How do I track time for VA invoices?', 'Keep a simple per-client log of hours or tasks, then group the work into a few clear lines on the invoice rather than many tiny entries.'),
+   ('Should a VA invoice monthly?', 'Monthly billing on a set day keeps cash flow predictable and admin low. Use short terms (Net 7&ndash;14) and make payment easy.'),
+  ],
+  related=[('/en/invoice','Free invoice generator'),('/en/blog/recurring-invoices-explained','Recurring invoices explained'),('/en/blog/how-to-invoice-as-a-freelancer','How to invoice as a freelancer')],
+ ),
+ dict(
+  slug='invoice-for-web-developers', cat='Industries', tool='/en/invoice',
+  title='How to Invoice as a Web Developer',
+  desc='Dev invoicing — hourly vs fixed vs milestone, ongoing maintenance retainers, hosting pass-through costs, and payment terms that work.',
+  date='2026-10-21',
+  body='''
+<p class="lead">Web projects mix one-off build work with ongoing maintenance, so your invoicing usually spans both: milestone payments for the build and a recurring line for support or hosting. Structuring it clearly keeps clients comfortable and your cash flow smooth.</p>
+<h2>Milestones for the build</h2>
+<p>Break a fixed-price build into milestone payments &mdash; for example deposit, design sign-off, development complete, launch. Invoice each as the milestone is reached and reference the project and stage.</p>
+<h2>Maintenance and hosting</h2>
+<p>Bill ongoing maintenance as a monthly retainer (updates, backups, support hours). If you pass through hosting or third-party subscriptions, list them as separate lines, at cost or with an agreed markup.</p>
+<h2>Hourly work and terms</h2>
+<p>For ad-hoc changes outside a retainer, bill hourly with a short description per block. Keep terms short, take a deposit on new projects, and apply the right tax for your country (US sales tax varies by state for services; UK/AU/CA add VAT/GST once registered).</p>
+<h2>Create a developer invoice free</h2>
+<p>Our <a href="/en/invoice">free invoice generator</a> handles milestones, retainers, hourly work and pass-through costs, and produces a clean PDF &mdash; no sign-up.</p>
+''',
+  faqs=[
+   ('How should web developers bill fixed-price projects?', 'Split the fee into milestone payments (deposit, design sign-off, development complete, launch) and invoice each milestone as it&rsquo;s reached. This keeps cash flow steady and reduces end-of-project risk.'),
+   ('How do I bill for website maintenance?', 'Use a monthly retainer covering updates, backups and a set number of support hours, with extra work billed separately. List pass-through hosting or subscriptions as their own lines.'),
+   ('Should developers take a deposit?', 'Yes, especially for new clients and fixed-price builds &mdash; a deposit commits the client and protects your time. Make it the first milestone on the invoice.'),
+  ],
+  related=[('/en/invoice','Free invoice generator'),('/en/blog/recurring-invoices-explained','Recurring invoices explained'),('/en/blog/payment-terms-explained','Payment terms explained')],
+ ),
+ dict(
+  slug='invoice-for-online-store', cat='Industries', tool='/en/invoice',
+  title='How to Invoice for an Online Store (E-commerce)',
+  desc='When online sellers need invoices — B2B and wholesale orders, VAT/GST invoices for customers, and matching invoices to orders.',
+  date='2026-10-21',
+  body='''
+<p class="lead">Most retail e-commerce sales are handled by the store&rsquo;s checkout, but online sellers still need proper invoices &mdash; for wholesale and B2B orders, for customers who request a VAT or tax invoice, and for business buyers who need one to pay you.</p>
+<h2>When you need an invoice (not just a receipt)</h2>
+<p>A checkout confirmation or receipt is enough for most consumer sales. You need a proper invoice for wholesale/B2B orders, for purchase-order-based buyers, and whenever a customer asks for a VAT or tax invoice to reclaim tax.</p>
+<h2>Match the invoice to the order</h2>
+<p>Reference the order number and, if there is one, the customer&rsquo;s PO number so everything reconciles. List items with quantities and unit prices, shipping as its own line, and the tax applied for the customer&rsquo;s region.</p>
+<h2>Tax across regions</h2>
+<p>Cross-border selling means different tax models &mdash; US sales tax by state (where you have nexus), UK VAT, Australian GST, Canadian GST/HST. Issue the right type of document for the buyer&rsquo;s country, with your tax number where required.</p>
+<h2>Create an e-commerce invoice free</h2>
+<p>Our <a href="/en/invoice">free invoice generator</a> lets you reference the order, list items and shipping, and apply the correct tax for the US, UK, Australia or Canada &mdash; no sign-up.</p>
+''',
+  faqs=[
+   ('Do online stores need to send invoices?', 'For ordinary consumer sales a checkout receipt is usually enough. You need a proper invoice for wholesale/B2B orders, PO-based buyers, and any customer who requests a VAT or tax invoice.'),
+   ('How do I invoice a wholesale order?', 'Reference the order and any PO number, list items with quantities and unit prices, add shipping as a separate line, and apply the correct tax for the buyer&rsquo;s region with your tax number where required.'),
+   ('What tax do I charge on cross-border online sales?', 'It depends on the buyer&rsquo;s country and your obligations there &mdash; US sales tax where you have nexus, UK VAT, Australian or Canadian GST. Issue the right document type for that region.'),
+  ],
+  related=[('/en/invoice','Free invoice generator'),('/en/receipt','Free receipt generator'),('/en/blog/receipt-vs-invoice','Receipt vs invoice')],
+ ),
+ dict(
+  slug='invoice-for-freelance-writers', cat='Industries', tool='/en/invoice',
+  title='How to Invoice as a Freelance Writer',
+  desc='Writer invoicing — per-word vs per-project vs retainer, kill fees, rights, and the withholding and tax to watch for.',
+  date='2026-10-21',
+  body='''
+<p class="lead">Freelance writers bill in a few ways &mdash; per word, per piece, per hour, or on a monthly retainer &mdash; and the invoice is where you also pin down kill fees and rights. A clean invoice gets you paid faster and keeps the relationship clear.</p>
+<h2>Pick a model and show it clearly</h2>
+<p>Whether you charge per word, per article or a project fee, show the calculation plainly: &ldquo;Feature article, 1,500 words&rdquo; with the total, or &ldquo;Content retainer &mdash; October (4 posts)&rdquo;. For hourly work, show hours and rate.</p>
+<h2>Kill fees and rights</h2>
+<p>If a commissioned piece is cancelled, a kill fee (an agreed portion of the fee) may apply &mdash; note it in your terms. State what rights you&rsquo;re granting (first use, full transfer, etc.) if that affects the price.</p>
+<h2>Withholding and tax</h2>
+<p>In some countries, payments to individual writers are subject to withholding, and the payer deducts tax before paying you &mdash; your invoice should reflect the arrangement. Add VAT/GST only if you&rsquo;re registered; US sales tax rarely applies to writing services.</p>
+<h2>Create a writer invoice free</h2>
+<p>Our <a href="/en/invoice">free invoice generator</a> lets you bill per word, per piece or on retainer, note rights, and produce a clean PDF &mdash; no sign-up.</p>
+''',
+  faqs=[
+   ('How do freelance writers charge?', 'Common models are per word, per article/project, per hour, or a monthly retainer. Show the basis clearly on the invoice (e.g. word count and total, or the retainer period and deliverables).'),
+   ('What is a kill fee?', 'A kill fee is an agreed portion of the fee paid if a commissioned piece is cancelled before publication. Note it in your terms so it&rsquo;s clear what&rsquo;s owed if a project is pulled.'),
+   ('Do writers charge tax on invoices?', 'Usually only VAT/GST if registered; US sales tax rarely applies to writing services. Be aware some countries require the payer to withhold tax from payments to individuals.'),
+  ],
+  related=[('/en/invoice','Free invoice generator'),('/en/blog/how-to-invoice-as-a-freelancer','How to invoice as a freelancer'),('/en/blog/payment-reminder-email','Payment reminder email templates')],
+ ),
+ dict(
+  slug='how-to-number-invoices', cat='Invoicing', tool='/en/invoice',
+  title='How to Number Invoices (A Simple System)',
+  desc='A clear, reliable invoice numbering system — why sequential numbers matter, formats that work, and mistakes to avoid.',
+  date='2026-10-21',
+  body='''
+<p class="lead">Every invoice needs a unique number, and in many countries they must run in a sequence with no gaps. A simple, consistent numbering system keeps you compliant, makes invoices easy to find, and looks professional to clients.</p>
+<h2>Why sequential numbers matter</h2>
+<p>Unique, sequential numbers let you (and the tax authority) track every invoice and spot anything missing. In VAT/GST systems, a continuous sequence is often a legal requirement &mdash; gaps or duplicates can raise questions.</p>
+<h2>Formats that work</h2>
+<ul>
+<li><b>Simple sequence:</b> INV-0001, INV-0002, INV-0003&hellip;</li>
+<li><b>Year prefix:</b> 2026-001, 2026-002 (reset or continue each year).</li>
+<li><b>Client or project code:</b> ACME-0001 &mdash; handy if you want to group by client, as long as each number is still unique overall.</li>
+</ul>
+<h2>Mistakes to avoid</h2>
+<p>Don&rsquo;t reuse numbers, don&rsquo;t leave gaps without a record, and don&rsquo;t restart in a way that creates duplicates. Pick one format and stick to it &mdash; changing systems mid-year causes confusion.</p>
+<h2>Create numbered invoices free</h2>
+<p>Our <a href="/en/invoice">free invoice generator</a> lets you set your own invoice number in any format &mdash; just increment it each time &mdash; and produces a clean PDF, no sign-up.</p>
+''',
+  faqs=[
+   ('Do invoice numbers have to be sequential?', 'In many countries, especially under VAT/GST, invoice numbers must be unique and run in a continuous sequence without gaps. Even where it isn&rsquo;t strictly required, sequential numbering is best practice.'),
+   ('What is a good invoice numbering format?', 'A simple sequence like INV-0001, a year prefix like 2026-001, or a client code like ACME-0001 all work &mdash; as long as every number is unique and the sequence is consistent.'),
+   ('Can I change my invoice numbering system?', 'You can, but do it cleanly (for example at the start of a year) and keep a record, so you never create duplicates or unexplained gaps.'),
+  ],
+  related=[('/en/invoice','Free invoice generator'),('/en/blog/how-to-write-an-invoice','How to write an invoice'),('/en/blog/common-invoice-mistakes','Common invoice mistakes to avoid')],
+ ),
+ dict(
+  slug='credit-note-vs-invoice', cat='Invoicing', tool='/en/invoice',
+  title='What Is a Credit Note? (Credit Note vs Invoice)',
+  desc='A credit note cancels or reduces a previous invoice. Here is what it is, when to issue one, and how it differs from an invoice or refund.',
+  date='2026-10-21',
+  body='''
+<p class="lead">A <b>credit note</b> (or credit memo) is a document that reduces or cancels an amount a customer owes on a previous invoice &mdash; for a return, an overcharge, a discount or a correction. It&rsquo;s the proper way to fix an invoice without deleting it.</p>
+<h2>When to issue a credit note</h2>
+<ul>
+<li>A customer returns goods or cancels part of an order.</li>
+<li>You overcharged, or applied the wrong price or tax.</li>
+<li>You agree a discount or goodwill adjustment after invoicing.</li>
+</ul>
+<h2>Credit note vs invoice vs refund</h2>
+<p>An invoice <i>adds</i> to what a customer owes; a credit note <i>reduces</i> it. A credit note isn&rsquo;t the same as a refund &mdash; it adjusts the balance, which the customer can set against what they owe, while a refund actually returns money. You can issue a credit note and then refund if appropriate.</p>
+<h2>What to include</h2>
+<p>Reference the original invoice number, show the items and amounts being credited (including tax), and give the credit note its own unique number. Keep both documents on file so your records reconcile.</p>
+<h2>Create the documents free</h2>
+<p>You can produce an invoice and a matching credit note with our <a href="/en/invoice">free invoice generator</a> &mdash; label the credit note clearly and reference the original invoice. No sign-up needed.</p>
+''',
+  faqs=[
+   ('What is a credit note used for?', 'To reduce or cancel an amount on a previous invoice &mdash; for returns, overcharges, discounts or corrections. It&rsquo;s the proper way to adjust an invoice without deleting it.'),
+   ('Is a credit note the same as a refund?', 'No. A credit note reduces the balance the customer owes; a refund returns money. You can issue a credit note and then refund if the customer has already paid.'),
+   ('What should a credit note include?', 'Its own unique number, a reference to the original invoice, the items and amounts being credited (with tax), and your business and customer details.'),
+  ],
+  related=[('/en/invoice','Free invoice generator'),('/en/blog/invoice-vs-bill-vs-statement','Invoice vs bill vs statement'),('/en/blog/how-to-write-an-invoice','How to write an invoice')],
+ ),
+ dict(
+  slug='invoice-vs-bill-vs-statement', cat='Invoicing', tool='/en/invoice',
+  title='Invoice vs Bill vs Statement: What&rsquo;s the Difference?',
+  desc='Invoice, bill and statement are often used loosely but mean different things. Here is what each one is and when to use it.',
+  date='2026-10-21',
+  body='''
+<p class="lead">&ldquo;Invoice&rdquo;, &ldquo;bill&rdquo; and &ldquo;statement&rdquo; get used interchangeably, but they&rsquo;re three different documents. Knowing the difference helps you send the right one &mdash; and understand what you&rsquo;re receiving.</p>
+<h2>Invoice</h2>
+<p>An invoice is a seller&rsquo;s formal request for payment for specific goods or services, with a number, line items, tax, a total and a due date. It&rsquo;s a record of a single transaction that the customer will pay.</p>
+<h2>Bill</h2>
+<p>A &ldquo;bill&rdquo; is really the same request seen from the buyer&rsquo;s side &mdash; the document you receive and need to pay. In everyday use, &ldquo;bill&rdquo; often describes immediate amounts due (a restaurant bill, a utility bill), while &ldquo;invoice&rdquo; is the more formal B2B term. The document itself is largely the same.</p>
+<h2>Statement</h2>
+<p>A statement is a summary of account activity over a period &mdash; it lists multiple invoices, payments received and the outstanding balance. You send a statement to remind a customer of everything owed to date, not to request payment for a single job.</p>
+<h2>Create invoices free</h2>
+<p>Our <a href="/en/invoice">free invoice generator</a> produces professional invoices (your &ldquo;bill&rdquo; to the customer) as clean PDFs &mdash; no sign-up.</p>
+''',
+  faqs=[
+   ('Is a bill the same as an invoice?', 'Essentially yes &mdash; it&rsquo;s the same request for payment, described from the buyer&rsquo;s side. &ldquo;Bill&rdquo; is common for immediate amounts due; &ldquo;invoice&rdquo; is the more formal term used in business transactions.'),
+   ('What is the difference between an invoice and a statement?', 'An invoice requests payment for one transaction. A statement summarises account activity over a period &mdash; multiple invoices, payments and the outstanding balance &mdash; as a reminder of the total owed.'),
+   ('When should I send a statement instead of an invoice?', 'Send a statement periodically (e.g. monthly) to show a customer everything outstanding across several invoices. Send an invoice when you want payment for a specific job or order.'),
+  ],
+  related=[('/en/invoice','Free invoice generator'),('/en/blog/credit-note-vs-invoice','Credit note vs invoice'),('/en/blog/how-to-write-an-invoice','How to write an invoice')],
+ ),
+ dict(
+  slug='how-to-ask-for-a-deposit', cat='Getting paid', tool='/en/invoice',
+  title='How to Ask for a Deposit (Deposit Invoices)',
+  desc='Why and how to take a deposit before starting work — how much, how to invoice it, and how to apply it to the final invoice.',
+  date='2026-10-21',
+  body='''
+<p class="lead">Asking for a deposit protects you from doing work that never gets paid for, and it filters out clients who were never serious. Done professionally, it&rsquo;s completely normal &mdash; here&rsquo;s how to ask and how to invoice it.</p>
+<h2>Why take a deposit</h2>
+<p>A deposit commits the client, covers your early costs, and improves cash flow on longer jobs. For new clients, larger projects, or custom work you can&rsquo;t resell, it&rsquo;s standard practice.</p>
+<h2>How much, and how to ask</h2>
+<p>Common deposits run 25&ndash;50% of the total. Set it on the quote so it&rsquo;s agreed before work starts, and phrase it as routine: &ldquo;To book you in, I take a 50% deposit, with the balance due on completion.&rdquo; Confidence matters more than apology.</p>
+<h2>Invoicing the deposit and the balance</h2>
+<p>Issue a deposit invoice for the agreed amount up front. On the final invoice, show the full total, then the deposit already paid as a deduction, leaving the balance due. This keeps your records clean and the maths obvious to the client.</p>
+<h2>Create a deposit invoice free</h2>
+<p>Our <a href="/en/invoice">free invoice generator</a> lets you invoice a deposit and then show it as a deduction on the final invoice &mdash; no sign-up.</p>
+''',
+  faqs=[
+   ('How much deposit should I ask for?', 'Commonly 25&ndash;50% of the total, depending on the work and your costs. Set it on the quote so it&rsquo;s agreed before you start.'),
+   ('How do I invoice a deposit?', 'Issue a deposit invoice for the agreed amount up front. On the final invoice, show the full total, subtract the deposit already paid, and bill the remaining balance.'),
+   ('Is it normal to ask clients for a deposit?', 'Yes &mdash; for new clients, larger projects and custom work it&rsquo;s standard. Phrase it as routine policy and most clients expect it.'),
+  ],
+  related=[('/en/invoice','Free invoice generator'),('/en/blog/payment-terms-explained','Payment terms explained'),('/en/blog/payment-reminder-email','Payment reminder email templates')],
+ ),
+ dict(
+  slug='recurring-invoices-explained', cat='Invoicing', tool='/en/invoice',
+  title='What Are Recurring Invoices? (And When to Use Them)',
+  desc='Recurring invoices bill the same client the same amount on a schedule. Here is how they work, when to use them, and how to set them up.',
+  date='2026-10-21',
+  body='''
+<p class="lead">A <b>recurring invoice</b> bills a customer the same (or similar) amount on a regular schedule &mdash; weekly, monthly or yearly &mdash; without you creating each one from scratch. They&rsquo;re ideal for subscriptions, retainers and any ongoing service.</p>
+<h2>When recurring invoices make sense</h2>
+<ul>
+<li>Monthly retainers (consulting, design, marketing, VA work).</li>
+<li>Subscription or membership fees.</li>
+<li>Regular services &mdash; cleaning, maintenance, tutoring, hosting.</li>
+</ul>
+<h2>How they work</h2>
+<p>You set the client, the amount, the schedule and a start date; the invoice is then issued automatically each cycle with a new number and date. Some tools also charge a saved payment method automatically, which turns the invoice into a subscription.</p>
+<h2>Keep them accurate</h2>
+<p>Review recurring invoices periodically &mdash; usage, scope or prices change. Make it easy for clients to see what each cycle covers, and send any price changes in advance.</p>
+<h2>Create invoices free (and manage them with PRO)</h2>
+<p>You can create each invoice free with our <a href="/en/invoice">invoice generator</a>. For saved clients, automatic numbering and ongoing management, see <a href="/en/pricing">Free BizDoc PRO</a>.</p>
+''',
+  faqs=[
+   ('What is a recurring invoice?', 'An invoice that bills the same client a set amount on a regular schedule &mdash; weekly, monthly or yearly &mdash; issued automatically each cycle so you don&rsquo;t recreate it each time.'),
+   ('When should I use recurring invoices?', 'For retainers, subscriptions, memberships and regular services like cleaning, maintenance or tutoring &mdash; anything billed on a predictable schedule.'),
+   ('What is the difference between a recurring invoice and a subscription?', 'A recurring invoice requests payment each cycle; a subscription also charges a saved payment method automatically. A subscription is essentially a recurring invoice with auto-payment.'),
+  ],
+  related=[('/en/invoice','Free invoice generator'),('/en/pricing','Free vs PRO'),('/en/blog/payment-terms-explained','Payment terms explained')],
+ ),
+ dict(
+  slug='how-to-send-an-invoice-by-email', cat='Invoicing', tool='/en/invoice',
+  title='How to Send an Invoice by Email (With Template)',
+  desc='The right way to email an invoice — subject line, a short message template, attaching the PDF, and following up.',
+  date='2026-10-21',
+  body='''
+<p class="lead">Most invoices are sent by email, and a clear, professional message gets them paid faster. The invoice itself does the heavy lifting; the email just needs to be easy to read and act on. Here&rsquo;s how to do it.</p>
+<h2>Write a clear subject line</h2>
+<p>Put the key details in the subject so it&rsquo;s easy to find later: <i>&ldquo;Invoice INV-0042 from [Your Business] &mdash; due 20 Nov&rdquo;</i>. Avoid vague subjects like &ldquo;Hello&rdquo; or &ldquo;Document attached&rdquo;.</p>
+<h2>A short message template</h2>
+<p><i>Hi [Name],</i><br>Please find attached invoice INV-0042 for [work], totalling $[amount], due on [date]. Payment details are on the invoice. Thanks very much &mdash; let me know if you have any questions.<br><i>Best, [Your Name]</i></p>
+<h2>Attach the PDF (or send a link)</h2>
+<p>Attach the invoice as a PDF so it looks the same on any device, and name the file clearly (e.g. <i>Invoice-INV-0042.pdf</i>). Alternatively, send a share link the client can open and download &mdash; handy when the attachment is large or might be blocked.</p>
+<h2>Follow up politely</h2>
+<p>If the due date passes, a short, friendly reminder usually does the trick. Keep records of what you sent and when.</p>
+<h2>Create and send an invoice free</h2>
+<p>Our <a href="/en/invoice">free invoice generator</a> produces a clean PDF to attach, or a share link to send instead &mdash; no sign-up.</p>
+''',
+  faqs=[
+   ('What should the subject line of an invoice email say?', 'Include the invoice number, your business name and the due date, e.g. &ldquo;Invoice INV-0042 from [Business] &mdash; due 20 Nov&rdquo;, so it&rsquo;s easy to find and act on.'),
+   ('Should I attach the invoice as a PDF?', 'Yes &mdash; a PDF looks the same on any device and is easy to file. Name it clearly (Invoice-INV-0042.pdf). A share link is a good alternative when attachments are large or blocked.'),
+   ('What do I write in an invoice email?', 'Keep it short: greet the client, state the invoice number, amount and due date, note that payment details are on the invoice, and offer to answer questions.'),
+  ],
+  related=[('/en/invoice','Free invoice generator'),('/en/blog/payment-reminder-email','Payment reminder email templates'),('/en/blog/how-to-write-an-invoice','How to write an invoice')],
+ ),
+ dict(
+  slug='common-invoice-mistakes', cat='Invoicing', tool='/en/invoice',
+  title='10 Common Invoice Mistakes (And How to Avoid Them)',
+  desc='The invoicing mistakes that cause late payments and disputes — missing details, vague due dates, wrong tax — and how to fix each.',
+  date='2026-10-21',
+  body='''
+<p class="lead">Most late payments and billing disputes come down to a handful of avoidable invoice mistakes. Fix these and you&rsquo;ll get paid faster with fewer awkward conversations.</p>
+<h2>The mistakes that cost you</h2>
+<ul>
+<li><b>No clear due date</b> &mdash; &ldquo;Net 30&rdquo; alone invites delay; write the actual date.</li>
+<li><b>Missing invoice number</b> &mdash; makes tracking and (in VAT/GST systems) compliance harder.</li>
+<li><b>Vague line items</b> &mdash; &ldquo;Services&rdquo; raises questions; describe the work.</li>
+<li><b>Wrong or missing tax</b> &mdash; charging VAT/GST when not registered, or forgetting it when you should.</li>
+<li><b>No payment instructions</b> &mdash; if they can&rsquo;t see how to pay, they won&rsquo;t.</li>
+<li><b>Maths errors</b> &mdash; totals that don&rsquo;t add up erode trust.</li>
+<li><b>Wrong client details</b> &mdash; wrong name or address can bounce the invoice around a finance team.</li>
+<li><b>Sending it late</b> &mdash; invoice the day you finish, not weeks later.</li>
+<li><b>No terms for late payment</b> &mdash; state any late fee up front.</li>
+<li><b>No copy kept</b> &mdash; keep records for tax and follow-ups.</li>
+</ul>
+<h2>The simple fix</h2>
+<p>Use a consistent template that includes all the essentials, double-check the totals and the client&rsquo;s details, write the real due date, and send it promptly. A good tool handles the maths and tax for you.</p>
+<h2>Avoid them all, free</h2>
+<p>Our <a href="/en/invoice">free invoice generator</a> includes every required field, calculates tax and totals automatically, and shows a due date and payment details &mdash; no sign-up.</p>
+''',
+  faqs=[
+   ('Why are my invoices paid late?', 'The usual culprits are a vague due date, no payment instructions, unclear line items, or the invoice being sent late. Write the actual due date, make paying easy, describe the work, and invoice promptly.'),
+   ('What is the most common invoice mistake?', 'Not stating a clear, specific due date &mdash; &ldquo;Net 30&rdquo; alone leaves it ambiguous. Always write the actual calendar date payment is due.'),
+   ('How do I avoid errors on invoices?', 'Use a consistent template with all required fields, let a tool calculate tax and totals, double-check the client&rsquo;s details, and keep a copy of every invoice you send.'),
+  ],
+  related=[('/en/invoice','Free invoice generator'),('/en/blog/how-to-write-an-invoice','How to write an invoice'),('/en/blog/how-to-number-invoices','How to number invoices')],
  ),
 ]
 
