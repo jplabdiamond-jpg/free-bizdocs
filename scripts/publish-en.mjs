@@ -40,25 +40,56 @@ function genSlots() {
   return [s1, s2, s3].sort((a, b) => a - b);
 }
 
-let state = { day: '', count: 0, lastEpoch: 0, slots: [] };
+let state = { day: '', count: 0, lastEpoch: 0, slots: [], rot: 0, todayCats: [] };
 if (fs.existsSync(STATE)) { try { state = JSON.parse(fs.readFileSync(STATE, 'utf8')); } catch {} }
-if (state.day !== today) { state.day = today; state.count = 0; state.slots = genSlots(); }
+if (state.day !== today) { state.day = today; state.count = 0; state.slots = genSlots(); state.todayCats = []; }
 
 if (state.count >= MAX_PER_DAY) { saveState(state); writeResult({ published: false, reason: 'daily-cap' }); process.exit(0); }
 const due = FORCE ? state.count + 1 : state.slots.filter((m) => m <= nowMin).length;
 if (state.count >= Math.min(due, MAX_PER_DAY)) { saveState(state); writeResult({ published: false, reason: 'not-due' }); process.exit(0); }
 if (!FORCE && (nowEpoch - (state.lastEpoch || 0)) < MIN_GAP_SEC) { saveState(state); writeResult({ published: false, reason: 'gap' }); process.exit(0); }
 
-// --- 公開対象（draft があり、公開済みHTMLが無いもの。slug 昇順で1本） ---
-let drafts = [];
-try { drafts = fs.readdirSync(DRAFTS).filter((f) => f.endsWith('.html')).sort(); } catch {}
-let slug = null;
-for (const f of drafts) {
-  const s = f.replace(/\.html$/, '');
-  if (fs.existsSync(path.join(BLOG_DIR, s + '.html'))) continue; // 二重公開防止
-  slug = s; break;
+// --- 公開対象: カテゴリ・ローテーション選択 ---
+// 毎日3カテゴリを輪番で巡回し、1日の各スロットはできるだけ別カテゴリから1本ずつ公開する。
+// 例: 本日=A・B・C → 翌日=D・E・A …（在庫のないカテゴリは飛ばす）。
+// 画像は下書きHTMLに記事別 og:image が仕込み済みのため、公開＝画像付き。
+const CATS = ['Invoicing', 'Getting paid', 'Quoting', 'Tax', 'Purchasing', 'Industries'];
+function draftCat(s) {
+  try {
+    const h = fs.readFileSync(path.join(DRAFTS, s + '.html'), 'utf8');
+    const cm = h.match(/<!--ENCARD([\s\S]*?)-->/);
+    if (cm) { const m = cm[1].match(/tag\s*=\s*([^|]*?)\s*(?:\||$)/m); if (m && m[1].trim()) return m[1].trim(); }
+  } catch {}
+  return 'Guides';
 }
+let allDrafts = [];
+try { allDrafts = fs.readdirSync(DRAFTS).filter((f) => f.endsWith('.html')).map((f) => f.replace(/\.html$/, '')).sort(); } catch {}
+const avail = {};
+for (const s of allDrafts) {
+  if (fs.existsSync(path.join(BLOG_DIR, s + '.html'))) continue; // 二重公開防止
+  const c = draftCat(s);
+  (avail[c] = avail[c] || []).push(s);
+}
+if (typeof state.rot !== 'number') state.rot = 0;
+if (!Array.isArray(state.todayCats)) state.todayCats = [];
+// 輪番ポインタから、在庫のあるカテゴリを探索する。
+const order = CATS.filter((c) => (avail[c] || []).length);          // 在庫のあるカテゴリのみ
+const extra = Object.keys(avail).filter((c) => !CATS.includes(c) && avail[c].length); // 想定外tag(Guides等)
+const RING = order.concat(extra);
+let pickCat = null, step = 0;
+if (RING.length) {
+  const rot = ((state.rot % CATS.length) + CATS.length) % CATS.length;
+  // phase1: 本日まだ使っていないカテゴリを、輪番順で
+  for (let i = 0; i < CATS.length; i++) { const c = CATS[(rot + i) % CATS.length]; if ((avail[c] || []).length && !state.todayCats.includes(c)) { pickCat = c; step = i + 1; break; } }
+  // phase2: 残りが本日分を使い切っていれば、在庫のあるカテゴリで重複を許可（1日3本を維持）
+  if (!pickCat) { for (let i = 0; i < CATS.length; i++) { const c = CATS[(rot + i) % CATS.length]; if ((avail[c] || []).length) { pickCat = c; step = i + 1; break; } } }
+  // phase3: 想定外tagのフォールバック
+  if (!pickCat && extra.length) { pickCat = extra[0]; step = 1; }
+}
+let slug = pickCat ? avail[pickCat][0] : null; // カテゴリ内は slug 昇順
 if (!slug) { saveState(state); writeResult({ published: false, reason: 'no-ready-article' }); process.exit(0); }
+state.rot = (((state.rot % CATS.length) + CATS.length) % CATS.length + step) % CATS.length;
+state.todayCats.push(pickCat);
 
 // --- 本文: ENCARD 抽出・日付差し込み・移動 ---
 let htmlDoc = fs.readFileSync(path.join(DRAFTS, slug + '.html'), 'utf8');
