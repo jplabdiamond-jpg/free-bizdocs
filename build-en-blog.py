@@ -322,6 +322,147 @@ DRAFTS = [
   ],
   related=[('/en/invoice','Free invoice generator'),('/en/blog/how-to-write-an-invoice','How to write an invoice'),('/en/blog/how-to-invoice-as-a-freelancer','How to invoice as a freelancer')],
  ),
+ dict(
+  slug='how-to-invoice-a-client-first-time', cat='Invoicing', tool='/en/invoice',
+  title='How to Invoice a Client for the First Time',
+  desc='Sending your first invoice? Here is exactly what to put on it, how to set terms, and how to send it so you get paid without the awkwardness.',
+  date='2026-10-21',
+  body='''
+<p class="lead">Sending your first invoice can feel intimidating, but it&rsquo;s really just a clear request for money you&rsquo;ve earned. Get the few key details right and you&rsquo;ll look professional and get paid on time. Here&rsquo;s the whole process, start to finish.</p>
+
+<h2>Step 1: Confirm the details before you invoice</h2>
+<p>Make sure you and the client agree on what&rsquo;s being billed and the amount. If you quoted a price or signed a contract, your invoice should match it. Note the agreed payment terms (for example &ldquo;Net 14&rdquo;) and how they&rsquo;ll pay.</p>
+
+<h2>Step 2: Fill in the essentials</h2>
+<ul>
+<li>The word <b>&ldquo;Invoice&rdquo;</b> and a unique number &mdash; start simple with INV-0001.</li>
+<li>Your name or business name and contact details.</li>
+<li>The client&rsquo;s name and address (&ldquo;Bill To&rdquo;).</li>
+<li>The issue date and the due date.</li>
+<li>A line for each item or service, with the amount.</li>
+<li>The subtotal, any tax, and the total due.</li>
+<li>How to pay &mdash; bank details or a payment link.</li>
+</ul>
+
+<h2>Step 3: Decide on tax</h2>
+<p>Only add tax if you&rsquo;re required to. In the US that depends on your state and whether the service is taxable; in the UK, Australia and Canada you add VAT or GST once you&rsquo;re registered. If you&rsquo;re unsure, leave tax off and check with an accountant &mdash; and show it as a separate line when you do charge it.</p>
+
+<h2>Step 4: Send it and keep a copy</h2>
+<p>Email the PDF with a short, friendly note, or send a share link. Keep a copy for your records and set a reminder for the due date. If payment is late, a polite nudge usually does the trick.</p>
+
+<h2>Create your first invoice free</h2>
+<p>Our <a href="/en/invoice">free invoice generator</a> walks you through all of this &mdash; no sign-up &mdash; and produces a clean PDF with the right tax model for your country.</p>
+''',
+  faqs=[
+   ('What do I write on my first invoice?', 'The word &ldquo;Invoice&rdquo;, a unique number, your details, the client&rsquo;s details, the date and due date, a line for each item with amounts, the total, and how to pay. Add tax only if you&rsquo;re required to.'),
+   ('How do I send an invoice to a client?', 'Attach the PDF to a short, friendly email, or send a share link. Confirm the amount and due date in the message and include your payment details.'),
+   ('Do I need to charge tax on my first invoice?', 'Only if required where you operate. US sales tax depends on your state and service; UK VAT, Australian GST and Canadian GST/HST apply once you&rsquo;re registered. Show any tax as a separate line.'),
+  ],
+  related=[('/en/invoice','Free invoice generator'),('/en/blog/how-to-write-an-invoice','How to write an invoice'),('/en/blog/payment-terms-explained','Payment terms explained')],
+ ),
+ dict(
+  slug='pro-forma-invoice', cat='Invoicing', tool='/en/invoice',
+  title='What Is a Pro Forma Invoice? (And When to Use One)',
+  desc='A pro forma invoice is a preliminary bill sent before goods or services are delivered. Here is what it is, how it differs from a regular invoice, and when to use it.',
+  date='2026-10-21',
+  body='''
+<p class="lead">A <b>pro forma invoice</b> is a preliminary bill you send <i>before</i> the sale is finalised &mdash; a good-faith estimate of what the customer will owe, used to confirm details or arrange payment in advance. It looks like an invoice but isn&rsquo;t a demand for payment or an accounting record.</p>
+
+<h2>Pro forma invoice vs regular invoice</h2>
+<p>A regular (commercial) invoice is issued once goods or services are delivered and is a formal request for payment that goes into your books. A pro forma is issued beforehand, isn&rsquo;t recorded as a sale, and can still change. Many businesses mark it clearly with the words &ldquo;Pro Forma&rdquo; so there&rsquo;s no confusion.</p>
+
+<h2>When to use one</h2>
+<ul>
+<li>To give a buyer a firm price and details so they can approve the purchase or raise a PO.</li>
+<li>To request an advance payment or deposit before starting work.</li>
+<li>For international shipments, where customs may need a pro forma for valuation.</li>
+<li>When a customer&rsquo;s finance team needs a document to set up payment before the real invoice.</li>
+</ul>
+
+<h2>What to include</h2>
+<p>Use the same layout as an invoice &mdash; your details, the customer, line items, the expected total and any tax &mdash; but title it &ldquo;Pro Forma Invoice&rdquo; and add a validity date. When the sale is confirmed, issue a normal invoice with an invoice number for your records.</p>
+
+<h2>Create one free</h2>
+<p>You can build a pro forma with our <a href="/en/invoice">free invoice generator</a> (add &ldquo;Pro Forma&rdquo; to the title or notes), then issue the final <a href="/en/invoice">invoice</a> once the order is confirmed &mdash; no sign-up needed.</p>
+''',
+  faqs=[
+   ('What is the purpose of a pro forma invoice?', 'To give a buyer a preliminary, good-faith bill before the sale is final &mdash; to confirm price and details, request an advance, or support customs valuation. It is not a formal demand for payment or an accounting record.'),
+   ('Is a pro forma invoice legally binding?', 'Generally no. It is a quotation-like document that can still change. The binding request for payment is the final commercial invoice issued once the sale is confirmed.'),
+   ('What is the difference between a pro forma and a regular invoice?', 'A pro forma is sent before delivery and isn&rsquo;t recorded as a sale; a regular invoice is sent after delivery, carries an invoice number, and is a formal request for payment in your books.'),
+  ],
+  related=[('/en/invoice','Free invoice generator'),('/en/blog/how-to-write-an-invoice','How to write an invoice'),('/en/blog/estimate-vs-quote','Estimate vs quote')],
+ ),
+ dict(
+  slug='uk-vat-invoice-requirements', cat='Tax', tool='/en/invoice',
+  title='UK VAT Invoice Requirements: What to Include',
+  desc='A clear checklist of what a UK VAT invoice must show — your VAT number, the VAT rate and amount, and the other details HMRC expects.',
+  date='2026-10-21',
+  body='''
+<p class="lead">If you&rsquo;re VAT-registered in the UK, your invoices must meet HMRC&rsquo;s requirements so your customers can reclaim VAT and your records stand up to scrutiny. Here&rsquo;s a plain-English checklist of what a full VAT invoice should show.</p>
+
+<h2>What a full VAT invoice must include</h2>
+<ul>
+<li>A unique, sequential <b>invoice number</b>.</li>
+<li>Your business name, address and <b>VAT registration number</b>.</li>
+<li>The invoice date (and the &ldquo;time of supply&rdquo;/tax point if different).</li>
+<li>The customer&rsquo;s name and address.</li>
+<li>A description of the goods or services.</li>
+<li>For each line: quantity, unit price (excl. VAT), the <b>VAT rate</b> and the amount.</li>
+<li>The total excluding VAT, the total VAT, and the amount including VAT &mdash; in GBP.</li>
+</ul>
+
+<h2>UK VAT rates</h2>
+<p>The standard rate is 20%, with a reduced rate of 5% for some goods and services and a 0% rate for certain zero-rated items. Show the rate that applies to each line, and if you supply items at different rates, show the VAT for each rate separately.</p>
+
+<h2>Simplified and modified invoices</h2>
+<p>For smaller retail sales (broadly under &pound;250 including VAT) you can issue a simplified VAT invoice with fewer details. Larger or B2B sales usually need a full VAT invoice as above.</p>
+<div class="note">This is general guidance, not tax advice. VAT rules and thresholds change &mdash; check the current requirements on GOV.UK or with your accountant.</div>
+
+<h2>Create a UK VAT invoice free</h2>
+<p>Our <a href="/en/invoice">free invoice generator</a> has a UK mode that adds your VAT number, applies the 20% / 5% / 0% rates and totals the VAT in GBP on A4 &mdash; no sign-up.</p>
+''',
+  faqs=[
+   ('What must a UK VAT invoice include?', 'A unique invoice number, your name, address and VAT registration number, the date, the customer&rsquo;s details, a description, and for each line the quantity, net price, VAT rate and VAT amount, plus the totals excluding and including VAT in GBP.'),
+   ('Do I need to show my VAT number on invoices?', 'Yes. If you&rsquo;re VAT-registered, a valid VAT invoice must show your VAT registration number so your customer can reclaim the VAT.'),
+   ('What are the UK VAT rates?', 'The standard rate is 20%, with a 5% reduced rate for some supplies and a 0% zero rate for certain items. Show the rate that applies to each line.'),
+  ],
+  related=[('/en/invoice','Free invoice generator'),('/en/blog/how-to-write-an-invoice','How to write an invoice'),('/en/blog/sales-tax-on-invoices','Sales tax on invoices (US)')],
+ ),
+ dict(
+  slug='australian-tax-invoice-requirements', cat='Tax', tool='/en/invoice',
+  title='Australian Tax Invoice Requirements (ABN &amp; GST)',
+  desc='What an Australian tax invoice must show — your ABN, the words “Tax Invoice”, GST, and the buyer’s details for sales of $1,000 or more.',
+  date='2026-10-21',
+  body='''
+<p class="lead">In Australia, if you&rsquo;re registered for GST you issue a <b>tax invoice</b> so your customers can claim GST credits. The ATO sets out specific details a tax invoice must show &mdash; and a couple of them differ depending on the sale amount.</p>
+
+<h2>What a tax invoice must include</h2>
+<ul>
+<li>The words <b>&ldquo;Tax Invoice&rdquo;</b>.</li>
+<li>Your business or trading name and your <b>ABN</b>.</li>
+<li>The date the invoice was issued.</li>
+<li>A description of the items sold, including quantity and price.</li>
+<li>The <b>GST amount</b> (or a statement that the total includes GST).</li>
+<li>The extent to which each sale is taxable.</li>
+</ul>
+
+<h2>Sales of $1,000 or more</h2>
+<p>For taxable sales of $1,000 or more (including GST), the tax invoice must also show the <b>buyer&rsquo;s identity or ABN</b>. For sales under $1,000 that detail isn&rsquo;t required, though it&rsquo;s fine to include it.</p>
+
+<h2>How GST works on the invoice</h2>
+<p>GST is 10% on most goods and services. You can show it as a separate line, or state that the total price includes GST &mdash; for a single-rate invoice, &ldquo;Total price includes GST&rdquo; is acceptable. Some items are GST-free; show those clearly so the GST total is correct.</p>
+<div class="note">This is general guidance, not tax advice. GST rules can change &mdash; check current requirements on the ATO website or with your accountant.</div>
+
+<h2>Create an Australian tax invoice free</h2>
+<p>Our <a href="/en/invoice">free invoice generator</a> has an Australia mode: enter your ABN and it titles the document &ldquo;Tax Invoice&rdquo;, applies 10% GST and formats it on A4 &mdash; no sign-up.</p>
+''',
+  faqs=[
+   ('What must an Australian tax invoice show?', 'The words &ldquo;Tax Invoice&rdquo;, your name and ABN, the date, a description with quantity and price, the GST amount (or that the total includes GST), and how much of the sale is taxable. For sales of $1,000 or more it must also show the buyer&rsquo;s identity or ABN.'),
+   ('Do I need an ABN to issue a tax invoice?', 'Yes. A valid tax invoice must show your ABN. Without one, the buyer generally can&rsquo;t claim GST credits and may have to withhold tax from the payment.'),
+   ('When do I need the buyer&rsquo;s details on a tax invoice?', 'For taxable sales of $1,000 or more (including GST), the tax invoice must include the buyer&rsquo;s identity or ABN. For smaller sales it&rsquo;s optional.'),
+  ],
+  related=[('/en/invoice','Free invoice generator'),('/en/blog/how-to-write-an-invoice','How to write an invoice'),('/en/blog/uk-vat-invoice-requirements','UK VAT invoice requirements')],
+ ),
 ]
 
 FOOTER = '''<footer class="ft"><div class="in">
