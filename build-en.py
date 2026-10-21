@@ -4,7 +4,7 @@
 import json, os, datetime
 ROOT = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(ROOT, 'en')
-V = datetime.date.today().strftime('%Y%m%d') + 'h'  # bump suffix on each JS/asset change to bust browser cache
+V = datetime.date.today().strftime('%Y%m%d') + 'i'  # bump suffix on each JS/asset change to bust browser cache
 BASE = 'https://free-bizdocs.com'
 
 PAGES = [
@@ -48,6 +48,31 @@ PAGES = [
   h1='Free Sales Order Generator', ey='Free - No sign-up - Order confirmation',
   lead='Acknowledge a customer order with a sales order (or order confirmation): confirm the items, agreed prices, ship-to address and delivery date, and reference their PO number so both sides can match the paperwork.',
   tags=['No sign-up','Confirms an order','References their PO','Ship-to &amp; delivery','Instant PDF']),
+ dict(slug='timesheet', kind='timesheet', title='Free Timesheet Generator - Download a Timesheet PDF (No Sign-Up)',
+  desc='Create a timesheet logging hours worked by date, with an hourly rate and totals, and download it as a PDF - free, no account. Convert it to an invoice in one click. US / UK / AU / CA currencies.',
+  h1='Free Timesheet Generator', ey='Free - No sign-up - Hours x rate',
+  lead='Log your hours by date and task, set your hourly rate, and get a clean timesheet PDF with total hours and the amount. Convert it straight into an invoice when it is time to bill.',
+  tags=['No sign-up','Hours x rate','Total hours','Convert to invoice','Instant PDF']),
+ dict(slug='work-order', kind='workorder', title='Free Work Order Template - Create a Job Sheet PDF (No Sign-Up)',
+  desc='Create a work order or job sheet with the customer, service address, scheduled date, labor and parts, and sign-off lines. Free PDF, no account. US / UK / AU / CA tax handled automatically.',
+  h1='Free Work Order Generator', ey='Free - No sign-up - Job sheet / sign-off',
+  lead='Dispatch and document a job: the customer, the service address, the scheduled date, the labor and parts with prices, plus authorization and completion sign-off lines.',
+  tags=['No sign-up','Service address','Labor &amp; parts','Sign-off lines','Instant PDF']),
+ dict(slug='expense-report', kind='expense', title='Free Expense Report &amp; Expense Claim Generator - PDF (No Sign-Up)',
+  desc='Create an expense report (expense claim) listing dated expenses by category with a reimbursement total and an approval line. Free PDF, no account. US / UK / AU / CA currencies.',
+  h1='Free Expense Report Generator', ey='Free - No sign-up - Reimbursement claim',
+  lead='List your business expenses by date and category, total the reimbursement due, and add an approval line. Submit the PDF to whoever signs off your claim.',
+  tags=['No sign-up','By date &amp; category','Reimbursement total','Approval line','Instant PDF']),
+ dict(slug='bill-of-sale', kind='billofsale', title='Free Bill of Sale Template - Create a Bill of Sale PDF (No Sign-Up)',
+  desc='Create a bill of sale recording the transfer of goods from seller to buyer, with the item description, sale price, date, as-is terms and signature lines for both parties. Free PDF, no account.',
+  h1='Free Bill of Sale Generator', ey='Free - No sign-up - Seller &amp; buyer sign',
+  lead='Record a private sale: the seller, the buyer, the item(s) sold, the price and date, an as-is statement, and signature lines for both parties - a simple proof of the transfer of ownership.',
+  tags=['No sign-up','Seller &amp; buyer','As-is terms','Both-party signatures','Instant PDF']),
+ dict(slug='donation-receipt', kind='donation', title='Free Donation Receipt Generator - Nonprofit Tax Receipt PDF (No Sign-Up)',
+  desc='Create a donation receipt for a nonprofit or charity, with the donor, amount, date, tax-exempt ID and the required "no goods or services" statement. Free PDF, no account.',
+  h1='Free Donation Receipt Generator', ey='Free - No sign-up - Nonprofit / charity',
+  lead='Thank a donor and give them what they need at tax time: the amount, the date, your organisation&rsquo;s tax-exempt ID, and the statement that no goods or services were provided in exchange.',
+  tags=['No sign-up','Donor &amp; amount','Tax-exempt ID','&ldquo;No goods&rdquo; statement','Instant PDF']),
 ]
 
 ARTICLES = {
@@ -110,6 +135,43 @@ ARTICLES = {
 <p>The <b>purchase order</b> is raised by the buyer to place the order. The <b>sales order</b> is your acknowledgement that you accept it and will supply on the stated terms. The <b>invoice</b> comes later, once the goods or services are delivered, to request payment. Keeping the same number thread across all three lets both sides match the paperwork. Create the matching invoice or packing slip from the same details with one click.</p>
 <h2>How to create a free sales order</h2>
 <div class="steps"><div class="step"><span class="n">1</span><span class="t">Choose your country and enter your business details</span></div><div class="step"><span class="n">2</span><span class="t">Enter the customer, their PO number, ship-to address and delivery date</span></div><div class="step"><span class="n">3</span><span class="t">Add the items and agreed prices</span></div><div class="step"><span class="n">4</span><span class="t">Download the PDF and send it to confirm the order</span></div></div>''',
+ 'timesheet': '''<p class="lead">A timesheet records the hours you worked so they can be approved and billed. For freelancers and contractors who charge by the hour, it is the backup for an invoice: each line is a date and task, the hours, your rate and the amount, with the total hours and total due at the bottom.</p>
+<h2>What to include on a timesheet</h2>
+<ul><li>Your name or business, and the client the hours are for</li><li>The <b>period</b> (for example the week ending date) and a timesheet number</li><li>One line per day or task: the <b>date and description</b>, <b>hours</b> and <b>rate</b></li><li><b>Total hours</b> and the total amount at the agreed rate</li><li>Space for approval, if your client signs off hours before paying</li></ul>
+<h2>From timesheet to invoice</h2>
+<p>Because a timesheet is just hours priced at a rate, it converts cleanly into an invoice. Log the week here, then switch to &ldquo;Invoice&rdquo; under the preview to bill the same lines with a due date and your payment details. No tax is applied to the timesheet itself &mdash; add it on the invoice if you charge it.</p>
+<h2>How to create a free timesheet</h2>
+<div class="steps"><div class="step"><span class="n">1</span><span class="t">Choose your currency and enter your details and the client</span></div><div class="step"><span class="n">2</span><span class="t">Set the week-ending date and your hourly rate</span></div><div class="step"><span class="n">3</span><span class="t">Add a line per day with the hours worked</span></div><div class="step"><span class="n">4</span><span class="t">Download the PDF, or convert it to an invoice to bill</span></div></div>''',
+ 'work-order': '''<p class="lead">A work order (or job sheet) authorises and documents a job &mdash; common in trades like repair, maintenance, installation and field service. It tells the technician what to do and where, lists the labor and parts, and carries sign-off lines so the customer can authorise the work and confirm it was completed.</p>
+<h2>What to include on a work order</h2>
+<ul><li>Your business details and a unique <b>work order number</b></li><li>The <b>customer</b> and the <b>service address</b> where the work happens</li><li>The <b>scheduled date</b> and a description of the work requested (use the notes)</li><li>Lines for <b>labor and parts</b> with quantities and prices, tax and the total</li><li><b>Sign-off</b> lines: authorised by the customer, and completed by the technician</li></ul>
+<h2>Work order, invoice and the paper trail</h2>
+<p>The work order comes first &mdash; it scopes and authorises the job. When the work is done, convert it to an invoice under the preview to bill the same labor and parts. Keeping the work order number on the invoice lets the customer match what they approved to what they are charged.</p>
+<h2>How to create a free work order</h2>
+<div class="steps"><div class="step"><span class="n">1</span><span class="t">Choose your country and enter your business details</span></div><div class="step"><span class="n">2</span><span class="t">Enter the customer, service address and scheduled date</span></div><div class="step"><span class="n">3</span><span class="t">List the labor and parts; note the work requested</span></div><div class="step"><span class="n">4</span><span class="t">Download the PDF for sign-off, then convert to an invoice when done</span></div></div>''',
+ 'expense-report': '''<p class="lead">An expense report (or expense claim) is how an employee or contractor asks to be reimbursed for business costs they paid out of pocket. It lists each expense by date and category with the amount, totals the reimbursement due, and leaves a line for an approver to sign off.</p>
+<h2>What to include on an expense report</h2>
+<ul><li>Who is claiming, and who it is <b>submitted to</b> (the employer or client)</li><li>The <b>period</b> the expenses cover and a report number</li><li>One line per expense: the <b>date, category and description</b>, and the amount</li><li>The <b>total reimbursement</b> due</li><li>An <b>approval</b> line &mdash; and keep the receipts to attach</li></ul>
+<h2>Tips for a claim that gets approved</h2>
+<p>Group expenses by category (travel, meals, supplies), put the date and merchant in the description, and keep a receipt for every line. Totals should match the receipts exactly. This tool keeps the layout simple &mdash; description and amount &mdash; so the claim is quick to scan and sign.</p>
+<h2>How to create a free expense report</h2>
+<div class="steps"><div class="step"><span class="n">1</span><span class="t">Choose your currency and enter your name and who it is submitted to</span></div><div class="step"><span class="n">2</span><span class="t">Set the period and report number</span></div><div class="step"><span class="n">3</span><span class="t">Add a line per expense with the date, category and amount</span></div><div class="step"><span class="n">4</span><span class="t">Download the PDF and attach your receipts</span></div></div>''',
+ 'bill-of-sale': '''<p class="lead">A bill of sale is a short document that records the sale of goods from a seller to a buyer and the transfer of ownership. It is common for private sales of vehicles, equipment, furniture and other second-hand items. It states who sold what to whom, for how much, on what date, and that the item is sold as-is.</p>
+<h2>What to include on a bill of sale</h2>
+<ul><li>The <b>seller</b> and the <b>buyer</b> (names and addresses)</li><li>A clear <b>description of the item(s)</b> &mdash; include a serial or VIN in the description where relevant</li><li>The <b>sale price</b> and the <b>date of sale</b></li><li>An <b>as-is</b> statement and that the seller is the lawful owner</li><li><b>Signatures</b> from both the seller and the buyer</li></ul>
+<h2>When you need one</h2>
+<p>A bill of sale is the buyer&rsquo;s proof of purchase and the seller&rsquo;s proof that ownership (and liability) has passed. For vehicles it is often needed to register the change of ownership. Requirements vary by state, province and country, so check what your local authority asks for &mdash; this tool gives you a clean, general-purpose bill of sale to start from.</p>
+<div class="note">This is a general template, not legal advice. For vehicles and high-value items, confirm the wording and any notarisation your jurisdiction requires.</div>
+<h2>How to create a free bill of sale</h2>
+<div class="steps"><div class="step"><span class="n">1</span><span class="t">Choose your currency and enter the seller (your) details</span></div><div class="step"><span class="n">2</span><span class="t">Enter the buyer and the date of sale</span></div><div class="step"><span class="n">3</span><span class="t">Describe the item(s) and the sale price</span></div><div class="step"><span class="n">4</span><span class="t">Download the PDF and have both parties sign</span></div></div>''',
+ 'donation-receipt': '''<p class="lead">A donation receipt is the acknowledgement a nonprofit or charity gives a donor for a contribution. Donors need it for their tax records, and in the US a written acknowledgement is required for gifts of $250 or more. It shows the organisation, the donor, the amount, the date, and the statement about whether anything was given in return.</p>
+<h2>What to include on a donation receipt</h2>
+<ul><li>Your <b>organisation&rsquo;s name</b> and <b>tax-exempt ID</b> (EIN in the US; charity number elsewhere)</li><li>The <b>donor&rsquo;s name</b> and the <b>date</b> of the donation</li><li>The <b>amount</b> of a cash gift, or a description of a non-cash gift (without stating its value)</li><li>A statement of whether <b>goods or services</b> were provided in exchange &mdash; and their value if so</li><li>An authorised signature</li></ul>
+<h2>The &ldquo;no goods or services&rdquo; statement</h2>
+<p>US tax rules require the receipt to say whether the donor received anything in return. If they did not, the receipt must state that &mdash; this tool prints &ldquo;No goods or services were provided in exchange for this donation&rdquo; for you. If the donor received something (an event ticket, a gift), you must describe it and give a good-faith estimate of its value, because only the amount above that is deductible.</p>
+<div class="note">Rules differ by country and by the type and size of gift. Confirm your acknowledgement meets your tax authority&rsquo;s requirements.</div>
+<h2>How to create a free donation receipt</h2>
+<div class="steps"><div class="step"><span class="n">1</span><span class="t">Choose your currency and enter your organisation and its tax-exempt ID</span></div><div class="step"><span class="n">2</span><span class="t">Enter the donor and the date received</span></div><div class="step"><span class="n">3</span><span class="t">Add the donation amount</span></div><div class="step"><span class="n">4</span><span class="t">Download the PDF and send it to the donor</span></div></div>''',
 }
 
 FAQS = {
@@ -156,6 +218,31 @@ FAQS = {
   ('What is the difference between a sales order and a purchase order?','The buyer issues the purchase order to place the order; the seller replies with a sales order to confirm it will supply on those terms. The invoice comes later to request payment. A sales order references the buyer&rsquo;s PO number.'),
   ('Is an order confirmation the same as a sales order?','In most small businesses, yes &mdash; both acknowledge an accepted order and confirm its details before fulfilment. Use whichever term your customers expect; the layout is the same.'),
   ('Can I create an invoice from a sales order?','Yes. Once you have fulfilled the order, switch to &ldquo;Invoice&rdquo; under the preview &mdash; the items, customer and references carry over with a new invoice number.'),
+  ('Is it free?','Yes &mdash; no sign-up. The free version allows 2 PDF downloads per hour from the same network.')],
+ 'timesheet': [('What should a timesheet include?','Your name or business, the client, the period (e.g. week ending), and one line per day or task with the date, hours and rate. The PDF totals the hours and the amount due at your rate.'),
+  ('Does the timesheet add tax?','No. A timesheet records hours and amounts only. If you charge sales tax or VAT, convert the timesheet to an invoice &mdash; tax is applied there.'),
+  ('How do I turn a timesheet into an invoice?','Under the preview, switch to &ldquo;Invoice&rdquo;. The same lines carry over, and you can add a due date, payment terms and tax.'),
+  ('How do I enter hours and rate?','Each line has an Hours field and a Rate field; the amount is hours x rate. Put the date and task in the description. The total hours appear in the summary.'),
+  ('Is it free?','Yes &mdash; no sign-up. The free version allows 2 PDF downloads per hour from the same network.')],
+ 'work-order': [('What is a work order?','A work order (or job sheet) authorises and documents a job: the customer, the service address, the scheduled date, the labor and parts, and sign-off lines for the customer to authorise and the technician to confirm completion.'),
+  ('What is the difference between a work order and an invoice?','The work order comes first and authorises the job; the invoice comes after completion to request payment. Convert the work order to an invoice under the preview to bill the same labor and parts.'),
+  ('Where do I put the work requested?','Use the Notes field for a description of the work requested or performed; it prints in a box on the PDF. Labor and parts go in the line items.'),
+  ('Does a work order need signatures?','It is good practice. The PDF includes an &ldquo;authorised by (customer)&rdquo; line and a &ldquo;work completed by&rdquo; line so both the authorisation and the completion are on record.'),
+  ('Is it free?','Yes &mdash; no sign-up. The free version allows 2 PDF downloads per hour from the same network.')],
+ 'expense-report': [('What should an expense report include?','Who is claiming and who it is submitted to, the period covered, one line per expense (date, category, description, amount), the total reimbursement due, and an approval line. Keep a receipt for each line.'),
+  ('What is the difference between an expense report and an expense claim?','They are the same thing &mdash; &ldquo;expense report&rdquo; is common in the US and Canada, &ldquo;expense claim&rdquo; in the UK and Australia. The title switches to match the country you select.'),
+  ('Does the expense report calculate tax?','No. It simply totals the amounts you enter for reimbursement. Enter each expense as its final paid amount.'),
+  ('Do I need to attach receipts?','Usually yes &mdash; most employers require a receipt for each expense. Submit the PDF with the receipts attached so the claim can be verified and approved.'),
+  ('Is it free?','Yes &mdash; no sign-up. The free version allows 2 PDF downloads per hour from the same network.')],
+ 'bill-of-sale': [('What is a bill of sale?','A short document recording the sale of goods from a seller to a buyer and the transfer of ownership. It states who sold what to whom, for how much, on what date, and that the item is sold as-is. Common for vehicles and second-hand equipment.'),
+  ('Is a bill of sale legally binding?','Signed by both parties, it is evidence of the sale and the transfer of ownership. Specific requirements (and whether notarisation is needed) vary by state, province and country, so check your local rules.'),
+  ('How do I include a VIN or serial number?','Put it in the item description along with make, model and condition. The description prints exactly as you enter it.'),
+  ('Does a bill of sale include tax?','This template does not add tax &mdash; private sales are often not taxed, and where tax applies it is usually handled at registration. Enter the agreed sale price.'),
+  ('Is it free?','Yes &mdash; no sign-up. The free version allows 2 PDF downloads per hour from the same network.')],
+ 'donation-receipt': [('What should a donation receipt include?','Your organisation&rsquo;s name and tax-exempt ID, the donor&rsquo;s name, the date, the amount (for cash) or a description (for non-cash), and a statement of whether goods or services were provided in exchange.'),
+  ('When is a donation receipt required?','In the US, a donor needs a written acknowledgement to claim a deduction for any single gift of $250 or more. Many charities issue receipts for all gifts as good practice. Rules differ by country.'),
+  ('What is the "no goods or services" statement?','Tax rules require the receipt to say whether the donor received anything in return. If not, the receipt states so. If they did (an event, a gift), you must describe it and estimate its value &mdash; only the amount above that is deductible.'),
+  ('Should the receipt state the value of a non-cash gift?','No. For in-kind donations you describe the item; the donor is responsible for valuing it. State a dollar amount only for cash contributions.'),
   ('Is it free?','Yes &mdash; no sign-up. The free version allows 2 PDF downloads per hour from the same network.')],
 }
 INDEX_FAQ = [('Is Free BizDoc free?','Yes. All five documents can be created and downloaded as PDFs without an account. The free version lets you download 2 PDFs per hour from the same network (shared office or home Wi-Fi counts as one).'),
@@ -213,7 +300,7 @@ def tool(p):
   <div class="card pad">
     <div class="themeseg" id="themeseg"></div>
     <div class="regseg" id="regseg"><span class="rlb">Country</span><button type="button" data-region="us">&#127482;&#127480; United States</button><button type="button" data-region="uk">&#127468;&#127463; United Kingdom</button><button type="button" data-region="au">&#127462;&#127482; Australia</button><button type="button" data-region="ca">&#127464;&#127462; Canada</button></div>
-    <div class="seg" id="seg"><button data-kind="invoice">Invoice</button><button data-kind="quote">Estimate / Quote</button><button data-kind="delivery">Packing Slip</button><button data-kind="po">Purchase Order</button><button data-kind="receipt">Receipt</button><button data-kind="credit">Credit Note</button><button data-kind="proforma">Pro Forma</button><button data-kind="salesorder">Sales Order</button></div>
+    <div class="seg" id="seg"><button data-kind="invoice">Invoice</button><button data-kind="quote">Estimate / Quote</button><button data-kind="delivery">Packing Slip</button><button data-kind="po">Purchase Order</button><button data-kind="receipt">Receipt</button><button data-kind="credit">Credit Note</button><button data-kind="proforma">Pro Forma</button><button data-kind="salesorder">Sales Order</button><button data-kind="timesheet">Timesheet</button><button data-kind="workorder">Work Order</button><button data-kind="expense">Expense</button><button data-kind="billofsale">Bill of Sale</button><button data-kind="donation">Donation</button></div>
 
     <details id="co-details">
       <summary>Your business (saved in this browser for next time)<svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></summary>
@@ -263,7 +350,7 @@ def tool(p):
         <label class="fl" id="prov-wrap">Province / territory<select id="ca-prov"></select></label>
       </div>
       <div class="items">
-        <div class="hd"><span>Description</span><span>Qty</span><span id="th-price">Unit price (<span id="cur-lb">USD</span>)</span><span id="th-tax">Tax</span><span></span></div>
+        <div class="hd"><span>Description</span><span id="th-qty">Qty</span><span id="th-price">Unit price (<span id="cur-lb">USD</span>)</span><span id="th-tax">Tax</span><span></span></div>
         <div id="rows"></div>
       </div>
       <button class="addrow" id="addrow" type="button">&#65291; Add line</button>
@@ -307,6 +394,11 @@ FOOTER = '''<footer class="ft"><div class="in">
       <a href="/en/credit-note">Credit Note</a>
       <a href="/en/proforma-invoice">Pro Forma Invoice</a>
       <a href="/en/sales-order">Sales Order</a>
+      <a href="/en/timesheet">Timesheet</a>
+      <a href="/en/work-order">Work Order</a>
+      <a href="/en/expense-report">Expense Report</a>
+      <a href="/en/bill-of-sale">Bill of Sale</a>
+      <a href="/en/donation-receipt">Donation Receipt</a>
     </div>
     <div class="col">
       <h4>More</h4>
@@ -347,7 +439,12 @@ def index():
              ('/en/packing-slip','Packing Slip / Delivery Note','The items and quantities shipped &mdash; no prices &mdash; with a received-by line.','Create a packing slip'),
              ('/en/credit-note','Credit Note / Credit Memo','Cancel or reduce an invoice &mdash; links to the original and reverses the tax.','Create a credit note'),
              ('/en/proforma-invoice','Pro Forma Invoice','A preliminary bill for deposits or customs &mdash; clearly not a tax invoice.','Create a pro forma'),
-             ('/en/sales-order','Sales Order','Confirm a customer order &mdash; the seller-side reply to a purchase order.','Create a sales order')]
+             ('/en/sales-order','Sales Order','Confirm a customer order &mdash; the seller-side reply to a purchase order.','Create a sales order'),
+             ('/en/timesheet','Timesheet','Log hours by date at an hourly rate, with totals &mdash; converts to an invoice.','Create a timesheet'),
+             ('/en/work-order','Work Order','Authorise and document a job &mdash; labor, parts and sign-off lines.','Create a work order'),
+             ('/en/expense-report','Expense Report','Claim reimbursement for business costs by date and category.','Create an expense report'),
+             ('/en/bill-of-sale','Bill of Sale','Record a private sale and the transfer of ownership, signed by both.','Create a bill of sale'),
+             ('/en/donation-receipt','Donation Receipt','A nonprofit tax receipt with the donor, amount and required statement.','Create a donation receipt')]
     grid = ''.join(f'<a class="dcard" href="{u}"><h3>{t}</h3><p>{d}</p><span class="go">{c} &rarr;</span></a>' for u,t,d,c in cards)
     css = ('<style>.dgrid{max-width:1180px;margin:0 auto;padding:10px 20px 40px;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}'
       '.dcard{display:block;background:#fff;border:1px solid var(--bd,#e2eaf4);border-radius:16px;padding:22px 22px 18px;text-decoration:none;color:inherit;box-shadow:0 10px 30px -22px rgba(19,38,59,.35);transition:.15s}'
@@ -365,7 +462,7 @@ def index():
       '</div></div>')
     art = ('<article class="art"><p class="lead">Free BizDoc began in Japan as a free generator for Japanese business documents. The English edition isn&rsquo;t a translation of those forms &mdash; it follows the formats businesses actually use in each country: a US invoice with sales tax, a UK VAT invoice, an Australian tax invoice, and a Canadian GST/HST invoice, plus estimates, receipts, purchase orders, and packing slips.</p>'
       '<h2>How it works</h2><div class="steps"><div class="step"><span class="n">1</span><span class="t">Pick a document and your country.</span></div><div class="step"><span class="n">2</span><span class="t">Enter your business once &mdash; it&rsquo;s remembered in your browser.</span></div><div class="step"><span class="n">3</span><span class="t">Add the recipient and line items. The live preview is the actual PDF.</span></div><div class="step"><span class="n">4</span><span class="t">Download it, or send a share link instead of an attachment.</span></div></div></article>')
-    nav = ('<script>(function(){var h=document.getElementById("docnav-en");if(!h)return;var D=[["/en/invoice","Invoice"],["/en/estimate","Estimate / Quote"],["/en/receipt","Receipt"],["/en/purchase-order","Purchase Order"],["/en/packing-slip","Packing Slip / Delivery Note"],["/en/credit-note","Credit Note"],["/en/proforma-invoice","Pro Forma Invoice"],["/en/sales-order","Sales Order"]];'
+    nav = ('<script>(function(){var h=document.getElementById("docnav-en");if(!h)return;var D=[["/en/invoice","Invoice"],["/en/estimate","Estimate / Quote"],["/en/receipt","Receipt"],["/en/purchase-order","Purchase Order"],["/en/packing-slip","Packing Slip / Delivery Note"],["/en/credit-note","Credit Note"],["/en/proforma-invoice","Pro Forma Invoice"],["/en/sales-order","Sales Order"],["/en/timesheet","Timesheet"],["/en/work-order","Work Order"],["/en/expense-report","Expense Report"],["/en/bill-of-sale","Bill of Sale"],["/en/donation-receipt","Donation Receipt"]];'
       'var s=document.createElement("style");s.textContent="#docnav-en{background:#fff;border-bottom:1px solid #e6ebf2;overflow-x:auto}#docnav-en .t{display:flex;gap:8px;width:max-content;padding:12px 16px;margin:0 auto}#docnav-en a{font-size:13px;font-weight:700;color:#5a6b80;text-decoration:none;padding:8px 15px;border-radius:999px;background:#f1f5fb;border:1px solid #dce5f0;white-space:nowrap}";document.head.appendChild(s);'
       'h.innerHTML="<div class=\\"t\\">"+D.map(function(d){return "<a href=\\""+d[0]+"\\">"+d[1]+"</a>";}).join("")+"</div>";})();</script>')
     hd = head(p, url).replace('%s/en/' % BASE, url)

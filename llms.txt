@@ -38,7 +38,7 @@
 
 ## English version (US / UK / AU / CA)
 
-> Free BizDoc also offers an English edition for English-speaking countries. Create invoices, estimates/quotes, receipts, purchase orders, packing slips, credit notes, pro forma invoices and sales orders as PDFs — free, no sign-up. Currency, paper size, date format and tax (US sales tax, UK VAT, Australian GST / "tax invoice", Canadian GST/HST/PST/QST by province) adapt to the country you choose. Documents are generated in your browser and never uploaded.
+> Free BizDoc also offers an English edition for English-speaking countries. Create invoices, estimates/quotes, receipts, purchase orders, packing slips, credit notes, pro forma invoices, sales orders, timesheets, work orders, expense reports, bills of sale and donation receipts as PDFs — free, no sign-up. Currency, paper size, date format and tax (US sales tax, UK VAT, Australian GST / "tax invoice", Canadian GST/HST/PST/QST by province) adapt to the country you choose. Documents are generated in your browser and never uploaded.
 
 - [Invoice generator](https://free-bizdocs.com/en/invoice): itemised invoice with tax, due date, payment terms, bank details
 - [Estimate / Quote generator](https://free-bizdocs.com/en/estimate): priced scope of work with a valid-until date and acceptance line
@@ -48,4 +48,9 @@
 - [Credit note / Credit memo generator](https://free-bizdocs.com/en/credit-note): cancel or reduce an invoice, references the original invoice, reverses the tax
 - [Pro forma invoice generator](https://free-bizdocs.com/en/proforma-invoice): preliminary bill for deposits or customs, clearly marked not a tax invoice
 - [Sales order / Order confirmation generator](https://free-bizdocs.com/en/sales-order): seller-side acknowledgement of a customer order with ship-to and delivery date
+- [Timesheet generator](https://free-bizdocs.com/en/timesheet): log hours by date at an hourly rate with totals, converts to an invoice
+- [Work order / Job sheet generator](https://free-bizdocs.com/en/work-order): authorise and document a job with labor, parts and sign-off lines
+- [Expense report / Expense claim generator](https://free-bizdocs.com/en/expense-report): claim reimbursement for business costs by date and category
+- [Bill of sale generator](https://free-bizdocs.com/en/bill-of-sale): record a private sale and transfer of ownership, signed by seller and buyer
+- [Donation receipt generator](https://free-bizdocs.com/en/donation-receipt): nonprofit / charity tax receipt with donor, amount and the required statement
 - [English home](https://free-bizdocs.com/en/) · [Contact](https://free-bizdocs.com/en/contact) · [Privacy](https://free-bizdocs.com/en/privacy)

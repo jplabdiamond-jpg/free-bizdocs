@@ -11,29 +11,29 @@ var REGIONS={
     addrPh:'123 Main St, Suite 100\nAustin, TX 78701', bankPh:'Bank name\nRouting No. 021000021\nAccount No. 123456789',
     mode:'rate', rateLabel:'Sales tax rate (%)', defaultRate:0,
     taxOpts:[['tax','Taxable'],['none','Exempt']],
-    titles:{invoice:'Invoice',quote:'Estimate',delivery:'Packing Slip',po:'Purchase Order',receipt:'Receipt',credit:'Credit Memo',proforma:'Pro Forma Invoice',salesorder:'Sales Order'},
-    prefix:{invoice:'INV',quote:'EST',delivery:'PS',po:'PO',receipt:'RCT',credit:'CM',proforma:'PF',salesorder:'SO'} },
+    titles:{invoice:'Invoice',quote:'Estimate',delivery:'Packing Slip',po:'Purchase Order',receipt:'Receipt',credit:'Credit Memo',proforma:'Pro Forma Invoice',salesorder:'Sales Order',timesheet:'Timesheet',workorder:'Work Order',expense:'Expense Report',billofsale:'Bill of Sale',donation:'Donation Receipt'},
+    prefix:{invoice:'INV',quote:'EST',delivery:'PS',po:'PO',receipt:'RCT',credit:'CM',proforma:'PF',salesorder:'SO',timesheet:'TS',workorder:'WO',expense:'EXP',billofsale:'BOS',donation:'DR'} },
   uk:{ id:'uk', name:'United Kingdom', flag:'🇬🇧', cur:'GBP', sym:'£', paper:'a4', date:'dmy',
     taxName:'VAT', taxIdLabel:'VAT Reg. No. (if registered)', taxIdPh:'GB123456789',
     addrPh:'10 High Street\nLondon SW1A 1AA', bankPh:'Bank name\nSort code 12-34-56\nAccount No. 12345678',
     mode:'fixed',
     taxOpts:[['20','VAT 20%'],['5','VAT 5%'],['0','Zero-rated'],['none','Exempt']],
-    titles:{invoice:'Invoice',quote:'Quotation',delivery:'Delivery Note',po:'Purchase Order',receipt:'Receipt',credit:'Credit Note',proforma:'Pro Forma Invoice',salesorder:'Sales Order'},
-    prefix:{invoice:'INV',quote:'QUO',delivery:'DN',po:'PO',receipt:'RCT',credit:'CN',proforma:'PF',salesorder:'SO'} },
+    titles:{invoice:'Invoice',quote:'Quotation',delivery:'Delivery Note',po:'Purchase Order',receipt:'Receipt',credit:'Credit Note',proforma:'Pro Forma Invoice',salesorder:'Sales Order',timesheet:'Timesheet',workorder:'Work Order',expense:'Expense Claim',billofsale:'Bill of Sale',donation:'Donation Receipt'},
+    prefix:{invoice:'INV',quote:'QUO',delivery:'DN',po:'PO',receipt:'RCT',credit:'CN',proforma:'PF',salesorder:'SO',timesheet:'TS',workorder:'WO',expense:'EXP',billofsale:'BOS',donation:'DR'} },
   au:{ id:'au', name:'Australia', flag:'🇦🇺', cur:'AUD', sym:'$', paper:'a4', date:'dmy',
     taxName:'GST', taxIdLabel:'ABN', taxIdPh:'12 345 678 901',
     addrPh:'1 George Street\nSydney NSW 2000', bankPh:'Bank name\nBSB 062-000\nAccount No. 12345678',
     mode:'fixed',
     taxOpts:[['10','GST 10%'],['0','GST-free']],
-    titles:{invoice:'Tax Invoice',quote:'Quote',delivery:'Delivery Note',po:'Purchase Order',receipt:'Receipt',credit:'Credit Note',proforma:'Pro Forma Invoice',salesorder:'Sales Order'},
-    prefix:{invoice:'INV',quote:'QUO',delivery:'DN',po:'PO',receipt:'RCT',credit:'CN',proforma:'PF',salesorder:'SO'} },
+    titles:{invoice:'Tax Invoice',quote:'Quote',delivery:'Delivery Note',po:'Purchase Order',receipt:'Receipt',credit:'Credit Note',proforma:'Pro Forma Invoice',salesorder:'Sales Order',timesheet:'Timesheet',workorder:'Work Order',expense:'Expense Claim',billofsale:'Bill of Sale',donation:'Donation Receipt'},
+    prefix:{invoice:'INV',quote:'QUO',delivery:'DN',po:'PO',receipt:'RCT',credit:'CN',proforma:'PF',salesorder:'SO',timesheet:'TS',workorder:'WO',expense:'EXP',billofsale:'BOS',donation:'DR'} },
   ca:{ id:'ca', name:'Canada', flag:'🇨🇦', cur:'CAD', sym:'$', paper:'letter', date:'ymd',
     taxName:'GST/HST', taxIdLabel:'GST/HST No. (if registered)', taxIdPh:'123456789RT0001',
     addrPh:'100 King Street W\nToronto, ON M5X 1A1', bankPh:'Bank name\nInstitution No. 001  Transit No. 12345\nAccount No. 1234567',
     mode:'province',
     taxOpts:[['tax','Taxable'],['none','Exempt']],
-    titles:{invoice:'Invoice',quote:'Estimate',delivery:'Packing Slip',po:'Purchase Order',receipt:'Receipt',credit:'Credit Note',proforma:'Pro Forma Invoice',salesorder:'Sales Order'},
-    prefix:{invoice:'INV',quote:'EST',delivery:'PS',po:'PO',receipt:'RCT',credit:'CN',proforma:'PF',salesorder:'SO'} }
+    titles:{invoice:'Invoice',quote:'Estimate',delivery:'Packing Slip',po:'Purchase Order',receipt:'Receipt',credit:'Credit Note',proforma:'Pro Forma Invoice',salesorder:'Sales Order',timesheet:'Timesheet',workorder:'Work Order',expense:'Expense Report',billofsale:'Bill of Sale',donation:'Donation Receipt'},
+    prefix:{invoice:'INV',quote:'EST',delivery:'PS',po:'PO',receipt:'RCT',credit:'CN',proforma:'PF',salesorder:'SO',timesheet:'TS',workorder:'WO',expense:'EXP',billofsale:'BOS',donation:'DR'} }
 };
 var CA_PROV=[['ON','Ontario (HST 13%)',[['HST',13]]],['BC','British Columbia (GST 5% + PST 7%)',[['GST',5],['PST',7]]],
   ['AB','Alberta (GST 5%)',[['GST',5]]],['QC','Quebec (GST 5% + QST 9.975%)',[['GST',5],['QST',9.975]]],
@@ -51,7 +51,12 @@ var KINDS={
   receipt:{ prices:true, paid:true, method:true, amountLabel:'Amount Paid', totalLabel:'Total', dateLabel:'Receipt date', numLabel:'Receipt #', partyLabel:'Received From' },
   credit:{ prices:true, credit:true, ref:true, amountLabel:'Total Credit', totalLabel:'Total Credit', dateLabel:'Credit date', numLabel:'Credit Note #', partyLabel:'Bill To' },
   proforma:{ prices:true, valid:true, bank:true, proforma:true, amountLabel:'Total', totalLabel:'Total', dateLabel:'Issue date', numLabel:'Pro Forma #', partyLabel:'Bill To' },
-  salesorder:{ prices:true, shipTo:true, deliveryDate:true, confirm:true, amountLabel:'Order Total', totalLabel:'Total', dateLabel:'Order date', numLabel:'Sales Order #', partyLabel:'Customer' }
+  salesorder:{ prices:true, shipTo:true, deliveryDate:true, confirm:true, amountLabel:'Order Total', totalLabel:'Total', dateLabel:'Order date', numLabel:'Sales Order #', partyLabel:'Customer' },
+  timesheet:{ prices:true, notax:true, hoursTotal:true, colQty:'Hours', colPrice:'Rate', amountLabel:'Total', totalLabel:'Total', dateLabel:'Week ending', numLabel:'Timesheet #', partyLabel:'Bill To' },
+  workorder:{ prices:true, shipTo:true, deliveryDate:true, woSign:true, amountLabel:'Total', totalLabel:'Total', dateLabel:'Date', numLabel:'Work Order #', partyLabel:'Customer' },
+  expense:{ amountOnly:true, notax:true, amountLabel:'Total Reimbursement', totalLabel:'Total', dateLabel:'Period ending', numLabel:'Report #', partyLabel:'Submitted to' },
+  billofsale:{ prices:true, notax:true, dualSign:true, bos:true, amountLabel:'Sale Price', totalLabel:'Total', dateLabel:'Date of sale', numLabel:'Bill of Sale #', partyLabel:'Buyer' },
+  donation:{ amountOnly:true, notax:true, donation:true, donSign:true, amountLabel:'Total Donation', totalLabel:'Total', dateLabel:'Date received', numLabel:'Receipt #', partyLabel:'Donor' }
 };
 /* Region-specific document labels */
 function kindLabels(kind,region){ var R=REGIONS[region]; var K=Object.assign({},KINDS[kind]); K.title=R.titles[kind];
@@ -107,6 +112,7 @@ function calc(items){
   var R=REGIONS[region], subtotal=0, groups={}, order=[];
   (items||[]).forEach(function(it){
     var amt=r2((Number(it.qty)||0)*(Number(it.unit_price)||0)); subtotal=r2(subtotal+amt);
+    if(KINDS[kind]&&KINDS[kind].notax) return;
     var rates=[];
     if(it.tax==='none') rates=[];
     else if(R.mode==='rate'){ var rt=parseFloat(($('tax-rate')&&$('tax-rate').value)||R.defaultRate)||0; if(rt>0) rates=[[R.taxName,rt]]; }
@@ -165,11 +171,11 @@ function applyRegion(r,keepDue){
   applyKind(kind,true);
 }
 function applyKind(k,silent){
-  kind=KINDS[k]?k:'invoice'; var K=kindLabels(kind,region);
+  kind=KINDS[k]?k:'invoice'; var K=kindLabels(kind,region), R=REGIONS[region];
   Array.prototype.forEach.call(document.querySelectorAll('#seg button'),function(b){ b.classList.toggle('on',b.getAttribute('data-kind')===kind); });
   function show(id,on){ var el=$(id); if(el) el.style.display=on?'':'none'; }
   show('due-wrap',!!(K.due||K.valid||K.deliveryDate)); show('terms-wrap',!!K.terms);
-  var dl=$('due-lb'); if(dl) dl.textContent=K.due?'Due date':(K.valid?'Valid until':((kind==='po'||kind==='salesorder')?'Delivery date':'Ship date'));
+  var dl=$('due-lb'); if(dl) dl.textContent=K.due?'Due date':(K.valid?'Valid until':(kind==='workorder'?'Scheduled date':((kind==='po'||kind==='salesorder')?'Delivery date':'Ship date')));
   show('method-wrap',!!K.method); show('shipto-wrap',!!K.shipTo); show('bank-wrap',kind==='invoice'||kind==='proforma');
   var nl=$('num-lb'); if(nl) nl.textContent=K.numLabel; var il=$('issue-lb'); if(il) il.textContent=K.dateLabel;
   var pl=$('party-lb'); if(pl) pl.textContent=K.partyLabel+' (name)';
@@ -177,14 +183,20 @@ function applyKind(k,silent){
   var mk=$('make'); if(mk) mk.lastChild.nodeValue=' Download '+K.title+' PDF (free)';
   if($('due')&&K.due&&!$('due').value) $('due').value=plusDays(30);
   if($('due')&&K.valid&&!$('due').value) $('due').value=plusDays(30);
-  var itemsBox=rowsEl.closest('.items'); if(itemsBox) itemsBox.classList.toggle('noprice',!K.prices);
+  var amtOnly=!!K.amountOnly, noTaxUI=!!(K.notax||amtOnly);
+  var trw=$('taxrate-wrap'); if(trw) trw.style.display=(!noTaxUI&&R.mode==='rate')?'':'none';
+  var pvw=$('prov-wrap'); if(pvw) pvw.style.display=(!noTaxUI&&R.mode==='province')?'':'none';
+  var thq=$('th-qty'); if(thq) thq.textContent=(K.colQty||'Qty');
+  var thp=$('th-price'); if(thp) thp.innerHTML=esc(amtOnly?'Amount':(K.colPrice||'Unit price'))+' ('+esc(R.cur)+')';
+  var itemsBox=rowsEl.closest('.items');
+  if(itemsBox){ itemsBox.classList.toggle('noprice',!K.prices&&!amtOnly); itemsBox.classList.toggle('amountonly',amtOnly); itemsBox.classList.toggle('notax',!!K.notax&&!amtOnly); }
   if(!silent) schedulePv();
 }
 function setupTermsSelect(){ var s=$('terms'); if(!s)return; s.innerHTML=TERMS.map(function(t){return '<option value="'+t[0]+'"'+(t[0]==='30'?' selected':'')+'>'+t[1]+'</option>';}).join('');
   s.addEventListener('change',function(){ var t=TERMS.filter(function(x){return x[0]===s.value;})[0]; if(t&&$('issue')&&$('due')){ var base=$('issue').value?new Date($('issue').value):new Date(); $('due').value=new Date(base.getTime()+864e5*t[2]).toISOString().slice(0,10); } }); }
 function setupProv(){ var s=$('ca-prov'); if(!s)return; s.innerHTML=CA_PROV.map(function(p){return '<option value="'+p[0]+'">'+p[1]+'</option>';}).join(''); }
 function convertTo(k){ applyKind(k); var dn=$('doc-no'); if(dn) dn.value=nextDocNo(); if($('issue')) $('issue').value=todayISO(); if(KINDS[k].due||KINDS[k].valid){ if($('due')) $('due').value=plusDays(30); } window.__savedId=null; if(typeof renderSave==='function') renderSave(); saveDraft(); schedulePv(); toast('Converted to '+kindLabels(k,region).title+' — same details, new number'); try{ document.querySelector('.card.right').scrollIntoView({behavior:'smooth',block:'start'}); }catch(e){} renderConvertBar(); }
-function renderConvertBar(){ var bar=$('convbar'); if(!bar)return; var ks=['invoice','quote','delivery','po','receipt','credit','proforma','salesorder'].filter(function(x){return x!==kind;});
+function renderConvertBar(){ var bar=$('convbar'); if(!bar)return; var ks=['invoice','quote','delivery','po','receipt','credit','proforma','salesorder','timesheet','workorder','expense','billofsale','donation'].filter(function(x){return x!==kind;});
   bar.innerHTML='<div class="cv-lb">✓ Same details, <b>different document</b> — one click</div><div class="cv-bs">'+ks.map(function(x){return '<button type="button" data-to="'+x+'">'+kindLabels(x,region).title+'</button>';}).join('')+'</div>'; }
 
 /* ================= PDF (pdf-lib, Helvetica — no font download needed) ================= */
@@ -200,6 +212,7 @@ function lines(s){ return String(s==null?'':s).split(/\r?\n/).map(function(x){re
 async function buildPdf(D){
   await ensureLib();
   var P=window.PDFLib, rgb=P.rgb, R=REGIONS[D.region], K=kindLabels(D.kind,D.region), c=calc(D.items);
+  var amountOnly=!!K.amountOnly, hasAmount=!!(K.prices||amountOnly);
   var pdf=await P.PDFDocument.create();
   var font=await pdf.embedFont(P.StandardFonts.Helvetica), bold=await pdf.embedFont(P.StandardFonts.HelveticaBold);
   var W=R.paper==='letter'?612:595.28, H=R.paper==='letter'?792:841.89, M=46;
@@ -222,7 +235,7 @@ async function buildPdf(D){
   var meta=[[K.numLabel,D.doc_no||'—'],[K.dateLabel,fmtDate(D.issue)]];
   if(K.due) meta.push(['Due date',fmtDate(D.due)||'—']);
   if(K.valid) meta.push(['Valid until',fmtDate(D.due)||'—']);
-  if(K.deliveryDate&&D.due) meta.push([(D.kind==='po'||D.kind==='salesorder')?'Delivery date':'Ship date',fmtDate(D.due)]);
+  if(K.deliveryDate&&D.due) meta.push([D.kind==='workorder'?'Scheduled date':((D.kind==='po'||D.kind==='salesorder')?'Delivery date':'Ship date'),fmtDate(D.due)]);
   if(D.ref_no) meta.push([(D.kind==='po')?'Reference':(D.kind==='credit')?'Original invoice #':(D.kind==='salesorder')?'Customer PO #':'PO / Ref. #',D.ref_no]);
   if(K.terms&&D.terms){ var t=TERMS.filter(function(x){return x[0]===D.terms;})[0]; if(t) meta.push(['Terms',t[1]]); }
   if(K.method&&D.method) meta.push(['Payment method',D.method]);
@@ -244,34 +257,47 @@ async function buildPdf(D){
   y=Math.min(y1,y2)-14;
 
   /* ---- Amount band ---- */
-  if(K.prices&&K.amountLabel){ page.drawRectangle({x:M,y:y-36,width:W-2*M,height:36,color:band}); dr(K.amountLabel,M+12,y-23,10.5,ink,bold); drR(mny(c.total)+' '+R.cur,W-M-12,y-24,16,ac,bold); y-=52; }
+  if(hasAmount&&K.amountLabel){ page.drawRectangle({x:M,y:y-36,width:W-2*M,height:36,color:band}); dr(K.amountLabel,M+12,y-23,10.5,ink,bold); drR(mny(c.total)+' '+R.cur,W-M-12,y-24,16,ac,bold); y-=52; }
   else y-=6;
 
   /* ---- Table ---- */
+  var showTax=K.prices&&!K.notax&&!amountOnly, showPrice=K.prices&&!amountOnly;
+  var qtyHead=(K.colQty||'Qty').toUpperCase(), priceHead=(K.colPrice||'Unit price').toUpperCase();
   // right-edge anchors for each numeric column
-  var xAmt=W-M-6, xTax=xAmt-78, xPrice=xTax-64, xQty=K.prices?xPrice-74:W-M-10;
-  var descMax=(K.prices?xQty-48:xQty-40)-(M+8);
+  var xAmt=W-M-6;
+  var xTax=showTax?xAmt-78:xAmt;
+  var xPrice=showPrice?xTax-64:xAmt;
+  var xQty=amountOnly?0:(showPrice?xPrice-74:(hasAmount?xAmt-10:W-M-10));
+  var descRight=amountOnly?xAmt-70:(showPrice?xQty-48:(hasAmount?xAmt-40:xQty-40));
+  var descMax=descRight-(M+8);
   var taxHead=(R.mode==='fixed')?R.taxName.toUpperCase():'TAX';
   page.drawRectangle({x:M,y:y-20,width:W-2*M,height:20,color:head});
-  dr('DESCRIPTION',M+8,y-14,8,ink,bold); drR('QTY',xQty,y-14,8,ink,bold);
-  if(K.prices){ drR('UNIT PRICE',xPrice,y-14,8,ink,bold); drR(taxHead,xTax,y-14,8,ink,bold); drR('AMOUNT',xAmt,y-14,8,ink,bold); }
+  dr('DESCRIPTION',M+8,y-14,8,ink,bold);
+  if(!amountOnly) drR(qtyHead,xQty,y-14,8,ink,bold);
+  if(showPrice) drR(priceHead,xPrice,y-14,8,ink,bold);
+  if(showTax) drR(taxHead,xTax,y-14,8,ink,bold);
+  if(hasAmount) drR('AMOUNT',xAmt,y-14,8,ink,bold);
   y-=20;
   var items=D.items, maxRows=Math.max(1,Math.floor((y-(M+170))/19)), ovf=0, draw=items;
   if(items.length>maxRows){ draw=items.slice(0,maxRows-1); ovf=items.length-draw.length; }
   function taxLabel(it){ if(it.tax==='none') return 'Exempt'; if(R.mode==='fixed'){ var o=R.taxOpts.filter(function(x){return x[0]===it.tax;})[0]; return o?o[1].replace(/^(VAT|GST) /,''):''; } return 'Taxable'; }
   draw.forEach(function(it,i){ var amt=r2((it.qty||0)*(it.unit_price||0)); if(i%2===1) page.drawRectangle({x:M,y:y-19,width:W-2*M,height:19,color:zebra});
-    dr(ell(it.name,9,descMax),M+8,y-13,9,ink); drR(String(it.qty),xQty,y-13,9);
-    if(K.prices){ drR(mny(it.unit_price),xPrice,y-13,9); drR(ell(taxLabel(it),8,xAmt-xTax-6),xTax,y-13,8,mut); drR(mny(amt),xAmt,y-13,9); }
+    dr(ell(it.name,9,descMax),M+8,y-13,9,ink);
+    if(!amountOnly) drR(String(it.qty),xQty,y-13,9);
+    if(showPrice) drR(mny(it.unit_price),xPrice,y-13,9);
+    if(showTax) drR(ell(taxLabel(it),8,xAmt-xTax-6),xTax,y-13,8,mut);
+    if(hasAmount) drR(mny(amt),xAmt,y-13,9);
     hline(y-19,0.4); y-=19; });
   if(ovf>0){ dr('+ '+ovf+' more line'+(ovf>1?'s':''),M+8,y-13,8.5,mut); hline(y-19,0.4); y-=19; }
   y-=18;
 
   /* ---- Totals ---- */
-  if(K.prices){ var sx=W-M-230;
+  if(hasAmount){ var sx=W-M-230;
     var row=function(l,vv,col,sz,f){ dr(l,sx,y,sz||9.5,col||ink,f); drR(vv,W-M-6,y,sz||9.5,col||ink,f); y-=15; };
-    row('Subtotal',mny(c.subtotal));
-    c.taxLines.forEach(function(t){ row(t.name+' ('+t.rate+'%)',mny(t.tax),mut); });
-    if(!c.taxLines.length&&D.region!=='us') row(R.taxName,mny(0),mut);
+    if(!K.notax){ row('Subtotal',mny(c.subtotal));
+      c.taxLines.forEach(function(t){ row(t.name+' ('+t.rate+'%)',mny(t.tax),mut); });
+      if(!c.taxLines.length&&D.region!=='us') row(R.taxName,mny(0),mut); }
+    if(K.hoursTotal){ var th=0; (D.items||[]).forEach(function(it){ th=r2(th+(Number(it.qty)||0)); }); row('Total hours',String(th),mut); }
     y-=3; page.drawLine({start:{x:sx,y:y+7},end:{x:W-M,y:y+7},thickness:1,color:ac}); y-=12;
     row(K.totalLabel+' ('+R.cur+')',mny(c.total),ac,12,bold);
     if(K.paid){ y-=2; row('Amount paid',mny(c.total),ink,9.5); row('Balance due',mny(0),mut,9.5); }
@@ -281,15 +307,22 @@ async function buildPdf(D){
   var boxes=[];
   if(D.kind==='proforma') boxes.push(['Pro forma invoice',['For information only - this is not a tax invoice or VAT invoice, and not a demand for payment.','It confirms the price and terms before the goods or services are supplied; a final invoice follows.']]);
   if(D.kind==='credit') boxes.push(['About this credit note',['This credit note cancels or reduces the amount of the referenced invoice'+(D.ref_no?' ('+D.ref_no+')':'')+'.','Apply it against that invoice or a future one, or refund the amount as agreed.']]);
+  if(D.kind==='billofsale') boxes.push(['Terms of sale',['The seller sells the item(s) above to the buyer for the total shown, "as-is" unless noted.','The seller certifies they are the lawful owner with the right to sell, free of undisclosed liens.']]);
+  if(D.kind==='donation'){ var ds=['Thank you for your generous contribution.']; ds.push('No goods or services were provided in exchange for this donation'+(D.region==='us'?', which may be tax-deductible to the extent allowed by law.':'.')); if(D.co.taxid) ds.push((D.region==='us'?'Tax-exempt ID (EIN): ':'Charity / tax reg. no.: ')+D.co.taxid); ds.push('Please retain this receipt for your records.'); boxes.push(['Tax receipt',ds]); }
   if(K.bank&&D.co.bank&&(D.kind==='invoice'||D.kind==='proforma')) boxes.push([D.kind==='proforma'?'How to pay in advance':'Payment details',lines(D.co.bank)]);
   if(D.notes) boxes.push(['Notes',lines(D.notes)]);
   if(D.terms_text) boxes.push([D.kind==='quote'?'Terms':'Terms & conditions',lines(D.terms_text)]);
   boxes.forEach(function(bx){ var n=Math.min(bx[1].length,5), h=24+n*12; if(y-h<M+40) return; page.drawRectangle({x:M,y:y-h,width:W-2*M,height:h,borderColor:line,borderWidth:0.7,color:rgb(0.985,0.985,0.985)}); dr(bx[0],M+10,y-15,9,ink,bold); var yy=y-29; bx[1].slice(0,n).forEach(function(l){ dr(ell(l,8.8,W-2*M-24),M+10,yy,8.8,mut); yy-=12; }); y-=h+10; });
   if(K.accept&&y>M+60){ dr('Accepted by: ______________________________    Date: ______________',M,y-16,9.5,ink); dr('Signing confirms acceptance of this '+K.title.toLowerCase()+' and its terms.',M,y-30,8,mut); y-=40; }
   if((K.sign||K.poSign)&&y>M+60){ dr((K.poSign?'Authorized by':'Received by')+': ______________________________    Date: ______________',M,y-16,9.5,ink); y-=30; }
+  if(K.dualSign&&y>M+80){ dr('Seller: ______________________________    Date: ______________',M,y-16,9.5,ink); dr('Buyer:  ______________________________    Date: ______________',M,y-34,9.5,ink); y-=46; }
+  if(K.woSign&&y>M+80){ dr('Authorized by (customer): ____________________    Date: __________',M,y-16,9.5,ink); dr('Work completed by: ___________________________    Date: __________',M,y-34,9.5,ink); y-=46; }
+  if(K.donSign&&y>M+50){ dr('Authorized signature: ______________________________',M,y-16,9.5,ink); y-=28; }
+  if(D.kind==='expense'&&y>M+50){ dr('Approved by: ______________________________    Date: ______________',M,y-16,9.5,ink); y-=30; }
   if(K.paid){ page.drawRectangle({x:W-M-96,y:M+44,width:96,height:36,borderColor:ac,borderWidth:2,color:mw(0.06)}); drR('PAID',W-M-14,M+55,20,ac,bold); }
   /* footer */
-  var foot=D.kind==='quote'?'Thank you for the opportunity.':(D.kind==='receipt'?'Thank you for your payment.':(D.kind==='credit'?'Credit note - this is not a request for payment.':(D.kind==='proforma'?'Pro forma invoice - not a tax invoice. Please do not pay from this document unless agreed in advance.':(D.kind==='salesorder'?'Thank you for your order - we will confirm dispatch separately.':'Thank you for your business.'))));
+  var FOOT={quote:'Thank you for the opportunity.',receipt:'Thank you for your payment.',credit:'Credit note - this is not a request for payment.',proforma:'Pro forma invoice - not a tax invoice. Please do not pay from this document unless agreed in advance.',salesorder:'Thank you for your order - we will confirm dispatch separately.',timesheet:'Hours billable at the rates shown. Approve and convert to an invoice when ready.',workorder:'Please sign to confirm the work is authorized and, on completion, that it was carried out.',expense:'Please attach a receipt for each expense listed above.',billofsale:'This bill of sale records the transfer of ownership described above.',donation:'Thank you for your support.'};
+  var foot=FOOT[D.kind]||'Thank you for your business.';
   if(D.region==='au'&&D.kind==='invoice'&&c.tax>0) foot+='   Total price includes GST.';
   dr(foot,M,M-6,8.5,mut);
   return await pdf.save();
@@ -377,7 +410,7 @@ var THEMES=[['mono','Mono','#333333'],['blue','Blue','#1766e6'],['red','Red','#c
 function setupTheme(){ try{ window.__theme=localStorage.getItem('free_theme')||'mono'; }catch(e){ window.__theme='mono'; } var host=$('themeseg'); if(!host)return;
   host.innerHTML='<span class="tlb">Color</span>'+THEMES.map(function(t){ return '<button type="button" class="sw'+(t[0]===window.__theme?' on':'')+'" data-th="'+t[0]+'" style="--sw:'+t[2]+'"><span class="dot"></span>'+t[1]+'</button>'; }).join('');
   host.addEventListener('click',function(e){ var b=e.target.closest('button'); if(!b)return; [].forEach.call(host.querySelectorAll('button'),function(x){x.classList.remove('on');}); b.classList.add('on'); window.__theme=b.getAttribute('data-th'); try{ localStorage.setItem('free_theme',window.__theme); }catch(e2){} schedulePv(); }); }
-var DOCS=[['/en/invoice','Invoice'],['/en/estimate','Estimate / Quote'],['/en/receipt','Receipt'],['/en/purchase-order','Purchase Order'],['/en/packing-slip','Packing Slip / Delivery Note'],['/en/credit-note','Credit Note'],['/en/proforma-invoice','Pro Forma Invoice'],['/en/sales-order','Sales Order']];
+var DOCS=[['/en/invoice','Invoice'],['/en/estimate','Estimate / Quote'],['/en/receipt','Receipt'],['/en/purchase-order','Purchase Order'],['/en/packing-slip','Packing Slip / Delivery Note'],['/en/credit-note','Credit Note'],['/en/proforma-invoice','Pro Forma Invoice'],['/en/sales-order','Sales Order'],['/en/timesheet','Timesheet'],['/en/work-order','Work Order'],['/en/expense-report','Expense Report'],['/en/bill-of-sale','Bill of Sale'],['/en/donation-receipt','Donation Receipt']];
 function setupNav(){ var host=$('docnav-en'); if(!host)return; var path=location.pathname.replace(/\.html$/,'').replace(/\/$/,''); host.innerHTML='<div class="docnav-track">'+DOCS.map(function(d){ return '<a class="docnav-item'+(d[0]===path?' on':'')+'" href="'+d[0]+'">'+d[1]+'</a>'; }).join('')+'</div>'; }
 function injectCSS(){ var s=document.createElement('style'); s.textContent=
    '#docnav-en{background:var(--surf,#fff);border-bottom:1px solid var(--bd,#e6ebf2);overflow-x:auto;scrollbar-width:none}#docnav-en::-webkit-scrollbar{display:none}'
@@ -392,6 +425,8 @@ function injectCSS(){ var s=document.createElement('style'); s.textContent=
   +'.themeseg .sw .dot{width:12px;height:12px;border-radius:50%;background:var(--sw);border:1px solid rgba(0,0,0,.12)}.themeseg .sw.on{border-color:var(--sw);color:#13263b;box-shadow:0 0 0 2px var(--sw) inset,0 0 0 1px #fff inset}'
   +'.items .hd,.items .rw{grid-template-columns:1fr 54px 92px 108px 24px;min-width:420px}'
   +'.items.noprice .hd,.items.noprice .rw{grid-template-columns:1fr 54px 24px;min-width:0}.items.noprice .i-price,.items.noprice .i-tax,.items.noprice #th-price,.items.noprice #th-tax{display:none}'
+  +'.items.notax .hd,.items.notax .rw{grid-template-columns:1fr 70px 108px 24px;min-width:360px}.items.notax .i-tax,.items.notax #th-tax{display:none}'
+  +'.items.amountonly .hd,.items.amountonly .rw{grid-template-columns:1fr 120px 24px;min-width:0}.items.amountonly .i-qty,.items.amountonly .i-tax,.items.amountonly #th-qty,.items.amountonly #th-tax{display:none}'
   +'textarea{font-family:inherit;font-size:13.5px;padding:10px 12px;border:1px solid var(--bd,#dce5f0);border-radius:9px;background:var(--surf,#fff);color:var(--ink,#13263b);width:100%;min-width:0;resize:vertical;line-height:1.45}'
   +'.convbar{margin:14px 0 2px;padding:12px 14px;border:1px dashed var(--ac,#1766e6);border-radius:12px;background:var(--surf2,#f3f8ff)}.convbar .cv-lb{font-size:12.5px;color:var(--mut,#45607a);margin-bottom:8px}.convbar .cv-lb b{color:var(--ac,#1766e6)}.convbar .cv-bs{display:flex;flex-wrap:wrap;gap:7px}'
   +'.convbar .cv-bs button{font-family:inherit;font-size:12.5px;font-weight:700;border:1px solid var(--ac,#1766e6);color:var(--ac,#1766e6);background:#fff;border-radius:999px;padding:7px 13px;cursor:pointer}.convbar .cv-bs button:hover{background:var(--ac,#1766e6);color:#fff}'
@@ -407,7 +442,7 @@ function injectCSS(){ var s=document.createElement('style'); s.textContent=
   document.head.appendChild(s); }
 
 /* ================= Accounts & PRO (save to account, PRO unlock) ================= */
-var KIND_TO_SLUG={ invoice:'invoice', quote:'estimate', delivery:'packing-slip', po:'purchase-order', receipt:'receipt', credit:'credit-note', proforma:'proforma-invoice', salesorder:'sales-order' };
+var KIND_TO_SLUG={ invoice:'invoice', quote:'estimate', delivery:'packing-slip', po:'purchase-order', receipt:'receipt', credit:'credit-note', proforma:'proforma-invoice', salesorder:'sales-order', timesheet:'timesheet', workorder:'work-order', expense:'expense-report', billofsale:'bill-of-sale', donation:'donation-receipt' };
 window.__savedId=null;
 function enType(){ return 'en_'+(KIND_TO_SLUG[kind]||'invoice'); }
 function saveLabel(){ var n=v('cl-name')||kindLabels(kind,region).title; var no=v('doc-no'); return (no?no+' · ':'')+n; }
