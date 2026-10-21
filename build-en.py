@@ -22,11 +22,11 @@ PAGES = [
   desc='Create a receipt for a payment received and download it as a PDF - free, no account. Shows the amount paid, payment method, date and tax (sales tax, VAT, GST or GST/HST).',
   h1='Free Receipt Generator', ey='Free - No sign-up - Paid-in-full receipt',
   lead='Issue a clean receipt for cash, card, cheque or bank-transfer payments. The PDF shows the amount paid, the date, the payment method and a PAID stamp.',
-  tags=['No sign-up','Payment method','PAID stamp','Tax itemised','Instant PDF']),
+  tags=['No sign-up','Payment method','PAID stamp','Tax itemized','Instant PDF']),
  dict(slug='purchase-order', kind='po', ja='/purchase-order', title='Free Purchase Order Template - Create a PO PDF Online (No Sign-Up)',
-  desc='Create a purchase order with PO number, vendor, ship-to address, delivery date and itemised lines - free PDF, no account. US / UK / AU / CA tax handled automatically.',
+  desc='Create a purchase order with PO number, vendor, ship-to address, delivery date and itemized lines - free PDF, no account. US / UK / AU / CA tax handled automatically.',
   h1='Free Purchase Order Generator', ey='Free - No sign-up - PO number - Ship To',
-  lead='Send suppliers a clear purchase order: PO number, vendor, ship-to address, required delivery date, itemised lines and the order total.',
+  lead='Send suppliers a clear purchase order: PO number, vendor, ship-to address, required delivery date, itemized lines and the order total.',
   tags=['No sign-up','PO number','Ship-to address','Delivery date','Instant PDF']),
  dict(slug='packing-slip', kind='delivery', ja='/delivery', title='Free Packing Slip & Delivery Note Template - PDF Download (No Sign-Up)',
   desc='Create a packing slip or delivery note listing the items shipped, quantities, PO number and ship-to address, with a signature line for proof of delivery. Free PDF, no account.',
@@ -36,7 +36,7 @@ PAGES = [
 ]
 
 ARTICLES = {
- 'invoice': '''<p class="lead">An invoice is the document you send to request payment for goods or services. This free invoice generator builds a clean, professional PDF with everything an accounts-payable team expects: a unique invoice number, issue and due dates, itemised lines, tax, the total due and your payment details.</p>
+ 'invoice': '''<p class="lead">An invoice is the document you send to request payment for goods or services. This free invoice generator builds a clean, professional PDF with everything an accounts-payable team expects: a unique invoice number, issue and due dates, itemized lines, tax, the total due and your payment details.</p>
 <h2>What to include on an invoice</h2>
 <ul><li><b>Your business name, address and contact details</b> - and your tax ID where required (VAT number in the UK, ABN in Australia, GST/HST number in Canada).</li><li><b>The word &ldquo;Invoice&rdquo;, a unique sequential number and the issue date</b></li><li><b>The client&rsquo;s name and address</b> (&ldquo;Bill To&rdquo;)</li><li><b>Line items</b> with description, quantity, unit price and amount</li><li><b>Subtotal, tax and total</b> - shown per tax rate where more than one applies</li><li><b>Payment terms, due date and how to pay</b> (bank details, routing / sort code / BSB, etc.)</li></ul>
 <h2>Country-specific rules this tool handles</h2>
@@ -53,7 +53,7 @@ ARTICLES = {
 <div class="steps"><div class="step"><span class="n">1</span><span class="t">Choose your country and enter your business details</span></div><div class="step"><span class="n">2</span><span class="t">Add the customer, date and &ldquo;valid until&rdquo; date</span></div><div class="step"><span class="n">3</span><span class="t">List the work with quantities and prices; add terms if needed</span></div><div class="step"><span class="n">4</span><span class="t">Download the PDF - and convert it to an invoice when the job is approved</span></div></div>''',
  'receipt': '''<p class="lead">A receipt is proof that a payment was received. Customers need it for expense claims and bookkeeping; you need a copy for your records. This generator produces a simple, professional receipt PDF with everything both sides expect.</p>
 <h2>What to include on a receipt</h2>
-<ul><li>Your business name, address and tax ID (where applicable)</li><li>A receipt number and the date of payment</li><li>Who paid (&ldquo;Received From&rdquo;)</li><li>What was paid for - itemised lines, tax and total</li><li>The <b>payment method</b> (cash, card, cheque, bank transfer) and a &ldquo;paid&rdquo; indication</li></ul>
+<ul><li>Your business name, address and tax ID (where applicable)</li><li>A receipt number and the date of payment</li><li>Who paid (&ldquo;Received From&rdquo;)</li><li>What was paid for - itemized lines, tax and total</li><li>The <b>payment method</b> (cash, card, cheque, bank transfer) and a &ldquo;paid&rdquo; indication</li></ul>
 <h2>Receipt vs invoice</h2>
 <p>An invoice asks for payment; a receipt confirms it. If you issued an invoice first, create the receipt from it with one click - the lines and customer are carried over and the document is marked as paid in full.</p>
 <h2>How to create a free receipt</h2>
@@ -73,29 +73,29 @@ ARTICLES = {
 }
 
 FAQS = {
- 'invoice': [('Is it really free, with no sign-up?','Yes. You can create and download invoices without an account. To keep the service fast for everyone, the free tool allows 2 PDFs per hour per network.'),
+ 'invoice': [('Is it free, with no sign-up?','Yes. You can create and download invoices without an account. To keep the service fast for everyone, the free version allows 2 PDF downloads per hour from the same network.'),
   ('Is my data stored anywhere?','No. The invoice content is never sent to our servers - the PDF is generated in your browser. Only your own business details are kept in your browser local storage so you do not have to retype them.'),
-  ('Does it support VAT, GST and sales tax?','Yes. Pick United States (a sales tax rate you set), United Kingdom (VAT 20% / 5% / 0% / exempt), Australia (GST 10% / GST-free) or Canada (GST / HST / PST / QST by province). Tax is itemised per rate on the PDF.'),
+  ('Does it support VAT, GST and sales tax?','Yes. Pick United States (a sales tax rate you set), United Kingdom (VAT 20% / 5% / 0% / exempt), Australia (GST 10% / GST-free) or Canada (GST / HST / PST / QST by province). Tax is itemized per rate on the PDF.'),
   ('What paper size is the PDF?','US and Canada use Letter (8.5 x 11 in). UK and Australia use A4.'),
   ('Can I turn an estimate into an invoice?','Yes. Under the preview, click the document you want - the same details are reused with a new number and today&rsquo;s date.'),
   ('Can I send the invoice without attaching a PDF?','Yes. &ldquo;Create a share link&rdquo; encodes the document in a URL. Your client opens it in a browser, sees the amount, due date and payment details, and can download the PDF.')],
  'estimate': [('Is a quote legally binding?','Rules vary by country and contract, but a quote accepted by the customer is generally treated as an agreed price for the stated scope and validity period. An estimate is usually not binding. Say which one you are issuing and include your terms.'),
   ('Can I convert the estimate to an invoice?','Yes. Under the preview, click &ldquo;Invoice&rdquo; - the line items, customer and your details are carried over and a new invoice number is assigned.'),
   ('Does the PDF include tax?','Yes. Tax is calculated for the selected country (sales tax, VAT, GST or GST/HST) and shown separately from the subtotal.'),
-  ('Is it free?','Yes - no sign-up, 2 PDFs per hour per network on the free tool.')],
- 'receipt': [('Do receipts need to show tax?','For VAT- or GST-registered businesses, yes - a receipt that doubles as a tax invoice must itemise the tax. In the US, show sales tax if you charged it.'),
+  ('Is it free?','Yes &mdash; no sign-up. The free version allows 2 PDF downloads per hour from the same network.')],
+ 'receipt': [('Do receipts need to show tax?','For VAT- or GST-registered businesses, yes - a receipt that doubles as a tax invoice must itemize the tax. In the US, show sales tax if you charged it.'),
   ('Can I make a receipt from an invoice?','Yes. On the invoice page, click &ldquo;Receipt&rdquo; under the preview. The content is reused and marked as paid.'),
-  ('Is it free?','Yes - no sign-up, 2 PDFs per hour per network on the free tool.')],
+  ('Is it free?','Yes &mdash; no sign-up. The free version allows 2 PDF downloads per hour from the same network.')],
  'purchase-order': [('Who issues a purchase order - the buyer or the seller?','The buyer. The supplier then quotes the PO number on their invoice and delivery documents.'),
   ('Is a purchase order a contract?','Once accepted by the supplier it generally forms a binding order for the stated goods, prices and terms. Add your terms in the Terms box if you need specific conditions.'),
-  ('Is it free?','Yes - no sign-up, 2 PDFs per hour per network on the free tool.')],
+  ('Is it free?','Yes &mdash; no sign-up. The free version allows 2 PDF downloads per hour from the same network.')],
  'packing-slip': [('Should a packing slip show prices?','Usually not. It lists items and quantities only; prices go on the invoice. This tool hides the price and tax columns on packing slips automatically.'),
   ('What is the difference between a packing slip and a delivery note?','They serve the same purpose. &ldquo;Packing slip&rdquo; is the common term in the US and Canada, &ldquo;delivery note&rdquo; in the UK and Australia - the title changes with the country you select.'),
-  ('Is it free?','Yes - no sign-up, 2 PDFs per hour per network on the free tool.')],
+  ('Is it free?','Yes &mdash; no sign-up. The free version allows 2 PDF downloads per hour from the same network.')],
 }
-INDEX_FAQ = [('Is Free BizDoc really free?','Yes. All five documents can be created and downloaded as PDFs without an account. The free tool allows 2 PDFs per hour per network.'),
- ('Which countries are supported?','United States (sales tax), United Kingdom (VAT), Australia (GST / tax invoice) and Canada (GST / HST / PST / QST). Currency, paper size, date format and tax-ID labels switch automatically.'),
- ('Where is my data stored?','Nowhere on our side. Documents are generated in your browser. Your own business details are kept in your browser local storage only.')]
+INDEX_FAQ = [('Is Free BizDoc free?','Yes. All five documents can be created and downloaded as PDFs without an account. The free version lets you download 2 PDFs per hour from the same network (shared office or home Wi-Fi counts as one).'),
+ ('Which countries are supported?','The United States (sales tax), the United Kingdom (VAT), Australia (GST / tax invoice), and Canada (GST / HST / PST / QST). Currency, paper size, date format, and tax-ID labels switch automatically when you choose your country.'),
+ ('Where is my data stored?','The document itself is never sent to us &mdash; the PDF is built in your browser. Only your business details are saved, and only in your own browser, so you don&rsquo;t have to retype them. A share link carries the document inside the link itself, not on our servers.')]
 
 def faq_ld(faq):
     return json.dumps({"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":q,"acceptedAnswer":{"@type":"Answer","text":a}} for q,a in faq]}, ensure_ascii=False)
@@ -264,25 +264,32 @@ def page(p):
 def index():
     p = dict(slug='', ja='/', title='Free BizDoc - Free Invoice, Estimate, Receipt, Purchase Order & Packing Slip Generator (No Sign-Up)',
       desc='Create professional business documents as PDFs in seconds - free, no account. Invoices, estimates & quotes, receipts, purchase orders and packing slips with US sales tax, UK VAT, Australian GST and Canadian GST/HST.',
-      h1='Business documents, free. No sign-up.', ey='Invoice - Estimate - Receipt - Purchase Order - Packing Slip',
-      lead='Pick a document, choose your country and fill in the details - tax, currency, paper size and dates are handled for the US, UK, Australia and Canada. Download the PDF or send a share link. Nothing is stored on our servers.',
-      tags=['No sign-up','US / UK / AU / CA','Sales tax - VAT - GST','Share by link','Instant PDF'])
+      h1='Free business documents. No sign-up.', ey='Invoice &middot; Estimate &middot; Receipt &middot; Purchase Order &middot; Packing Slip',
+      lead='Pick a document, choose your country, and fill in the details. Tax, currency, paper size, and dates are set correctly for the US, UK, Australia, and Canada. Download the PDF, or share it with a link &mdash; the document lives inside the link, not on our servers.',
+      tags=['No sign-up','US / UK / AU / CA','Sales tax, VAT &amp; GST','Share by link','Instant PDF'])
     url = f"{BASE}/en/"
-    cards = [('/en/invoice','Invoice','Itemised invoice with tax, due date, payment terms and your bank details.'),
-             ('/en/estimate','Estimate / Quote','Priced scope of work with a valid-until date and an acceptance line.'),
-             ('/en/receipt','Receipt','Proof of payment with amount paid, method and a PAID stamp.'),
-             ('/en/purchase-order','Purchase Order','PO number, vendor, ship-to address and delivery date.'),
-             ('/en/packing-slip','Packing Slip / Delivery Note','Items and quantities shipped - no prices - with a received-by line.')]
-    grid = ''.join(f'<a class="dcard" href="{u}"><h3>{t}</h3><p>{d}</p><span class="go">Create free &rarr;</span></a>' for u,t,d in cards)
+    cards = [('/en/invoice','Invoice','An itemized invoice with tax, a due date, payment terms, and your bank details.','Create an invoice'),
+             ('/en/estimate','Estimate / Quote','A scope of work with pricing, a valid-until date, and an acceptance line.','Create an estimate'),
+             ('/en/receipt','Receipt','Proof of payment showing the amount paid, the method, and a PAID stamp.','Create a receipt'),
+             ('/en/purchase-order','Purchase Order','A PO with its number, the vendor, a ship-to address, and a delivery date.','Create a PO'),
+             ('/en/packing-slip','Packing Slip / Delivery Note','The items and quantities shipped &mdash; no prices &mdash; with a received-by line.','Create a packing slip')]
+    grid = ''.join(f'<a class="dcard" href="{u}"><h3>{t}</h3><p>{d}</p><span class="go">{c} &rarr;</span></a>' for u,t,d,c in cards)
     css = ('<style>.dgrid{max-width:1180px;margin:0 auto;padding:10px 20px 40px;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}'
       '.dcard{display:block;background:#fff;border:1px solid var(--bd,#e2eaf4);border-radius:16px;padding:22px 22px 18px;text-decoration:none;color:inherit;box-shadow:0 10px 30px -22px rgba(19,38,59,.35);transition:.15s}'
       '.dcard:hover{transform:translateY(-2px);border-color:var(--ac,#1766e6)}.dcard h3{margin:0 0 6px;font-size:17px}.dcard p{margin:0 0 12px;font-size:13.5px;color:#5a6b7b;line-height:1.55}.dcard .go{font-size:13px;font-weight:800;color:var(--ac,#1766e6)}'
-      '.regions{max-width:1180px;margin:0 auto;padding:0 20px 30px;font-size:13.5px;color:#5a6b7b}.regions b{color:#13263b}</style>')
-    regions = ('<div class="regions"><b>Built for your country:</b> &#127482;&#127480; United States - sales tax by line, Net 30, Letter paper &middot; '
-      '&#127468;&#127463; United Kingdom - VAT 20/5/0%, VAT number, A4 &middot; &#127462;&#127482; Australia - GST 10%, ABN, "Tax Invoice" &middot; '
-      '&#127464;&#127462; Canada - GST/HST/PST/QST by province, GST/HST number</div>')
-    art = ('<article class="art"><p class="lead">Free BizDoc started in Japan as a free generator for Japanese business documents. The English edition follows the formats actually used in English-speaking countries rather than translating the Japanese ones: a US-style invoice with sales tax, a UK VAT invoice, an Australian tax invoice and a Canadian GST/HST invoice, plus estimates, receipts, purchase orders and packing slips.</p>'
-      '<h2>How it works</h2><div class="steps"><div class="step"><span class="n">1</span><span class="t">Pick a document and your country</span></div><div class="step"><span class="n">2</span><span class="t">Enter your business once - it is remembered in your browser</span></div><div class="step"><span class="n">3</span><span class="t">Add the recipient and line items; the live preview is the actual PDF</span></div><div class="step"><span class="n">4</span><span class="t">Download, or send a share link instead of an attachment</span></div></div></article>')
+      '.regions{max-width:1180px;margin:0 auto;padding:0 20px 34px}'
+      '.regions h2{font-size:clamp(18px,3vw,22px);font-weight:900;margin:0 0 14px}'
+      '.rgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}'
+      '.rgrid .rc{background:#fff;border:1px solid var(--bd,#e2eaf4);border-radius:14px;padding:15px 16px}'
+      '.rgrid .rc b{display:block;font-size:14.5px;margin-bottom:4px}.rgrid .rc span{font-size:13px;color:#5a6b7b;line-height:1.6}</style>')
+    regions = ('<div class="regions"><h2>Built for your country</h2><div class="rgrid">'
+      '<div class="rc"><b>&#127482;&#127480; United States</b><span>Sales tax set per line, Net&nbsp;30 terms, Letter paper, USD.</span></div>'
+      '<div class="rc"><b>&#127468;&#127463; United Kingdom</b><span>VAT at 20% / 5% / 0%, your VAT number, A4 paper, GBP.</span></div>'
+      '<div class="rc"><b>&#127462;&#127482; Australia</b><span>GST 10%, your ABN, the title &ldquo;Tax Invoice&rdquo;, A4 paper, AUD.</span></div>'
+      '<div class="rc"><b>&#127464;&#127462; Canada</b><span>GST / HST / PST / QST by province, your GST/HST number, Letter paper, CAD.</span></div>'
+      '</div></div>')
+    art = ('<article class="art"><p class="lead">Free BizDoc began in Japan as a free generator for Japanese business documents. The English edition isn&rsquo;t a translation of those forms &mdash; it follows the formats businesses actually use in each country: a US invoice with sales tax, a UK VAT invoice, an Australian tax invoice, and a Canadian GST/HST invoice, plus estimates, receipts, purchase orders, and packing slips.</p>'
+      '<h2>How it works</h2><div class="steps"><div class="step"><span class="n">1</span><span class="t">Pick a document and your country.</span></div><div class="step"><span class="n">2</span><span class="t">Enter your business once &mdash; it&rsquo;s remembered in your browser.</span></div><div class="step"><span class="n">3</span><span class="t">Add the recipient and line items. The live preview is the actual PDF.</span></div><div class="step"><span class="n">4</span><span class="t">Download it, or send a share link instead of an attachment.</span></div></div></article>')
     nav = ('<script>(function(){var h=document.getElementById("docnav-en");if(!h)return;var D=[["/en/invoice","Invoice"],["/en/estimate","Estimate / Quote"],["/en/receipt","Receipt"],["/en/purchase-order","Purchase Order"],["/en/packing-slip","Packing Slip / Delivery Note"]];'
       'var s=document.createElement("style");s.textContent="#docnav-en{background:#fff;border-bottom:1px solid #e6ebf2;overflow-x:auto}#docnav-en .t{display:flex;gap:8px;width:max-content;padding:12px 16px;margin:0 auto}#docnav-en a{font-size:13px;font-weight:700;color:#5a6b80;text-decoration:none;padding:8px 15px;border-radius:999px;background:#f1f5fb;border:1px solid #dce5f0;white-space:nowrap}";document.head.appendChild(s);'
       'h.innerHTML="<div class=\\"t\\">"+D.map(function(d){return "<a href=\\""+d[0]+"\\">"+d[1]+"</a>";}).join("")+"</div>";})();</script>')
@@ -302,12 +309,20 @@ def index():
       '.hero-en h1{order:2;margin:0 0 10px;font-size:clamp(23px,6.4vw,32px)}'
       '.hero-en .herodemo{order:3;margin:4px 0 14px}'
       '.hero-en p{order:4}'
-      '.hero-en .tags{order:5;margin-top:16px}'
+      '.hero-en .hcta{order:5;margin:18px 0 2px}'
+      '.hero-en .tags{order:6;margin-top:16px}'
       '.hero-en #demoframe{height:430px}'
-      '}</style>')
+      '}'
+      '.hero-en .hcta{margin-top:20px;display:flex;gap:12px;flex-wrap:wrap}'
+      '.hero-en .hbtn{display:inline-flex;align-items:center;gap:8px;font-size:15.5px;font-weight:800;text-decoration:none;border-radius:12px;padding:14px 24px}'
+      '.hero-en .hbtn.pri{background:var(--ac,#1766e6);color:#fff;box-shadow:0 12px 26px -10px rgba(23,102,230,.55)}'
+      '.hero-en .hbtn.pri:hover{background:#1257ca}'
+      '.hero-en .hbtn.gh{border:1.5px solid var(--bd,#d4dced);color:#13263b}'
+      '</style>')
     hero_html = ('<section class="hero hero-en"><div class="in">'
       '<div class="htext">'
       f'<span class="ey">{p["ey"]}</span><h1>{p["h1"]}</h1><p>{p["lead"]}</p>'
+      '<div class="hcta"><a class="hbtn pri" href="/en/invoice">Create an invoice &rarr;</a><a class="hbtn gh" href="/en/pricing">See plans</a></div>'
       f'<div class="tags">{tags}</div>'
       '</div>'
       '<div class="herodemo"><iframe id="demoframe" src="/en/demo-embed" title="See an invoice created in seconds" loading="lazy" scrolling="no"></iframe></div>'
