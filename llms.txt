@@ -53,4 +53,5 @@
 - [Expense report / Expense claim generator](https://free-bizdocs.com/en/expense-report): claim reimbursement for business costs by date and category
 - [Bill of sale generator](https://free-bizdocs.com/en/bill-of-sale): record a private sale and transfer of ownership, signed by seller and buyer
 - [Donation receipt generator](https://free-bizdocs.com/en/donation-receipt): nonprofit / charity tax receipt with donor, amount and the required statement
+- [Invoice templates by profession](https://free-bizdocs.com/en/invoice-templates): ready-to-edit invoice templates for freelancers, consultants, designers, developers, photographers, contractors, cleaners, tutors, virtual assistants and marketers
 - [English home](https://free-bizdocs.com/en/) · [Contact](https://free-bizdocs.com/en/contact) · [Privacy](https://free-bizdocs.com/en/privacy)

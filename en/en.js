@@ -379,6 +379,16 @@ function _b64e(str){ return btoa(unescape(encodeURIComponent(str))).replace(/\+/
 function _b64d(s){ s=String(s).replace(/-/g,'+').replace(/_/g,'/'); while(s.length%4)s+='='; return decodeURIComponent(escape(atob(s))); }
 function sharePayload(){ var D=buildDoc(); D.co=Object.assign({},D.co); delete D.co.logo; D.theme=undefined; return D; }
 function parseShare(){ try{ var m=(location.hash||'').match(/[#&]s=([^&]+)/); if(!m)return null; var o=JSON.parse(_b64d(decodeURIComponent(m[1]))); return (o&&o.items)?o:null; }catch(e){ return null; } }
+/* Editable prefill from a landing page: #p=<base64 JSON {kind,items,notes,tax_rate}>. Fills the form (does not enter read-only share view, does not touch the saved business). */
+function parsePrefill(){ try{ var m=(location.hash||'').match(/[#&]p=([^&]+)/); if(!m)return null; var o=JSON.parse(_b64d(decodeURIComponent(m[1]))); return (o&&o.items)?o:null; }catch(e){ return null; } }
+function applyPrefill(P){ if(!P)return;
+  if(P.kind&&KINDS[P.kind]) applyKind(P.kind,true);
+  if(P.items&&P.items.length){ rowsEl.innerHTML=''; P.items.forEach(addRow); refreshTaxSelects(); }
+  if(P.notes!=null&&$('notes')) $('notes').value=P.notes;
+  if(P.tax_rate!=null&&$('tax-rate')) $('tax-rate').value=P.tax_rate;
+  if($('doc-no')&&!$('doc-no').value) $('doc-no').value=nextDocNo();
+  saveDraft();
+}
 function setupShare(){ var box=$('sharebox'); if(!box)return;
   box.innerHTML='<button type="button" id="sharebtn" class="sharebtn">🔗 Create a share link (send a URL instead of attaching a PDF)</button><div id="shareout" class="shareout" style="display:none"><div class="so-lb">Send this link. The recipient can view the document in their browser and download the PDF.</div><div class="so-row"><input id="shareurl" readonly><button type="button" id="sharecopy">Copy</button></div><div class="so-note">Your logo is not included in the link. The content lives only in the URL — nothing is saved on our servers.</div></div>';
   box.addEventListener('click',function(e){ if(e.target.id==='sharebtn'){ if(!liveItems().length){ toast('Add a line item first'); return; } if(!v('cl-name')){ toast('Enter the recipient name first'); return; } var url=location.origin+location.pathname+'#s='+_b64e(JSON.stringify(sharePayload())); $('shareout').style.display='block'; var inp=$('shareurl'); inp.value=url; inp.focus(); inp.select(); }
@@ -524,6 +534,7 @@ async function loadSavedParam(){
     var qt=null; try{ qt=new URLSearchParams(location.search).get('type'); }catch(e){}
     applyKind(qt||kind,true);
     if($('due')&&!$('due').value&&(KINDS[kind].due||KINDS[kind].valid)) $('due').value=plusDays(30);
+    var PF=parsePrefill(); if(PF){ try{ applyPrefill(PF); }catch(e){ console.error(e); } }
     setupPreview(); setupShare(); renderConvertBar(); refreshRemain(); schedulePv();
     // Accounts: load auth state, then (if ?doc) load the saved document.
     fetchMe().then(function(){ loadSavedParam(); });

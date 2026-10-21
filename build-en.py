@@ -4,7 +4,7 @@
 import json, os, datetime
 ROOT = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(ROOT, 'en')
-V = datetime.date.today().strftime('%Y%m%d') + 'i'  # bump suffix on each JS/asset change to bust browser cache
+V = datetime.date.today().strftime('%Y%m%d') + 'j'  # bump suffix on each JS/asset change to bust browser cache
 BASE = 'https://free-bizdocs.com'
 
 PAGES = [
@@ -402,6 +402,7 @@ FOOTER = '''<footer class="ft"><div class="in">
     </div>
     <div class="col">
       <h4>More</h4>
+      <a href="/en/invoice-templates">Invoice templates</a>
       <a href="/en/blog">Blog</a>
       <a href="/en/compare">Compare tools</a>
       <a href="/en/pricing">Pricing &amp; PRO</a>
