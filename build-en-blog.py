@@ -184,6 +184,144 @@ DRAFTS = [
   ],
   related=[('/en/invoice','Free invoice generator'),('/en/blog/how-to-write-an-invoice','How to write an invoice'),('/en/blog/payment-terms-explained','Payment terms explained')],
  ),
+ dict(
+  slug='how-to-invoice-as-a-freelancer', cat='Invoicing', tool='/en/invoice',
+  title='How to Invoice as a Freelancer (A Simple Guide)',
+  desc='A practical, step-by-step guide to invoicing clients as a freelancer — what to include, how to set terms, and how to get paid on time.',
+  date='2026-10-21',
+  body='''
+<p class="lead">Invoicing is how you actually get paid as a freelancer, yet it&rsquo;s the part most people wing. A clear, consistent invoice looks professional, avoids back-and-forth, and gets money into your account faster. Here&rsquo;s a simple system you can reuse for every client.</p>
+
+<h2>Agree the terms before you start</h2>
+<p>The best way to get paid on time is to set expectations up front. Before the work begins, confirm in writing: the scope and price, whether you bill hourly or a fixed fee, your payment terms (for example &ldquo;Net 14&rdquo; or &ldquo;due on receipt&rdquo;), and whether you require a deposit. A short email is enough &mdash; it just has to exist.</p>
+
+<h2>What to put on a freelance invoice</h2>
+<ul>
+<li>The word <b>&ldquo;Invoice&rdquo;</b> and a unique number (INV-0001, INV-0002&hellip;).</li>
+<li>Your name or business name, contact details and tax ID if you have one.</li>
+<li>The client&rsquo;s name and billing address.</li>
+<li>Issue date and a clear due date.</li>
+<li>Line items &mdash; describe the work, with quantity/hours and rate.</li>
+<li>Subtotal, any tax, and the total due.</li>
+<li>How to pay: bank details or a payment link.</li>
+</ul>
+
+<h2>Should you charge tax?</h2>
+<p>It depends where you and your client are. In the US, whether you charge sales tax depends on your state and whether services are taxable there. In the UK you only add VAT once you&rsquo;re VAT-registered. In Australia you charge GST once registered (required at $75,000 turnover), and in Canada GST/HST applies once registered. When in doubt, check with an accountant &mdash; and keep your invoice showing tax as a separate line.</p>
+
+<h2>Getting paid on time</h2>
+<p>Keep your terms short (14 days is common for freelancers), write the actual due date rather than only &ldquo;Net 14&rdquo;, send the invoice the day you finish, and make paying effortless with bank details or a link right on the invoice. A polite reminder a few days before the due date works better than chasing after it.</p>
+
+<h2>Create a freelance invoice free</h2>
+<p>Use our <a href="/en/invoice">free invoice generator</a> &mdash; no sign-up &mdash; to produce a clean PDF with your details, the right tax model for your country, and a due date. Freelancers in the US, UK, Australia and Canada are all supported.</p>
+''',
+  faqs=[
+   ('How do I invoice as a freelancer without a company?', 'You can invoice as a sole trader or individual using your own name and address. You don&rsquo;t need a registered company &mdash; just a clear invoice with a number, your details, the client&rsquo;s details, the work, the total and how to pay.'),
+   ('What payment terms should a freelancer use?', 'Net 14 or &ldquo;due on receipt&rdquo; are common for freelancers because they shorten the wait. Whatever you choose, state the actual due date on the invoice and agree it with the client before you start.'),
+   ('Do freelancers charge tax on invoices?', 'Only when required where you operate &mdash; US sales tax depends on your state and service type; UK VAT, Australian GST and Canadian GST/HST apply once you&rsquo;re registered. Show any tax as a separate line.'),
+  ],
+  related=[('/en/invoice','Free invoice generator'),('/en/blog/payment-terms-explained','Payment terms explained'),('/en/blog/how-to-write-an-invoice','How to write an invoice')],
+ ),
+ dict(
+  slug='what-is-a-purchase-order', cat='Purchasing', tool='/en/purchase-order',
+  title='What Is a Purchase Order? (PO vs Invoice Explained)',
+  desc='A plain-English explanation of purchase orders — what a PO is, how it differs from an invoice, and when to use one.',
+  date='2026-10-21',
+  body='''
+<p class="lead">A <b>purchase order</b> (PO) is a document the <i>buyer</i> sends to a supplier to confirm an order: what they want, how much, at what price, and where and when to deliver it. It turns a verbal or email agreement into a clear, trackable record &mdash; and it&rsquo;s the first step in the &ldquo;three-way match&rdquo; that keeps buying under control.</p>
+
+<h2>What a purchase order includes</h2>
+<ul>
+<li>A unique <b>PO number</b> and the order date.</li>
+<li>The buyer&rsquo;s details and the <b>vendor</b> (supplier) details.</li>
+<li>The <b>ship-to</b> address and required delivery date.</li>
+<li>Line items with quantities and agreed unit prices.</li>
+<li>Tax, the order total, and any terms.</li>
+</ul>
+
+<h2>Purchase order vs invoice</h2>
+<p>They&rsquo;re easy to confuse because they list the same items, but they move in opposite directions. The <b>buyer issues the PO</b> to request goods or services. The <b>supplier issues the invoice</b> to request payment once the order is fulfilled. The supplier quotes the PO number on the invoice so both sides can match them.</p>
+
+<h2>The three-way match</h2>
+<p>Finance teams match three documents before paying: the <b>purchase order</b> (what was ordered), the <b>packing slip or delivery note</b> (what arrived) and the <b>invoice</b> (what&rsquo;s being charged). If all three agree, the invoice is approved. This is why quoting the PO number on every related document matters.</p>
+
+<h2>When should a small business use POs?</h2>
+<p>Even solo businesses benefit from POs for larger or recurring purchases: they prevent surprise charges, create a budget trail, and give you something to point to if an order is wrong. For one-off small buys a PO may be overkill &mdash; use judgement.</p>
+
+<h2>Create a purchase order free</h2>
+<p>Our <a href="/en/purchase-order">free purchase order template</a> builds a clean PO PDF with a number, vendor, ship-to address and delivery date &mdash; no sign-up. When the goods arrive, create a matching <a href="/en/packing-slip">packing slip</a> from the same details.</p>
+''',
+  faqs=[
+   ('Who issues a purchase order, the buyer or the supplier?', 'The buyer issues the purchase order to request goods or services. The supplier later issues an invoice to request payment and quotes the PO number so the two can be matched.'),
+   ('Is a purchase order legally binding?', 'Once the supplier accepts it, a PO generally forms a binding order for the stated goods, quantities, prices and terms. Add specific conditions in the terms section if you need them.'),
+   ('What is the difference between a PO and an invoice?', 'A purchase order is the buyer&rsquo;s request to order; an invoice is the supplier&rsquo;s request for payment. The PO comes first; the invoice references its number.'),
+  ],
+  related=[('/en/purchase-order','Free purchase order template'),('/en/packing-slip','Free packing slip template'),('/en/blog/how-to-write-an-invoice','How to write an invoice')],
+ ),
+ dict(
+  slug='payment-reminder-email', cat='Getting paid', tool='/en/invoice',
+  title='How to Write a Payment Reminder Email (Templates)',
+  desc='Polite, effective payment reminder email templates — before the due date, on the day, and for overdue invoices — plus tips to get paid without awkwardness.',
+  date='2026-10-21',
+  body='''
+<p class="lead">Chasing payment feels awkward, but most late invoices aren&rsquo;t refusals &mdash; they&rsquo;re forgotten. A short, friendly, well-timed email usually fixes it. Here are templates for each stage, from a gentle nudge to a firm final notice.</p>
+
+<h2>Before you send anything</h2>
+<p>Make sure the invoice was clear in the first place: a due date (not just &ldquo;Net 30&rdquo;), the amount, and easy payment options. Then follow a simple cadence &mdash; a reminder a few days before the due date, one on the day, and follow-ups at about one and two weeks overdue.</p>
+
+<h2>1. Friendly reminder (a few days before due)</h2>
+<p><i>Subject: Invoice INV-0042 &mdash; due 20 Nov</i><br>Hi [Name], just a quick note that invoice INV-0042 for $[amount] is due on [date]. Payment details are on the invoice (attached). Thanks so much &mdash; happy to answer any questions.</p>
+
+<h2>2. On the due date</h2>
+<p><i>Subject: Invoice INV-0042 is due today</i><br>Hi [Name], a friendly reminder that invoice INV-0042 for $[amount] is due today. If it&rsquo;s already on its way, thank you! If not, you can pay via [method]. Let me know if anything&rsquo;s unclear.</p>
+
+<h2>3. Overdue (1&ndash;2 weeks past due)</h2>
+<p><i>Subject: Invoice INV-0042 &mdash; now overdue</i><br>Hi [Name], invoice INV-0042 for $[amount] was due on [date] and is now [X] days overdue. Could you let me know when I can expect payment? If there&rsquo;s a problem with the invoice, I&rsquo;m glad to sort it out. Payment details are attached.</p>
+
+<h2>4. Final notice</h2>
+<p>Keep it professional and specific: restate the amount and original due date, note any late fee stated in your terms, give a firm new date, and say what happens next. Avoid anger &mdash; clarity gets paid; emotion rarely does.</p>
+
+<h2>Make reminders unnecessary</h2>
+<p>The best reminder is a clear invoice with easy payment. Create one free with our <a href="/en/invoice">invoice generator</a> &mdash; it shows the due date and your payment details prominently &mdash; or send a <a href="/en/receipt">receipt</a> the moment you&rsquo;re paid to confirm it.</p>
+''',
+  faqs=[
+   ('How do I politely ask for payment?', 'Keep it short, friendly and specific: reference the invoice number and amount, state the due date, and make paying easy. Assume good faith &mdash; most late payments are simply forgotten.'),
+   ('When should I send a payment reminder?', 'A good cadence is a reminder a few days before the due date, one on the day, then follow-ups around one and two weeks overdue, escalating in firmness each time.'),
+   ('Can I charge a late fee?', 'Yes, if you stated it in your terms before the work (for example 1.5% per month). Reference that term in your reminder rather than adding a surprise fee.'),
+  ],
+  related=[('/en/invoice','Free invoice generator'),('/en/blog/payment-terms-explained','Payment terms explained'),('/en/blog/receipt-vs-invoice','Receipt vs invoice')],
+ ),
+ dict(
+  slug='sales-tax-on-invoices', cat='Tax', tool='/en/invoice',
+  title='Do I Charge Sales Tax on Invoices? (US Guide)',
+  desc='A plain-English guide to US sales tax on invoices — when to charge it, how nexus and taxable services work, and how to show it correctly.',
+  date='2026-10-21',
+  body='''
+<p class="lead">&ldquo;Do I add sales tax to this invoice?&rdquo; is one of the most common questions US small businesses ask &mdash; and the honest answer is &ldquo;it depends.&rdquo; Sales tax in the US is set by states (and sometimes cities and counties), so the rules change with where you operate and what you sell. Here&rsquo;s how to think about it.</p>
+
+<h2>There is no federal sales tax</h2>
+<p>Unlike VAT or GST in other countries, the US has no national sales tax. Each state sets its own rules and rates, and five states (Alaska, Delaware, Montana, New Hampshire and Oregon) have no statewide sales tax at all &mdash; though some localities in them do. So the first question is always: which state&rsquo;s rules apply?</p>
+
+<h2>Do you have &ldquo;nexus&rdquo;?</h2>
+<p>You generally charge a state&rsquo;s sales tax only if you have <b>nexus</b> there &mdash; a connection such as a physical presence (office, staff, inventory) or enough sales into the state to cross its economic-nexus threshold. If you have nexus in a state and sell something taxable to a customer there, you typically collect that state&rsquo;s tax.</p>
+
+<h2>Are services taxable?</h2>
+<p>Physical goods are taxable in most states; services are where it gets tricky. Many states don&rsquo;t tax professional services (design, consulting, writing), some tax specific services, and a few tax services broadly. Digital products and SaaS are treated differently again. Check your state&rsquo;s guidance for your specific service.</p>
+
+<h2>How to show sales tax on an invoice</h2>
+<p>When you do charge it: show the taxable subtotal, the sales tax as a <b>separate line</b> with the rate, and the total. If some items are exempt and others aren&rsquo;t, apply the rate per line. Keeping tax separate makes your invoice clear for the customer and clean for your books.</p>
+<div class="note">This is general information, not tax advice. Sales tax rules vary by state, city and industry and change over time &mdash; confirm your obligations with a tax professional or your state&rsquo;s department of revenue.</div>
+
+<h2>Create an invoice with sales tax free</h2>
+<p>Our <a href="/en/invoice">free invoice generator</a> lets you set a US sales tax rate per line (or mark items exempt) and shows the tax separately on the PDF &mdash; no sign-up.</p>
+''',
+  faqs=[
+   ('Do I have to charge sales tax on every invoice?', 'No. In the US you generally charge a state&rsquo;s sales tax only if you have nexus there and the item or service is taxable in that state. Many professional services aren&rsquo;t taxable in many states.'),
+   ('Is sales tax charged on services?', 'It varies by state. Most states tax physical goods; some tax specific services, a few tax services broadly, and many exempt professional services. Check your state&rsquo;s rules for your specific service.'),
+   ('How do I show sales tax on an invoice?', 'Show the taxable subtotal, then sales tax as a separate line with the rate, then the total. Apply the rate per line if some items are exempt.'),
+  ],
+  related=[('/en/invoice','Free invoice generator'),('/en/blog/how-to-write-an-invoice','How to write an invoice'),('/en/blog/how-to-invoice-as-a-freelancer','How to invoice as a freelancer')],
+ ),
 ]
 
 FOOTER = '''<footer class="ft"><div class="in">

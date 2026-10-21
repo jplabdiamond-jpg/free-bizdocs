@@ -328,7 +328,20 @@ def index():
       '<div class="herodemo"><iframe id="demoframe" src="/en/demo-embed" title="See an invoice created in seconds" loading="lazy" scrolling="no"></iframe></div>'
       '</div></section>')
     demo_script = '<script>(function(){var f=document.getElementById("demoframe");if(!f)return;window.addEventListener("message",function(e){try{var d=e.data;if(d&&d.t==="demoH"&&d.h>200&&d.h<2200){f.style.height=d.h+"px";}}catch(_){}});})();</script>'
-    parts = [hd, hero_css, HEADER, hero_html, css, f'<div class="dgrid">{grid}</div>', regions, art, faq_html(INDEX_FAQ), FOOTER, nav, demo_script, f'<script src="/en/siteheader-en.js?v={V}"></script>', '</body>', '</html>', '']
+    sample = ('<section class="ensample"><div class="in">'
+      '<div class="t"><h2>See a finished invoice</h2>'
+      '<p>Fill in your details and this is the PDF you download &mdash; your logo, the correct tax for your country, a due date and payment details. No watermarks.</p>'
+      '<a class="sbtn" href="/en/invoice">Create yours free &rarr;</a></div>'
+      '<div class="im"><img src="/en/sample-invoice.webp?v=20261021" alt="Sample invoice PDF created with Free BizDoc, showing line items, US sales tax, a Net 30 due date and bank payment details" width="1632" height="1843" loading="lazy"></div>'
+      '</div></section>'
+      '<style>.ensample{max-width:1180px;margin:0 auto;padding:6px 20px 40px}'
+      '.ensample .in{display:grid;grid-template-columns:.82fr 1.18fr;gap:34px;align-items:center}'
+      '.ensample .t h2{font-size:clamp(20px,3.2vw,27px);font-weight:900;margin:0 0 10px}'
+      '.ensample .t p{font-size:15px;color:#5a6b7b;line-height:1.75;margin:0 0 16px}'
+      '.ensample .sbtn{display:inline-flex;align-items:center;gap:7px;font-size:15px;font-weight:800;text-decoration:none;border-radius:12px;padding:13px 22px;background:var(--ac,#1766e6);color:#fff;box-shadow:0 12px 26px -10px rgba(23,102,230,.5)}'
+      '.ensample .im img{width:100%;height:auto;border-radius:12px;border:1px solid var(--bd,#e2eaf4);box-shadow:0 30px 60px -30px rgba(19,38,59,.55)}'
+      '@media(max-width:760px){.ensample .in{grid-template-columns:1fr;gap:18px}}</style>')
+    parts = [hd, hero_css, HEADER, hero_html, css, f'<div class="dgrid">{grid}</div>', regions, sample, art, faq_html(INDEX_FAQ), FOOTER, nav, demo_script, f'<script src="/en/siteheader-en.js?v={V}"></script>', '</body>', '</html>', '']
     return '\n'.join(parts)
 
 os.makedirs(OUT, exist_ok=True)
