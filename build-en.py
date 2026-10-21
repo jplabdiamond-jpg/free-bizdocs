@@ -4,7 +4,7 @@
 import json, os, datetime
 ROOT = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(ROOT, 'en')
-V = datetime.date.today().strftime('%Y%m%d') + 'g'  # bump suffix on each JS/asset change to bust browser cache
+V = datetime.date.today().strftime('%Y%m%d') + 'h'  # bump suffix on each JS/asset change to bust browser cache
 BASE = 'https://free-bizdocs.com'
 
 PAGES = [
@@ -33,6 +33,21 @@ PAGES = [
   h1='Free Packing Slip &amp; Delivery Note Generator', ey='Free - No sign-up - No prices - Signature line',
   lead='List what is in the shipment - without prices - plus the ship-to address, PO or order reference and a received-by signature line for proof of delivery.',
   tags=['No sign-up','No prices shown','PO / order ref.','Received-by signature','Instant PDF']),
+ dict(slug='credit-note', kind='credit', title='Free Credit Note &amp; Credit Memo Generator - PDF Download (No Sign-Up)',
+  desc='Create a credit note (credit memo in the US) to cancel or reduce an invoice, and download it as a PDF - free, no account. References the original invoice, with VAT, GST and sales tax for US / UK / AU / CA.',
+  h1='Free Credit Note Generator', ey='Free - No sign-up - Credit Note / Credit Memo',
+  lead='Issue a credit note against an invoice you have already sent - to correct an overcharge, handle a return, or apply a discount. Reference the original invoice number and the tax is reversed at the right rate for your country.',
+  tags=['No sign-up','Links to the invoice','VAT / GST / sales tax','US &ldquo;Credit Memo&rdquo;','Instant PDF']),
+ dict(slug='proforma-invoice', kind='proforma', title='Free Pro Forma Invoice Generator - Download a Proforma PDF (No Sign-Up)',
+  desc='Create a pro forma invoice to quote a price or request advance payment before you supply - free PDF, no account. Clearly marked &ldquo;not a tax invoice&rdquo;, with US / UK / AU / CA tax shown for reference.',
+  h1='Free Pro Forma Invoice Generator', ey='Free - No sign-up - Advance billing / customs',
+  lead='Send a pro forma invoice before the sale is final - to confirm the price, request a deposit, or support a customs or import declaration. It is clearly marked as not a tax invoice and carries no payment-due status.',
+  tags=['No sign-up','Marked &ldquo;not a tax invoice&rdquo;','Deposits &amp; customs','Converts to an invoice','Instant PDF']),
+ dict(slug='sales-order', kind='salesorder', title='Free Sales Order &amp; Order Confirmation Generator - PDF (No Sign-Up)',
+  desc='Create a sales order or order confirmation to acknowledge a customer order - the seller-side counterpart to a purchase order. Free PDF, no account, with ship-to, delivery date and US / UK / AU / CA tax.',
+  h1='Free Sales Order Generator', ey='Free - No sign-up - Order confirmation',
+  lead='Acknowledge a customer order with a sales order (or order confirmation): confirm the items, agreed prices, ship-to address and delivery date, and reference their PO number so both sides can match the paperwork.',
+  tags=['No sign-up','Confirms an order','References their PO','Ship-to &amp; delivery','Instant PDF']),
 ]
 
 ARTICLES = {
@@ -70,6 +85,31 @@ ARTICLES = {
 <p>The packing slip confirms what was physically delivered; the invoice requests payment. Create both from the same details - enter the items once, then switch documents under the preview.</p>
 <h2>How to create a free packing slip</h2>
 <div class="steps"><div class="step"><span class="n">1</span><span class="t">Choose your country and enter your business details</span></div><div class="step"><span class="n">2</span><span class="t">Enter the customer, ship-to address and order reference</span></div><div class="step"><span class="n">3</span><span class="t">List the items and quantities shipped</span></div><div class="step"><span class="n">4</span><span class="t">Download the PDF and include it with the shipment</span></div></div>''',
+ 'credit-note': '''<p class="lead">A credit note - called a <b>credit memo</b> in the US - reduces or cancels an amount a customer owes on an invoice you already issued. You send one when you overcharged, when goods are returned, when you agree a post-sale discount, or when you need to correct a mistake on an invoice. It references the original invoice so both sides&rsquo; books stay matched.</p>
+<h2>When to issue a credit note</h2>
+<ul><li>You invoiced the wrong amount, quantity or tax rate</li><li>The customer returned goods or cancelled part of an order</li><li>You agreed a discount, rebate or goodwill adjustment after invoicing</li><li>A duplicate invoice was sent and needs to be reversed</li></ul>
+<h2>What to put on a credit note</h2>
+<ul><li>Your business details and tax ID, exactly as on the original invoice</li><li>The word &ldquo;Credit Note&rdquo; (or &ldquo;Credit Memo&rdquo; in the US), a unique number and the date</li><li>The <b>original invoice number</b> it relates to</li><li>The lines being credited, with the same tax treatment as the invoice</li><li>The total credit - and whether it is refunded or applied to a future invoice</li></ul>
+<h2>Country notes this tool handles</h2>
+<ul><li><b>United States</b> - the usual term is <b>credit memo</b>; sales tax charged on the original invoice is reversed on the same lines.</li><li><b>United Kingdom</b> - a VAT credit note reverses the VAT at the rate originally charged and should reference the original invoice; keep it for your VAT records.</li><li><b>Australia</b> - a credit note that adjusts GST is sometimes called an <b>adjustment note</b>; it reverses the 10% GST applied on the original tax invoice.</li><li><b>Canada</b> - GST/HST (and PST/QST) charged on the original invoice is credited back at the province&rsquo;s rate.</li></ul>
+<div class="note">A credit note never increases what the customer owes - to charge more, issue a new invoice. Confirm how VAT/GST adjustments should be recorded with your accountant.</div>
+<h2>How to create a free credit note</h2>
+<div class="steps"><div class="step"><span class="n">1</span><span class="t">Choose your country and enter your business details</span></div><div class="step"><span class="n">2</span><span class="t">Enter the customer and the original invoice number it credits</span></div><div class="step"><span class="n">3</span><span class="t">List the lines being credited - tax is reversed automatically</span></div><div class="step"><span class="n">4</span><span class="t">Download the PDF, or start it from the matching invoice in one click</span></div></div>''',
+ 'proforma-invoice': '''<p class="lead">A pro forma invoice is a preliminary bill sent <b>before</b> a sale is finalised. It shows the buyer exactly what the goods or services will cost - so they can approve the purchase, pay a deposit, arrange finance, or clear customs - but it is not a demand for payment and it is not a tax invoice. When the order is confirmed you replace it with a real invoice.</p>
+<h2>When a pro forma invoice is used</h2>
+<ul><li>To quote a committed price the buyer can raise a purchase order against</li><li>To request a <b>deposit or advance payment</b> before work or shipping begins</li><li>For <b>international shipments</b> - customs and freight forwarders use it to value goods for import</li><li>So a buyer&rsquo;s finance team can set up the supplier and approve the spend</li></ul>
+<h2>Pro forma invoice vs invoice vs quote</h2>
+<p>A quote is an offer of a price. A pro forma invoice looks like the final invoice - same layout, line items and totals - but is explicitly marked &ldquo;pro forma&rdquo; so it is clear that no tax point has been created and no payment is yet legally due. A true (tax) invoice is the one that triggers VAT/GST accounting and the obligation to pay. This tool prints the &ldquo;not a tax invoice&rdquo; wording for you and lets you convert it to a real invoice with one click.</p>
+<div class="note">Because a pro forma is not a tax invoice, buyers generally cannot reclaim VAT/GST from it. Issue the final invoice once payment or the order is confirmed.</div>
+<h2>How to create a free pro forma invoice</h2>
+<div class="steps"><div class="step"><span class="n">1</span><span class="t">Choose your country and enter your business details</span></div><div class="step"><span class="n">2</span><span class="t">Enter the buyer, a validity date and any advance-payment details</span></div><div class="step"><span class="n">3</span><span class="t">Add the items, quantities and prices - tax is shown for reference</span></div><div class="step"><span class="n">4</span><span class="t">Download the PDF, then convert it to a real invoice when the order is confirmed</span></div></div>''',
+ 'sales-order': '''<p class="lead">A sales order (or order confirmation) is the document the <b>seller</b> sends back to a customer to acknowledge an order and confirm the details before fulfilling it. It is the mirror image of a purchase order: the buyer issues a PO, and you reply with a sales order quoting their PO number, the agreed items and prices, the ship-to address and the delivery date.</p>
+<h2>What to include on a sales order</h2>
+<ul><li>Your business details and a unique <b>sales order number</b></li><li>The <b>customer</b> and their billing address</li><li>The <b>ship-to</b> address and the expected <b>delivery date</b></li><li>The customer&rsquo;s <b>PO number</b> for cross-reference</li><li>Itemised lines with agreed quantities and unit prices, tax and the order total</li></ul>
+<h2>Sales order vs purchase order vs invoice</h2>
+<p>The <b>purchase order</b> is raised by the buyer to place the order. The <b>sales order</b> is your acknowledgement that you accept it and will supply on the stated terms. The <b>invoice</b> comes later, once the goods or services are delivered, to request payment. Keeping the same number thread across all three lets both sides match the paperwork. Create the matching invoice or packing slip from the same details with one click.</p>
+<h2>How to create a free sales order</h2>
+<div class="steps"><div class="step"><span class="n">1</span><span class="t">Choose your country and enter your business details</span></div><div class="step"><span class="n">2</span><span class="t">Enter the customer, their PO number, ship-to address and delivery date</span></div><div class="step"><span class="n">3</span><span class="t">Add the items and agreed prices</span></div><div class="step"><span class="n">4</span><span class="t">Download the PDF and send it to confirm the order</span></div></div>''',
 }
 
 FAQS = {
@@ -100,6 +140,23 @@ FAQS = {
   ('Should a packing slip show prices?','Usually not. It lists items and quantities only; prices go on the invoice. This tool hides the price and tax columns on packing slips automatically.'),
   ('What is the difference between a packing slip and a delivery note?','They serve the same purpose. &ldquo;Packing slip&rdquo; is the common term in the US and Canada, &ldquo;delivery note&rdquo; in the UK and Australia - the title changes with the country you select.'),
   ('Is it free?','Yes &mdash; no sign-up. The free version allows 2 PDF downloads per hour from the same network.')],
+ 'credit-note': [('What is the difference between a credit note and a credit memo?','None &mdash; they are the same document. &ldquo;Credit memo&rdquo; is the common US term and &ldquo;credit note&rdquo; is used in the UK, Australia and Canada. The title switches automatically to match the country you select.'),
+  ('How do I cancel or reduce an invoice I already sent?','Issue a credit note that references the original invoice number. List the lines being credited; the tax is reversed at the same rate. You can either refund the amount or apply the credit to a future invoice.'),
+  ('Does a credit note reverse VAT or GST?','Yes. The credit note reverses the VAT, GST or sales tax that was charged on the original invoice, at the same rate, so your tax records balance. In Australia a GST adjustment is sometimes called an adjustment note.'),
+  ('Can I create a credit note from an invoice?','Yes. Under the preview, switch to &ldquo;Credit Note&rdquo; &mdash; the customer and line items carry over and you add the original invoice number it relates to.'),
+  ('Should the amounts be negative?','No. List the credited lines as positive amounts; the document itself shows it is a credit, and the total is labelled &ldquo;Total Credit&rdquo;. This is the standard way credit notes are read.'),
+  ('Is it free?','Yes &mdash; no sign-up. The free version allows 2 PDF downloads per hour from the same network.')],
+ 'proforma-invoice': [('What is a pro forma invoice?','A preliminary invoice sent before a sale is final. It shows the full price so the buyer can approve the purchase, pay a deposit, or clear customs &mdash; but it is not a tax invoice and not a demand for payment. A real invoice follows once the order is confirmed.'),
+  ('Can a customer pay from a pro forma invoice?','They can pay an agreed deposit or advance against it, but it does not create a payment obligation on its own. The document is marked &ldquo;not a tax invoice&rdquo; for clarity. Issue the final invoice once the order or payment is confirmed.'),
+  ('Can I reclaim VAT or GST from a pro forma invoice?','Generally no. Because it is not a tax invoice, it does not create a tax point, so VAT/GST is usually not reclaimable from it. The tax shown is for reference &mdash; the final invoice is the one used for tax.'),
+  ('Is a pro forma invoice used for customs?','Yes. For international shipments, customs and freight forwarders use a pro forma invoice to value the goods for import before the commercial invoice is issued.'),
+  ('How do I turn it into a real invoice?','Under the preview, switch to &ldquo;Invoice&rdquo;. The same details carry over with a new invoice number and today&rsquo;s date.'),
+  ('Is it free?','Yes &mdash; no sign-up. The free version allows 2 PDF downloads per hour from the same network.')],
+ 'sales-order': [('What is a sales order?','A sales order (or order confirmation) is the seller&rsquo;s acknowledgement of a customer&rsquo;s order. It confirms the items, agreed prices, ship-to address and delivery date, and references the customer&rsquo;s PO number so both sides can match the paperwork.'),
+  ('What is the difference between a sales order and a purchase order?','The buyer issues the purchase order to place the order; the seller replies with a sales order to confirm it will supply on those terms. The invoice comes later to request payment. A sales order references the buyer&rsquo;s PO number.'),
+  ('Is an order confirmation the same as a sales order?','In most small businesses, yes &mdash; both acknowledge an accepted order and confirm its details before fulfilment. Use whichever term your customers expect; the layout is the same.'),
+  ('Can I create an invoice from a sales order?','Yes. Once you have fulfilled the order, switch to &ldquo;Invoice&rdquo; under the preview &mdash; the items, customer and references carry over with a new invoice number.'),
+  ('Is it free?','Yes &mdash; no sign-up. The free version allows 2 PDF downloads per hour from the same network.')],
 }
 INDEX_FAQ = [('Is Free BizDoc free?','Yes. All five documents can be created and downloaded as PDFs without an account. The free version lets you download 2 PDFs per hour from the same network (shared office or home Wi-Fi counts as one).'),
  ('Which countries are supported?','The United States (sales tax), the United Kingdom (VAT), Australia (GST / tax invoice), and Canada (GST / HST / PST / QST). Currency, paper size, date format, and tax-ID labels switch automatically when you choose your country.'),
@@ -111,13 +168,16 @@ def faq_ld(faq):
 def head(p, url):
     app = json.dumps({"@context":"https://schema.org","@type":"WebApplication","name":p['h1'].replace('&amp;','&'),"applicationCategory":"BusinessApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"url":url,"inLanguage":"en"})
     faqj = faq_ld(FAQS.get(p['slug'], INDEX_FAQ))
+    # Only cross-link a Japanese alternate for pages that have a JA counterpart.
+    alt = f'<link rel="alternate" hreflang="en" href="{url}">\n'
+    if p.get('ja'):
+        alt += f'<link rel="alternate" hreflang="ja" href="{BASE}{p["ja"]}">\n'
+    alt += f'<link rel="alternate" hreflang="x-default" href="{url}">\n'
     return ('<!doctype html>\n<html lang="en">\n<head>\n'
       '<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1">\n'
       f'<title>{p["title"]}</title>\n<meta name="description" content="{p["desc"]}">\n'
       f'<link rel="canonical" href="{url}">\n'
-      f'<link rel="alternate" hreflang="en" href="{url}">\n'
-      f'<link rel="alternate" hreflang="ja" href="{BASE}{p["ja"]}">\n'
-      f'<link rel="alternate" hreflang="x-default" href="{url}">\n'
+      + alt +
       '<link rel="icon" href="/favicon.ico" sizes="any">\n<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">\n<link rel="apple-touch-icon" href="/apple-touch-icon.png">\n'
       '<meta property="og:type" content="website">\n'
       '<meta property="og:site_name" content="Free BizDoc">\n'
@@ -153,7 +213,7 @@ def tool(p):
   <div class="card pad">
     <div class="themeseg" id="themeseg"></div>
     <div class="regseg" id="regseg"><span class="rlb">Country</span><button type="button" data-region="us">&#127482;&#127480; United States</button><button type="button" data-region="uk">&#127468;&#127463; United Kingdom</button><button type="button" data-region="au">&#127462;&#127482; Australia</button><button type="button" data-region="ca">&#127464;&#127462; Canada</button></div>
-    <div class="seg" id="seg"><button data-kind="invoice">Invoice</button><button data-kind="quote">Estimate / Quote</button><button data-kind="delivery">Packing Slip</button><button data-kind="po">Purchase Order</button><button data-kind="receipt">Receipt</button></div>
+    <div class="seg" id="seg"><button data-kind="invoice">Invoice</button><button data-kind="quote">Estimate / Quote</button><button data-kind="delivery">Packing Slip</button><button data-kind="po">Purchase Order</button><button data-kind="receipt">Receipt</button><button data-kind="credit">Credit Note</button><button data-kind="proforma">Pro Forma</button><button data-kind="salesorder">Sales Order</button></div>
 
     <details id="co-details">
       <summary>Your business (saved in this browser for next time)<svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></summary>
@@ -244,6 +304,9 @@ FOOTER = '''<footer class="ft"><div class="in">
       <a href="/en/receipt">Receipt</a>
       <a href="/en/purchase-order">Purchase Order</a>
       <a href="/en/packing-slip">Packing Slip / Delivery Note</a>
+      <a href="/en/credit-note">Credit Note</a>
+      <a href="/en/proforma-invoice">Pro Forma Invoice</a>
+      <a href="/en/sales-order">Sales Order</a>
     </div>
     <div class="col">
       <h4>More</h4>
@@ -281,7 +344,10 @@ def index():
              ('/en/estimate','Estimate / Quote','A scope of work with pricing, a valid-until date, and an acceptance line.','Create an estimate'),
              ('/en/receipt','Receipt','Proof of payment showing the amount paid, the method, and a PAID stamp.','Create a receipt'),
              ('/en/purchase-order','Purchase Order','A PO with its number, the vendor, a ship-to address, and a delivery date.','Create a PO'),
-             ('/en/packing-slip','Packing Slip / Delivery Note','The items and quantities shipped &mdash; no prices &mdash; with a received-by line.','Create a packing slip')]
+             ('/en/packing-slip','Packing Slip / Delivery Note','The items and quantities shipped &mdash; no prices &mdash; with a received-by line.','Create a packing slip'),
+             ('/en/credit-note','Credit Note / Credit Memo','Cancel or reduce an invoice &mdash; links to the original and reverses the tax.','Create a credit note'),
+             ('/en/proforma-invoice','Pro Forma Invoice','A preliminary bill for deposits or customs &mdash; clearly not a tax invoice.','Create a pro forma'),
+             ('/en/sales-order','Sales Order','Confirm a customer order &mdash; the seller-side reply to a purchase order.','Create a sales order')]
     grid = ''.join(f'<a class="dcard" href="{u}"><h3>{t}</h3><p>{d}</p><span class="go">{c} &rarr;</span></a>' for u,t,d,c in cards)
     css = ('<style>.dgrid{max-width:1180px;margin:0 auto;padding:10px 20px 40px;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}'
       '.dcard{display:block;background:#fff;border:1px solid var(--bd,#e2eaf4);border-radius:16px;padding:22px 22px 18px;text-decoration:none;color:inherit;box-shadow:0 10px 30px -22px rgba(19,38,59,.35);transition:.15s}'
@@ -299,7 +365,7 @@ def index():
       '</div></div>')
     art = ('<article class="art"><p class="lead">Free BizDoc began in Japan as a free generator for Japanese business documents. The English edition isn&rsquo;t a translation of those forms &mdash; it follows the formats businesses actually use in each country: a US invoice with sales tax, a UK VAT invoice, an Australian tax invoice, and a Canadian GST/HST invoice, plus estimates, receipts, purchase orders, and packing slips.</p>'
       '<h2>How it works</h2><div class="steps"><div class="step"><span class="n">1</span><span class="t">Pick a document and your country.</span></div><div class="step"><span class="n">2</span><span class="t">Enter your business once &mdash; it&rsquo;s remembered in your browser.</span></div><div class="step"><span class="n">3</span><span class="t">Add the recipient and line items. The live preview is the actual PDF.</span></div><div class="step"><span class="n">4</span><span class="t">Download it, or send a share link instead of an attachment.</span></div></div></article>')
-    nav = ('<script>(function(){var h=document.getElementById("docnav-en");if(!h)return;var D=[["/en/invoice","Invoice"],["/en/estimate","Estimate / Quote"],["/en/receipt","Receipt"],["/en/purchase-order","Purchase Order"],["/en/packing-slip","Packing Slip / Delivery Note"]];'
+    nav = ('<script>(function(){var h=document.getElementById("docnav-en");if(!h)return;var D=[["/en/invoice","Invoice"],["/en/estimate","Estimate / Quote"],["/en/receipt","Receipt"],["/en/purchase-order","Purchase Order"],["/en/packing-slip","Packing Slip / Delivery Note"],["/en/credit-note","Credit Note"],["/en/proforma-invoice","Pro Forma Invoice"],["/en/sales-order","Sales Order"]];'
       'var s=document.createElement("style");s.textContent="#docnav-en{background:#fff;border-bottom:1px solid #e6ebf2;overflow-x:auto}#docnav-en .t{display:flex;gap:8px;width:max-content;padding:12px 16px;margin:0 auto}#docnav-en a{font-size:13px;font-weight:700;color:#5a6b80;text-decoration:none;padding:8px 15px;border-radius:999px;background:#f1f5fb;border:1px solid #dce5f0;white-space:nowrap}";document.head.appendChild(s);'
       'h.innerHTML="<div class=\\"t\\">"+D.map(function(d){return "<a href=\\""+d[0]+"\\">"+d[1]+"</a>";}).join("")+"</div>";})();</script>')
     hd = head(p, url).replace('%s/en/' % BASE, url)

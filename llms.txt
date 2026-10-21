@@ -38,11 +38,14 @@
 
 ## English version (US / UK / AU / CA)
 
-> Free BizDoc also offers an English edition for English-speaking countries. Create invoices, estimates/quotes, receipts, purchase orders and packing slips as PDFs — free, no sign-up. Currency, paper size, date format and tax (US sales tax, UK VAT, Australian GST / "tax invoice", Canadian GST/HST/PST/QST by province) adapt to the country you choose. Documents are generated in your browser and never uploaded.
+> Free BizDoc also offers an English edition for English-speaking countries. Create invoices, estimates/quotes, receipts, purchase orders, packing slips, credit notes, pro forma invoices and sales orders as PDFs — free, no sign-up. Currency, paper size, date format and tax (US sales tax, UK VAT, Australian GST / "tax invoice", Canadian GST/HST/PST/QST by province) adapt to the country you choose. Documents are generated in your browser and never uploaded.
 
 - [Invoice generator](https://free-bizdocs.com/en/invoice): itemised invoice with tax, due date, payment terms, bank details
 - [Estimate / Quote generator](https://free-bizdocs.com/en/estimate): priced scope of work with a valid-until date and acceptance line
 - [Receipt generator](https://free-bizdocs.com/en/receipt): proof of payment with amount paid, method and PAID stamp
 - [Purchase order generator](https://free-bizdocs.com/en/purchase-order): PO number, vendor, ship-to address, delivery date
 - [Packing slip / Delivery note generator](https://free-bizdocs.com/en/packing-slip): items and quantities shipped (no prices), received-by line
+- [Credit note / Credit memo generator](https://free-bizdocs.com/en/credit-note): cancel or reduce an invoice, references the original invoice, reverses the tax
+- [Pro forma invoice generator](https://free-bizdocs.com/en/proforma-invoice): preliminary bill for deposits or customs, clearly marked not a tax invoice
+- [Sales order / Order confirmation generator](https://free-bizdocs.com/en/sales-order): seller-side acknowledgement of a customer order with ship-to and delivery date
 - [English home](https://free-bizdocs.com/en/) · [Contact](https://free-bizdocs.com/en/contact) · [Privacy](https://free-bizdocs.com/en/privacy)

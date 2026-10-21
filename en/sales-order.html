@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Free Sales Order &amp; Order Confirmation Generator - PDF (No Sign-Up)</title>
+<meta name="description" content="Create a sales order or order confirmation to acknowledge a customer order - the seller-side counterpart to a purchase order. Free PDF, no account, with ship-to, delivery date and US / UK / AU / CA tax.">
+<link rel="canonical" href="https://free-bizdocs.com/en/sales-order">
+<link rel="alternate" hreflang="en" href="https://free-bizdocs.com/en/sales-order">
+<link rel="alternate" hreflang="x-default" href="https://free-bizdocs.com/en/sales-order">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Free BizDoc">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="ja_JP">
+<meta property="og:title" content="Free Sales Order &amp; Order Confirmation Generator - PDF (No Sign-Up)">
+<meta property="og:description" content="Create a sales order or order confirmation to acknowledge a customer order - the seller-side counterpart to a purchase order. Free PDF, no account, with ship-to, delivery date and US / UK / AU / CA tax.">
+<meta property="og:url" content="https://free-bizdocs.com/en/sales-order">
+<meta property="og:image" content="https://free-bizdocs.com/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="/suite.css?v=20261017d">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "Free Sales Order Generator", "applicationCategory": "BusinessApplication", "operatingSystem": "Web", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "url": "https://free-bizdocs.com/en/sales-order", "inLanguage": "en"}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "What is a sales order?", "acceptedAnswer": {"@type": "Answer", "text": "A sales order (or order confirmation) is the seller&rsquo;s acknowledgement of a customer&rsquo;s order. It confirms the items, agreed prices, ship-to address and delivery date, and references the customer&rsquo;s PO number so both sides can match the paperwork."}}, {"@type": "Question", "name": "What is the difference between a sales order and a purchase order?", "acceptedAnswer": {"@type": "Answer", "text": "The buyer issues the purchase order to place the order; the seller replies with a sales order to confirm it will supply on those terms. The invoice comes later to request payment. A sales order references the buyer&rsquo;s PO number."}}, {"@type": "Question", "name": "Is an order confirmation the same as a sales order?", "acceptedAnswer": {"@type": "Answer", "text": "In most small businesses, yes &mdash; both acknowledge an accepted order and confirm its details before fulfilment. Use whichever term your customers expect; the layout is the same."}}, {"@type": "Question", "name": "Can I create an invoice from a sales order?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Once you have fulfilled the order, switch to &ldquo;Invoice&rdquo; under the preview &mdash; the items, customer and references carry over with a new invoice number."}}, {"@type": "Question", "name": "Is it free?", "acceptedAnswer": {"@type": "Answer", "text": "Yes &mdash; no sign-up. The free version allows 2 PDF downloads per hour from the same network."}}]}</script>
+</head>
+<body>
+<header class="hdr"><div class="in">
+  <a class="brand" href="/en/" style="text-decoration:none"><img src="/logo.png" alt="Free BizDoc" style="height:30px;width:auto;display:block"></a>
+  <span class="sp"></span>
+  <a class="pro" href="/?lang=ja" lang="ja" title="Japanese version">日本語</a>
+</div></header>
+<nav id="docnav-en" aria-label="Documents"></nav>
+<section class="hero"><div class="in"><div class="htext">
+  <span class="ey">Free - No sign-up - Order confirmation</span>
+  <h1>Free Sales Order Generator</h1>
+  <p>Acknowledge a customer order with a sales order (or order confirmation): confirm the items, agreed prices, ship-to address and delivery date, and reference their PO number so both sides can match the paperwork.</p>
+  <div class="tags"><span class="tag"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>No sign-up</span><span class="tag"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>Confirms an order</span><span class="tag"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>References their PO</span><span class="tag"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>Ship-to &amp; delivery</span><span class="tag"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>Instant PDF</span></div>
+</div></div></section>
+<div class="wrap" id="toolwrap" data-kind="salesorder">
+  <div class="card pad">
+    <div class="themeseg" id="themeseg"></div>
+    <div class="regseg" id="regseg"><span class="rlb">Country</span><button type="button" data-region="us">&#127482;&#127480; United States</button><button type="button" data-region="uk">&#127468;&#127463; United Kingdom</button><button type="button" data-region="au">&#127462;&#127482; Australia</button><button type="button" data-region="ca">&#127464;&#127462; Canada</button></div>
+    <div class="seg" id="seg"><button data-kind="invoice">Invoice</button><button data-kind="quote">Estimate / Quote</button><button data-kind="delivery">Packing Slip</button><button data-kind="po">Purchase Order</button><button data-kind="receipt">Receipt</button><button data-kind="credit">Credit Note</button><button data-kind="proforma">Pro Forma</button><button data-kind="salesorder">Sales Order</button></div>
+
+    <details id="co-details">
+      <summary>Your business (saved in this browser for next time)<svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></summary>
+      <div class="body">
+        <label class="fl">Business name<input id="co-name" placeholder="Acme Design Studio LLC"></label>
+        <div class="grid2">
+          <label class="fl"><span id="co-taxid-lb">Tax ID (optional)</span><input id="co-taxid"></label>
+          <label class="fl">Email (optional)<input id="co-email" placeholder="you@example.com"></label>
+        </div>
+        <div class="grid2">
+          <label class="fl">Phone (optional)<input id="co-phone" placeholder="+1 555 123 4567"></label>
+          <label class="fl">Logo (optional)<span class="filebtn" id="co-logo-btn">Choose image&hellip;</span><input type="file" id="co-logo" accept="image/png,image/jpeg" class="filein"></label>
+        </div>
+        <label class="fl">Address (optional)<textarea id="co-addr" rows="2"></textarea></label>
+        <label class="fl" id="bank-wrap">Payment details - printed on invoices (optional)<textarea id="co-bank" rows="3"></textarea><span class="hint">Bank name, routing / sort code / BSB / transit number, account number, or "Pay by card at ...".</span></label>
+        <div id="imgrow" style="display:flex;gap:14px;align-items:center;margin-top:2px"></div>
+        <div style="font-size:11.5px;color:var(--faint,#93a3b5);margin-top:4px">PNG or JPEG. The logo is processed in your browser only and never uploaded.</div>
+      </div>
+    </details>
+
+    <div class="fs">
+      <span class="lg">Recipient &amp; dates</span>
+      <label class="fl"><span id="party-lb">Bill To (name)</span><input id="cl-name" placeholder="Client or company name"></label>
+      <div class="grid2">
+        <label class="fl">Address (optional)<textarea id="cl-addr" rows="2"></textarea></label>
+        <label class="fl">Email (optional)<input id="cl-email" placeholder="client@example.com"></label>
+      </div>
+      <label class="fl" id="shipto-wrap">Ship To (optional - leave blank to use the address above)<textarea id="ship-to" rows="2" placeholder="Receiving address"></textarea></label>
+      <div class="grid2">
+        <label class="fl"><span id="num-lb">Invoice #</span><input id="doc-no" placeholder="INV-0001"></label>
+        <label class="fl">PO / Reference # (optional)<input id="ref-no" placeholder="PO-2048"></label>
+      </div>
+      <div class="grid2">
+        <label class="fl"><span id="issue-lb">Invoice date</span><input type="date" id="issue"></label>
+        <label class="fl" id="due-wrap"><span id="due-lb">Due date</span><input type="date" id="due"></label>
+      </div>
+      <div class="grid2">
+        <label class="fl" id="terms-wrap">Payment terms<select id="terms"></select></label>
+        <label class="fl" id="method-wrap">Payment method<select id="method"><option>Bank transfer</option><option>Credit / debit card</option><option>Cash</option><option>Cheque</option><option>PayPal</option><option>Other</option></select></label>
+      </div>
+    </div>
+
+    <div class="fs">
+      <span class="lg">Line items</span>
+      <div class="grid2" style="margin-bottom:10px">
+        <label class="fl" id="taxrate-wrap">Sales tax rate (%)<input id="tax-rate" inputmode="decimal" placeholder="0 (leave 0 if not charging sales tax)"></label>
+        <label class="fl" id="prov-wrap">Province / territory<select id="ca-prov"></select></label>
+      </div>
+      <div class="items">
+        <div class="hd"><span>Description</span><span>Qty</span><span id="th-price">Unit price (<span id="cur-lb">USD</span>)</span><span id="th-tax">Tax</span><span></span></div>
+        <div id="rows"></div>
+      </div>
+      <button class="addrow" id="addrow" type="button">&#65291; Add line</button>
+    </div>
+
+    <label class="fl">Notes (optional)<textarea id="notes" rows="2" placeholder="Thank you for your business. Please reference the invoice number with your payment."></textarea></label>
+    <label class="fl">Terms &amp; conditions (optional)<textarea id="terms-text" rows="2" placeholder="Late payments are subject to a 1.5% monthly fee."></textarea></label>
+  </div>
+
+  <div class="card right">
+    <div class="pvhd"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>Preview (exactly what the PDF will look like)</div>
+    <div class="pvbody">
+      <div id="livepv" class="livepv"></div>
+      <div id="convbar" class="convbar"></div>
+      <div class="cta">
+        <button class="btn" id="make"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 3v12M8 11l4 4 4-4M4 21h16"/></svg> Download PDF (free)</button>
+        <div class="remain" id="remain"></div>
+        <div class="limitbox" id="limitbox"></div>
+        <div class="msg" id="msg"></div>
+        <div id="savebox" class="savebox"></div>
+        <div id="sharebox" class="sharebox"></div>
+        <button type="button" id="clearbtn" style="display:block;margin:10px auto 0;background:none;border:none;color:#8294a8;font-size:12.5px;cursor:pointer;text-decoration:underline">Clear and start a new document</button>
+      </div>
+    </div>
+  </div>
+</div>
+<article class="art"><p class="lead">A sales order (or order confirmation) is the document the <b>seller</b> sends back to a customer to acknowledge an order and confirm the details before fulfilling it. It is the mirror image of a purchase order: the buyer issues a PO, and you reply with a sales order quoting their PO number, the agreed items and prices, the ship-to address and the delivery date.</p>
+<h2>What to include on a sales order</h2>
+<ul><li>Your business details and a unique <b>sales order number</b></li><li>The <b>customer</b> and their billing address</li><li>The <b>ship-to</b> address and the expected <b>delivery date</b></li><li>The customer&rsquo;s <b>PO number</b> for cross-reference</li><li>Itemised lines with agreed quantities and unit prices, tax and the order total</li></ul>
+<h2>Sales order vs purchase order vs invoice</h2>
+<p>The <b>purchase order</b> is raised by the buyer to place the order. The <b>sales order</b> is your acknowledgement that you accept it and will supply on the stated terms. The <b>invoice</b> comes later, once the goods or services are delivered, to request payment. Keeping the same number thread across all three lets both sides match the paperwork. Create the matching invoice or packing slip from the same details with one click.</p>
+<h2>How to create a free sales order</h2>
+<div class="steps"><div class="step"><span class="n">1</span><span class="t">Choose your country and enter your business details</span></div><div class="step"><span class="n">2</span><span class="t">Enter the customer, their PO number, ship-to address and delivery date</span></div><div class="step"><span class="n">3</span><span class="t">Add the items and agreed prices</span></div><div class="step"><span class="n">4</span><span class="t">Download the PDF and send it to confirm the order</span></div></div></article>
+<div class="faqwrap"><div class="faq"><h2>Frequently asked questions</h2><div class="q"><h3>What is a sales order?</h3><p>A sales order (or order confirmation) is the seller&rsquo;s acknowledgement of a customer&rsquo;s order. It confirms the items, agreed prices, ship-to address and delivery date, and references the customer&rsquo;s PO number so both sides can match the paperwork.</p></div><div class="q"><h3>What is the difference between a sales order and a purchase order?</h3><p>The buyer issues the purchase order to place the order; the seller replies with a sales order to confirm it will supply on those terms. The invoice comes later to request payment. A sales order references the buyer&rsquo;s PO number.</p></div><div class="q"><h3>Is an order confirmation the same as a sales order?</h3><p>In most small businesses, yes &mdash; both acknowledge an accepted order and confirm its details before fulfilment. Use whichever term your customers expect; the layout is the same.</p></div><div class="q"><h3>Can I create an invoice from a sales order?</h3><p>Yes. Once you have fulfilled the order, switch to &ldquo;Invoice&rdquo; under the preview &mdash; the items, customer and references carry over with a new invoice number.</p></div><div class="q"><h3>Is it free?</h3><p>Yes &mdash; no sign-up. The free version allows 2 PDF downloads per hour from the same network.</p></div></div></div>
+<footer class="ft"><div class="in">
+  <div class="cols">
+    <div>
+      <div class="brand"><img src="/logo.png" alt="Free BizDoc" style="height:26px;width:auto;display:block;filter:brightness(0) invert(1)"></div>
+      <p>Free, no-sign-up business document generator. Invoices, estimates, receipts, purchase orders and packing slips as clean PDFs - generated in your browser, never stored on our servers.</p>
+    </div>
+    <div class="col">
+      <h4>Free documents</h4>
+      <a href="/en/invoice">Invoice</a>
+      <a href="/en/estimate">Estimate / Quote</a>
+      <a href="/en/receipt">Receipt</a>
+      <a href="/en/purchase-order">Purchase Order</a>
+      <a href="/en/packing-slip">Packing Slip / Delivery Note</a>
+      <a href="/en/credit-note">Credit Note</a>
+      <a href="/en/proforma-invoice">Pro Forma Invoice</a>
+      <a href="/en/sales-order">Sales Order</a>
+    </div>
+    <div class="col">
+      <h4>More</h4>
+      <a href="/en/blog">Blog</a>
+      <a href="/en/compare">Compare tools</a>
+      <a href="/en/pricing">Pricing &amp; PRO</a>
+      <a href="/en/account">Account</a>
+      <a href="/?lang=ja" lang="ja">日本語</a>
+      <a href="/en/contact">Contact</a>
+      <a href="/en/privacy">Privacy policy</a>
+    </div>
+  </div>
+  <div class="bot">
+    Tax calculations are provided as an aid only. Confirm your obligations with your accountant or tax authority.<br>
+    &copy; 2026 Free BizDoc
+  </div>
+</div></footer>
+<script src="/en/en.js?v=20261021h"></script>
+<script src="/en/siteheader-en.js?v=20261021h"></script>
+</body>
+</html>
