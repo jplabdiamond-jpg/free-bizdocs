@@ -5,10 +5,10 @@
 import json, os, base64, datetime, html
 ROOT = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(ROOT, 'en')
-V = datetime.date.today().strftime('%Y%m%d') + 'l'
+V = datetime.date.today().strftime('%Y%m%d') + 'm'
 BASE = 'https://free-bizdocs.com'
 
-def b64p(items, kind='invoice', region=None, tax_rate=None, prov=None, notes=''):
+def b64p(items, kind='invoice', region=None, tax_rate=None, prov=None, notes='', method=None):
     payload = {'kind': kind,
                'items': [{'name': it[0], 'qty': it[1], 'unit_price': it[2], 'tax': (it[3] if len(it) > 3 else 'tax')} for it in items]}
     if region:
@@ -17,6 +17,8 @@ def b64p(items, kind='invoice', region=None, tax_rate=None, prov=None, notes='')
         payload['tax_rate'] = str(tax_rate)
     if prov:
         payload['prov'] = prov
+    if method:
+        payload['method'] = method
     if notes:
         payload['notes'] = notes
     raw = json.dumps(payload, separators=(',', ':')).encode('utf-8')
@@ -769,6 +771,95 @@ def country_doc_page(d, kind, tool, hub_slug, hub_name):
     return '\n'.join(parts)
 
 
+# High-volume standalone receipt types (rent / cash / sales). Rendered as a receipt
+# (Amount Paid, method, PAID stamp) with a type-specific example and payment method.
+TYPE_RECEIPTS = [
+ dict(slug='rent', h1='Rent Receipt Template',
+  title='Free Rent Receipt Template - Proof of Rent Paid PDF (No Sign-Up)',
+  desc='A free rent receipt template for landlords. Confirm rent paid - tenant, amount, date and a PAID stamp. Download a PDF, no account. US / UK / AU / CA.',
+  lead='Give your tenant a receipt for rent paid. Enter your details as the landlord and the tenant as the payer, set the amount and the month, and download a professional PDF with a PAID stamp - free, no account.',
+  reqs=['You (the landlord) and the tenant (&ldquo;Received From&rdquo;)','A receipt number and the <b>date of payment</b>','The <b>property address and rental period</b> (in the line or notes)','The <b>amount of rent paid</b> and the payment method','Any balance of rent still owing, and a paid indication'],
+  items=[('Monthly rent', 1, 1500, 'none')], tax_rate='0', method='Bank transfer',
+  faqs=[('What should a rent receipt include?','The landlord and tenant, the date of payment, the property and rental period, the amount of rent paid, the payment method, and any balance still owing.'),
+        ('Do landlords have to give rent receipts?','It varies by state and country - many require a receipt on request, especially for cash rent. Even where not required, a receipt protects both sides as proof the rent was paid.'),
+        ('How do I show the property and month?','Put the property address and the month (for example &ldquo;Rent - October 2026&rdquo;) in the line description or the notes, so the receipt is clearly tied to that period.')]),
+ dict(slug='cash', h1='Cash Receipt Template',
+  title='Free Cash Receipt Template - Proof of Cash Payment PDF (No Sign-Up)',
+  desc='A free cash receipt template. Confirm a cash payment - who paid, what for, the amount and a PAID stamp. Download a PDF, no account. US / UK / AU / CA.',
+  lead='Give a receipt for a cash payment. Enter who paid, what it was for and the amount - the method is set to Cash - and download a professional PDF with a PAID stamp, free and no account.',
+  reqs=['Your business and who paid (&ldquo;Received From&rdquo;)','A receipt number and the <b>date of payment</b>','What the payment was for','The <b>amount received</b>, with the method shown as <b>Cash</b>','A paid-in-full indication'],
+  items=[('Payment received', 1, 250, 'none')], tax_rate='0', method='Cash',
+  faqs=[('Why give a cash receipt?','Cash leaves no bank record, so a receipt is the only proof the payment was made. It protects both sides and gives the payer a record for their books.'),
+        ('What should a cash receipt include?','Your business and who paid, the date, what the payment was for, the amount received, that it was paid in cash, and a paid indication.'),
+        ('Is a cash receipt valid proof?','Yes - a receipt issued by the payee is accepted proof of payment. Keep a copy for your own records.')]),
+ dict(slug='sales', h1='Sales Receipt Template',
+  title='Free Sales Receipt Template - Itemized Receipt PDF (No Sign-Up)',
+  desc='A free sales receipt template for a retail sale. Itemized goods, sales tax, the amount paid and a PAID stamp. Download a PDF, no account. US / UK / AU / CA.',
+  lead='Give a customer a sales receipt for a purchase. List the items, add sales tax, and download a professional PDF showing the amount paid and a PAID stamp - free, no account.',
+  reqs=['Your business and the customer','A receipt number and the <b>date of sale</b>','The <b>items sold</b> with quantity and price','<b>Sales tax</b> where you charge it, and the total','The amount paid, the payment method, and a paid indication'],
+  items=[('Product A', 2, 24.99, 'tax'), ('Product B', 1, 59.99, 'tax')], tax_rate='8.25', method='Credit / debit card',
+  faqs=[('What is the difference between a sales receipt and an invoice?','An invoice requests payment before it is made; a sales receipt confirms a completed sale and payment. The receipt is the customer&rsquo;s proof of purchase.'),
+        ('Does a sales receipt show tax?','Yes - if you charge sales tax, VAT or GST, itemize it on the receipt. Pick your country and the tax is calculated and shown separately.'),
+        ('Is a sales receipt proof of purchase?','Yes - it is the document a customer uses for returns, warranties and expense records, showing what was bought, the tax and the total paid.')]),
+]
+
+
+def type_example_table(items, rate):
+    rows = ''
+    sub = 0
+    for it in items:
+        amt = it[1] * it[2]
+        sub += amt
+        rows += f'<tr><td>{it[0]}</td><td class="n">{it[1]}</td><td class="n">${it[2]:,.2f}</td><td class="n">${amt:,.2f}</td></tr>'
+    r = float(rate or 0)
+    if r > 0:
+        tax = round(sub * r / 100, 2)
+        total = sub + tax
+        foot = (f'<tr><td></td><td></td><td class="n">Subtotal</td><td class="n">${sub:,.2f}</td></tr>'
+                f'<tr><td></td><td></td><td class="n">Sales tax ({r:g}%)</td><td class="n">${tax:,.2f}</td></tr>'
+                f'<tr><td></td><td></td><td class="n"><b>Amount paid</b></td><td class="n"><b>${total:,.2f}</b></td></tr>')
+    else:
+        foot = f'<tr><td></td><td></td><td class="n"><b>Amount paid</b></td><td class="n"><b>${sub:,.2f}</b></td></tr>'
+    return ('<table class="extbl"><thead><tr><th>Description</th><th class="n">Qty</th><th class="n">Unit price</th><th class="n">Amount</th></tr></thead>'
+            f'<tbody>{rows}{foot}</tbody></table>')
+
+
+def type_receipt_page(t):
+    url = f"{BASE}/en/receipt/{t['slug']}"
+    pf = b64p(t['items'], kind='receipt', tax_rate=t.get('tax_rate'), method=t.get('method'))
+    cta = f'/en/receipt#p={pf}'
+    schema = [
+      {"@context":"https://schema.org","@type":"WebApplication","name":f"Free {t['h1']}","applicationCategory":"BusinessApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"url":url,"inLanguage":"en"},
+      {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":qq,"acceptedAnswer":{"@type":"Answer","text":aa}} for qq,aa in t['faqs']]},
+      {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[
+        {"@type":"ListItem","position":1,"name":"Free BizDoc","item":f"{BASE}/en/"},
+        {"@type":"ListItem","position":2,"name":"Receipt templates","item":f"{BASE}/en/receipt-templates"},
+        {"@type":"ListItem","position":3,"name":t['h1'],"item":url}]},
+    ]
+    related = ''.join(f'<a href="/en/receipt/{o["slug"]}">{o["h1"].replace(" Template","")}</a>' for o in TYPE_RECEIPTS if o['slug'] != t['slug'])
+    reqs = ''.join(f'<li>{x}</li>' for x in t['reqs'])
+    name = t['h1'].replace(' Template', '').lower()
+    art = (f'<article class="art">'
+      f'<p class="lead">{t["lead"]}</p>'
+      f'<div class="lpcta"><a class="lpbtn pri" href="{cta}">Create a {name} &rarr;</a>'
+      f'<a class="lpbtn gh" href="/en/receipt">Open a blank receipt</a></div>'
+      f'<h2>What a {name} should include</h2><ul>{reqs}</ul>'
+      f'<h2>Example {name}</h2>'
+      f'<p>Click the button to open it as a receipt (marked paid, with a PAID stamp and the payment method set), then change the details.</p>'
+      f'{type_example_table(t["items"], t.get("tax_rate"))}'
+      f'<div class="lpcta"><a class="lpbtn pri" href="{cta}">Use this {name} &rarr;</a></div>'
+      f'<h2>Other receipt types</h2><div class="relgrid">{related}<a href="/en/receipt-templates">Receipts by profession</a></div>'
+      f'</article>')
+    hero = ('<section class="hero"><div class="in"><div class="htext">'
+      f'<span class="ey">Free - No sign-up - {t["h1"].replace(" Template","")}</span>'
+      f'<h1>Free {t["h1"]}</h1>'
+      f'<p>{t["desc"]}</p></div></div></section>')
+    crumb = f'<nav class="crumb"><a href="/en/">Home</a> &rsaquo; <a href="/en/receipt-templates">Receipt templates</a> &rsaquo; {t["h1"].replace(" Template","")}</nav>'
+    parts = [head(t['title'], t['desc'], url, schema), CRUMB_CSS, HEADER, crumb, hero, art, faq_html(t['faqs']), FOOTER,
+      f'<script src="/en/siteheader-en.js?v={V}"></script>', '</body>', '</html>', '']
+    return '\n'.join(parts)
+
+
 def head(title, desc, url, schema_blocks):
     blocks = '\n'.join('<script type="application/ld+json">%s</script>' % json.dumps(b, ensure_ascii=False) for b in schema_blocks)
     return ('<!doctype html>\n<html lang="en">\n<head>\n'
@@ -982,7 +1073,9 @@ def receipt_hub_page():
     alldocs = f'<div class="alldocs"><h2>All free documents</h2><div class="row">{docs}</div></div>'
     rcards = ''.join(f'<a class="dcard" href="/en/receipt/{r["slug"]}"><h3>{CM[r["region"]]["name"]}</h3><p>{CM[r["region"]]["taxname"]} receipt &mdash; shows the tax paid and your tax-ID, with a PAID stamp.</p><span class="go">Open template &rarr;</span></a>' for r in COUNTRY_RECEIPTS)
     country_sec = f'<div class="alldocs" style="padding-bottom:6px"><h2>Receipts by country &amp; tax</h2></div><div class="dgrid" style="padding-top:4px">{rcards}</div>'
-    parts = [head(title, desc, url, schema), CRUMB_CSS, HEADER, crumb, hero, css, f'<div class="dgrid">{cards}</div>', country_sec, alldocs, art, FOOTER,
+    tcards = ''.join(f'<a class="dcard" href="/en/receipt/{t["slug"]}"><h3>{t["h1"].replace(" Template","")}</h3><p>{t["lead"][:110]}&hellip;</p><span class="go">Open template &rarr;</span></a>' for t in TYPE_RECEIPTS)
+    type_sec = f'<div class="alldocs" style="padding-bottom:6px"><h2>Receipts by type</h2></div><div class="dgrid" style="padding-top:4px">{tcards}</div>'
+    parts = [head(title, desc, url, schema), CRUMB_CSS, HEADER, crumb, hero, css, f'<div class="dgrid">{cards}</div>', type_sec, country_sec, alldocs, art, FOOTER,
       f'<script src="/en/siteheader-en.js?v={V}"></script>', '</body>', '</html>', '']
     return '\n'.join(parts)
 
@@ -1007,6 +1100,10 @@ for d in COUNTRY_CREDITS:
     with open(os.path.join(OUT, 'credit-note', d['slug'] + '.html'), 'w', encoding='utf-8') as f:
         f.write(country_doc_page(d, 'credit', 'credit-note', 'invoice-templates', 'Invoice templates'))
     print('wrote en/credit-note/%s.html' % d['slug'])
+for t in TYPE_RECEIPTS:
+    with open(os.path.join(OUT, 'receipt', t['slug'] + '.html'), 'w', encoding='utf-8') as f:
+        f.write(type_receipt_page(t))
+    print('wrote en/receipt/%s.html' % t['slug'])
 for q in QUOTES:
     with open(os.path.join(OUT, 'estimate', q['slug'] + '.html'), 'w', encoding='utf-8') as f:
         f.write(quote_page(q))

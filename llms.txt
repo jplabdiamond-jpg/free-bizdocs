@@ -65,4 +65,7 @@
 - [UK VAT credit note template](https://free-bizdocs.com/en/credit-note/uk-vat): VAT credit note that reverses VAT and references the original invoice, GBP
 - [Australian adjustment note template](https://free-bizdocs.com/en/credit-note/australia-adjustment-note): the Australian GST credit note that reverses GST on a tax invoice, AUD
 - [Canada GST/HST credit note template](https://free-bizdocs.com/en/credit-note/canada-gst-hst): credit note that reverses GST/HST by province, CAD
+- [Rent receipt template](https://free-bizdocs.com/en/receipt/rent): proof of rent paid for landlords - tenant, amount, period and a PAID stamp
+- [Cash receipt template](https://free-bizdocs.com/en/receipt/cash): proof of a cash payment with the method set to Cash and a PAID stamp
+- [Sales receipt template](https://free-bizdocs.com/en/receipt/sales): itemized retail sales receipt with sales tax and a PAID stamp
 - [English home](https://free-bizdocs.com/en/) · [Contact](https://free-bizdocs.com/en/contact) · [Privacy](https://free-bizdocs.com/en/privacy)

@@ -386,6 +386,7 @@ function applyPrefill(P){ if(!P)return;
   if(P.region&&REGIONS[P.region]) applyRegion(P.region,true);
   if(P.kind&&KINDS[P.kind]) applyKind(P.kind,true);
   if(P.prov!=null&&$('ca-prov')) $('ca-prov').value=P.prov;
+  if(P.method!=null&&$('method')) $('method').value=P.method;
   if(P.tax_rate!=null&&$('tax-rate')) $('tax-rate').value=P.tax_rate;
   if(P.items&&P.items.length){ rowsEl.innerHTML=''; P.items.forEach(addRow); refreshTaxSelects(); }
   if(P.notes!=null&&$('notes')) $('notes').value=P.notes;
