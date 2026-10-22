@@ -23,7 +23,8 @@
   +'.fb-ft-auth a:hover,.fb-ft-auth button:hover{text-decoration:underline}'
   +'.fb-hdr .lang-sw{font-size:12.5px;font-weight:700;color:#45607a;text-decoration:none;border:1px solid #dce5f0;border-radius:999px;padding:6px 12px;white-space:nowrap;margin-right:2px}'
   +'.fb-hdr .lang-sw:hover{background:#f1f5fb;color:#1766e6;border-color:#c7d6e8}'
-  +'@media(max-width:640px){.fb-hdr .nav{display:none}.fb-hdr .em{display:none}.fb-hdr .auth a,.fb-hdr .auth button{padding:8px 12px}.fb-hdr .lang-sw{padding:6px 10px}}';
+  +'@media(max-width:640px){.fb-hdr .nav{display:none}.fb-hdr .em{display:none}.fb-hdr .in{gap:8px;padding:10px 14px}.fb-hdr .auth{gap:6px}.fb-hdr .auth a,.fb-hdr .auth button{padding:10px 12px}.fb-hdr .lang-sw{padding:8px 10px}}'
+  +'@media(max-width:430px){.fb-hdr .sgn-ex{display:none}.fb-hdr .lang-sw{display:none}.fb-hdr .in{gap:8px;padding:10px 12px}.fb-hdr .auth a,.fb-hdr .auth button{padding:10px 11px;font-size:13px}.fb-hdr .brand img{height:26px}}';
   var st=document.createElement('style'); st.textContent=css; document.head.appendChild(st);
 
   // ---- Header ----
@@ -34,7 +35,7 @@
     +'<span class="sp"></span>'
     +'<a class="lang-sw" href="/?lang=ja" lang="ja" title="Japanese version">日本語</a>'
     +'<div class="auth" id="fbAuth">'
-    +'<a class="lgn" href="/en/login">Log in</a><a class="sgn" href="/en/login?mode=signup">Sign up (free)</a>'
+    +'<a class="lgn" href="/en/login">Log in</a><a class="sgn" href="/en/login?mode=signup">Sign up<span class="sgn-ex"> (free)</span></a>'
     +'</div></div>';
 
   function mountHeader(){

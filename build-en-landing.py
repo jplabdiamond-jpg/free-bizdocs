@@ -5,7 +5,7 @@
 import json, os, base64, datetime, html
 ROOT = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(ROOT, 'en')
-V = datetime.date.today().strftime('%Y%m%d') + 'm'
+V = datetime.date.today().strftime('%Y%m%d') + 'n'
 BASE = 'https://free-bizdocs.com'
 
 def b64p(items, kind='invoice', region=None, tax_rate=None, prov=None, notes='', method=None):
