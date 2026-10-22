@@ -404,6 +404,7 @@ FOOTER = '''<footer class="ft"><div class="in">
       <h4>More</h4>
       <a href="/en/invoice-templates">Invoice templates</a>
       <a href="/en/estimate-templates">Quote templates</a>
+      <a href="/en/receipt-templates">Receipt templates</a>
       <a href="/en/blog">Blog</a>
       <a href="/en/compare">Compare tools</a>
       <a href="/en/pricing">Pricing &amp; PRO</a>

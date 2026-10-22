@@ -59,4 +59,5 @@
 - [Australian tax invoice template](https://free-bizdocs.com/en/invoice/australia-tax-invoice): GST tax invoice with ABN and the words "Tax Invoice", A4, AUD
 - [Canada GST/HST invoice template](https://free-bizdocs.com/en/invoice/canada-gst-hst): invoice with GST/HST (and PST/QST) by province, Letter, CAD
 - [Quote & estimate templates by profession](https://free-bizdocs.com/en/estimate-templates): ready-to-edit quote/estimate templates (valid-until date + acceptance line) for freelancers, consultants, designers, developers, photographers, contractors, cleaners, tutors, virtual assistants and marketers
+- [Receipt templates by profession](https://free-bizdocs.com/en/receipt-templates): ready-to-edit payment receipt templates (amount paid, method, PAID stamp) for freelancers, consultants, designers, developers, photographers, contractors, cleaners, tutors, virtual assistants and marketers
 - [English home](https://free-bizdocs.com/en/) · [Contact](https://free-bizdocs.com/en/contact) · [Privacy](https://free-bizdocs.com/en/privacy)

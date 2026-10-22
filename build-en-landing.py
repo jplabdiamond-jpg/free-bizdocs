@@ -347,6 +347,127 @@ def quote_page(q):
     return '\n'.join(parts)
 
 
+# Receipt cluster - same professions, receipt-specific content. Items reused from the
+# invoice cluster; the tool renders them as a Receipt (Amount Paid, payment method,
+# PAID stamp, "Received From") when kind=receipt.
+RECEIPTS = [
+ dict(slug='freelancer', name='Freelancer',
+  title='Free Freelancer Receipt Template - Payment Receipt PDF (No Sign-Up)',
+  desc='A free receipt template for freelancers. Confirm a payment received, show the amount paid, method and a PAID stamp, and download a PDF - no sign-up. US / UK / AU / CA.',
+  lead='Give a client proof that their payment landed. A freelance receipt shows who paid, what for, the amount, the method and a PAID stamp - download a professional PDF, free and no account. Issued an invoice first? Turn it into a receipt in one click.',
+  include=['Your name/business and who paid (&ldquo;Received From&rdquo;)','A receipt number and the <b>date of payment</b>','What was paid for - the project or hours','The <b>amount paid</b> and the <b>payment method</b> (bank transfer, card, PayPal)','A paid-in-full indication for the client&rsquo;s records'],
+  terms='Freelancers issue a receipt once payment clears, so the client has proof for their bookkeeping.',
+  faqs=[('When should a freelancer give a receipt?','Once a payment clears - a deposit or a final payment. The receipt confirms what was received and when, which the client needs for their expense records.'), None, None]),
+ dict(slug='consultant', name='Consultant',
+  title='Free Consultant Receipt Template - Payment Receipt PDF (No Sign-Up)',
+  desc='A free receipt template for consultants - confirm a retainer or fee payment with the amount paid, method and a PAID stamp. Download a PDF, no account. US / UK / AU / CA.',
+  lead='Confirm a client&rsquo;s payment for advisory work. A consulting receipt shows the amount paid, the method and a PAID stamp - useful for retainer payments the client books each month. Download a professional PDF, free and no account.',
+  include=['Your consultancy and who paid','A receipt number and the <b>date of payment</b>','What was paid for - advisory time or a retainer','The <b>amount paid</b> and the <b>payment method</b>','A paid-in-full indication'],
+  terms='Consultants often issue a receipt for each retainer payment so the client can reconcile monthly.',
+  faqs=[('Do I give a receipt for a retainer?','Yes - a receipt for each retainer payment gives the client clean proof for their monthly books. Issue it once the payment clears.'), None, None]),
+ dict(slug='graphic-designer', name='Graphic Designer',
+  title='Free Graphic Design Receipt Template - Payment Receipt PDF (No Sign-Up)',
+  desc='A free receipt template for graphic designers - confirm a deposit or final payment with the amount, method and a PAID stamp. Download a PDF, no account. US / UK / AU / CA.',
+  lead='Confirm a client&rsquo;s payment for design work - a deposit to start or the balance on delivery. The receipt shows the amount paid, the method and a PAID stamp. Download a professional PDF, free and no account.',
+  include=['Your studio and who paid','A receipt number and the <b>date of payment</b>','What was paid for - the design deliverables','The <b>amount paid</b> and the <b>payment method</b>','A paid-in-full indication'],
+  terms='Designers issue a receipt for the deposit and again for the balance when files are released.',
+  faqs=[('Should I receipt the deposit and the balance?','Yes - issue a receipt when the deposit clears and another for the balance on delivery, so the client has proof of each payment.'), None, None]),
+ dict(slug='web-developer', name='Web Developer',
+  title='Free Web Developer Receipt Template - Payment Receipt PDF (No Sign-Up)',
+  desc='A free receipt template for web developers - confirm a milestone or final payment with the amount, method and a PAID stamp. Download a PDF, no account. US / UK / AU / CA.',
+  lead='Confirm a client&rsquo;s payment for development work - a milestone or the final balance. The receipt shows the amount paid, the method and a PAID stamp. Download a professional PDF, free and no account.',
+  include=['Your business and who paid','A receipt number and the <b>date of payment</b>','What was paid for - the build or milestone','The <b>amount paid</b> and the <b>payment method</b>','A paid-in-full indication'],
+  terms='Developers issue a receipt per milestone as each payment clears.',
+  faqs=[('Do I give a receipt for each milestone?','Yes - a receipt for each milestone payment confirms what was received and keeps the project&rsquo;s paper trail clean for both sides.'), None, None]),
+ dict(slug='photographer', name='Photographer',
+  title='Free Photography Receipt Template - Payment Receipt PDF (No Sign-Up)',
+  desc='A free receipt template for photographers - confirm a booking deposit or final payment with the amount, method and a PAID stamp. Download a PDF, no account. US / UK / AU / CA.',
+  lead='Confirm a client&rsquo;s payment for a shoot - the booking deposit or the balance before delivery. The receipt shows the amount paid, the method and a PAID stamp. Download a professional PDF, free and no account.',
+  include=['Your studio and who paid','A receipt number and the <b>date of payment</b>','What was paid for - the session or package','The <b>amount paid</b> and the <b>payment method</b>','A paid-in-full indication'],
+  terms='Photographers receipt the booking deposit to hold the date and the balance before delivering galleries.',
+  faqs=[('Should I receipt the booking deposit?','Yes - issue a receipt when the deposit clears to hold the date, and another for the balance before you deliver the gallery.'), None, None]),
+ dict(slug='contractor', name='Contractor',
+  title='Free Contractor Receipt Template - Payment Receipt PDF (No Sign-Up)',
+  desc='A free receipt template for contractors - confirm a deposit, progress or final payment with the amount, method and a PAID stamp. Download a PDF, no account. US / UK / AU / CA.',
+  lead='Confirm a customer&rsquo;s payment on a job - a deposit, a progress payment or the final balance. The receipt shows the amount paid, the method and a PAID stamp. Download a professional PDF, free and no account.',
+  include=['Your business and who paid','A receipt number and the <b>date of payment</b>','What was paid for - the job or stage','The <b>amount paid</b> and the <b>payment method</b> (cash, card, transfer)','A paid-in-full indication'],
+  terms='Contractors receipt the deposit, each progress payment and the final balance as they clear.',
+  faqs=[('Do customers need a receipt for a cash payment?','Yes - especially for cash. A receipt is the customer&rsquo;s proof the payment was made, with the amount, date and what it covered.'), None, None]),
+ dict(slug='cleaning', name='Cleaning Service',
+  title='Free Cleaning Service Receipt Template - Payment Receipt PDF (No Sign-Up)',
+  desc='A free receipt template for cleaning businesses - confirm a per-visit or monthly payment with the amount, method and a PAID stamp. Download a PDF, no account. US / UK / AU / CA.',
+  lead='Confirm a client&rsquo;s payment for cleaning - per visit or for the month. The receipt shows the amount paid, the method and a PAID stamp. Download a professional PDF, free and no account.',
+  include=['Your business and who paid','A receipt number and the <b>date of payment</b>','What was paid for - the visits or the month','The <b>amount paid</b> and the <b>payment method</b>','A paid-in-full indication'],
+  terms='Cleaning services often issue a receipt each time a visit or the month is paid.',
+  faqs=[('Should I give a receipt for every clean?','Give a receipt whenever the client pays - per visit or monthly. It is their proof of payment and keeps a simple record for you.'), None, None]),
+ dict(slug='tutor', name='Tutor',
+  title='Free Tutoring Receipt Template - Payment Receipt PDF (No Sign-Up)',
+  desc='A free receipt template for tutors - confirm a session or package payment with the amount, method and a PAID stamp. Download a PDF, no account. US / UK / AU / CA.',
+  lead='Confirm a parent or student&rsquo;s payment for tutoring - a block of sessions or a term. The receipt shows the amount paid, the method and a PAID stamp. Download a professional PDF, free and no account.',
+  include=['Your name and who paid','A receipt number and the <b>date of payment</b>','What was paid for - the sessions or package','The <b>amount paid</b> and the <b>payment method</b>','A paid-in-full indication'],
+  terms='Tutors issue a receipt when a block or term is paid, often in advance.',
+  faqs=[('Do parents need a receipt for tutoring?','Many do - for their records or for reimbursement. Issue a receipt when a block or term is paid, showing the amount and what it covered.'), None, None]),
+ dict(slug='virtual-assistant', name='Virtual Assistant',
+  title='Free Virtual Assistant Receipt Template - Payment Receipt PDF (No Sign-Up)',
+  desc='A free receipt template for virtual assistants - confirm an hourly or monthly payment with the amount, method and a PAID stamp. Download a PDF, no account. US / UK / AU / CA.',
+  lead='Confirm a client&rsquo;s payment for support - hourly or a monthly package. The receipt shows the amount paid, the method and a PAID stamp. Download a professional PDF, free and no account.',
+  include=['Your business and who paid','A receipt number and the <b>date of payment</b>','What was paid for - hours or the package','The <b>amount paid</b> and the <b>payment method</b>','A paid-in-full indication'],
+  terms='VAs often issue a receipt for each monthly package payment.',
+  faqs=[('Do I give a receipt for a monthly package?','Yes - a receipt for each package payment gives the client clean proof for their monthly books. Issue it once the payment clears.'), None, None]),
+ dict(slug='marketing', name='Marketing & Social Media',
+  title='Free Marketing Receipt Template - Payment Receipt PDF (No Sign-Up)',
+  desc='A free receipt template for marketers and social media managers - confirm a retainer payment with the amount, method and a PAID stamp. Download a PDF, no account. US / UK / AU / CA.',
+  lead='Confirm a client&rsquo;s payment for marketing work - the monthly retainer or a campaign. The receipt shows the amount paid, the method and a PAID stamp. Download a professional PDF, free and no account.',
+  include=['Your agency and who paid','A receipt number and the <b>date of payment</b>','What was paid for - the retainer or campaign','The <b>amount paid</b> and the <b>payment method</b>','A paid-in-full indication'],
+  terms='Marketers issue a receipt for each monthly retainer payment, keeping ad spend separate.',
+  faqs=[('Do I receipt the retainer separately from ad spend?','Yes - receipt your management fee; ad spend the client pays the platform directly, or shows as a separate labelled line. Keep the two clearly apart.'), None, None]),
+]
+_RECEIPT_FAQ_SHARED = [
+ ('What is the difference between a receipt and an invoice?','An invoice requests payment; a receipt confirms it was paid. Issue the invoice first, then a receipt once the money arrives - this tool can turn an invoice into a receipt in one click, marked paid in full.'),
+ ('Do I need to show tax on a receipt?','If you charged sales tax, VAT or GST, itemize it on the receipt too - a receipt that doubles as a tax receipt must show the tax. Pick your country and the tax is calculated and shown separately.'),
+]
+for _r in RECEIPTS:
+    _r['faqs'] = [_r['faqs'][0], _RECEIPT_FAQ_SHARED[0], _RECEIPT_FAQ_SHARED[1]]
+    _r['items'] = IND_BY[_r['slug']]['items']
+
+
+def receipt_page(rc):
+    url = f"{BASE}/en/receipt/{rc['slug']}"
+    pf = b64p(rc['items'], kind='receipt')
+    cta = f'/en/receipt#p={pf}'
+    schema = [
+      {"@context":"https://schema.org","@type":"WebApplication","name":f"Free {rc['name']} Receipt Template","applicationCategory":"BusinessApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"url":url,"inLanguage":"en"},
+      {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":qq,"acceptedAnswer":{"@type":"Answer","text":aa}} for qq,aa in rc['faqs']]},
+      {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[
+        {"@type":"ListItem","position":1,"name":"Free BizDoc","item":f"{BASE}/en/"},
+        {"@type":"ListItem","position":2,"name":"Receipt templates","item":f"{BASE}/en/receipt-templates"},
+        {"@type":"ListItem","position":3,"name":f"{rc['name']} receipt","item":url}]},
+    ]
+    related = ''.join(f'<a href="/en/receipt/{o["slug"]}">{o["name"]} receipt</a>' for o in RECEIPTS if o['slug'] != rc['slug'])
+    include = ''.join(f'<li>{x}</li>' for x in rc['include'])
+    art = (f'<article class="art">'
+      f'<p class="lead">{rc["lead"]}</p>'
+      f'<div class="lpcta"><a class="lpbtn pri" href="{cta}">Create your {rc["name"].lower()} receipt &rarr;</a>'
+      f'<a class="lpbtn gh" href="/en/receipt">Open a blank receipt</a></div>'
+      f'<h2>What a {rc["name"].lower()} receipt should include</h2><ul>{include}</ul>'
+      f'<h2>Example {rc["name"].lower()} receipt</h2>'
+      f'<p>A typical set of line items &mdash; click the button to open it as a receipt (marked paid, with the amount paid and a PAID stamp), then change the details and the payment method.</p>'
+      f'{example_table(rc["items"])}'
+      f'<p>{rc["terms"]}</p>'
+      f'<div class="lpcta"><a class="lpbtn pri" href="{cta}">Use this {rc["name"].lower()} receipt &rarr;</a>'
+      f'<a class="lpbtn gh" href="/en/invoice/{rc["slug"]}">Need an invoice instead?</a></div>'
+      f'<h2>Related receipt templates</h2><div class="relgrid">{related}</div>'
+      f'</article>')
+    hero = ('<section class="hero"><div class="in"><div class="htext">'
+      f'<span class="ey">Free - No sign-up - {rc["name"]} receipt</span>'
+      f'<h1>Free {rc["name"]} Receipt Template</h1>'
+      f'<p>{rc["desc"]}</p></div></div></section>')
+    crumb = f'<nav class="crumb"><a href="/en/">Home</a> &rsaquo; <a href="/en/receipt-templates">Receipt templates</a> &rsaquo; {rc["name"]}</nav>'
+    parts = [head(rc['title'], rc['desc'], url, schema), CRUMB_CSS, HEADER, crumb, hero, art, faq_html(rc['faqs']), FOOTER,
+      f'<script src="/en/siteheader-en.js?v={V}"></script>', '</body>', '</html>', '']
+    return '\n'.join(parts)
+
+
 def head(title, desc, url, schema_blocks):
     blocks = '\n'.join('<script type="application/ld+json">%s</script>' % json.dumps(b, ensure_ascii=False) for b in schema_blocks)
     return ('<!doctype html>\n<html lang="en">\n<head>\n'
@@ -387,6 +508,7 @@ FOOTER = '''<footer class="ft"><div class="in">
       <h4>More</h4>
       <a href="/en/invoice-templates">Invoice templates</a>
       <a href="/en/estimate-templates">Quote templates</a>
+      <a href="/en/receipt-templates">Receipt templates</a>
       <a href="/en/blog">Blog</a>
       <a href="/en/compare">Compare tools</a>
       <a href="/en/pricing">Pricing &amp; PRO</a>
@@ -490,7 +612,7 @@ def hub_page():
     crumb = '<nav class="crumb"><a href="/en/">Home</a> &rsaquo; Invoice templates</nav>'
     art = ('<article class="art"><h2>One invoice tool, every profession</h2>'
       '<p>All of these open the same free invoice generator &mdash; the difference is the starting line items. Tax (US sales tax, UK VAT, Australian GST, Canadian GST/HST) and currency switch to your country, and you can convert any invoice into a receipt, quote or credit note in one click.</p>'
-      '<p>Need to quote a client before the work starts? See the <a href="/en/estimate-templates">quote &amp; estimate templates</a>.</p></article>')
+      '<p>Need to quote a client before the work starts? See the <a href="/en/estimate-templates">quote &amp; estimate templates</a>. To confirm a payment, see the <a href="/en/receipt-templates">receipt templates</a>.</p></article>')
     alldocs = f'<div class="alldocs"><h2>All free documents</h2><div class="row">{docs}</div></div>'
     ccards = ''.join(f'<a class="dcard" href="/en/invoice/{c["slug"]}"><h3>{c["name"]}</h3><p>{c["taxname"]} invoice &mdash; correct tax, currency, paper size and tax-ID label.</p><span class="go">Open template &rarr;</span></a>' for c in COUNTRIES)
     country_sec = f'<div class="alldocs" style="padding-bottom:6px"><h2>Invoices by country &amp; tax</h2></div><div class="dgrid" style="padding-top:4px">{ccards}</div>'
@@ -522,7 +644,38 @@ def quote_hub_page():
       '</div></div></section>')
     crumb = '<nav class="crumb"><a href="/en/">Home</a> &rsaquo; Quote templates</nav>'
     art = ('<article class="art"><h2>Quote first, invoice later</h2>'
-      '<p>These open the same free generator as an estimate. Add a valid-until date and an acceptance line, send it, and when the client approves, convert it to an invoice in one click &mdash; the same line items carry over. Looking to bill for completed work? See the <a href="/en/invoice-templates">invoice templates</a>.</p></article>')
+      '<p>These open the same free generator as an estimate. Add a valid-until date and an acceptance line, send it, and when the client approves, convert it to an invoice in one click &mdash; the same line items carry over. Looking to bill for completed work? See the <a href="/en/invoice-templates">invoice templates</a>; to confirm a payment, the <a href="/en/receipt-templates">receipt templates</a>.</p></article>')
+    alldocs = f'<div class="alldocs"><h2>All free documents</h2><div class="row">{docs}</div></div>'
+    parts = [head(title, desc, url, schema), CRUMB_CSS, HEADER, crumb, hero, css, f'<div class="dgrid">{cards}</div>', alldocs, art, FOOTER,
+      f'<script src="/en/siteheader-en.js?v={V}"></script>', '</body>', '</html>', '']
+    return '\n'.join(parts)
+
+
+def receipt_hub_page():
+    url = f"{BASE}/en/receipt-templates"
+    title = 'Free Receipt Templates by Profession - Payment Receipt PDF (No Sign-Up)'
+    desc = 'Free payment receipt templates for freelancers, consultants, designers, developers, photographers, contractors and more. Confirm a payment and download a PDF - no sign-up.'
+    schema = [
+      {"@context":"https://schema.org","@type":"CollectionPage","name":"Free Receipt Templates by Profession","url":url,"inLanguage":"en"},
+      {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[
+        {"@type":"ListItem","position":1,"name":"Free BizDoc","item":f"{BASE}/en/"},
+        {"@type":"ListItem","position":2,"name":"Receipt templates","item":url}]},
+    ]
+    cards = ''.join(f'<a class="dcard" href="/en/receipt/{r["slug"]}"><h3>{r["name"]}</h3><p>{r["lead"][:120]}&hellip;</p><span class="go">Open template &rarr;</span></a>' for r in RECEIPTS)
+    docs = ''.join(f'<a href="{u}">{t}</a>' for u, t in DOC_LINKS)
+    css = ('<style>.dgrid{max-width:1180px;margin:0 auto;padding:12px 20px 30px;display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px}'
+      '.dcard{display:block;background:#fff;border:1px solid var(--bd,#e2eaf4);border-radius:16px;padding:20px 20px 16px;text-decoration:none;color:inherit;box-shadow:0 10px 30px -22px rgba(19,38,59,.35);transition:.15s}'
+      '.dcard:hover{transform:translateY(-2px);border-color:var(--ac,#1766e6)}.dcard h3{margin:0 0 6px;font-size:16px}.dcard p{margin:0 0 12px;font-size:13px;color:#5a6b7b;line-height:1.55}.dcard .go{font-size:13px;font-weight:800;color:var(--ac,#1766e6)}'
+      '.alldocs{max-width:1180px;margin:0 auto;padding:4px 20px 40px}.alldocs h2{font-size:clamp(18px,3vw,22px);margin:0 0 12px}'
+      '.alldocs .row{display:flex;flex-wrap:wrap;gap:8px}.alldocs .row a{font-size:13px;font-weight:700;color:#45607a;background:#f1f5fb;border:1px solid #dce5f0;border-radius:999px;padding:8px 14px;text-decoration:none}.alldocs .row a:hover{border-color:var(--ac,#1766e6);color:var(--ac,#1766e6)}</style>')
+    hero = ('<section class="hero"><div class="in"><div class="htext">'
+      '<span class="ey">Free - No sign-up - US / UK / AU / CA</span>'
+      '<h1>Free Receipt Templates by Profession</h1>'
+      '<p>Pick the template that matches your work. Each opens as a receipt &mdash; the amount paid, the payment method and a PAID stamp &mdash; pre-filled with the line items your profession bills for. Change the details and download a clean PDF, no account.</p>'
+      '</div></div></section>')
+    crumb = '<nav class="crumb"><a href="/en/">Home</a> &rsaquo; Receipt templates</nav>'
+    art = ('<article class="art"><h2>Proof of payment, in seconds</h2>'
+      '<p>A receipt confirms a payment was received. Issue your invoice first, then a receipt when the money arrives &mdash; or turn an invoice into a receipt in one click, marked paid in full. Need to request payment instead? See the <a href="/en/invoice-templates">invoice templates</a>, or to quote first, the <a href="/en/estimate-templates">quote templates</a>.</p></article>')
     alldocs = f'<div class="alldocs"><h2>All free documents</h2><div class="row">{docs}</div></div>'
     parts = [head(title, desc, url, schema), CRUMB_CSS, HEADER, crumb, hero, css, f'<div class="dgrid">{cards}</div>', alldocs, art, FOOTER,
       f'<script src="/en/siteheader-en.js?v={V}"></script>', '</body>', '</html>', '']
@@ -531,6 +684,14 @@ def quote_hub_page():
 
 os.makedirs(os.path.join(OUT, 'invoice'), exist_ok=True)
 os.makedirs(os.path.join(OUT, 'estimate'), exist_ok=True)
+os.makedirs(os.path.join(OUT, 'receipt'), exist_ok=True)
+for rc in RECEIPTS:
+    with open(os.path.join(OUT, 'receipt', rc['slug'] + '.html'), 'w', encoding='utf-8') as f:
+        f.write(receipt_page(rc))
+    print('wrote en/receipt/%s.html' % rc['slug'])
+with open(os.path.join(OUT, 'receipt-templates.html'), 'w', encoding='utf-8') as f:
+    f.write(receipt_hub_page())
+print('wrote en/receipt-templates.html')
 for q in QUOTES:
     with open(os.path.join(OUT, 'estimate', q['slug'] + '.html'), 'w', encoding='utf-8') as f:
         f.write(quote_page(q))
