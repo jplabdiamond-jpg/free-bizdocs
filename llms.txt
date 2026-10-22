@@ -65,6 +65,14 @@
 - [UK VAT credit note template](https://free-bizdocs.com/en/credit-note/uk-vat): VAT credit note that reverses VAT and references the original invoice, GBP
 - [Australian adjustment note template](https://free-bizdocs.com/en/credit-note/australia-adjustment-note): the Australian GST credit note that reverses GST on a tax invoice, AUD
 - [Canada GST/HST credit note template](https://free-bizdocs.com/en/credit-note/canada-gst-hst): credit note that reverses GST/HST by province, CAD
+- [UK VAT quotation template](https://free-bizdocs.com/en/estimate/uk-vat): quote showing VAT per rate and your VAT number, valid-until date, GBP
+- [Australian GST quote template](https://free-bizdocs.com/en/estimate/australia-gst): quote showing GST at 10% and your ABN, valid-until date, AUD
+- [Canada GST/HST estimate template](https://free-bizdocs.com/en/estimate/canada-gst-hst): estimate with GST/HST by province and a valid-until date, CAD
+- [US sales-tax estimate template](https://free-bizdocs.com/en/estimate/us-sales-tax): estimate with sales tax, valid-until date and acceptance line, USD
+- [US packing slip template](https://free-bizdocs.com/en/packing-slip/us): delivery note listing items and quantities shipped, no prices, with ship-to and received-by
+- [UK delivery note template](https://free-bizdocs.com/en/packing-slip/uk): delivery/despatch note listing goods and quantities, no prices, A4
+- [Australian delivery note template](https://free-bizdocs.com/en/packing-slip/australia): delivery note listing goods and quantities shipped, no prices, A4
+- [Canada delivery note template](https://free-bizdocs.com/en/packing-slip/canada): delivery note / packing slip listing goods and quantities, no prices, Letter
 - [Rent receipt template](https://free-bizdocs.com/en/receipt/rent): proof of rent paid for landlords - tenant, amount, period and a PAID stamp
 - [Cash receipt template](https://free-bizdocs.com/en/receipt/cash): proof of a cash payment with the method set to Cash and a PAID stamp
 - [Sales receipt template](https://free-bizdocs.com/en/receipt/sales): itemized retail sales receipt with sales tax and a PAID stamp

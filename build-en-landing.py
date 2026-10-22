@@ -729,11 +729,100 @@ COUNTRY_CREDITS = [
 ]
 
 
+COUNTRY_QUOTES = [
+ dict(region='us', slug='us-sales-tax', h1='US Estimate Template',
+  title='US Estimate Template - Free Quote PDF with Sales Tax (No Sign-Up)',
+  desc='A free US estimate template with sales tax. Quote a job with a valid-until date and an acceptance line, then convert it to an invoice in one click. No sign-up. Letter, USD.',
+  lead='Send a US estimate before the work starts. Set your state sales-tax rate, add the line items you are quoting, and download a professional PDF with a valid-until date and an acceptance line - free, no account. Approved? Turn it into an invoice in one click.',
+  reqs=['Your business name, address and contact details','The word &ldquo;Estimate&rdquo; (or &ldquo;Quote&rdquo;), a number and the date','The customer&rsquo;s name and address (&ldquo;Prepared For&rdquo;)','Itemized lines with description, quantity and unit price','<b>Sales tax</b> shown where you charge it, and the estimated total','A <b>valid-until date</b> and an acceptance/signature line'],
+  faqs=[('Is an estimate legally binding?','An estimate is a good-faith quote, not a contract, until the customer accepts it. Add a valid-until date so the pricing has a clear expiry, and an acceptance line so approval is recorded.'),
+        ('Does the estimate show sales tax?','Yes - set your state rate and the estimated sales tax is shown separately, so the customer sees the full expected total before they approve.'),
+        ('Can I turn the estimate into an invoice?','Yes - once the customer approves, switch the document to Invoice and the same line items, tax and totals carry over. No retyping.')]),
+ dict(region='uk', slug='uk-vat', h1='UK Quotation Template',
+  title='UK Quotation Template - Free Quote PDF with VAT (No Sign-Up)',
+  desc='A free UK quotation template with VAT. Quote a job showing VAT at 20% / 5% / 0% and your VAT number, with a valid-until date, in GBP. No sign-up. A4.',
+  lead='Send a UK quotation before you start. Show the VAT per rate and your VAT number, add a valid-until date and an acceptance line, and download a professional PDF in GBP - free, no account. When it is approved, convert it to a VAT invoice in one click.',
+  reqs=['Your business name and address, and your <b>VAT number</b> if registered','The word &ldquo;Quotation&rdquo;, a number and the date','The customer&rsquo;s name and address','A description of the goods or services quoted','The <b>VAT rate and amount</b>, the total excluding VAT and the gross in GBP','A <b>valid-until date</b> so the quote has a clear expiry'],
+  faqs=[('What is the difference between a quote and an estimate?','A quotation is a fixed price the customer can accept; an estimate is an approximate figure that may change. Both can show VAT and a valid-until date - pick the wording that matches your commitment.'),
+        ('Should a quotation include VAT?','If you are VAT registered, show the VAT so the customer sees the real total. If you are not registered, quote without VAT and do not show a VAT number.'),
+        ('Does it become a VAT invoice when accepted?','Yes - switch the document to Invoice and the lines and VAT carry over, giving you a compliant VAT invoice with the same figures.')]),
+ dict(region='au', slug='australia-gst', h1='Australian Quote Template',
+  title='Australian Quote Template - Free Quote PDF with GST (No Sign-Up)',
+  desc='A free Australian quote template with GST. Quote a job showing GST at 10% and your ABN, with a valid-until date, in AUD. No sign-up. A4.',
+  lead='Send an Australian quote before the work begins. Show GST at 10% and your ABN, add a valid-until date and an acceptance line, and download a professional PDF in AUD - free, no account. Approved? Convert it to a tax invoice in one click.',
+  reqs=['Your business name and your <b>ABN</b>','The word &ldquo;Quote&rdquo;, a number and the date','The customer&rsquo;s name','A description of the goods or services quoted, with quantities','The <b>GST (10%)</b> and the estimated total in AUD','A <b>valid-until date</b> and an acceptance line'],
+  faqs=[('Does an Australian quote need to show GST?','If you are registered for GST, show it (or state that the total includes GST) so the customer sees the real price. Include your ABN on the quote as well.'),
+        ('Is a quote the same as a tax invoice?','No - a quote proposes a price before the sale; a tax invoice documents the sale for GST. When the quote is accepted, convert it to a tax invoice in one click.'),
+        ('How long is a quote valid?','As long as you decide - set a valid-until date so the pricing has a clear expiry and you are not held to an old quote.')]),
+ dict(region='ca', slug='canada-gst-hst', h1='Canada Estimate Template',
+  title='Canada Estimate Template - Free Quote PDF with GST/HST (No Sign-Up)',
+  desc='A free Canadian estimate template with GST/HST by province. Quote a job showing the right provincial tax and your GST/HST number, with a valid-until date, in CAD. No sign-up. Letter.',
+  lead='Send a Canadian estimate before you start. Pick the province for the correct GST, HST, PST or QST, show your GST/HST number, add a valid-until date and an acceptance line, and download a professional PDF in CAD - free, no account. Convert it to an invoice in one click when approved.',
+  reqs=['Your business name and your <b>GST/HST number</b> if registered','The word &ldquo;Estimate&rdquo; (or &ldquo;Quote&rdquo;), a number and the date','The customer&rsquo;s name and address','A description of the goods or services quoted','The <b>GST/HST</b> (and PST/QST where it applies) at your province&rsquo;s rate, and the total in CAD','A <b>valid-until date</b> and an acceptance line'],
+  faqs=[('How is the tax set for my province?','Pick your province and the correct combination is applied - HST in Ontario and Atlantic Canada, GST plus PST in BC/Manitoba/Saskatchewan, GST plus QST in Quebec, or GST only in Alberta and the territories.'),
+        ('Does the estimate show my GST/HST number?','Yes - if you are registered, your GST/HST number appears on the estimate, as it will on the invoice when the quote is accepted.'),
+        ('Can the estimate become an invoice?','Yes - switch it to Invoice and the same lines, provincial tax and totals carry across, with no retyping.')]),
+]
+
+COUNTRY_DELIVERY = [
+ dict(region='us', slug='us', h1='US Packing Slip Template',
+  title='US Packing Slip Template - Free Delivery Note PDF (No Sign-Up)',
+  desc='A free US packing slip template. List the items and quantities shipped - no prices - with a ship-to address and a received-by line. Download a PDF, no sign-up. Letter.',
+  lead='Include a packing slip with a shipment so the customer can check what arrived against what was ordered. List the items and quantities with no prices, add the ship-to address, and download a professional PDF with a received-by line - free, no account.',
+  reqs=['Your business name and the ship date','A packing slip number (and the related order or invoice number)','The customer and the <b>ship-to address</b>','The <b>items and quantities shipped</b> - no prices','Any items on back-order or shipped separately','A <b>received-by</b> signature line'],
+  items=[('Product SKU A-100', 12, 0, 'none'), ('Product SKU B-250', 4, 0, 'none'), ('Spare parts kit', 2, 0, 'none')],
+  faqs=[('What is a packing slip?','A packing slip (or delivery note) lists the items and quantities in a shipment, without prices. It travels with the goods so the recipient can check the delivery against their order.'),
+        ('Why no prices on a packing slip?','Prices belong on the invoice, which goes to the person who pays. The packing slip goes with the goods, so it shows only what was shipped - handy when the receiver is not the buyer.'),
+        ('How is it different from an invoice?','An invoice requests payment and shows prices and tax; a packing slip confirms what was shipped. Keep the matching invoice for billing.')]),
+ dict(region='uk', slug='uk', h1='UK Delivery Note Template',
+  title='UK Delivery Note Template - Free Packing Slip PDF (No Sign-Up)',
+  desc='A free UK delivery note template. List the goods and quantities delivered - no prices - with a delivery address and a received-by line. Download a PDF, no sign-up. A4.',
+  lead='Send a delivery note with your goods so the customer can check the delivery against their order. List the items and quantities with no prices, add the delivery address, and download a professional PDF with a received-by line - free, no account.',
+  reqs=['Your business name and the delivery date','A delivery note number (and the related order or invoice number)','The customer and the <b>delivery address</b>','The <b>goods and quantities delivered</b> - no prices','Anything on back-order or to follow','A <b>received-by</b> signature line'],
+  items=[('Product code A-100', 12, 0, 'none'), ('Product code B-250', 4, 0, 'none'), ('Accessories pack', 2, 0, 'none')],
+  faqs=[('What is a delivery note?','A delivery note (or despatch note) lists the goods and quantities in a delivery, without prices. It accompanies the goods so the recipient can verify the delivery against their order.'),
+        ('Is a delivery note the same as an invoice?','No - a delivery note confirms what was delivered and shows no prices; the invoice requests payment and shows the VAT. Keep both: one travels with the goods, the other goes for payment.'),
+        ('Does a delivery note need VAT?','No - VAT goes on the VAT invoice. A delivery note lists quantities only, so there is nothing to tax on it.')]),
+ dict(region='au', slug='australia', h1='Australian Delivery Note Template',
+  title='Australian Delivery Note Template - Free Packing Slip PDF (No Sign-Up)',
+  desc='A free Australian delivery note template. List the goods and quantities delivered - no prices - with a delivery address and a received-by line. Download a PDF, no sign-up. A4.',
+  lead='Send a delivery note with your goods so the customer can check what was delivered against their order. List the items and quantities with no prices, add the delivery address, and download a professional PDF with a received-by line - free, no account.',
+  reqs=['Your business name and the delivery date','A delivery note number (and the related order or tax invoice number)','The customer and the <b>delivery address</b>','The <b>goods and quantities delivered</b> - no prices','Anything on back-order or shipped separately','A <b>received-by</b> signature line'],
+  items=[('Product code A-100', 12, 0, 'none'), ('Product code B-250', 4, 0, 'none'), ('Accessories pack', 2, 0, 'none')],
+  faqs=[('What is a delivery note used for?','It lists the goods and quantities in a delivery, with no prices, so the recipient can confirm the delivery matches their order. It travels with the goods.'),
+        ('Does it show GST?','No - GST goes on the tax invoice. A delivery note shows quantities only, so there is no tax on it.'),
+        ('Is a delivery note the same as a tax invoice?','No - the tax invoice requests payment and shows GST and your ABN; the delivery note confirms what was shipped. Keep the tax invoice for billing.')]),
+ dict(region='ca', slug='canada', h1='Canada Delivery Note Template',
+  title='Canada Delivery Note Template - Free Packing Slip PDF (No Sign-Up)',
+  desc='A free Canadian delivery note template. List the goods and quantities shipped - no prices - with a ship-to address and a received-by line. Download a PDF, no sign-up. Letter.',
+  lead='Send a delivery note with your shipment so the customer can check what arrived against their order. List the items and quantities with no prices, add the ship-to address, and download a professional PDF with a received-by line - free, no account.',
+  reqs=['Your business name and the ship date','A delivery note number (and the related order or invoice number)','The customer and the <b>ship-to address</b>','The <b>goods and quantities shipped</b> - no prices','Any items on back-order or shipped separately','A <b>received-by</b> signature line'],
+  items=[('Product SKU A-100', 12, 0, 'none'), ('Product SKU B-250', 4, 0, 'none'), ('Spare parts kit', 2, 0, 'none')],
+  faqs=[('What is a delivery note?','A delivery note (or packing slip) lists the goods and quantities in a shipment, without prices. It travels with the goods so the recipient can check the delivery against their order.'),
+        ('Why are there no prices or tax?','Prices and GST/HST belong on the invoice, which goes to whoever pays. The delivery note goes with the goods and shows quantities only.'),
+        ('How is it different from the invoice?','The invoice requests payment and shows the tax; the delivery note confirms what was shipped. Keep the invoice for billing.')]),
+]
+
+
+def delivery_example_table(items):
+    """Price-free table for packing slips / delivery notes (Description + Qty only)."""
+    rows = ''.join(f'<tr><td>{it[0]}</td><td class="n">{it[1]}</td></tr>' for it in items)
+    return ('<table class="extbl"><thead><tr><th>Description</th><th class="n">Qty</th></tr></thead>'
+            f'<tbody>{rows}</tbody></table>')
+
+
+# doc-type wording by region (the editor shows these titles per country)
+QUOTE_WORD = {'us': 'estimate', 'uk': 'quotation', 'au': 'quote', 'ca': 'estimate'}
+DELIVERY_WORD = {'us': 'packing slip', 'uk': 'delivery note', 'au': 'delivery note', 'ca': 'delivery note'}
+KIND_PLURAL = {'receipt': 'Receipts', 'credit': 'Credit notes', 'quote': 'Quotes', 'delivery': 'Delivery notes'}
+
+
 def country_doc_page(d, kind, tool, hub_slug, hub_name):
-    """Generic country x document-type landing page (kind = receipt | credit)."""
+    """Generic country x document-type landing page (kind = receipt | credit | quote | delivery)."""
     m = CM[d['region']]
+    items = d.get('items', m['items'])
     url = f"{BASE}/en/{tool}/{d['slug']}"
-    pf = b64p(m['items'], kind=kind, region=d['region'], tax_rate=m.get('tax_rate'), prov=m.get('prov'))
+    pf = b64p(items, kind=kind, region=d['region'], tax_rate=m.get('tax_rate'), prov=m.get('prov'))
     cta = f'/en/{tool}#p={pf}'
     schema = [
       {"@context":"https://schema.org","@type":"WebApplication","name":d['h1'],"applicationCategory":"BusinessApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":m['cur']},"url":url,"inLanguage":"en"},
@@ -743,26 +832,46 @@ def country_doc_page(d, kind, tool, hub_slug, hub_name):
         {"@type":"ListItem","position":2,"name":hub_name,"item":f"{BASE}/en/{hub_slug}"},
         {"@type":"ListItem","position":3,"name":d['h1'],"item":url}]},
     ]
-    doc_word = 'receipt' if kind == 'receipt' else ('adjustment note' if d['region'] == 'au' and kind == 'credit' else ('credit memo' if d['region'] == 'us' and kind == 'credit' else 'credit note'))
-    peers = COUNTRY_RECEIPTS if kind == 'receipt' else COUNTRY_CREDITS
+    if kind == 'receipt':
+        doc_word = 'receipt'
+    elif kind == 'credit':
+        doc_word = 'adjustment note' if d['region'] == 'au' else ('credit memo' if d['region'] == 'us' else 'credit note')
+    elif kind == 'quote':
+        doc_word = QUOTE_WORD[d['region']]
+    else:  # delivery
+        doc_word = DELIVERY_WORD[d['region']]
+    peers = {'receipt': COUNTRY_RECEIPTS, 'credit': COUNTRY_CREDITS, 'quote': COUNTRY_QUOTES, 'delivery': COUNTRY_DELIVERY}[kind]
     related = ''.join(f'<a href="/en/{tool}/{o["slug"]}">{o["h1"].replace(" Template","")}</a>' for o in peers if o['slug'] != d['slug'])
     reqs = ''.join(f'<li>{x}</li>' for x in d['reqs'])
-    openline = ('open it as a receipt (marked paid, with a PAID stamp)' if kind == 'receipt'
-                else 'open it as a credit note referencing your original invoice')
+    openline = {
+      'receipt': 'open it as a receipt (marked paid, with a PAID stamp)',
+      'credit': 'open it as a credit note referencing your original invoice',
+      'quote': 'open it as an estimate with a valid-until date and an acceptance line',
+      'delivery': 'open it as a delivery note listing the items shipped (no prices)',
+    }[kind]
+    if kind == 'delivery':
+        example = (f'<h2>Example (items shipped)</h2>'
+          f'<p>A typical {doc_word} lists the items and quantities shipped, with no prices. Click the button to {openline}, already set to {m["name"]} &mdash; change the items and the ship-to address, then download.</p>'
+          f'{delivery_example_table(items)}'
+          f'<div class="note">A {doc_word} confirms what was shipped, not what is owed &mdash; keep the matching invoice for payment.</div>')
+        taxline = f'{m["name"]} - Delivery note'
+    else:
+        example = (f'<h2>Example ({m["taxname"]} at {m["rate"]:g}%)</h2>'
+          f'<p>A typical set of lines with {m["taxname"]}. Click the button to {openline}, already set to {m["name"]} &mdash; change the details and your {m["taxname"].split("/")[0]} number.</p>'
+          f'{country_example_table(dict(m, items=items))}'
+          f'<div class="note">Tax rules vary. The calculation here is an aid &mdash; confirm your obligations with your accountant or tax authority.</div>')
+        taxline = f'{m["name"]} - {m["taxname"]}'
     art = (f'<article class="art">'
       f'<p class="lead">{d["lead"]}</p>'
       f'<div class="lpcta"><a class="lpbtn pri" href="{cta}">Create a {m["name"]} {doc_word} &rarr;</a>'
       f'<a class="lpbtn gh" href="/en/{tool}">Open a blank {doc_word}</a></div>'
       f'<h2>What a {m["name"]} {doc_word} must include</h2><ul>{reqs}</ul>'
-      f'<h2>Example ({m["taxname"]} at {m["rate"]:g}%)</h2>'
-      f'<p>A typical set of lines with {m["taxname"]}. Click the button to {openline}, already set to {m["name"]} &mdash; change the details and your {m["taxname"].split("/")[0]} number.</p>'
-      f'{country_example_table(m)}'
-      f'<div class="note">Tax rules vary. The calculation here is an aid &mdash; confirm your obligations with your accountant or tax authority.</div>'
+      f'{example}'
       f'<div class="lpcta"><a class="lpbtn pri" href="{cta}">Use this {m["name"]} {doc_word} &rarr;</a></div>'
-      f'<h2>{doc_word.title()}s for other countries</h2><div class="relgrid">{related}</div>'
+      f'<h2>{KIND_PLURAL[kind]} for other countries</h2><div class="relgrid">{related}</div>'
       f'</article>')
     hero = ('<section class="hero"><div class="in"><div class="htext">'
-      f'<span class="ey">Free - No sign-up - {m["name"]} - {m["taxname"]}</span>'
+      f'<span class="ey">Free - No sign-up - {taxline}</span>'
       f'<h1>Free {d["h1"]}</h1>'
       f'<p>{d["desc"]}</p></div></div></section>')
     crumb = f'<nav class="crumb"><a href="/en/">Home</a> &rsaquo; <a href="/en/{hub_slug}">{hub_name}</a> &rsaquo; {m["name"]}</nav>'
@@ -1010,7 +1119,9 @@ def hub_page():
     country_sec = f'<div class="alldocs" style="padding-bottom:6px"><h2>Invoices by country &amp; tax</h2></div><div class="dgrid" style="padding-top:4px">{ccards}</div>'
     crcards = ''.join(f'<a class="dcard" href="/en/credit-note/{cr["slug"]}"><h3>{cr["h1"].replace(" Template","")}</h3><p>Cancel or reduce an invoice and reverse the {CM[cr["region"]]["taxname"]}.</p><span class="go">Open template &rarr;</span></a>' for cr in COUNTRY_CREDITS)
     credit_sec = f'<div class="alldocs" style="padding-bottom:6px"><h2>Credit notes by country &amp; tax</h2></div><div class="dgrid" style="padding-top:4px">{crcards}</div>'
-    parts = [head(title, desc, url, schema), CRUMB_CSS, HEADER, crumb, hero, css, f'<div class="dgrid">{cards}</div>', country_sec, credit_sec, alldocs, art, FOOTER,
+    dncards = ''.join(f'<a class="dcard" href="/en/packing-slip/{dn["slug"]}"><h3>{dn["h1"].replace(" Template","")}</h3><p>List the items and quantities shipped &mdash; no prices &mdash; with a ship-to address.</p><span class="go">Open template &rarr;</span></a>' for dn in COUNTRY_DELIVERY)
+    delivery_sec = f'<div class="alldocs" style="padding-bottom:6px"><h2>Delivery notes &amp; packing slips by country</h2></div><div class="dgrid" style="padding-top:4px">{dncards}</div>'
+    parts = [head(title, desc, url, schema), CRUMB_CSS, HEADER, crumb, hero, css, f'<div class="dgrid">{cards}</div>', country_sec, credit_sec, delivery_sec, alldocs, art, FOOTER,
       f'<script src="/en/siteheader-en.js?v={V}"></script>', '</body>', '</html>', '']
     return '\n'.join(parts)
 
@@ -1040,7 +1151,9 @@ def quote_hub_page():
     art = ('<article class="art"><h2>Quote first, invoice later</h2>'
       '<p>These open the same free generator as an estimate. Add a valid-until date and an acceptance line, send it, and when the client approves, convert it to an invoice in one click &mdash; the same line items carry over. Looking to bill for completed work? See the <a href="/en/invoice-templates">invoice templates</a>; to confirm a payment, the <a href="/en/receipt-templates">receipt templates</a>.</p></article>')
     alldocs = f'<div class="alldocs"><h2>All free documents</h2><div class="row">{docs}</div></div>'
-    parts = [head(title, desc, url, schema), CRUMB_CSS, HEADER, crumb, hero, css, f'<div class="dgrid">{cards}</div>', alldocs, art, FOOTER,
+    qcards = ''.join(f'<a class="dcard" href="/en/estimate/{q["slug"]}"><h3>{q["h1"].replace(" Template","")}</h3><p>{CM[q["region"]]["taxname"]} {QUOTE_WORD[q["region"]]} &mdash; correct tax, currency and a valid-until date.</p><span class="go">Open template &rarr;</span></a>' for q in COUNTRY_QUOTES)
+    country_sec = f'<div class="alldocs" style="padding-bottom:6px"><h2>Quotes by country &amp; tax</h2></div><div class="dgrid" style="padding-top:4px">{qcards}</div>'
+    parts = [head(title, desc, url, schema), CRUMB_CSS, HEADER, crumb, hero, css, f'<div class="dgrid">{cards}</div>', country_sec, alldocs, art, FOOTER,
       f'<script src="/en/siteheader-en.js?v={V}"></script>', '</body>', '</html>', '']
     return '\n'.join(parts)
 
@@ -1104,6 +1217,17 @@ for t in TYPE_RECEIPTS:
     with open(os.path.join(OUT, 'receipt', t['slug'] + '.html'), 'w', encoding='utf-8') as f:
         f.write(type_receipt_page(t))
     print('wrote en/receipt/%s.html' % t['slug'])
+# Country x quote (estimate) pages
+for d in COUNTRY_QUOTES:
+    with open(os.path.join(OUT, 'estimate', d['slug'] + '.html'), 'w', encoding='utf-8') as f:
+        f.write(country_doc_page(d, 'quote', 'estimate', 'estimate-templates', 'Quote templates'))
+    print('wrote en/estimate/%s.html' % d['slug'])
+# Country x delivery note (packing slip) pages
+os.makedirs(os.path.join(OUT, 'packing-slip'), exist_ok=True)
+for d in COUNTRY_DELIVERY:
+    with open(os.path.join(OUT, 'packing-slip', d['slug'] + '.html'), 'w', encoding='utf-8') as f:
+        f.write(country_doc_page(d, 'delivery', 'packing-slip', 'packing-slip', 'Packing Slip'))
+    print('wrote en/packing-slip/%s.html' % d['slug'])
 for q in QUOTES:
     with open(os.path.join(OUT, 'estimate', q['slug'] + '.html'), 'w', encoding='utf-8') as f:
         f.write(quote_page(q))
