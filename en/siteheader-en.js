@@ -14,8 +14,9 @@
   +'.fb-hdr .auth a,.fb-hdr .auth button{font-family:inherit;font-size:13.5px;font-weight:700;text-decoration:none;border-radius:9px;padding:8px 14px;cursor:pointer;white-space:nowrap;line-height:1}'
   +'.fb-hdr .lgn{color:#1766e6;background:#eaf1fe;border:1px solid #d4e3fb}'
   +'.fb-hdr .lgn:hover{background:#dbe9fd}'
-  +'.fb-hdr .sgn{color:#fff;background:#1766e6;border:1px solid #1766e6}'
+  +'.fb-hdr .sgn{position:relative;overflow:visible;color:#fff;background:#1766e6;border:1px solid #1766e6}'
   +'.fb-hdr .sgn:hover{background:#1257ca}'
+  +'.fb-hdr .sgn-ex{position:absolute;top:-9px;right:-10px;transform:rotate(14deg);background:#e11d48;color:#fff;font-size:10px;font-weight:900;letter-spacing:.03em;line-height:1;padding:3px 7px;border-radius:5px;box-shadow:0 3px 9px -2px rgba(225,29,72,.6);pointer-events:none}'
   +'.fb-hdr .em{font-size:12.5px;color:#6c6f78;max-width:170px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}'
   +'.fb-ft-auth{display:flex;gap:14px;align-items:center;justify-content:center;flex-wrap:wrap;padding:16px 20px 2px;font-size:13px}'
   +'.fb-ft-auth .ttl{color:#8097ad;font-weight:700}'
@@ -24,7 +25,7 @@
   +'.fb-hdr .lang-sw{font-size:12.5px;font-weight:700;color:#45607a;text-decoration:none;border:1px solid #dce5f0;border-radius:999px;padding:6px 12px;white-space:nowrap;margin-right:2px}'
   +'.fb-hdr .lang-sw:hover{background:#f1f5fb;color:#1766e6;border-color:#c7d6e8}'
   +'@media(max-width:640px){.fb-hdr .nav{display:none}.fb-hdr .em{display:none}.fb-hdr .in{gap:8px;padding:10px 14px}.fb-hdr .auth{gap:6px}.fb-hdr .auth a,.fb-hdr .auth button{padding:10px 12px}.fb-hdr .lang-sw{padding:8px 10px}}'
-  +'@media(max-width:430px){.fb-hdr .sgn-ex{display:none}.fb-hdr .lang-sw{display:none}.fb-hdr .in{gap:8px;padding:10px 12px}.fb-hdr .auth a,.fb-hdr .auth button{padding:10px 11px;font-size:13px}.fb-hdr .brand img{height:26px}}';
+  +'@media(max-width:430px){.fb-hdr .lang-sw{display:none}.fb-hdr .in{gap:8px;padding:10px 12px}.fb-hdr .auth a,.fb-hdr .auth button{padding:10px 11px;font-size:13px}.fb-hdr .sgn-ex{right:-7px;top:-8px}.fb-hdr .brand img{height:26px}}';
   var st=document.createElement('style'); st.textContent=css; document.head.appendChild(st);
 
   // ---- Header ----
@@ -35,7 +36,7 @@
     +'<span class="sp"></span>'
     +'<a class="lang-sw" href="/?lang=ja" lang="ja" title="Japanese version">日本語</a>'
     +'<div class="auth" id="fbAuth">'
-    +'<a class="lgn" href="/en/login">Log in</a><a class="sgn" href="/en/login?mode=signup">Sign up<span class="sgn-ex"> (free)</span></a>'
+    +'<a class="lgn" href="/en/login">Log in</a><a class="sgn" href="/en/login?mode=signup">Sign up<span class="sgn-ex">Free</span></a>'
     +'</div></div>';
 
   function mountHeader(){
