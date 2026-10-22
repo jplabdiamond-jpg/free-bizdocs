@@ -18,50 +18,86 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"ホーム","item":"https://free-bizdocs.com/"},{"@type":"ListItem","position":2,"name":"料金・PROプラン","item":"https://free-bizdocs.com/pricing"}]}</script>
 <link rel="stylesheet" href="/landing.css?v=20261016c">
 <style>
-.plans{max-width:860px;margin:0 auto;padding:10px 20px 0;display:grid;grid-template-columns:1fr 1fr;gap:18px}
-.plan{background:var(--surf);border:1px solid var(--bd);border-radius:18px;padding:24px;display:flex;flex-direction:column;box-shadow:0 10px 30px -22px rgba(19,38,59,.3)}
-.plan.pro{border:2px solid var(--ac);box-shadow:0 20px 44px -22px rgba(23,102,230,.45);position:relative}
-.plan .tag{font-size:11px;font-weight:800;color:var(--mut);letter-spacing:.06em}
+/* ===== 料金ページ：分かりやすい2プラン比較 ===== */
+.pr-head{max-width:720px;margin:0 auto;padding:40px 20px 6px;text-align:center}
+.pr-head .kw{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;font-weight:900;color:#e11d48;background:#fff;border:1px solid #fbd5de;padding:6px 14px;border-radius:999px;margin-bottom:14px;box-shadow:0 4px 14px -5px rgba(225,29,72,.3)}
+.pr-head h1{font-size:clamp(26px,4.4vw,38px);line-height:1.22;margin:0 0 12px;font-weight:900;letter-spacing:-.02em;background:linear-gradient(100deg,#132742 15%,#1b56c9 75%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.pr-head p{color:var(--mut);font-size:15.5px;line-height:1.75;margin:0 auto;max-width:56ch}
+
+/* 年払いトグル */
+.pr-toggle{display:flex;justify-content:center;align-items:center;gap:0;margin:22px auto 4px}
+.pr-seg{display:inline-flex;background:#eef3fb;border:1px solid var(--bd);border-radius:999px;padding:4px;gap:2px;position:relative}
+.pr-seg button{font-family:inherit;font-size:13.5px;font-weight:800;color:var(--mut);background:none;border:none;padding:9px 20px;border-radius:999px;cursor:pointer;display:inline-flex;align-items:center;gap:7px;transition:color .15s}
+.pr-seg button.on{background:#fff;color:var(--ink);box-shadow:0 4px 12px -5px rgba(19,38,59,.3)}
+.pr-seg .save{font-size:10.5px;font-weight:900;color:#0f7a43;background:#dff0e6;padding:2px 7px;border-radius:999px}
+
+.plans{max-width:900px;margin:0 auto;padding:22px 20px 0;display:grid;grid-template-columns:1fr 1.08fr;gap:20px;align-items:start}
+.plan{background:var(--surf);border:1px solid var(--bd);border-radius:20px;padding:26px 24px;display:flex;flex-direction:column;box-shadow:0 12px 34px -24px rgba(19,38,59,.3)}
+.plan.pro{border:2px solid var(--ac);box-shadow:0 24px 54px -24px rgba(23,102,230,.45);position:relative;background:linear-gradient(180deg,#fbfdff,#fff)}
+.plan .rib{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:linear-gradient(120deg,#e11d48,#ff7a59);color:#fff;font-size:11.5px;font-weight:900;padding:5px 16px;border-radius:999px;white-space:nowrap;box-shadow:0 10px 22px -8px rgba(225,29,72,.5)}
+.plan .tag{font-size:11.5px;font-weight:900;color:var(--mut);letter-spacing:.08em}
 .plan.pro .tag{color:var(--ac)}
-.plan .rib{position:absolute;top:-11px;right:18px;background:linear-gradient(120deg,#1766e6,#36c6f0);color:#fff;font-size:11px;font-weight:800;padding:4px 12px;border-radius:999px}
-.plan h3{margin:6px 0 2px;font-size:20px;font-weight:900}
-.plan .price{font-size:30px;font-weight:900;margin:8px 0 2px}.plan .price small{font-size:13px;color:var(--mut);font-weight:700}
-.plan .for{font-size:12.5px;color:var(--mut);margin-bottom:14px}
-.plan ul{list-style:none;padding:0;margin:0 0 18px;flex:1}
-.plan li{font-size:13.5px;color:#2b3a4b;padding:6px 0 6px 24px;position:relative;line-height:1.5}
-.plan li::before{content:"✓";position:absolute;left:0;color:var(--ac);font-weight:900}
-.plan li.no{color:var(--faint)}.plan li.no::before{content:"−";color:var(--faint)}
-.plan .btn{justify-content:center}
-.plan .ghost{display:inline-flex;align-items:center;justify-content:center;gap:6px;font-size:14px;font-weight:700;border:1.5px solid var(--bd);border-radius:12px;padding:13px;color:var(--ink);text-decoration:none}
-.feat{max-width:860px;margin:0 auto;padding:10px 20px}
-.feat h2{font-size:22px;font-weight:900;margin:34px 0 4px;text-align:center}
-.feat .sub{text-align:center;color:var(--mut);font-size:14px;margin:0 0 20px}
-.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.fcard{background:var(--surf);border:1px solid var(--bd);border-radius:14px;padding:16px 18px}
-.fcard .h{display:flex;align-items:center;gap:9px;font-size:15px;font-weight:700;margin-bottom:5px}
-.fcard .bd2{font-size:11px;font-weight:800;padding:2px 8px;border-radius:999px}
-.bd2.on{color:#0f7a43;background:#dff0e6}.bd2.soon{color:#9c6b15;background:#f6ecd2}
-.fcard p{margin:0;font-size:13px;color:var(--mut);line-height:1.7}
-.signup{max-width:640px;margin:34px auto 0;padding:0 20px}
-.signup .box{background:linear-gradient(115deg,#0f2f7a,#1766e6 55%,#2f9bf0);color:#fff;border-radius:18px;padding:28px 26px;text-align:center;box-shadow:0 20px 44px -20px rgba(23,102,230,.5)}
-.signup h2{margin:0 0 6px;font-size:21px;font-weight:900}
-.signup p{margin:0 0 16px;font-size:13.5px;opacity:.95}
-.signup .row{display:flex;gap:8px;max-width:420px;margin:0 auto;flex-wrap:wrap}
-.signup input{flex:1;min-width:180px;font-family:inherit;font-size:14px;padding:13px 14px;border:none;border-radius:11px;background:#fff;color:var(--ink)}
-.signup button{font-family:inherit;font-size:14.5px;font-weight:800;border:none;border-radius:11px;padding:13px 20px;background:#fff;color:#1256cf;cursor:pointer}
-.signup button:disabled{opacity:.6;cursor:default}
-.signup .cta{display:inline-flex;align-items:center;justify-content:center;gap:6px;font-size:15px;font-weight:800;border-radius:11px;padding:14px 26px;background:#fff;color:#1256cf;text-decoration:none}
-.signup .note{font-size:11.5px;opacity:.85;margin-top:10px}
-.signup .msg{display:none;margin-top:12px;font-size:13.5px;font-weight:700;background:rgba(255,255,255,.16);border-radius:10px;padding:10px 12px}
-.signup .msg.show{display:block}
-.plan .price .was{text-decoration:line-through;color:var(--faint);font-size:17px;font-weight:800;margin-right:9px}
-.plan .price .now{color:#e11d48;font-size:40px;font-weight:900;letter-spacing:-.02em}
-.limited-badge{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(120deg,#e11d48,#ff7a59);color:#fff;font-size:12.5px;font-weight:900;padding:5px 12px;border-radius:999px;margin:2px 0 8px;box-shadow:0 8px 20px -8px rgba(225,29,72,.55)}
-.limited-note{font-size:12.5px;font-weight:800;color:#e11d48;margin:0 0 12px}
-.plan.pro .rib{background:linear-gradient(120deg,#e11d48,#ff7a59)}
-@media(max-width:760px){.plans{grid-template-columns:1fr}.fgrid{grid-template-columns:1fr}}
-.plan .freereg{display:block;text-align:center;margin-top:10px;font-size:12.5px;font-weight:700;color:var(--ac);text-decoration:none}
+.plan h2{margin:7px 0 3px;font-size:21px;font-weight:900}
+.plan .for{font-size:12.5px;color:var(--mut);margin:0 0 16px;line-height:1.6}
+
+.plan .pricebox{margin:0 0 6px;min-height:58px}
+.plan .price{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap}
+.plan .price .yen{font-size:40px;font-weight:900;letter-spacing:-.02em;line-height:1}
+.plan .price .per{font-size:13.5px;color:var(--mut);font-weight:800}
+.plan.pro .price .yen{color:#e11d48;font-size:44px}
+.plan .price .was{text-decoration:line-through;color:var(--faint);font-size:18px;font-weight:800}
+.plan .sub-price{font-size:12.5px;font-weight:800;color:#e11d48;margin:7px 0 0}
+.plan .sub-price.free{color:var(--faint);font-weight:700}
+
+.plan .cta-btn{justify-content:center;width:100%;margin:16px 0 2px}
+.plan .ghost{display:inline-flex;align-items:center;justify-content:center;gap:6px;font-size:15px;font-weight:800;border:1.5px solid var(--bd);border-radius:12px;padding:14px;color:var(--ink);text-decoration:none;width:100%;margin:16px 0 2px;transition:background .15s}
+.plan .ghost:hover{background:var(--surf2)}
+.plan .freereg{display:block;text-align:center;margin-top:9px;font-size:12.5px;font-weight:700;color:var(--ac);text-decoration:none}
 .plan .freereg:hover{text-decoration:underline}
+.plan .mkpay{font-size:11.5px;color:var(--faint);text-align:center;margin-top:9px;line-height:1.6}
+
+/* 機能グループ（deevid風のラベル付き束） */
+.fgroup{margin-top:18px}
+.fgroup + .fgroup{margin-top:14px;padding-top:14px;border-top:1px dashed var(--bd)}
+.fgroup .gl{font-size:11px;font-weight:900;letter-spacing:.09em;color:var(--faint);text-transform:uppercase;margin:0 0 8px}
+.plan ul{list-style:none;padding:0;margin:0}
+.plan li{font-size:13.5px;color:#2b3a4b;padding:5px 0 5px 25px;position:relative;line-height:1.55}
+.plan li::before{content:"";position:absolute;left:0;top:9px;width:16px;height:16px;border-radius:50%;background:linear-gradient(135deg,var(--ac),#36c6f0);
+  -webkit-mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.2'><path d='M20 6 9 17l-5-5'/></svg>") center/10px no-repeat;mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.2'><path d='M20 6 9 17l-5-5'/></svg>") center/10px no-repeat}
+.plan.pro li::before{background:linear-gradient(135deg,#e11d48,#ff7a59)}
+.plan li.no{color:var(--faint)}
+.plan li.no::before{background:#c3d0de;-webkit-mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' stroke='white' stroke-width='3'><path d='M5 12h14'/></svg>") center/11px no-repeat;mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' stroke='white' stroke-width='3'><path d='M5 12h14'/></svg>") center/11px no-repeat}
+.plan li b{font-weight:900;color:var(--ink)}
+.plan.pro li b{color:#13263b}
+
+/* 信頼ストリップ */
+.trust{max-width:900px;margin:28px auto 0;padding:0 20px}
+.trust .in{background:var(--surf);border:1px solid var(--bd);border-radius:16px;padding:18px 22px;display:flex;flex-wrap:wrap;gap:14px 26px;justify-content:center;align-items:center;box-shadow:0 10px 26px -20px rgba(19,38,59,.3)}
+.trust .it{display:flex;align-items:center;gap:9px;font-size:13px;font-weight:800;color:#2b3a4b}
+.trust .it .ic{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:8px;background:var(--ac-s);color:var(--ac);font-size:14px;flex:none}
+
+/* PROでできること */
+.feat{max-width:900px;margin:0 auto;padding:10px 20px}
+.feat h2{font-size:23px;font-weight:900;margin:44px 0 4px;text-align:center}
+.feat .sub{text-align:center;color:var(--mut);font-size:14.5px;margin:0 0 22px}
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.fcard{background:var(--surf);border:1px solid var(--bd);border-radius:14px;padding:17px 18px}
+.fcard .h{display:flex;align-items:center;gap:9px;font-size:15px;font-weight:800;margin-bottom:5px}
+.fcard .h .ic{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,var(--ac),#36c6f0);color:#fff;font-size:15px;flex:none}
+.fcard p{margin:0;font-size:13px;color:var(--mut);line-height:1.7}
+
+/* 下部CTA */
+.signup{max-width:680px;margin:40px auto 0;padding:0 20px}
+.signup .box{position:relative;overflow:hidden;background:linear-gradient(115deg,#0f2f7a,#1766e6 55%,#2f9bf0);color:#fff;border-radius:20px;padding:30px 28px;text-align:center;box-shadow:0 24px 50px -22px rgba(23,102,230,.5)}
+.signup .box::before{content:"";position:absolute;top:-80px;right:-60px;width:260px;height:260px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.18),transparent 70%)}
+.signup h2{margin:0 0 7px;font-size:22px;font-weight:900;position:relative}
+.signup p{margin:0 0 18px;font-size:14px;opacity:.96;position:relative;line-height:1.7}
+.signup .cta{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-size:16px;font-weight:900;border-radius:12px;padding:15px 30px;background:#fff;color:#1256cf;text-decoration:none;position:relative;box-shadow:0 12px 26px -10px rgba(0,0,0,.3);transition:transform .12s}
+.signup .cta:hover{transform:translateY(-1px)}
+.signup .note{font-size:11.5px;opacity:.88;margin-top:12px;position:relative}
+
+@media(max-width:780px){.plans{grid-template-columns:1fr;max-width:460px}.fgrid{grid-template-columns:1fr}}
+
 /* PRO dashboard preview */
 .dprev{margin:16px 0 6px}
 .dpv{display:flex;border:1px solid var(--bd);border-radius:16px;overflow:hidden;background:#f6f6f2;box-shadow:0 24px 50px -28px rgba(19,38,59,.5);font-size:12px}
@@ -109,49 +145,92 @@
 <nav id="docnav" class="docnav" aria-label="書類の種類"></nav>
 <script src="/docnav.js?v=20261017" defer></script>
 
-<section class="hero"><div class="in">
-  <span class="ey" style="color:#e11d48;font-weight:900">🔥 期間限定キャンペーン｜月¥2,000</span>
-  <h1>発行から回収まで、<br>まるごと自動化する PRO</h1>
-  <p>無料ツールの「作る」はそのまま。PROなら保存・自動連番・取引先管理・発行履歴・入金管理・消込・ダッシュボードまで。請求業務の手間を根本から減らします。</p>
-  <a class="btn" href="https://buy.stripe.com/6oU9ATc3PdDAcfE4Lw9sk01">今すぐPROに申し込む →</a>
-  <p style="font-size:13px;color:var(--faint);margin-top:12px"><b style="color:#e11d48">期間限定 月¥2,000（税込）</b> ／ 通常¥3,000。クレジットカード・Apple Pay・Link に対応。いつでも解約できます。</p>
-</div></section>
+<section class="pr-head">
+  <span class="kw">🔥 期間限定キャンペーン｜月¥2,000</span>
+  <h1>必要な分だけ、シンプルな料金</h1>
+  <p>書類を「作る」機能はずっと無料。保存・取引先管理・入金管理まで本格的に使いたくなったら、PROへ。いつでも解約できます。</p>
+</section>
+
+<div class="pr-toggle">
+  <div class="pr-seg" role="tablist" aria-label="請求サイクル">
+    <button type="button" class="on" id="segM" role="tab" aria-selected="true">月払い</button>
+    <button type="button" id="segY" role="tab" aria-selected="false">年払い <span class="save">2か月分おトク</span></button>
+  </div>
+</div>
 
 <section class="plans">
   <div class="plan">
     <span class="tag">FREE</span>
-    <h3>無料プラン</h3>
-    <div class="price">¥0</div>
+    <h2>無料プラン</h2>
     <div class="for">個人事業主・たまに発行する方に</div>
-    <ul>
-      <li>請求書・見積書・納品書・発注書・領収書の作成</li>
-      <li>履歴書・職務経歴書・送付状の作成</li>
-      <li>消費税・源泉徴収の自動計算、インボイス対応</li>
-      <li>日本語PDFのダウンロード</li>
-      <li>無料登録で<b>書類を5件まで保存</b>・再編集</li>
-      <li class="no">作成は1時間に2枚まで</li>
-      <li class="no">取引先・入金管理／自動連番はPRO</li>
-    </ul>
-    <a class="ghost" href="/invoice">無料で使う</a>
+    <div class="pricebox">
+      <div class="price"><span class="yen">¥0</span><span class="per">/ 月</span></div>
+      <div class="sub-price free">登録なしでそのまま使えます</div>
+    </div>
+    <a class="ghost" href="/invoice">無料で使う →</a>
     <a class="freereg" href="/login?mode=signup">または無料登録して保存する →</a>
+
+    <div class="fgroup">
+      <p class="gl">作成できる書類</p>
+      <ul>
+        <li>請求書・見積書・納品書・発注書・領収書</li>
+        <li>履歴書・職務経歴書・送付状</li>
+        <li>消費税・源泉徴収の自動計算、インボイス対応</li>
+        <li>日本語PDFのダウンロード</li>
+      </ul>
+    </div>
+    <div class="fgroup">
+      <p class="gl">保存・管理</p>
+      <ul>
+        <li>無料登録で<b>書類を5件まで保存</b>・再編集</li>
+        <li class="no">作成は1時間に2枚まで</li>
+        <li class="no">取引先・入金管理／自動連番はPRO</li>
+      </ul>
+    </div>
   </div>
+
   <div class="plan pro">
-    <span class="rib">🔥 期間限定 ¥2,000</span>
+    <span class="rib">🔥 いちばん人気・最適な価格</span>
     <span class="tag">PRO</span>
-    <h3>PROプラン</h3>
-    <div class="limited-badge">🔥 期間限定キャンペーン価格</div>
-    <div class="price"><span class="was">¥3,000</span><span class="now">¥2,000</span><small>/ 月（税込）</small></div>
-    <div class="limited-note">通常 ¥3,000 → いま申し込むと ¥2,000 / 月</div>
+    <h2>PROプラン</h2>
     <div class="for">中小企業・継続的に発行する方に</div>
-    <ul>
-      <li>無料プランの全機能＋<b>発行数は無制限</b></li>
-      <li>書類の<b>保存・自動連番・再発行</b></li>
-      <li><b>取引先マスタ・発行履歴</b>の管理</li>
-      <li>見積→納品→請求の<b>書類連携・一元管理</b></li>
-      <li><b>入金管理・消込</b>（売掛・期限超過の見える化）</li>
-      <li><b>ダッシュボード</b>で請求・入金状況をひと目で把握</li>
-    </ul>
-    <a class="btn" href="https://buy.stripe.com/6oU9ATc3PdDAcfE4Lw9sk01">今すぐPROに申し込む →</a>
+    <div class="pricebox">
+      <div class="price"><span class="was" id="pwas">¥3,000</span><span class="yen" id="pnow">¥2,000</span><span class="per" id="pper">/ 月（税込）</span></div>
+      <div class="sub-price" id="psub">通常 ¥3,000 → いま申し込むと ¥2,000 / 月</div>
+    </div>
+    <a class="btn cta-btn" id="probtn" href="https://buy.stripe.com/6oU9ATc3PdDAcfE4Lw9sk01">今すぐPROに申し込む →</a>
+    <div class="mkpay">決済は Stripe の安全なページ。カード・Apple Pay・Link 対応。</div>
+
+    <div class="fgroup">
+      <p class="gl">無料プランのすべて＋</p>
+      <ul>
+        <li><b>発行数は無制限</b>（1時間2枚の制限なし）</li>
+        <li>書類の<b>保存・自動連番・再発行</b></li>
+      </ul>
+    </div>
+    <div class="fgroup">
+      <p class="gl">取引管理</p>
+      <ul>
+        <li><b>取引先マスタ・発行履歴</b>の管理</li>
+        <li>見積→納品→請求の<b>書類連携・一元管理</b></li>
+      </ul>
+    </div>
+    <div class="fgroup">
+      <p class="gl">入金・分析</p>
+      <ul>
+        <li><b>入金管理・消込</b>（売掛・期限超過の見える化）</li>
+        <li><b>ダッシュボード</b>で請求・入金状況をひと目で把握</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="trust">
+  <div class="in">
+    <div class="it"><span class="ic">🔒</span>決済は Stripe 経由で安全</div>
+    <div class="it"><span class="ic">↩</span>いつでも自分で解約OK</div>
+    <div class="it"><span class="ic">🇯🇵</span>インボイス・源泉徴収に対応</div>
+    <div class="it"><span class="ic">💳</span>カード／Apple Pay／Link</div>
   </div>
 </section>
 
@@ -193,12 +272,12 @@
     <div class="dprev-cap">PROのダッシュボード（イメージ）。ログイン直後に請求・入金状況をひと目で把握できます。</div>
   </div>
   <div class="fgrid">
-    <div class="fcard"><div class="h">保存・自動連番・再発行</div><p>作成した書類をクラウドに保存。請求書番号は自動で連番になり、過去分の再発行もかんたんです。</p></div>
-    <div class="fcard"><div class="h">取引先マスタ・発行履歴</div><p>取引先を登録しておけば宛先入力は一瞬。いつ・いくら発行したかを一覧で把握できます。</p></div>
-    <div class="fcard"><div class="h">入金管理・消込</div><p>入金を記録して請求書に紐づけ、未入金・期限超過を自動で見える化。回収漏れを防ぎます。</p></div>
-    <div class="fcard"><div class="h">複数書類の一元管理</div><p>見積 → 納品 → 請求 → 領収まで、同じ取引先の書類をまとめて管理できます。</p></div>
-    <div class="fcard"><div class="h">ダッシュボード</div><p>今月の請求額・未入金・期限超過・入金額を、ログイン直後にひと目で把握できます。</p></div>
-    <div class="fcard"><div class="h">発行数は無制限</div><p>無料プランの「1時間に2枚まで」の制限なし。繁忙期もまとめて発行できます。</p></div>
+    <div class="fcard"><div class="h"><span class="ic">💾</span>保存・自動連番・再発行</div><p>作成した書類をクラウドに保存。請求書番号は自動で連番になり、過去分の再発行もかんたんです。</p></div>
+    <div class="fcard"><div class="h"><span class="ic">👥</span>取引先マスタ・発行履歴</div><p>取引先を登録しておけば宛先入力は一瞬。いつ・いくら発行したかを一覧で把握できます。</p></div>
+    <div class="fcard"><div class="h"><span class="ic">✅</span>入金管理・消込</div><p>入金を記録して請求書に紐づけ、未入金・期限超過を自動で見える化。回収漏れを防ぎます。</p></div>
+    <div class="fcard"><div class="h"><span class="ic">🔗</span>複数書類の一元管理</div><p>見積 → 納品 → 請求 → 領収まで、同じ取引先の書類をまとめて管理できます。</p></div>
+    <div class="fcard"><div class="h"><span class="ic">📊</span>ダッシュボード</div><p>今月の請求額・未入金・期限超過・入金額を、ログイン直後にひと目で把握できます。</p></div>
+    <div class="fcard"><div class="h"><span class="ic">∞</span>発行数は無制限</div><p>無料プランの「1時間に2枚まで」の制限なし。繁忙期もまとめて発行できます。</p></div>
   </div>
 </section>
 
@@ -206,9 +285,7 @@
   <div class="box">
     <h2>いますぐ PRO を始める</h2>
     <p><b>期間限定 月額¥2,000（税込）</b>（通常¥3,000）。お申し込み後すぐにすべてのPRO機能をご利用いただけます。いつでも解約できます。</p>
-    <div class="row" style="justify-content:center">
-      <a class="cta" href="https://buy.stripe.com/6oU9ATc3PdDAcfE4Lw9sk01">PROに申し込む（月額¥2,000）→</a>
-    </div>
+    <a class="cta" href="https://buy.stripe.com/6oU9ATc3PdDAcfE4Lw9sk01">PROに申し込む（月額¥2,000）→</a>
     <div class="note">決済は Stripe の安全なページで行われます。カード・Apple Pay・Link に対応。</div>
   </div>
 </section>
@@ -216,6 +293,7 @@
 <section class="faq">
   <h2>よくある質問</h2>
   <div class="q"><h3>料金はいくらですか？</h3><p>通常は月額¥3,000（税込）ですが、ただいま<b>期間限定キャンペーンで月額¥2,000（税込）</b>でご利用いただけます。お申し込み時から課金が始まり、毎月自動で更新されます。</p></div>
+  <div class="q"><h3>年払いはありますか？</h3><p>料金表の「年払い」を選ぶと、月払いより<b>2か月分おトク</b>な年額の目安が表示されます。年払いでのお申し込みをご希望の場合は<a href="/contact">お問い合わせ</a>ください（順次対応予定です）。</p></div>
   <div class="q"><h3>支払い方法は？</h3><p>クレジットカード・Apple Pay・Link（Stripe）に対応しています。決済はStripeの安全なページで行われます。</p></div>
   <div class="q"><h3>解約できますか？</h3><p>はい、いつでもご自身で解約できます。<a href="https://billing.stripe.com/p/login/bJe8wP3xjczwbbA3Hs9sk00" target="_blank" rel="noopener"><b>契約の管理・解約ページ</b></a>から、登録メールアドレスで本人確認のうえ、その場で解約や支払い方法の変更ができます。うまくいかない場合は<a href="/contact">お問い合わせ</a>ください。</p></div>
   <div class="q"><h3>無料プランはこのまま使えますか？</h3><p>はい。無料の書類作成ツールは今後も無料で使えます。無料アカウントなら書類を5件まで保存でき、保存を無制限にして取引先・入金管理まで使いたくなったらPROをご検討ください。</p></div>
@@ -231,6 +309,28 @@
   <div class="row" style="color:#8097ad">© 2026 Free BizDoc</div>
 </div></footer>
 
+<script>
+/* 月/年トグル：表示のみ切替（申込は月額リンクを維持） */
+(function(){
+  var segM=document.getElementById('segM'),segY=document.getElementById('segY');
+  var pnow=document.getElementById('pnow'),pwas=document.getElementById('pwas'),pper=document.getElementById('pper'),psub=document.getElementById('psub');
+  if(!segM||!segY)return;
+  function setMonthly(){
+    segM.classList.add('on');segM.setAttribute('aria-selected','true');
+    segY.classList.remove('on');segY.setAttribute('aria-selected','false');
+    pwas.textContent='¥3,000';pnow.textContent='¥2,000';pper.textContent='/ 月（税込）';
+    psub.textContent='通常 ¥3,000 → いま申し込むと ¥2,000 / 月';
+  }
+  function setYearly(){
+    segY.classList.add('on');segY.setAttribute('aria-selected','true');
+    segM.classList.remove('on');segM.setAttribute('aria-selected','false');
+    pwas.textContent='¥36,000';pnow.textContent='¥24,000';pper.textContent='/ 年（税込）';
+    psub.textContent='月あたり ¥2,000 ・ 2か月分おトク（年払いはお問い合わせ）';
+  }
+  segM.addEventListener('click',setMonthly);
+  segY.addEventListener('click',setYearly);
+})();
+</script>
 <script src="/promo.js?v=20261017a"></script>
 <script src="/siteheader.js?v=20261019en"></script>
 </body>
