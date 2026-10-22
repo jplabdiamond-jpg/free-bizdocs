@@ -5,11 +5,18 @@
 import json, os, base64, datetime, html
 ROOT = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(ROOT, 'en')
-V = datetime.date.today().strftime('%Y%m%d') + 'j'
+V = datetime.date.today().strftime('%Y%m%d') + 'k'
 BASE = 'https://free-bizdocs.com'
 
-def b64p(items, notes=''):
-    payload = {'kind': 'invoice', 'items': [{'name': n, 'qty': q, 'unit_price': p, 'tax': 'tax'} for (n, q, p) in items]}
+def b64p(items, region=None, tax_rate=None, prov=None, notes=''):
+    payload = {'kind': 'invoice',
+               'items': [{'name': it[0], 'qty': it[1], 'unit_price': it[2], 'tax': (it[3] if len(it) > 3 else 'tax')} for it in items]}
+    if region:
+        payload['region'] = region
+    if tax_rate is not None:
+        payload['tax_rate'] = str(tax_rate)
+    if prov:
+        payload['prov'] = prov
     if notes:
         payload['notes'] = notes
     raw = json.dumps(payload, separators=(',', ':')).encode('utf-8')
@@ -108,6 +115,104 @@ INDUSTRIES = [
         ('How do I handle ad spend?','Keep ad spend separate from your fees - either the client pays the platform directly, or you add a clearly labelled pass-through line. Do not bury it in your management fee.'),
         ('Is it free?','Yes - no sign-up. The free version allows 2 PDF downloads per hour.')]),
 ]
+
+# Country / tax invoice pages. Example items carry region-appropriate tax codes
+# (UK/AU fixed-rate per line; US sets a sample sales-tax rate; CA sets a province).
+COUNTRIES = [
+ dict(slug='us-sales-tax', region='us', name='United States', cur='USD', sym='$', taxname='Sales tax', rate=8.25,
+  title='US Sales Tax Invoice Template - Free PDF Invoice (No Sign-Up)',
+  desc='A free US invoice template with sales tax. Set your state rate per line, add your details, and download a clean PDF - no sign-up. Letter paper, USD.',
+  lead='Create a US invoice with sales tax in seconds. There is no federal invoice format - set the sales-tax rate for your state (or mark lines exempt), add your line items, and download a professional PDF. No account needed.',
+  reqs=['Your business name, address and contact details (and EIN if you use one)','The word &ldquo;Invoice&rdquo;, a unique number and the issue date','The customer&rsquo;s name and address (&ldquo;Bill To&rdquo;)','Itemized lines with description, quantity, unit price and amount','<b>Sales tax</b> applied per line where you have nexus - the rate depends on your state and the product/service','Subtotal, tax and total, plus payment terms (Net 30 is common)'],
+  items=[('Consulting services - per hour', 10, 150, 'tax'), ('Software license - annual', 1, 1200, 'tax')],
+  tax_rate='8.25',
+  faqs=[('Is there a required invoice format in the US?','No. There is no federal standard. Include your details, the customer, a unique invoice number, itemized lines, any sales tax, and the total. Sales tax rules depend on your state and whether you have nexus there.'),
+        ('How do I add sales tax?','Set your state&rsquo;s sales-tax rate in the tool and mark taxable lines; exempt items can be set to exempt. The PDF shows the tax separately from the subtotal.'),
+        ('What paper size is the PDF?','US invoices download on Letter (8.5 x 11 in) in USD. The tool switches paper, currency and date format when you pick a country.')]),
+ dict(slug='uk-vat', region='uk', name='United Kingdom', cur='GBP', sym='£', taxname='VAT', rate=20,
+  title='UK VAT Invoice Template - Free PDF Invoice (No Sign-Up)',
+  desc='A free UK VAT invoice template. Shows your VAT number, VAT at 20% / 5% / 0% per rate, and totals in GBP. Download a clean PDF - no sign-up. A4 paper.',
+  lead='Create a compliant UK VAT invoice. Show your VAT registration number, the VAT rate and amount per line, and the totals - the tool handles 20%, 5%, zero-rated and exempt. Download a professional PDF, no account.',
+  reqs=['A unique, sequential <b>invoice number</b> and the date (time of supply)','Your business name and address, and your <b>VAT registration number</b>','The customer&rsquo;s name and address','A description of the goods or services','The <b>VAT rate</b> (20%, 5% or 0%) and the VAT amount for each rate','The total excluding VAT, the total VAT, and the gross total in GBP'],
+  items=[('Consulting services - per day', 5, 480, '20'), ('Website maintenance - monthly', 1, 300, '20')],
+  faqs=[('What must a UK VAT invoice show?','If you are VAT registered you must show your VAT number, a sequential invoice number, the date, the customer, a description, the VAT rate and amount per rate, and the totals excluding and including VAT.'),
+        ('Do I have to charge VAT?','Only if you are VAT registered (required once turnover passes the threshold, optional below it). If you are not registered, issue a normal invoice without VAT and do not show a VAT number.'),
+        ('Does it handle 20%, 5% and zero-rated?','Yes. Pick the rate per line - 20% standard, 5% reduced, 0% zero-rated, or exempt - and the VAT is itemized per rate on the PDF in GBP.')]),
+ dict(slug='australia-tax-invoice', region='au', name='Australia', cur='AUD', sym='$', taxname='GST', rate=10,
+  title='Australian Tax Invoice Template - Free PDF with GST (No Sign-Up)',
+  desc='A free Australian tax invoice template with GST. Shows your ABN, GST at 10%, and the words &ldquo;Tax Invoice&rdquo;. Download a clean PDF - no sign-up. A4 paper, AUD.',
+  lead='Create a compliant Australian tax invoice. Enter your ABN and charge GST at 10% and the title becomes &ldquo;Tax Invoice&rdquo; automatically. Download a professional PDF in AUD, no account.',
+  reqs=['The words <b>&ldquo;Tax Invoice&rdquo;</b> (shown automatically once you add an ABN and charge GST)','Your business name and your <b>ABN</b>','The date the invoice is issued','A description of the items sold, with quantities','The <b>GST amount</b> (10%), or a statement that the total price includes GST','For sales of <b>$1,000 or more</b>, the buyer&rsquo;s identity or ABN'],
+  items=[('Consulting services - per hour', 12, 160, '10'), ('Onboarding setup', 1, 800, '10')],
+  faqs=[('What makes an Australian tax invoice valid?','For sales over $82.50 (incl. GST) a tax invoice must show the words &ldquo;Tax Invoice&rdquo;, your ABN, the date, a description, and the GST amount (or that the total includes GST). Over $1,000 it must also show the buyer&rsquo;s identity or ABN.'),
+        ('How does the title become &ldquo;Tax Invoice&rdquo;?','Enter your ABN in your business details and keep GST at 10% on the lines - the heading switches to &ldquo;Tax Invoice&rdquo; and a &ldquo;Total price includes GST&rdquo; note is added.'),
+        ('What if I am not registered for GST?','If you are not GST registered, do not charge GST - set the lines to GST-free. The document stays a plain invoice rather than a tax invoice.')]),
+ dict(slug='canada-gst-hst', region='ca', name='Canada', cur='CAD', sym='$', taxname='GST/HST', rate=13, prov='ON',
+  title='Canada GST/HST Invoice Template - Free PDF Invoice (No Sign-Up)',
+  desc='A free Canadian invoice template with GST/HST (and PST/QST by province). Shows your GST/HST number and the tax at the correct provincial rate. Download a clean PDF - no sign-up. Letter paper, CAD.',
+  lead='Create a Canadian invoice with the right tax for your province. Pick the province and GST, HST, PST or QST is applied at the correct rate, with your GST/HST number on the invoice. Download a professional PDF in CAD, no account.',
+  reqs=['Your business name and the date','A unique invoice number','Your <b>GST/HST registration number</b> (required on invoices once registered)','A description of the goods or services','The <b>GST/HST</b> (and PST/QST where it applies) at your province&rsquo;s rate, or a statement that tax is included','The total - for sales of $150+ more detail is required'],
+  items=[('Consulting services - per hour', 10, 140, 'tax'), ('Materials', 1, 600, 'tax')],
+  faqs=[('How is tax handled across provinces?','Pick your province and the tool applies the correct combination - HST in Ontario and the Atlantic provinces, GST plus PST in BC/Manitoba/Saskatchewan, GST plus QST in Quebec, or GST only in Alberta and the territories.'),
+        ('Do I need my GST/HST number on the invoice?','Yes, once you are registered you must show your GST/HST number on invoices, along with the tax amount (or a statement that it is included) so customers can claim input tax credits.'),
+        ('What rate is used for Ontario?','Ontario uses HST at 13%. The example here uses Ontario; change the province in the tool to apply your own rate.')]),
+]
+
+
+def country_example_table(c):
+    sym = c['sym']
+    rows = ''
+    sub = 0
+    for it in c['items']:
+        amt = it[1] * it[2]
+        sub += amt
+        rows += f'<tr><td>{it[0]}</td><td class="n">{it[1]}</td><td class="n">{sym}{it[2]:,.2f}</td><td class="n">{sym}{amt:,.2f}</td></tr>'
+    tax = round(sub * c['rate'] / 100, 2)
+    total = sub + tax
+    foot = (f'<tr><td></td><td></td><td class="n">Subtotal</td><td class="n">{sym}{sub:,.2f}</td></tr>'
+            f'<tr><td></td><td></td><td class="n">{c["taxname"]} ({c["rate"]:g}%)</td><td class="n">{sym}{tax:,.2f}</td></tr>'
+            f'<tr><td></td><td></td><td class="n"><b>Total ({c["cur"]})</b></td><td class="n"><b>{sym}{total:,.2f}</b></td></tr>')
+    return ('<table class="extbl"><thead><tr><th>Description</th><th class="n">Qty</th><th class="n">Unit price</th><th class="n">Amount</th></tr></thead>'
+            f'<tbody>{rows}{foot}</tbody></table>')
+
+
+def country_page(c):
+    url = f"{BASE}/en/invoice/{c['slug']}"
+    pf = b64p(c['items'], region=c['region'], tax_rate=c.get('tax_rate'), prov=c.get('prov'))
+    cta = f'/en/invoice#p={pf}'
+    schema = [
+      {"@context":"https://schema.org","@type":"WebApplication","name":f"{c['name']} Invoice Template","applicationCategory":"BusinessApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":c['cur']},"url":url,"inLanguage":"en"},
+      {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":q,"acceptedAnswer":{"@type":"Answer","text":a}} for q,a in c['faqs']]},
+      {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[
+        {"@type":"ListItem","position":1,"name":"Free BizDoc","item":f"{BASE}/en/"},
+        {"@type":"ListItem","position":2,"name":"Invoice templates","item":f"{BASE}/en/invoice-templates"},
+        {"@type":"ListItem","position":3,"name":f"{c['name']} invoice","item":url}]},
+    ]
+    others = ''.join(f'<a href="/en/invoice/{o["slug"]}">{o["name"]} invoice</a>' for o in COUNTRIES if o['slug'] != c['slug'])
+    reqs = ''.join(f'<li>{x}</li>' for x in c['reqs'])
+    H1 = {'us': 'US Sales Tax Invoice Template', 'uk': 'UK VAT Invoice Template', 'au': 'Australian Tax Invoice Template', 'ca': 'Canada GST/HST Invoice Template'}
+    h1 = H1.get(c['region'], c['name'] + ' Invoice Template')
+    art = (f'<article class="art">'
+      f'<p class="lead">{c["lead"]}</p>'
+      f'<div class="lpcta"><a class="lpbtn pri" href="{cta}">Create a {c["name"]} invoice &rarr;</a>'
+      f'<a class="lpbtn gh" href="/en/invoice">Open a blank invoice</a></div>'
+      f'<h2>What a {c["name"]} invoice must include</h2><ul>{reqs}</ul>'
+      f'<h2>Example ({c["taxname"]} at {c["rate"]:g}%)</h2>'
+      f'<p>A typical invoice with {c["taxname"]} applied. Click the button to open it in the editor already set to {c["name"]} &mdash; change the details and your {c["taxname"].split("/")[0]} number, then download.</p>'
+      f'{country_example_table(c)}'
+      f'<div class="note">Tax rules change and vary by {"state" if c["region"]=="us" else ("province" if c["region"]=="ca" else "situation")}. The calculation here is an aid &mdash; confirm your obligations with your accountant or tax authority.</div>'
+      f'<div class="lpcta"><a class="lpbtn pri" href="{cta}">Use this {c["name"]} template &rarr;</a></div>'
+      f'<h2>Invoices for other countries</h2><div class="relgrid">{others}</div>'
+      f'</article>')
+    hero = ('<section class="hero"><div class="in"><div class="htext">'
+      f'<span class="ey">Free - No sign-up - {c["name"]} - {c["taxname"]}</span>'
+      f'<h1>Free {h1}</h1>'
+      f'<p>{c["desc"]}</p></div></div></section>')
+    crumb = f'<nav class="crumb"><a href="/en/">Home</a> &rsaquo; <a href="/en/invoice-templates">Invoice templates</a> &rsaquo; {c["name"]}</nav>'
+    parts = [head(c['title'], c['desc'], url, schema), CRUMB_CSS, HEADER, crumb, hero, art, faq_html(c['faqs']), FOOTER,
+      f'<script src="/en/siteheader-en.js?v={V}"></script>', '</body>', '</html>', '']
+    return '\n'.join(parts)
+
 
 def head(title, desc, url, schema_blocks):
     blocks = '\n'.join('<script type="application/ld+json">%s</script>' % json.dumps(b, ensure_ascii=False) for b in schema_blocks)
@@ -252,7 +357,9 @@ def hub_page():
     art = ('<article class="art"><h2>One invoice tool, every profession</h2>'
       '<p>All of these open the same free invoice generator &mdash; the difference is the starting line items. Tax (US sales tax, UK VAT, Australian GST, Canadian GST/HST) and currency switch to your country, and you can convert any invoice into a receipt, quote or credit note in one click.</p></article>')
     alldocs = f'<div class="alldocs"><h2>All free documents</h2><div class="row">{docs}</div></div>'
-    parts = [head(title, desc, url, schema), CRUMB_CSS, HEADER, crumb, hero, css, f'<div class="dgrid">{cards}</div>', alldocs, art, FOOTER,
+    ccards = ''.join(f'<a class="dcard" href="/en/invoice/{c["slug"]}"><h3>{c["name"]}</h3><p>{c["taxname"]} invoice &mdash; correct tax, currency, paper size and tax-ID label.</p><span class="go">Open template &rarr;</span></a>' for c in COUNTRIES)
+    country_sec = f'<div class="alldocs" style="padding-bottom:6px"><h2>Invoices by country &amp; tax</h2></div><div class="dgrid" style="padding-top:4px">{ccards}</div>'
+    parts = [head(title, desc, url, schema), CRUMB_CSS, HEADER, crumb, hero, css, f'<div class="dgrid">{cards}</div>', country_sec, alldocs, art, FOOTER,
       f'<script src="/en/siteheader-en.js?v={V}"></script>', '</body>', '</html>', '']
     return '\n'.join(parts)
 
@@ -261,6 +368,10 @@ for ind in INDUSTRIES:
     with open(os.path.join(OUT, 'invoice', ind['slug'] + '.html'), 'w', encoding='utf-8') as f:
         f.write(industry_page(ind))
     print('wrote en/invoice/%s.html' % ind['slug'])
+for c in COUNTRIES:
+    with open(os.path.join(OUT, 'invoice', c['slug'] + '.html'), 'w', encoding='utf-8') as f:
+        f.write(country_page(c))
+    print('wrote en/invoice/%s.html' % c['slug'])
 with open(os.path.join(OUT, 'invoice-templates.html'), 'w', encoding='utf-8') as f:
     f.write(hub_page())
 print('wrote en/invoice-templates.html')

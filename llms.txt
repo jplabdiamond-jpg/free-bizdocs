@@ -53,5 +53,9 @@
 - [Expense report / Expense claim generator](https://free-bizdocs.com/en/expense-report): claim reimbursement for business costs by date and category
 - [Bill of sale generator](https://free-bizdocs.com/en/bill-of-sale): record a private sale and transfer of ownership, signed by seller and buyer
 - [Donation receipt generator](https://free-bizdocs.com/en/donation-receipt): nonprofit / charity tax receipt with donor, amount and the required statement
-- [Invoice templates by profession](https://free-bizdocs.com/en/invoice-templates): ready-to-edit invoice templates for freelancers, consultants, designers, developers, photographers, contractors, cleaners, tutors, virtual assistants and marketers
+- [Invoice templates by profession](https://free-bizdocs.com/en/invoice-templates): ready-to-edit invoice templates for freelancers, consultants, designers, developers, photographers, contractors, cleaners, tutors, virtual assistants and marketers; also invoices by country/tax
+- [US sales tax invoice template](https://free-bizdocs.com/en/invoice/us-sales-tax): US invoice with sales tax, Letter paper, USD
+- [UK VAT invoice template](https://free-bizdocs.com/en/invoice/uk-vat): compliant UK VAT invoice with VAT number and per-rate VAT, A4, GBP
+- [Australian tax invoice template](https://free-bizdocs.com/en/invoice/australia-tax-invoice): GST tax invoice with ABN and the words "Tax Invoice", A4, AUD
+- [Canada GST/HST invoice template](https://free-bizdocs.com/en/invoice/canada-gst-hst): invoice with GST/HST (and PST/QST) by province, Letter, CAD
 - [English home](https://free-bizdocs.com/en/) · [Contact](https://free-bizdocs.com/en/contact) · [Privacy](https://free-bizdocs.com/en/privacy)

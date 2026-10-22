@@ -382,10 +382,12 @@ function parseShare(){ try{ var m=(location.hash||'').match(/[#&]s=([^&]+)/); if
 /* Editable prefill from a landing page: #p=<base64 JSON {kind,items,notes,tax_rate}>. Fills the form (does not enter read-only share view, does not touch the saved business). */
 function parsePrefill(){ try{ var m=(location.hash||'').match(/[#&]p=([^&]+)/); if(!m)return null; var o=JSON.parse(_b64d(decodeURIComponent(m[1]))); return (o&&o.items)?o:null; }catch(e){ return null; } }
 function applyPrefill(P){ if(!P)return;
+  if(P.region&&REGIONS[P.region]) applyRegion(P.region,true);
   if(P.kind&&KINDS[P.kind]) applyKind(P.kind,true);
+  if(P.prov!=null&&$('ca-prov')) $('ca-prov').value=P.prov;
+  if(P.tax_rate!=null&&$('tax-rate')) $('tax-rate').value=P.tax_rate;
   if(P.items&&P.items.length){ rowsEl.innerHTML=''; P.items.forEach(addRow); refreshTaxSelects(); }
   if(P.notes!=null&&$('notes')) $('notes').value=P.notes;
-  if(P.tax_rate!=null&&$('tax-rate')) $('tax-rate').value=P.tax_rate;
   if($('doc-no')&&!$('doc-no').value) $('doc-no').value=nextDocNo();
   saveDraft();
 }
