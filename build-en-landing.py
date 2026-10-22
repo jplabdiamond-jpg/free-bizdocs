@@ -8,8 +8,8 @@ OUT = os.path.join(ROOT, 'en')
 V = datetime.date.today().strftime('%Y%m%d') + 'k'
 BASE = 'https://free-bizdocs.com'
 
-def b64p(items, region=None, tax_rate=None, prov=None, notes=''):
-    payload = {'kind': 'invoice',
+def b64p(items, kind='invoice', region=None, tax_rate=None, prov=None, notes=''):
+    payload = {'kind': kind,
                'items': [{'name': it[0], 'qty': it[1], 'unit_price': it[2], 'tax': (it[3] if len(it) > 3 else 'tax')} for it in items]}
     if region:
         payload['region'] = region
@@ -214,6 +214,139 @@ def country_page(c):
     return '\n'.join(parts)
 
 
+# Estimate / Quote cluster - same professions, quote-specific content. Items are
+# reused from the invoice cluster; the tool renders them as an Estimate (valid-until
+# date + acceptance line) when kind=quote.
+IND_BY = {i['slug']: i for i in INDUSTRIES}
+QUOTES = [
+ dict(slug='freelancer', name='Freelancer',
+  title='Free Freelancer Quote & Estimate Template - PDF (No Sign-Up)',
+  desc='A free quote/estimate template for freelancers. Set out the scope, price and a valid-until date, add an acceptance line, and download a PDF - no sign-up. US / UK / AU / CA.',
+  lead='Send a client a clear freelance quote before you start. Lay out the scope and price, add a valid-until date and an acceptance line, and download a professional PDF - free, no account. When the client approves, convert it to an invoice in one click.',
+  include=['Your details and the client (&ldquo;Prepared For&rdquo;)','A quote number, the date and a <b>valid-until</b> date','The scope of work with quantities and prices','What is included - and anything explicitly excluded','A deposit requirement and an <b>acceptance signature</b> line'],
+  terms='Freelancers often keep a quote valid for 14-30 days and ask for a deposit before starting.',
+  faqs=[('How do I write a freelance quote?','Set out the scope as line items with prices, add a valid-until date so the price does not stay open forever, note what is included and excluded, and leave an acceptance line. Convert it to an invoice once the client approves.'),
+        None, None]),
+ dict(slug='consultant', name='Consultant',
+  title='Free Consultant Quote & Proposal Template - PDF (No Sign-Up)',
+  desc='A free quote/estimate template for consultants - scope, day rates and retainers with a valid-until date and acceptance line. Download a PDF, no account. US / UK / AU / CA.',
+  lead='Quote a client for advisory work before you begin. Set out the engagement, day rates or retainer and a valid-until date, add an acceptance line, and download a professional PDF - free, no account.',
+  include=['Your consultancy and the client','A quote number, the date and a <b>valid-until</b> date','The engagement scope - days, workshops or a retainer - with rates','Assumptions, deliverables and anything out of scope','Payment schedule and an <b>acceptance</b> line'],
+  terms='Consultants often quote a fixed engagement or a retainer and keep the price valid for 30 days.',
+  faqs=[('What should a consulting quote include?','The scope of the engagement (days, workshops or retainer) with your rates, the deliverables and assumptions, what is out of scope, a valid-until date, and an acceptance line the client can sign.'),
+        None, None]),
+ dict(slug='graphic-designer', name='Graphic Designer',
+  title='Free Graphic Design Quote & Estimate Template - PDF (No Sign-Up)',
+  desc='A free quote/estimate template for graphic designers - deliverables, revisions and usage, with a valid-until date and acceptance. Download a PDF, no account. US / UK / AU / CA.',
+  lead='Quote a client for a design project before you start. List the deliverables, the number of revisions and the price, add a valid-until date and an acceptance line, and download a professional PDF - free, no account.',
+  include=['Your studio and the client','A quote number, the date and a <b>valid-until</b> date','Deliverables with prices - logo, brand guide, assets','The number of <b>revisions</b> included and usage rights on payment','Deposit terms and an <b>acceptance</b> line'],
+  terms='Designers usually quote a fixed package, state the revisions included, and take a 50% deposit.',
+  faqs=[('What goes in a graphic design quote?','The deliverables and their prices, how many revision rounds are included, the usage rights that transfer on payment, a valid-until date, and an acceptance line. Spell out what is not included to avoid scope creep.'),
+        None, None]),
+ dict(slug='web-developer', name='Web Developer',
+  title='Free Web Developer Quote & Estimate Template - PDF (No Sign-Up)',
+  desc='A free quote/estimate template for web developers - fixed scope, milestones and hosting, with a valid-until date and acceptance. Download a PDF, no account. US / UK / AU / CA.',
+  lead='Quote a client for a build before you start. Set out the scope, milestones and price, add a valid-until date and an acceptance line, and download a professional PDF - free, no account.',
+  include=['Your business and the client','A quote number, the date and a <b>valid-until</b> date','The build scope and milestones with prices','Assumptions, what is included, and ongoing hosting/maintenance','Milestone or deposit terms and an <b>acceptance</b> line'],
+  terms='Developers often quote a fixed scope split into milestones and keep the quote valid for 30 days.',
+  faqs=[('How do I quote a website project?','Define the scope and split it into milestones with prices, state your assumptions and what is excluded, add any ongoing hosting or maintenance, a valid-until date, and an acceptance line. Convert to an invoice per milestone as you deliver.'),
+        None, None]),
+ dict(slug='photographer', name='Photographer',
+  title='Free Photography Quote & Estimate Template - PDF (No Sign-Up)',
+  desc='A free quote/estimate template for photographers - session, editing, travel and prints, with a valid-until date and acceptance. Download a PDF, no account. US / UK / AU / CA.',
+  lead='Quote a client for a shoot before you book it in. Set out the session, editing, travel and prints with prices, add a valid-until date and an acceptance line, and download a professional PDF - free, no account.',
+  include=['Your studio and the client','A quote number, the date and a <b>valid-until</b> date','The session, edited images, travel and any prints with prices','Deliverables, turnaround and usage/print release','A booking deposit and an <b>acceptance</b> line'],
+  terms='Photographers usually quote a package, note the turnaround, and take a booking deposit to hold the date.',
+  faqs=[('What should a photography quote include?','The session fee, edited images (per image or package), travel and prints, the turnaround and usage rights, a valid-until date, and an acceptance line. Note the booking deposit needed to hold the date.'),
+        None, None]),
+ dict(slug='contractor', name='Contractor',
+  title='Free Contractor Quote & Estimate Template - Labor & Materials PDF',
+  desc='A free quote/estimate template for contractors - labor, materials and equipment, with a valid-until date and acceptance. Download a PDF, no account. US / UK / AU / CA.',
+  lead='Quote a customer for a job before you start. Break out labor, materials and equipment with prices, add a valid-until date and an acceptance line, and download a professional PDF - free, no account.',
+  include=['Your business and the customer, plus the job/site address','A quote number, the date and a <b>valid-until</b> date','Labor, materials and equipment as separate priced lines','What is included, excluded, and any allowances','Deposit/progress terms and an <b>acceptance</b> line'],
+  terms='Contractors often keep a quote valid for 30 days, take a deposit to start, and stage progress payments.',
+  faqs=[('What should a contractor quote include?','A breakdown of labor (hours x rate), materials and equipment, the job address, what is included and excluded (and any allowances), a valid-until date, and an acceptance line the customer signs to authorise the work.'),
+        None, None]),
+ dict(slug='cleaning', name='Cleaning Service',
+  title='Free Cleaning Service Quote & Estimate Template - PDF (No Sign-Up)',
+  desc='A free quote/estimate template for cleaning businesses - per-visit, deep cleans and supplies, with a valid-until date. Download a PDF, no account. US / UK / AU / CA.',
+  lead='Quote a client for regular or one-off cleaning. Set out the visits, any deep clean and supplies with prices, add a valid-until date, and download a professional PDF - free, no account.',
+  include=['Your business and the client','A quote number, the date and a <b>valid-until</b> date','Per-visit cleaning, deep cleans and supplies with prices','The schedule (weekly/monthly) and what each visit covers','Terms and an <b>acceptance</b> line'],
+  terms='Cleaning quotes often set a per-visit rate for a schedule and stay valid for 30 days.',
+  faqs=[('How do I quote for a cleaning contract?','Give a per-visit rate for the agreed schedule (weekly or monthly), list what each visit covers, add any one-off deep clean and supplies, a valid-until date, and an acceptance line.'),
+        None, None]),
+ dict(slug='tutor', name='Tutor',
+  title='Free Tutoring Quote & Estimate Template - PDF (No Sign-Up)',
+  desc='A free quote/estimate template for tutors - sessions, packages and materials, with a valid-until date. Download a PDF, no account. US / UK / AU / CA.',
+  lead='Quote a parent or student for tutoring before you begin. Set out the sessions or package and materials with prices, add a valid-until date, and download a professional PDF - free, no account.',
+  include=['Your name and the client (parent or student)','A quote number, the date and a <b>valid-until</b> date','Sessions by the hour or a package, plus materials','The schedule and what is covered','Payment terms and an <b>acceptance</b> line'],
+  terms='Tutors often quote a block of sessions or a term package, payable in advance.',
+  faqs=[('How do I quote for tutoring?','Quote a block of sessions (hours x your rate) or a term package, list any materials, add the schedule, a valid-until date, and an acceptance line. Parents often prefer to pay the quoted block in advance.'),
+        None, None]),
+ dict(slug='virtual-assistant', name='Virtual Assistant',
+  title='Free Virtual Assistant Quote & Estimate Template - PDF (No Sign-Up)',
+  desc='A free quote/estimate template for virtual assistants - hourly or monthly packages, with a valid-until date. Download a PDF, no account. US / UK / AU / CA.',
+  lead='Quote a client for support before you start. Set out an hourly rate or a monthly package with what is included, add a valid-until date, and download a professional PDF - free, no account.',
+  include=['Your business and the client','A quote number, the date and a <b>valid-until</b> date','An hourly rate or a monthly package with hours/tasks included','What the package covers and any limits','Terms and an <b>acceptance</b> line'],
+  terms='VAs usually quote a monthly package with a set number of hours, payable in advance.',
+  faqs=[('How do I quote a VA retainer?','Quote a monthly package for a set number of hours or tasks, state clearly what is and is not included, add a valid-until date, and an acceptance line. Bill the package in advance once accepted.'),
+        None, None]),
+ dict(slug='marketing', name='Marketing & Social Media',
+  title='Free Marketing Quote & Proposal Template - PDF (No Sign-Up)',
+  desc='A free quote/estimate template for marketers and social media managers - retainers, content and ads, with a valid-until date. Download a PDF, no account. US / UK / AU / CA.',
+  lead='Quote a client for marketing work before you start. Set out the management retainer, content and campaign setup with prices, add a valid-until date, and download a professional PDF - free, no account.',
+  include=['Your agency and the client','A quote number, the date and a <b>valid-until</b> date','A management retainer, content and campaign setup with prices','What is included, deliverables per month, and ad spend handling','Terms and an <b>acceptance</b> line'],
+  terms='Marketing quotes usually set a monthly retainer, list monthly deliverables, and keep ad spend separate.',
+  faqs=[('What should a marketing quote include?','A monthly management retainer, the content or deliverables per month with prices, any campaign setup, how ad spend is handled (kept separate from your fee), a valid-until date, and an acceptance line.'),
+        None, None]),
+]
+# Shared quote FAQs (fill the two None slots) - genuinely the same information for every profession.
+_QUOTE_FAQ_SHARED = [
+ ('What is the difference between an estimate and a quote?','An estimate is an approximate price that may change; a quote is a fixed price the client can accept, valid for a set period. Say which you are issuing and include a valid-until date. This tool names the document to match your country.'),
+ ('Can I turn the quote into an invoice?','Yes. Once the client accepts, open it in the editor and switch to &ldquo;Invoice&rdquo; under the preview - the same line items and client carry over with a new invoice number and today&rsquo;s date.'),
+]
+for _q in QUOTES:
+    _q['faqs'] = [_q['faqs'][0], _QUOTE_FAQ_SHARED[0], _QUOTE_FAQ_SHARED[1]]
+    _q['items'] = IND_BY[_q['slug']]['items']
+
+
+def quote_page(q):
+    url = f"{BASE}/en/estimate/{q['slug']}"
+    pf = b64p(q['items'], kind='quote')
+    cta = f'/en/estimate#p={pf}'
+    schema = [
+      {"@context":"https://schema.org","@type":"WebApplication","name":f"Free {q['name']} Quote Template","applicationCategory":"BusinessApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"url":url,"inLanguage":"en"},
+      {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":qq,"acceptedAnswer":{"@type":"Answer","text":aa}} for qq,aa in q['faqs']]},
+      {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[
+        {"@type":"ListItem","position":1,"name":"Free BizDoc","item":f"{BASE}/en/"},
+        {"@type":"ListItem","position":2,"name":"Quote templates","item":f"{BASE}/en/estimate-templates"},
+        {"@type":"ListItem","position":3,"name":f"{q['name']} quote","item":url}]},
+    ]
+    related = ''.join(f'<a href="/en/estimate/{o["slug"]}">{o["name"]} quote</a>' for o in QUOTES if o['slug'] != q['slug'])
+    include = ''.join(f'<li>{x}</li>' for x in q['include'])
+    art = (f'<article class="art">'
+      f'<p class="lead">{q["lead"]}</p>'
+      f'<div class="lpcta"><a class="lpbtn pri" href="{cta}">Create your {q["name"].lower()} quote &rarr;</a>'
+      f'<a class="lpbtn gh" href="/en/estimate">Open a blank quote</a></div>'
+      f'<h2>What a {q["name"].lower()} quote should include</h2><ul>{include}</ul>'
+      f'<h2>Example {q["name"].lower()} quote</h2>'
+      f'<p>A typical set of line items &mdash; click the button to open it as an editable estimate (with a valid-until date and an acceptance line), then change the details.</p>'
+      f'{example_table(q["items"])}'
+      f'<p>{q["terms"]}</p>'
+      f'<div class="lpcta"><a class="lpbtn pri" href="{cta}">Use this {q["name"].lower()} quote &rarr;</a>'
+      f'<a class="lpbtn gh" href="/en/invoice/{q["slug"]}">Need an invoice instead?</a></div>'
+      f'<h2>Related quote templates</h2><div class="relgrid">{related}</div>'
+      f'</article>')
+    hero = ('<section class="hero"><div class="in"><div class="htext">'
+      f'<span class="ey">Free - No sign-up - {q["name"]} quote / estimate</span>'
+      f'<h1>Free {q["name"]} Quote &amp; Estimate Template</h1>'
+      f'<p>{q["desc"]}</p></div></div></section>')
+    crumb = f'<nav class="crumb"><a href="/en/">Home</a> &rsaquo; <a href="/en/estimate-templates">Quote templates</a> &rsaquo; {q["name"]}</nav>'
+    parts = [head(q['title'], q['desc'], url, schema), CRUMB_CSS, HEADER, crumb, hero, art, faq_html(q['faqs']), FOOTER,
+      f'<script src="/en/siteheader-en.js?v={V}"></script>', '</body>', '</html>', '']
+    return '\n'.join(parts)
+
+
 def head(title, desc, url, schema_blocks):
     blocks = '\n'.join('<script type="application/ld+json">%s</script>' % json.dumps(b, ensure_ascii=False) for b in schema_blocks)
     return ('<!doctype html>\n<html lang="en">\n<head>\n'
@@ -253,6 +386,7 @@ FOOTER = '''<footer class="ft"><div class="in">
     <div class="col">
       <h4>More</h4>
       <a href="/en/invoice-templates">Invoice templates</a>
+      <a href="/en/estimate-templates">Quote templates</a>
       <a href="/en/blog">Blog</a>
       <a href="/en/compare">Compare tools</a>
       <a href="/en/pricing">Pricing &amp; PRO</a>
@@ -355,7 +489,8 @@ def hub_page():
       '</div></div></section>')
     crumb = '<nav class="crumb"><a href="/en/">Home</a> &rsaquo; Invoice templates</nav>'
     art = ('<article class="art"><h2>One invoice tool, every profession</h2>'
-      '<p>All of these open the same free invoice generator &mdash; the difference is the starting line items. Tax (US sales tax, UK VAT, Australian GST, Canadian GST/HST) and currency switch to your country, and you can convert any invoice into a receipt, quote or credit note in one click.</p></article>')
+      '<p>All of these open the same free invoice generator &mdash; the difference is the starting line items. Tax (US sales tax, UK VAT, Australian GST, Canadian GST/HST) and currency switch to your country, and you can convert any invoice into a receipt, quote or credit note in one click.</p>'
+      '<p>Need to quote a client before the work starts? See the <a href="/en/estimate-templates">quote &amp; estimate templates</a>.</p></article>')
     alldocs = f'<div class="alldocs"><h2>All free documents</h2><div class="row">{docs}</div></div>'
     ccards = ''.join(f'<a class="dcard" href="/en/invoice/{c["slug"]}"><h3>{c["name"]}</h3><p>{c["taxname"]} invoice &mdash; correct tax, currency, paper size and tax-ID label.</p><span class="go">Open template &rarr;</span></a>' for c in COUNTRIES)
     country_sec = f'<div class="alldocs" style="padding-bottom:6px"><h2>Invoices by country &amp; tax</h2></div><div class="dgrid" style="padding-top:4px">{ccards}</div>'
@@ -363,7 +498,46 @@ def hub_page():
       f'<script src="/en/siteheader-en.js?v={V}"></script>', '</body>', '</html>', '']
     return '\n'.join(parts)
 
+def quote_hub_page():
+    url = f"{BASE}/en/estimate-templates"
+    title = 'Free Quote & Estimate Templates by Profession - PDF (No Sign-Up)'
+    desc = 'Free quote and estimate templates for freelancers, consultants, designers, developers, photographers, contractors and more. Fill in and download a PDF - no sign-up.'
+    schema = [
+      {"@context":"https://schema.org","@type":"CollectionPage","name":"Free Quote & Estimate Templates by Profession","url":url,"inLanguage":"en"},
+      {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[
+        {"@type":"ListItem","position":1,"name":"Free BizDoc","item":f"{BASE}/en/"},
+        {"@type":"ListItem","position":2,"name":"Quote templates","item":url}]},
+    ]
+    cards = ''.join(f'<a class="dcard" href="/en/estimate/{q["slug"]}"><h3>{q["name"]}</h3><p>{q["lead"][:120]}&hellip;</p><span class="go">Open template &rarr;</span></a>' for q in QUOTES)
+    docs = ''.join(f'<a href="{u}">{t}</a>' for u, t in DOC_LINKS)
+    css = ('<style>.dgrid{max-width:1180px;margin:0 auto;padding:12px 20px 30px;display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px}'
+      '.dcard{display:block;background:#fff;border:1px solid var(--bd,#e2eaf4);border-radius:16px;padding:20px 20px 16px;text-decoration:none;color:inherit;box-shadow:0 10px 30px -22px rgba(19,38,59,.35);transition:.15s}'
+      '.dcard:hover{transform:translateY(-2px);border-color:var(--ac,#1766e6)}.dcard h3{margin:0 0 6px;font-size:16px}.dcard p{margin:0 0 12px;font-size:13px;color:#5a6b7b;line-height:1.55}.dcard .go{font-size:13px;font-weight:800;color:var(--ac,#1766e6)}'
+      '.alldocs{max-width:1180px;margin:0 auto;padding:4px 20px 40px}.alldocs h2{font-size:clamp(18px,3vw,22px);margin:0 0 12px}'
+      '.alldocs .row{display:flex;flex-wrap:wrap;gap:8px}.alldocs .row a{font-size:13px;font-weight:700;color:#45607a;background:#f1f5fb;border:1px solid #dce5f0;border-radius:999px;padding:8px 14px;text-decoration:none}.alldocs .row a:hover{border-color:var(--ac,#1766e6);color:var(--ac,#1766e6)}</style>')
+    hero = ('<section class="hero"><div class="in"><div class="htext">'
+      '<span class="ey">Free - No sign-up - US / UK / AU / CA</span>'
+      '<h1>Free Quote &amp; Estimate Templates by Profession</h1>'
+      '<p>Pick the template that matches your work. Each one opens as an editable estimate &mdash; with a valid-until date and an acceptance line &mdash; pre-filled with the line items your profession typically quotes. Change the details and download a clean PDF, no account.</p>'
+      '</div></div></section>')
+    crumb = '<nav class="crumb"><a href="/en/">Home</a> &rsaquo; Quote templates</nav>'
+    art = ('<article class="art"><h2>Quote first, invoice later</h2>'
+      '<p>These open the same free generator as an estimate. Add a valid-until date and an acceptance line, send it, and when the client approves, convert it to an invoice in one click &mdash; the same line items carry over. Looking to bill for completed work? See the <a href="/en/invoice-templates">invoice templates</a>.</p></article>')
+    alldocs = f'<div class="alldocs"><h2>All free documents</h2><div class="row">{docs}</div></div>'
+    parts = [head(title, desc, url, schema), CRUMB_CSS, HEADER, crumb, hero, css, f'<div class="dgrid">{cards}</div>', alldocs, art, FOOTER,
+      f'<script src="/en/siteheader-en.js?v={V}"></script>', '</body>', '</html>', '']
+    return '\n'.join(parts)
+
+
 os.makedirs(os.path.join(OUT, 'invoice'), exist_ok=True)
+os.makedirs(os.path.join(OUT, 'estimate'), exist_ok=True)
+for q in QUOTES:
+    with open(os.path.join(OUT, 'estimate', q['slug'] + '.html'), 'w', encoding='utf-8') as f:
+        f.write(quote_page(q))
+    print('wrote en/estimate/%s.html' % q['slug'])
+with open(os.path.join(OUT, 'estimate-templates.html'), 'w', encoding='utf-8') as f:
+    f.write(quote_hub_page())
+print('wrote en/estimate-templates.html')
 for ind in INDUSTRIES:
     with open(os.path.join(OUT, 'invoice', ind['slug'] + '.html'), 'w', encoding='utf-8') as f:
         f.write(industry_page(ind))
