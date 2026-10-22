@@ -59,5 +59,10 @@
 - [Australian tax invoice template](https://free-bizdocs.com/en/invoice/australia-tax-invoice): GST tax invoice with ABN and the words "Tax Invoice", A4, AUD
 - [Canada GST/HST invoice template](https://free-bizdocs.com/en/invoice/canada-gst-hst): invoice with GST/HST (and PST/QST) by province, Letter, CAD
 - [Quote & estimate templates by profession](https://free-bizdocs.com/en/estimate-templates): ready-to-edit quote/estimate templates (valid-until date + acceptance line) for freelancers, consultants, designers, developers, photographers, contractors, cleaners, tutors, virtual assistants and marketers
-- [Receipt templates by profession](https://free-bizdocs.com/en/receipt-templates): ready-to-edit payment receipt templates (amount paid, method, PAID stamp) for freelancers, consultants, designers, developers, photographers, contractors, cleaners, tutors, virtual assistants and marketers
+- [Receipt templates by profession](https://free-bizdocs.com/en/receipt-templates): ready-to-edit payment receipt templates (amount paid, method, PAID stamp) for freelancers, consultants, designers, developers, photographers, contractors, cleaners, tutors, virtual assistants and marketers; also receipts by country/tax
+- [UK VAT receipt template](https://free-bizdocs.com/en/receipt/uk-vat): payment receipt showing VAT paid and your VAT number, GBP
+- [Australian GST receipt template](https://free-bizdocs.com/en/receipt/australia-gst): payment receipt showing GST paid and your ABN, AUD
+- [UK VAT credit note template](https://free-bizdocs.com/en/credit-note/uk-vat): VAT credit note that reverses VAT and references the original invoice, GBP
+- [Australian adjustment note template](https://free-bizdocs.com/en/credit-note/australia-adjustment-note): the Australian GST credit note that reverses GST on a tax invoice, AUD
+- [Canada GST/HST credit note template](https://free-bizdocs.com/en/credit-note/canada-gst-hst): credit note that reverses GST/HST by province, CAD
 - [English home](https://free-bizdocs.com/en/) · [Contact](https://free-bizdocs.com/en/contact) · [Privacy](https://free-bizdocs.com/en/privacy)

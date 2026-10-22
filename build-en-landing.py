@@ -5,7 +5,7 @@
 import json, os, base64, datetime, html
 ROOT = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(ROOT, 'en')
-V = datetime.date.today().strftime('%Y%m%d') + 'k'
+V = datetime.date.today().strftime('%Y%m%d') + 'l'
 BASE = 'https://free-bizdocs.com'
 
 def b64p(items, kind='invoice', region=None, tax_rate=None, prov=None, notes=''):
@@ -468,6 +468,115 @@ def receipt_page(rc):
     return '\n'.join(parts)
 
 
+# Country x (receipt | credit note) pages. Tax metadata (region, currency, rate,
+# province) is reused from COUNTRIES; only the doc-specific copy differs.
+CM = {c['region']: c for c in COUNTRIES}
+
+COUNTRY_RECEIPTS = [
+ dict(region='us', slug='us-sales-tax', h1='US Sales Tax Receipt Template',
+  title='US Sales Tax Receipt Template - Free Payment Receipt PDF (No Sign-Up)',
+  desc='A free US receipt template showing sales tax paid. Confirm a payment, show the tax and a PAID stamp, and download a PDF - no sign-up. Letter, USD.',
+  lead='Give a customer a receipt that shows the sales tax they paid. Set your state rate, confirm the amount paid and the method, and download a professional PDF with a PAID stamp - free, no account.',
+  reqs=['Your business name and contact details','A receipt number and the <b>date of payment</b>','Who paid (&ldquo;Received From&rdquo;)','What was paid for, with <b>sales tax</b> shown separately','The <b>amount paid</b>, the payment method, and a PAID indication'],
+  faqs=[('Does a US receipt need to show sales tax?','If you charged sales tax, show it on the receipt as well as the invoice - the customer needs it for their records and you need it for your sales-tax filing. Set your state rate and it is itemized separately.'),
+        ('Is a receipt the same as a sales receipt?','Yes - a sales receipt confirms a completed payment. It shows what was bought, the sales tax, the total paid and the method.')]),
+ dict(region='uk', slug='uk-vat', h1='UK VAT Receipt Template',
+  title='UK VAT Receipt Template - Free Payment Receipt PDF (No Sign-Up)',
+  desc='A free UK VAT receipt template. Shows your VAT number, the VAT paid at 20% / 5% / 0%, and the gross amount in GBP, with a PAID stamp. No sign-up. A4.',
+  lead='Give a customer a VAT receipt - proof of payment that shows the VAT they paid and your VAT number. Download a professional PDF with a PAID stamp, free and no account.',
+  reqs=['Your business name and <b>VAT registration number</b>','A receipt number and the <b>date of payment</b>','Who paid','A description, with the <b>VAT rate and amount</b> per rate','The total excluding VAT, the VAT, and the gross amount <b>paid</b> in GBP'],
+  faqs=[('What is a VAT receipt?','A VAT receipt is proof of payment that also shows the VAT charged and your VAT number, so a VAT-registered customer can reclaim the VAT. It must itemize the VAT rate and amount.'),
+        ('Can a receipt double as a VAT invoice?','For smaller amounts a VAT receipt can serve the same purpose if it shows your VAT number, the date, a description and the VAT. For larger sales issue a full VAT invoice.')]),
+ dict(region='au', slug='australia-gst', h1='Australian GST Receipt Template',
+  title='Australian GST Receipt Template - Free Payment Receipt PDF (No Sign-Up)',
+  desc='A free Australian receipt template showing GST paid. Shows your ABN, GST at 10%, the amount paid and a PAID stamp, in AUD. No sign-up. A4.',
+  lead='Give a customer a receipt that shows the GST they paid and your ABN. Confirm the amount paid and the method, and download a professional PDF with a PAID stamp - free, no account.',
+  reqs=['Your business name and your <b>ABN</b>','A receipt number and the <b>date of payment</b>','Who paid','A description, with the <b>GST (10%)</b> shown or a statement that the total includes GST','The <b>amount paid</b>, the method, and a PAID indication'],
+  faqs=[('Does an Australian receipt show GST?','Yes - if you are registered for GST, show the GST (or state that the total includes GST) and your ABN, so the customer has a valid record for their own GST credits.'),
+        ('Is this a tax invoice or a receipt?','A receipt confirms payment; a tax invoice requests or documents the sale. A receipt that shows your ABN and the GST can serve as proof of a paid, GST-inclusive sale.')]),
+ dict(region='ca', slug='canada-gst-hst', h1='Canada GST/HST Receipt Template',
+  title='Canada GST/HST Receipt Template - Free Payment Receipt PDF (No Sign-Up)',
+  desc='A free Canadian receipt template showing GST/HST paid by province. Shows your GST/HST number, the tax and a PAID stamp, in CAD. No sign-up. Letter.',
+  lead='Give a customer a receipt that shows the GST/HST they paid and your registration number. Pick the province for the correct rate, confirm the amount paid, and download a professional PDF with a PAID stamp - free, no account.',
+  reqs=['Your business name and your <b>GST/HST number</b>','A receipt number and the <b>date of payment</b>','Who paid','A description, with the <b>GST/HST</b> (and PST/QST where it applies) by province','The <b>amount paid</b>, the method, and a PAID indication'],
+  faqs=[('Does a Canadian receipt need the GST/HST number?','Yes - once registered, show your GST/HST number and the tax amount on receipts so customers can claim their input tax credits.'),
+        ('How is the tax set for my province?','Pick your province and the correct GST, HST, PST or QST is applied - for example HST in Ontario, GST plus PST in BC.')]),
+]
+
+COUNTRY_CREDITS = [
+ dict(region='us', slug='us', h1='US Credit Memo Template',
+  title='US Credit Memo Template - Free Credit Note PDF (No Sign-Up)',
+  desc='A free US credit memo template to cancel or reduce an invoice. References the original invoice, reverses sales tax, and downloads as a PDF - no sign-up. Letter, USD.',
+  lead='Issue a credit memo to cancel or reduce an invoice you already sent - for a return, an overcharge or a discount. It references the original invoice and reverses the sales tax. Download a professional PDF, free and no account.',
+  reqs=['Your business details, as on the original invoice','The words &ldquo;Credit Memo&rdquo;, a number and the date','The <b>original invoice number</b> it relates to','The lines being credited, with the <b>sales tax reversed</b>','The total credit, and whether it is refunded or applied to a future invoice'],
+  faqs=[('What is a credit memo?','A credit memo (the US term for a credit note) reduces or cancels an amount a customer owes on an invoice you already issued. It references the original invoice and reverses the tax.'),
+        ('Does it reverse sales tax?','Yes - the sales tax charged on the original lines is reversed on the credit memo at the same rate, so your books balance.')]),
+ dict(region='uk', slug='uk-vat', h1='UK VAT Credit Note Template',
+  title='UK VAT Credit Note Template - Free Credit Note PDF (No Sign-Up)',
+  desc='A free UK VAT credit note template. Reverses VAT at the original rate, references the original invoice and shows your VAT number, in GBP. No sign-up. A4.',
+  lead='Issue a VAT credit note to correct or cancel a VAT invoice. It reverses the VAT at the rate originally charged, references the original invoice and shows your VAT number. Download a professional PDF, free and no account.',
+  reqs=['Your business name and <b>VAT registration number</b>','A unique credit note number and the date','The <b>original invoice number</b> it relates to','The lines being credited, with the <b>VAT reversed</b> at the original rate','The total credit excluding VAT, the VAT, and the gross in GBP'],
+  faqs=[('What must a UK VAT credit note show?','Your VAT number, a unique number, the date, the original invoice reference, a description, and the VAT reversed at the rate originally charged. Keep it for your VAT records.'),
+        ('How does it affect my VAT return?','A VAT credit note reduces the output VAT you declared on the original invoice. Record it against the period in which it is issued.')]),
+ dict(region='au', slug='australia-adjustment-note', h1='Australian GST Adjustment Note Template',
+  title='Australian Adjustment Note (GST Credit Note) Template - Free PDF',
+  desc='A free Australian adjustment note template - the GST credit note used to reduce or cancel a tax invoice. Reverses GST, shows your ABN, in AUD. No sign-up. A4.',
+  lead='Issue an adjustment note - the Australian term for a GST credit note - to reduce or cancel a tax invoice. It reverses the GST, references the original tax invoice and shows your ABN. Download a professional PDF, free and no account.',
+  reqs=['Your business name and your <b>ABN</b>','That it is an <b>adjustment note</b>, a number and the date','The <b>original tax invoice</b> it adjusts','The lines being credited, with the <b>GST (10%) reversed</b>','The total adjustment in AUD'],
+  faqs=[('What is an adjustment note?','In Australia a GST credit note is called an adjustment note. It reduces or cancels a tax invoice - for a return, cancellation or price change - and reverses the GST.'),
+        ('When do I issue one?','When the price of a taxable sale changes after you issued the tax invoice (a return, cancellation or discount). It references the original tax invoice and reverses the GST.')]),
+ dict(region='ca', slug='canada-gst-hst', h1='Canada GST/HST Credit Note Template',
+  title='Canada GST/HST Credit Note Template - Free Credit Note PDF (No Sign-Up)',
+  desc='A free Canadian credit note template. Reverses GST/HST (and PST/QST) by province, references the original invoice and shows your GST/HST number, in CAD. No sign-up.',
+  lead='Issue a credit note to reduce or cancel a Canadian invoice. It reverses the GST/HST at your province&rsquo;s rate, references the original invoice and shows your GST/HST number. Download a professional PDF, free and no account.',
+  reqs=['Your business name and your <b>GST/HST number</b>','A unique credit note number and the date','The <b>original invoice number</b> it relates to','The lines being credited, with the <b>GST/HST reversed</b> by province','The total credit in CAD'],
+  faqs=[('Does it reverse GST/HST?','Yes - the GST/HST (and PST/QST where it applies) charged on the original invoice is reversed on the credit note at your province&rsquo;s rate.'),
+        ('Do I show my GST/HST number?','Yes - as on the original invoice, so the customer can adjust their input tax credits.')]),
+]
+
+
+def country_doc_page(d, kind, tool, hub_slug, hub_name):
+    """Generic country x document-type landing page (kind = receipt | credit)."""
+    m = CM[d['region']]
+    url = f"{BASE}/en/{tool}/{d['slug']}"
+    pf = b64p(m['items'], kind=kind, region=d['region'], tax_rate=m.get('tax_rate'), prov=m.get('prov'))
+    cta = f'/en/{tool}#p={pf}'
+    schema = [
+      {"@context":"https://schema.org","@type":"WebApplication","name":d['h1'],"applicationCategory":"BusinessApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":m['cur']},"url":url,"inLanguage":"en"},
+      {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":qq,"acceptedAnswer":{"@type":"Answer","text":aa}} for qq,aa in d['faqs']]},
+      {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[
+        {"@type":"ListItem","position":1,"name":"Free BizDoc","item":f"{BASE}/en/"},
+        {"@type":"ListItem","position":2,"name":hub_name,"item":f"{BASE}/en/{hub_slug}"},
+        {"@type":"ListItem","position":3,"name":d['h1'],"item":url}]},
+    ]
+    doc_word = 'receipt' if kind == 'receipt' else ('adjustment note' if d['region'] == 'au' and kind == 'credit' else ('credit memo' if d['region'] == 'us' and kind == 'credit' else 'credit note'))
+    peers = COUNTRY_RECEIPTS if kind == 'receipt' else COUNTRY_CREDITS
+    related = ''.join(f'<a href="/en/{tool}/{o["slug"]}">{o["h1"].replace(" Template","")}</a>' for o in peers if o['slug'] != d['slug'])
+    reqs = ''.join(f'<li>{x}</li>' for x in d['reqs'])
+    openline = ('open it as a receipt (marked paid, with a PAID stamp)' if kind == 'receipt'
+                else 'open it as a credit note referencing your original invoice')
+    art = (f'<article class="art">'
+      f'<p class="lead">{d["lead"]}</p>'
+      f'<div class="lpcta"><a class="lpbtn pri" href="{cta}">Create a {m["name"]} {doc_word} &rarr;</a>'
+      f'<a class="lpbtn gh" href="/en/{tool}">Open a blank {doc_word}</a></div>'
+      f'<h2>What a {m["name"]} {doc_word} must include</h2><ul>{reqs}</ul>'
+      f'<h2>Example ({m["taxname"]} at {m["rate"]:g}%)</h2>'
+      f'<p>A typical set of lines with {m["taxname"]}. Click the button to {openline}, already set to {m["name"]} &mdash; change the details and your {m["taxname"].split("/")[0]} number.</p>'
+      f'{country_example_table(m)}'
+      f'<div class="note">Tax rules vary. The calculation here is an aid &mdash; confirm your obligations with your accountant or tax authority.</div>'
+      f'<div class="lpcta"><a class="lpbtn pri" href="{cta}">Use this {m["name"]} {doc_word} &rarr;</a></div>'
+      f'<h2>{doc_word.title()}s for other countries</h2><div class="relgrid">{related}</div>'
+      f'</article>')
+    hero = ('<section class="hero"><div class="in"><div class="htext">'
+      f'<span class="ey">Free - No sign-up - {m["name"]} - {m["taxname"]}</span>'
+      f'<h1>Free {d["h1"]}</h1>'
+      f'<p>{d["desc"]}</p></div></div></section>')
+    crumb = f'<nav class="crumb"><a href="/en/">Home</a> &rsaquo; <a href="/en/{hub_slug}">{hub_name}</a> &rsaquo; {m["name"]}</nav>'
+    parts = [head(d['title'], d['desc'], url, schema), CRUMB_CSS, HEADER, crumb, hero, art, faq_html(d['faqs']), FOOTER,
+      f'<script src="/en/siteheader-en.js?v={V}"></script>', '</body>', '</html>', '']
+    return '\n'.join(parts)
+
+
 def head(title, desc, url, schema_blocks):
     blocks = '\n'.join('<script type="application/ld+json">%s</script>' % json.dumps(b, ensure_ascii=False) for b in schema_blocks)
     return ('<!doctype html>\n<html lang="en">\n<head>\n'
@@ -616,7 +725,9 @@ def hub_page():
     alldocs = f'<div class="alldocs"><h2>All free documents</h2><div class="row">{docs}</div></div>'
     ccards = ''.join(f'<a class="dcard" href="/en/invoice/{c["slug"]}"><h3>{c["name"]}</h3><p>{c["taxname"]} invoice &mdash; correct tax, currency, paper size and tax-ID label.</p><span class="go">Open template &rarr;</span></a>' for c in COUNTRIES)
     country_sec = f'<div class="alldocs" style="padding-bottom:6px"><h2>Invoices by country &amp; tax</h2></div><div class="dgrid" style="padding-top:4px">{ccards}</div>'
-    parts = [head(title, desc, url, schema), CRUMB_CSS, HEADER, crumb, hero, css, f'<div class="dgrid">{cards}</div>', country_sec, alldocs, art, FOOTER,
+    crcards = ''.join(f'<a class="dcard" href="/en/credit-note/{cr["slug"]}"><h3>{cr["h1"].replace(" Template","")}</h3><p>Cancel or reduce an invoice and reverse the {CM[cr["region"]]["taxname"]}.</p><span class="go">Open template &rarr;</span></a>' for cr in COUNTRY_CREDITS)
+    credit_sec = f'<div class="alldocs" style="padding-bottom:6px"><h2>Credit notes by country &amp; tax</h2></div><div class="dgrid" style="padding-top:4px">{crcards}</div>'
+    parts = [head(title, desc, url, schema), CRUMB_CSS, HEADER, crumb, hero, css, f'<div class="dgrid">{cards}</div>', country_sec, credit_sec, alldocs, art, FOOTER,
       f'<script src="/en/siteheader-en.js?v={V}"></script>', '</body>', '</html>', '']
     return '\n'.join(parts)
 
@@ -677,7 +788,9 @@ def receipt_hub_page():
     art = ('<article class="art"><h2>Proof of payment, in seconds</h2>'
       '<p>A receipt confirms a payment was received. Issue your invoice first, then a receipt when the money arrives &mdash; or turn an invoice into a receipt in one click, marked paid in full. Need to request payment instead? See the <a href="/en/invoice-templates">invoice templates</a>, or to quote first, the <a href="/en/estimate-templates">quote templates</a>.</p></article>')
     alldocs = f'<div class="alldocs"><h2>All free documents</h2><div class="row">{docs}</div></div>'
-    parts = [head(title, desc, url, schema), CRUMB_CSS, HEADER, crumb, hero, css, f'<div class="dgrid">{cards}</div>', alldocs, art, FOOTER,
+    rcards = ''.join(f'<a class="dcard" href="/en/receipt/{r["slug"]}"><h3>{CM[r["region"]]["name"]}</h3><p>{CM[r["region"]]["taxname"]} receipt &mdash; shows the tax paid and your tax-ID, with a PAID stamp.</p><span class="go">Open template &rarr;</span></a>' for r in COUNTRY_RECEIPTS)
+    country_sec = f'<div class="alldocs" style="padding-bottom:6px"><h2>Receipts by country &amp; tax</h2></div><div class="dgrid" style="padding-top:4px">{rcards}</div>'
+    parts = [head(title, desc, url, schema), CRUMB_CSS, HEADER, crumb, hero, css, f'<div class="dgrid">{cards}</div>', country_sec, alldocs, art, FOOTER,
       f'<script src="/en/siteheader-en.js?v={V}"></script>', '</body>', '</html>', '']
     return '\n'.join(parts)
 
@@ -692,6 +805,16 @@ for rc in RECEIPTS:
 with open(os.path.join(OUT, 'receipt-templates.html'), 'w', encoding='utf-8') as f:
     f.write(receipt_hub_page())
 print('wrote en/receipt-templates.html')
+# Country x receipt / credit-note pages
+os.makedirs(os.path.join(OUT, 'credit-note'), exist_ok=True)
+for d in COUNTRY_RECEIPTS:
+    with open(os.path.join(OUT, 'receipt', d['slug'] + '.html'), 'w', encoding='utf-8') as f:
+        f.write(country_doc_page(d, 'receipt', 'receipt', 'receipt-templates', 'Receipt templates'))
+    print('wrote en/receipt/%s.html' % d['slug'])
+for d in COUNTRY_CREDITS:
+    with open(os.path.join(OUT, 'credit-note', d['slug'] + '.html'), 'w', encoding='utf-8') as f:
+        f.write(country_doc_page(d, 'credit', 'credit-note', 'invoice-templates', 'Invoice templates'))
+    print('wrote en/credit-note/%s.html' % d['slug'])
 for q in QUOTES:
     with open(os.path.join(OUT, 'estimate', q['slug'] + '.html'), 'w', encoding='utf-8') as f:
         f.write(quote_page(q))

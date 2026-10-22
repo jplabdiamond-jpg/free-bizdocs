@@ -25,7 +25,7 @@ var REGIONS={
     addrPh:'1 George Street\nSydney NSW 2000', bankPh:'Bank name\nBSB 062-000\nAccount No. 12345678',
     mode:'fixed',
     taxOpts:[['10','GST 10%'],['0','GST-free']],
-    titles:{invoice:'Tax Invoice',quote:'Quote',delivery:'Delivery Note',po:'Purchase Order',receipt:'Receipt',credit:'Credit Note',proforma:'Pro Forma Invoice',salesorder:'Sales Order',timesheet:'Timesheet',workorder:'Work Order',expense:'Expense Claim',billofsale:'Bill of Sale',donation:'Donation Receipt'},
+    titles:{invoice:'Tax Invoice',quote:'Quote',delivery:'Delivery Note',po:'Purchase Order',receipt:'Receipt',credit:'Adjustment Note',proforma:'Pro Forma Invoice',salesorder:'Sales Order',timesheet:'Timesheet',workorder:'Work Order',expense:'Expense Claim',billofsale:'Bill of Sale',donation:'Donation Receipt'},
     prefix:{invoice:'INV',quote:'QUO',delivery:'DN',po:'PO',receipt:'RCT',credit:'CN',proforma:'PF',salesorder:'SO',timesheet:'TS',workorder:'WO',expense:'EXP',billofsale:'BOS',donation:'DR'} },
   ca:{ id:'ca', name:'Canada', flag:'🇨🇦', cur:'CAD', sym:'$', paper:'letter', date:'ymd',
     taxName:'GST/HST', taxIdLabel:'GST/HST No. (if registered)', taxIdPh:'123456789RT0001',
@@ -306,7 +306,7 @@ async function buildPdf(D){
   /* ---- Bottom boxes ---- */
   var boxes=[];
   if(D.kind==='proforma') boxes.push(['Pro forma invoice',['For information only - this is not a tax invoice or VAT invoice, and not a demand for payment.','It confirms the price and terms before the goods or services are supplied; a final invoice follows.']]);
-  if(D.kind==='credit') boxes.push(['About this credit note',['This credit note cancels or reduces the amount of the referenced invoice'+(D.ref_no?' ('+D.ref_no+')':'')+'.','Apply it against that invoice or a future one, or refund the amount as agreed.']]);
+  if(D.kind==='credit'){ var cw=(D.region==='au')?'adjustment note':'credit note'; boxes.push(['About this '+cw,['This '+cw+' cancels or reduces the amount of the referenced invoice'+(D.ref_no?' ('+D.ref_no+')':'')+'.','Apply it against that invoice or a future one, or refund the amount as agreed.']]); }
   if(D.kind==='billofsale') boxes.push(['Terms of sale',['The seller sells the item(s) above to the buyer for the total shown, "as-is" unless noted.','The seller certifies they are the lawful owner with the right to sell, free of undisclosed liens.']]);
   if(D.kind==='donation'){ var ds=['Thank you for your generous contribution.']; ds.push('No goods or services were provided in exchange for this donation'+(D.region==='us'?', which may be tax-deductible to the extent allowed by law.':'.')); if(D.co.taxid) ds.push((D.region==='us'?'Tax-exempt ID (EIN): ':'Charity / tax reg. no.: ')+D.co.taxid); ds.push('Please retain this receipt for your records.'); boxes.push(['Tax receipt',ds]); }
   if(K.bank&&D.co.bank&&(D.kind==='invoice'||D.kind==='proforma')) boxes.push([D.kind==='proforma'?'How to pay in advance':'Payment details',lines(D.co.bank)]);
@@ -323,6 +323,7 @@ async function buildPdf(D){
   /* footer */
   var FOOT={quote:'Thank you for the opportunity.',receipt:'Thank you for your payment.',credit:'Credit note - this is not a request for payment.',proforma:'Pro forma invoice - not a tax invoice. Please do not pay from this document unless agreed in advance.',salesorder:'Thank you for your order - we will confirm dispatch separately.',timesheet:'Hours billable at the rates shown. Approve and convert to an invoice when ready.',workorder:'Please sign to confirm the work is authorized and, on completion, that it was carried out.',expense:'Please attach a receipt for each expense listed above.',billofsale:'This bill of sale records the transfer of ownership described above.',donation:'Thank you for your support.'};
   var foot=FOOT[D.kind]||'Thank you for your business.';
+  if(D.kind==='credit'&&D.region==='au') foot='Adjustment note - this is not a request for payment.';
   if(D.region==='au'&&D.kind==='invoice'&&c.tax>0) foot+='   Total price includes GST.';
   dr(foot,M,M-6,8.5,mut);
   return await pdf.save();
