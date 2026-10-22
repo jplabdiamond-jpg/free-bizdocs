@@ -8,7 +8,7 @@ import os, json, datetime, html as _html
 ROOT = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(ROOT, 'en', 'blog')
 BASE = 'https://free-bizdocs.com'
-V = datetime.date.today().strftime('%Y%m%d') + 'g'  # bump on siteheader/asset change to bust cache
+V = datetime.date.today().strftime('%Y%m%d') + 'n'  # bump on siteheader/asset change to bust cache
 
 # Brand accent per category (hero gradient)
 CAT_COLOR = {
@@ -1034,11 +1034,12 @@ HEADER = ('<header class="hdr"><div class="in">\n'
 
 ASTYLE = '''<style>
 .ablog{max-width:760px;margin:0 auto;padding:0 20px 40px}
-.bhero{color:#fff;border-radius:0 0 20px 20px;margin-bottom:26px}
-.bhero .in{max-width:760px;margin:0 auto;padding:30px 20px 34px}
-.bhero .cat{display:inline-block;font-size:12px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;background:rgba(255,255,255,.18);padding:5px 12px;border-radius:999px;margin-bottom:12px}
-.bhero h1{font-size:clamp(24px,4.2vw,34px);font-weight:900;letter-spacing:-.02em;line-height:1.25;margin:0 0 12px}
-.bhero .meta{font-size:13px;opacity:.9}
+.bhero{margin-bottom:24px}
+.bhero .in{max-width:760px;margin:0 auto;padding:16px 20px 0}
+.bhero .bhero-img{display:block;width:100%;height:auto;aspect-ratio:1200/630;object-fit:cover;border-radius:16px;box-shadow:0 18px 42px -26px rgba(19,38,59,.55)}
+.bhero .meta{font-size:13px;color:var(--mut,#5a6b80);margin:12px 2px 0}
+.bhero .meta .cat{font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:var(--ac,#1766e6);font-size:11.5px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 .crumb{max-width:760px;margin:0 auto;padding:14px 20px 0;font-size:12.5px;color:var(--faint,#93a3b5)}
 .crumb a{color:var(--mut,#5a6b80);text-decoration:none}.crumb a:hover{text-decoration:underline}
 .ablog .lead{font-size:16.5px;line-height:1.75;color:var(--ink);margin:0 0 22px}
@@ -1123,9 +1124,11 @@ def article_html(a, draft=False):
     c1, c2 = CAT_COLOR.get(a['cat'], CAT_COLOR['Guides'])
     date_iso = '__PUBDATE__' if draft else a['date']
     date_disp = '__PUBDATE_EN__' if draft else fmt_date(a['date'])
-    hero = (f'<section class="bhero" style="background:linear-gradient(120deg,{c1},{c2})"><div class="in">'
-      f'<span class="cat">{a["cat"]}</span><h1>{a["title"]}</h1>'
-      f'<div class="meta">Free BizDoc &middot; {date_disp}</div></div></section>')
+    hero = (f'<section class="bhero"><div class="in">'
+      f'<img class="bhero-img" src="/en/blog/og/{a["slug"]}.jpg" alt="" width="1200" height="630" fetchpriority="high">'
+      f'<h1 class="sr-only">{a["title"]}</h1>'
+      f'<div class="meta"><span class="cat">{a["cat"]}</span> &middot; Free BizDoc &middot; {date_disp}</div>'
+      f'</div></section>')
     crumb = ('<nav class="crumb"><a href="/en/">Home</a> &rsaquo; <a href="/en/blog">Blog</a> &rsaquo; '
       + _strip(a['title']) + '</nav>')
     faqs = ''.join(f'<div class="q"><h3>{q}</h3><p>{ans}</p></div>' for q, ans in a['faqs'])
@@ -1149,21 +1152,23 @@ def index_html():
     for a in ARTICLES:
         c1, c2 = CAT_COLOR.get(a['cat'], CAT_COLOR['Guides'])
         cards += (f'<a class="bcard" href="/en/blog/{a["slug"]}">'
-          f'<span class="cstripe" style="background:linear-gradient(120deg,{c1},{c2})"></span>'
-          f'<span class="tag">{a["cat"]}</span><h2>{a["title"]}</h2><p>{a["desc"]}</p>'
-          f'<span class="go">Read &rarr;</span></a>')
+          f'<span class="bthumb"><img src="/en/blog/og/{a["slug"]}.jpg" alt="" loading="lazy" width="1200" height="630"></span>'
+          f'<span class="bbody"><span class="tag">{a["cat"]}</span><h2>{a["title"]}</h2><p>{a["desc"]}</p>'
+          f'<span class="go">Read &rarr;</span></span></a>')
     css = ('<style>'
       '.blog-wrap{max-width:1080px;margin:0 auto;padding:36px 20px 44px}'
       '.blog-head{text-align:center;max-width:620px;margin:0 auto 30px}'
       '.blog-head h1{font-size:clamp(26px,4.4vw,36px);font-weight:900;letter-spacing:-.02em;margin:0 0 10px}'
       '.blog-head p{font-size:15.5px;color:var(--mut,#5a6b80);line-height:1.7;margin:0}'
       '.bgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px}'
-      '.bcard{position:relative;display:block;background:#fff;border:1px solid var(--bd,#e2eaf4);border-radius:16px;padding:22px 22px 18px;text-decoration:none;color:inherit;box-shadow:0 10px 30px -22px rgba(19,38,59,.35);overflow:hidden;transition:.15s}'
+      '.bcard{position:relative;display:flex;flex-direction:column;background:#fff;border:1px solid var(--bd,#e2eaf4);border-radius:16px;text-decoration:none;color:inherit;box-shadow:0 10px 30px -22px rgba(19,38,59,.35);overflow:hidden;transition:.15s}'
       '.bcard:hover{transform:translateY(-2px);border-color:var(--ac,#1766e6)}'
-      '.bcard .cstripe{position:absolute;top:0;left:0;right:0;height:5px}'
-      '.bcard .tag{display:inline-block;font-size:11.5px;font-weight:800;letter-spacing:.03em;text-transform:uppercase;color:var(--ac,#1766e6);background:#eef4ff;border-radius:999px;padding:4px 11px;margin:6px 0 10px}'
-      '.bcard h2{font-size:17.5px;font-weight:800;line-height:1.35;margin:0 0 8px}'
-      '.bcard p{font-size:13.5px;color:var(--mut,#5a6b80);line-height:1.6;margin:0 0 12px}'
+      '.bcard .bthumb{display:block;aspect-ratio:1200/630;background:#0b1220;overflow:hidden}'
+      '.bcard .bthumb img{width:100%;height:100%;object-fit:cover;display:block}'
+      '.bcard .bbody{padding:15px 18px 16px}'
+      '.bcard .tag{display:inline-block;font-size:11.5px;font-weight:800;letter-spacing:.03em;text-transform:uppercase;color:var(--ac,#1766e6);background:#eef4ff;border-radius:999px;padding:4px 11px;margin:0 0 9px}'
+      '.bcard h2{font-size:17px;font-weight:800;line-height:1.35;margin:0 0 7px}'
+      '.bcard p{font-size:13.5px;color:var(--mut,#5a6b80);line-height:1.6;margin:0 0 11px}'
       '.bcard .go{font-size:13px;font-weight:800;color:var(--ac,#1766e6)}'
       '</style>')
     head_html = ('<!doctype html>\n<html lang="en">\n<head>\n'
