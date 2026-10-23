@@ -15,10 +15,10 @@ jobs:
       - name: Generate samples
         run: |
           mkdir -p _samples
-          python3 scripts/gen-eyecatch.py sample-invoice "フリーランスの請求書の書き方｜源泉徴収ありの記載例つき" "請求書" _samples/sample-invoice.webp
-          python3 scripts/gen-eyecatch.py sample-receipt "領収書の宛名「上様」はOK？正しい書き方と注意点" "領収書" _samples/sample-receipt.webp
-          python3 scripts/gen-eyecatch.py sample-quote "見積書の有効期限の書き方｜一般的な期間と記載例" "見積書" _samples/sample-quote.webp
-          python3 scripts/gen-eyecatch.py sample-resume "履歴書の写真のサイズとルール｜スマホ写真の貼り方" "履歴書" _samples/sample-resume.webp
+          python3 scripts/gen-eyecatch.py sample-invoice "フリーランスの請求書の書き方｜源泉徴収ありの記載例つき" "請求書" _samples/sample-invoice.webp '{"emph":"請求書","emphcolor":"#ffd400","en":"How to Invoice as a Freelancer"}'
+          python3 scripts/gen-eyecatch.py sample-receipt "領収書の宛名「上様」はOK？正しい書き方と注意点" "領収書" _samples/sample-receipt.webp '{"emph":"上様","emphcolor":"#ff4b4b","en":"Can You Address a Receipt to Uesama?"}'
+          python3 scripts/gen-eyecatch.py sample-quote "見積書の有効期限の書き方と記載例" "見積書" _samples/sample-quote.webp '{"emph":"有効期限"}'
+          python3 scripts/gen-eyecatch.py sample-resume "履歴書の写真のサイズとルール" "履歴書" _samples/sample-resume.webp '{"emph":"写真","emphcolor":"#ff7a3c","en":"Resume Photo Size and Rules"}'
           ls -la _samples
       - uses: actions/upload-artifact@v4
         with:
