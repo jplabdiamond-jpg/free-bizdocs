@@ -88,15 +88,21 @@ for y in range(H):
 bg = Image.composite(Image.new("RGBA", (W, H), (3, 5, 18, 255)), bg, ov)
 
 draw = ImageDraw.Draw(bg)
-FONTS = ["/usr/share/fonts/opentype/noto/NotoSansCJK-Black.ttc",
-         "/usr/share/fonts/opentype/noto/NotoSansCJK-Bold.ttc",
-         "/usr/share/fonts/opentype/noto/NotoSansCJKjp-Bold.otf",
-         "/usr/share/fonts/truetype/noto/NotoSansCJK-Bold.ttc"]
-def font(size):
-    for p in FONTS:
-        if os.path.exists(p):
-            try: return ImageFont.truetype(p, size)
-            except Exception: pass
+FONT_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "NotoSansJP-VF.ttf")
+_SYS = ["/usr/share/fonts/opentype/noto/NotoSansCJK-Black.ttc",
+        "/usr/share/fonts/opentype/noto/NotoSansCJK-Bold.ttc",
+        "/usr/share/fonts/truetype/noto/NotoSansCJK-Bold.ttc"]
+def font(size, weight=900):
+    try:
+        ft = ImageFont.truetype(FONT_PATH, size)
+        try: ft.set_variation_by_axes([weight])
+        except Exception: pass
+        return ft
+    except Exception:
+        for p in _SYS:
+            if os.path.exists(p):
+                try: return ImageFont.truetype(p, size)
+                except Exception: pass
     return ImageFont.load_default()
 
 main = title.split("｜")[0].strip()
@@ -123,7 +129,7 @@ y0 = title_bottom - len(lines) * LH
 pos = [(x, y0 + i * LH) for i in range(len(lines))]
 
 # brand (bottom-right) with cyan glow
-bf = font(48)
+bf = font(48, 800)
 bt = "free-bizdocs.com"
 bx = W - 150 - draw.textlength(bt, font=bf)
 bglow = Image.new("RGBA", (W, H), (0, 0, 0, 0))
@@ -159,7 +165,7 @@ bg.paste(grad, (0, 0), maskimg)
 
 # ---- category pill (neon yellow with glow) ----
 draw = ImageDraw.Draw(bg)
-cf = font(60)
+cf = font(60, 800)
 pill_w = draw.textlength(category, font=cf) + 72
 py = y0 - 128
 pill_glow = Image.new("RGBA", (W, H), (0, 0, 0, 0))

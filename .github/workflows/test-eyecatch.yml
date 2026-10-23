@@ -11,10 +11,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Install deps
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y fonts-noto-cjk
-          pip install pillow
+        run: pip install pillow
       - name: Generate samples
         run: |
           mkdir -p _samples

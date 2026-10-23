@@ -37,10 +37,10 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Install image tools (webp + JP font + Pillow)
+      - name: Install image tools (webp + Pillow)
         run: |
           sudo apt-get update
-          sudo apt-get install -y webp fonts-noto-cjk
+          sudo apt-get install -y webp
           pip install pillow
 
       - name: Decide & stage next article (JA)
