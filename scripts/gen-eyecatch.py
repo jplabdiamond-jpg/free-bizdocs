@@ -4,10 +4,10 @@
 JA blog eyecatch generator (photoreal background + Japanese title) -> webp 2560x1440.
 Runs in GitHub Actions (full internet). Free, no API key.
   python3 scripts/gen-eyecatch.py <slug> <title> <category> <out_webp_path>
-Background: Pollinations (Flux). Fallback: category-colored gradient if generation fails.
+Background: Pollinations (Flux/Turbo). Fallback: category-colored gradient if generation fails.
 Requires: Pillow, and a CJK font (fonts-noto-cjk).
 """
-import sys, os, io, hashlib, urllib.parse, urllib.request
+import sys, os, io, time, hashlib, urllib.parse, urllib.request
 from PIL import Image, ImageDraw, ImageFont
 
 slug, title, category, out = sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4]
@@ -22,24 +22,33 @@ SCENES = {
   "退職": "a quiet Japanese office desk with a white envelope and a pen beside a window, calm morning light",
   "税金・計算": "a desk with a calculator, tax documents and stacked coins, soft natural light",
   "転職・就活": "a bright desk with a resume and a laptop near a window, hopeful morning light",
-  "税金": "a desk with a calculator, documents and coins, soft natural light",
 }
 base = SCENES.get(category, "a clean modern business desk with documents, a calculator and a laptop, soft natural light")
 prompt = base + ", photorealistic, high detail, bright and airy, shallow depth of field, cinematic, no text, no words, no letters, no watermark"
 seed = int(hashlib.md5(slug.encode("utf-8")).hexdigest(), 16) % 100000
 
-def fetch_bg():
+def _get(model, to):
     url = ("https://image.pollinations.ai/prompt/" + urllib.parse.quote(prompt)
-           + "?width=1280&height=720&seed=%d&nologo=true&model=flux" % seed)
-    for attempt in range(3):
+           + "?width=1280&height=720&seed=%d&nologo=true&model=%s" % (seed, model))
+    req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+    data = urllib.request.urlopen(req, timeout=to).read()
+    im = Image.open(io.BytesIO(data)).convert("RGB")
+    if im.width < 512:
+        raise ValueError("too small")
+    return im
+
+def fetch_bg():
+    # 5 attempts; flux first (quality), turbo later (faster/more reliable)
+    plan = [("flux", 85), ("flux", 85), ("turbo", 60), ("turbo", 60), ("flux", 85)]
+    for i, (model, to) in enumerate(plan):
         try:
-            req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
-            data = urllib.request.urlopen(req, timeout=150).read()
-            im = Image.open(io.BytesIO(data)).convert("RGB")
-            if im.width >= 512:
-                return im.resize((W, H), Image.LANCZOS)
+            im = _get(model, to)
+            # crop bottom strip to drop the pollinations watermark, then upscale
+            im = im.crop((0, 0, im.width, int(im.height * 0.93)))
+            return im.resize((W, H), Image.LANCZOS)
         except Exception as e:
-            sys.stderr.write("pollinations attempt %d failed: %s\n" % (attempt, e))
+            sys.stderr.write("pollinations attempt %d (%s) failed: %s\n" % (i, model, e))
+            time.sleep(3)
     return None
 
 def gradient_bg():
@@ -58,20 +67,19 @@ def gradient_bg():
 
 bg = fetch_bg() or gradient_bg()
 
-# readability scrim: overall slight darken + strong bottom-left gradient
-bg = Image.blend(bg, Image.new("RGB", (W, H), (8, 20, 38)), 0.26)
+# readability scrim: slight overall darken + strong bottom gradient
+bg = Image.blend(bg, Image.new("RGB", (W, H), (8, 20, 38)), 0.24)
 ov = Image.new("L", (W, H), 0)
 od = ImageDraw.Draw(ov)
 for y in range(H):
-    a = int(210 * max(0.0, (y - H * 0.34)) / (H * 0.66))
-    od.line([(0, y), (W, y)], fill=min(210, a))
+    a = int(215 * max(0.0, (y - H * 0.30)) / (H * 0.70))
+    od.line([(0, y), (W, y)], fill=min(215, a))
 bg = Image.composite(Image.new("RGB", (W, H), (6, 16, 32)), bg, ov)
 
 draw = ImageDraw.Draw(bg)
 FONTS = ["/usr/share/fonts/opentype/noto/NotoSansCJK-Bold.ttc",
          "/usr/share/fonts/opentype/noto/NotoSansCJKjp-Bold.otf",
-         "/usr/share/fonts/truetype/noto/NotoSansCJK-Bold.ttc",
-         "/usr/share/fonts/opentype/noto/NotoSerifCJK-Bold.ttc"]
+         "/usr/share/fonts/truetype/noto/NotoSansCJK-Bold.ttc"]
 def font(size):
     for p in FONTS:
         if os.path.exists(p):
@@ -80,41 +88,39 @@ def font(size):
     return ImageFont.load_default()
 
 main = title.split("｜")[0].strip()
-
-fsize = 158
+MAXW = W - 300
+fsize = 160
 f = font(fsize)
-def wrap(text, fnt, maxw):
+def wrap(text, fnt):
     lines, cur = [], ""
     for ch in text:
-        if draw.textlength(cur + ch, font=fnt) <= maxw:
+        if draw.textlength(cur + ch, font=fnt) <= MAXW:
             cur += ch
         else:
             lines.append(cur); cur = ch
     if cur: lines.append(cur)
     return lines
-lines = wrap(main, f, W - 360)
-while len(lines) > 3 and fsize > 92:
-    fsize -= 12; f = font(fsize); lines = wrap(main, f, W - 360)
+lines = wrap(main, f)
+while len(lines) > 3 and fsize > 96:
+    fsize -= 12; f = font(fsize); lines = wrap(main, f)
 
-# category pill
+LH = fsize + 22
+x = 150
+bf = font(46)
+bt = "free-bizdocs.com"
+draw.text((W - 150 - draw.textlength(bt, font=bf), H - 120), bt, font=bf, fill=(228, 240, 255))
+
+title_bottom = H - 210
+y = title_bottom - len(lines) * LH
 cf = font(58)
 pill_w = draw.textlength(category, font=cf) + 64
-py = H - 110 - (len(lines)) * (fsize + 20) - 120
-draw.rounded_rectangle([150, py, 150 + pill_w, py + 94], radius=47, fill=(255, 212, 0))
-draw.text((150 + 32, py + 14), category, font=cf, fill=(18, 28, 38))
-
-# title
-y = py + 130
-x = 150
+py = y - 118
+draw.rounded_rectangle([x, py, x + pill_w, py + 94], radius=47, fill=(255, 212, 0))
+draw.text((x + 32, py + 14), category, font=cf, fill=(18, 28, 38))
 for ln in lines:
     draw.text((x + 5, y + 5), ln, font=f, fill=(0, 0, 0))
     draw.text((x, y), ln, font=f, fill=(255, 255, 255))
-    y += fsize + 20
-
-# brand
-bf = font(46)
-bt = "free-bizdocs.com"
-draw.text((W - 150 - draw.textlength(bt, font=bf), H - 112), bt, font=bf, fill=(226, 238, 255))
+    y += LH
 
 os.makedirs(os.path.dirname(out) or ".", exist_ok=True)
 bg.save(out, "WEBP", quality=82, method=6)
