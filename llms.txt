@@ -34,6 +34,8 @@
 
 ## そのほか
 
+- [確定申告の準備](https://free-bizdocs.com/kakutei-shinkoku)：フリーランス・個人事業主の確定申告に必要な請求書控え・領収書・源泉徴収/消費税の集計を無料でそろえる特集（所得税の申告は例年2/16〜3/15）
+- [業種別の請求書](https://free-bizdocs.com/invoice/industries)：フリーランス・エンジニア・一人親方・美容・運送・コンサルなど業種別の請求書を無料作成
 - [料金・PROプラン](https://free-bizdocs.com/pricing)：保存・入金管理・定期請求まで対応する有料プラン（月額¥3,000）
 
 ## English version (US / UK / AU / CA)
