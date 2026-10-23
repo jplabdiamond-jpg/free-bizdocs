@@ -81,6 +81,9 @@ if (cm) {
   const tscale = g('tscale'); if (tscale) style.scale = parseFloat(tscale);
   const fontk = g('font'); if (fontk) style.font = fontk;
   const pill = g('pill'); if (pill) style.pill = pill;
+  const emph = g('emph'); if (emph) style.emph = emph;
+  const emphcolor = g('emphcolor'); if (emphcolor) style.emphcolor = emphcolor;
+  const en = g('en'); if (en) style.en = en;
   if (Object.keys(style).length) styleJson = JSON.stringify(style);
 }
 
