@@ -60,16 +60,19 @@ for (let i = 0; i < rows.length; i++) {
   const [prio, cat, title, slug, tool, status] = c;
   if (status !== '未') continue;
   if (fs.existsSync(path.join('blog', slug + '.html'))) continue;      // 既に公開済みHTMLがあればスキップ（二重公開防止）
-  if (!fs.existsSync(path.join(IMGSRC, slug + '.png'))) continue;      // 画像なしは公開しない
-  if (!fs.existsSync(path.join(DRAFTS, slug + '.html'))) continue;     // 本文ドラフトなしは公開しない
+  if (!fs.existsSync(path.join(DRAFTS, slug + '.html'))) continue;     // 本文ドラフトなしは公開しない（画像は無ければ自動生成）
   pickIdx = i; pick = { prio, cat, title, slug, tool }; break;
 }
 if (!pick) { saveState(state); writeResult({ published: false, reason: 'no-ready-article' }); process.exit(0); }
 
 const slug = pick.slug;
 
-// --- 画像 webp 変換 ---
-execSync(`cwebp -q 82 "${IMGSRC}/${slug}.png" -o "${IMGOUT}/${slug}.webp"`, { stdio: 'inherit' });
+// --- 画像: バンク画像があればwebp変換、無ければ写真調アイキャッチを自動生成 ---
+if (fs.existsSync(path.join(IMGSRC, slug + '.png'))) {
+  execSync(`cwebp -q 82 "${IMGSRC}/${slug}.png" -o "${IMGOUT}/${slug}.webp"`, { stdio: 'inherit' });
+} else {
+  execSync(`python3 scripts/gen-eyecatch.py ${JSON.stringify(slug)} ${JSON.stringify(pick.title)} ${JSON.stringify(pick.cat)} ${JSON.stringify(IMGOUT + '/' + slug + '.webp')}`, { stdio: 'inherit' });
+}
 
 // --- 本文: カード情報抽出・日付差し込み・blog/ へ移動 ---
 let html = fs.readFileSync(path.join(DRAFTS, slug + '.html'), 'utf8');

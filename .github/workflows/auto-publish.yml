@@ -32,8 +32,16 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Install webp (cwebp)
-        run: sudo apt-get update && sudo apt-get install -y webp
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install image tools (webp + JP font + Pillow)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y webp fonts-noto-cjk
+          pip install pillow
 
       - name: Decide & stage next article (JA)
         env:
