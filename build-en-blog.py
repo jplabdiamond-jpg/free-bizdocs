@@ -8,7 +8,7 @@ import os, json, datetime, html as _html
 ROOT = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(ROOT, 'en', 'blog')
 BASE = 'https://free-bizdocs.com'
-V = datetime.date.today().strftime('%Y%m%d') + 'q'  # bump on siteheader/asset change to bust cache
+V = datetime.date.today().strftime('%Y%m%d') + 'r'  # bump on siteheader/asset change to bust cache
 
 # Brand accent per category (hero gradient)
 CAT_COLOR = {

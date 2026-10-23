@@ -217,7 +217,7 @@ function buildConvertBar(){
 }
 function buildShareUI(){
   var box=document.createElement('div'); box.id='sharebox'; box.className='sharebox';
-  box.innerHTML='<button type="button" id="sharebtn" class="sharebtn">🔗 共有リンクを作成（PDF添付せずURLで送る）</button>'
+  box.innerHTML='<button type="button" id="sharebtn" class="sharebtn"><svg viewBox="0 0 24 24" aria-hidden="true" style="display:inline-block;vertical-align:-0.18em;width:1.1em;height:1.1em;fill:none;stroke:#1f6fe5;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 1px #4cc5ff) drop-shadow(0 0 4px rgba(37,111,229,.75))"><path d="M9.5 14.5l5-5"/><path d="M11 7l1.2-1.2a4 4 0 0 1 5.9 5.9L17 13"/><path d="M13 17l-1.2 1.2a4 4 0 0 1-5.9-5.9L7 11"/></svg> 共有リンクを作成（PDF添付せずURLで送る）</button>'
     +'<div id="shareout" class="shareout" style="display:none">'
     +'<div class="so-lb">このリンクを送るだけ。相手はブラウザで内容を確認し、PDFもダウンロードできます。</div>'
     +'<div class="so-row"><input id="shareurl" readonly><button type="button" id="sharecopy">コピー</button></div>'
@@ -372,7 +372,7 @@ function rebuildSaveButtons(){
   ['acctsave','acctsave2'].forEach(function(id){ var e=document.getElementById(id); if(e&&e.parentNode) e.parentNode.removeChild(e); });
   var b=document.createElement('button'); b.type='button'; b.id='acctsave'; b.className=mk.className;
   b.style.cssText='margin-top:10px;background:#0f7a43;border-color:#0f7a43;color:#fff';
-  b.innerHTML=editDocId?'💾 上書き保存':'💾 アカウントに保存';
+  b.innerHTML=editDocId?'<svg viewBox="0 0 24 24" aria-hidden="true" style="display:inline-block;vertical-align:-0.18em;width:1.1em;height:1.1em;fill:none;stroke:#1f6fe5;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 1px #4cc5ff) drop-shadow(0 0 4px rgba(37,111,229,.75))"><path d="M5 3h11l3 3v13a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/><path d="M8 3v5h7"/><rect x="8" y="13" width="8" height="6"/></svg> 上書き保存':'<svg viewBox="0 0 24 24" aria-hidden="true" style="display:inline-block;vertical-align:-0.18em;width:1.1em;height:1.1em;fill:none;stroke:#1f6fe5;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 1px #4cc5ff) drop-shadow(0 0 4px rgba(37,111,229,.75))"><path d="M5 3h11l3 3v13a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/><path d="M8 3v5h7"/><rect x="8" y="13" width="8" height="6"/></svg> アカウントに保存';
   b.addEventListener('click',function(){ doSave(b, editDocId?'overwrite':'new'); });
   mk.parentNode.insertBefore(b, mk.nextSibling);
   if(editDocId){

@@ -164,6 +164,8 @@ html.anim .pulse{position:relative}
 html.anim .pulse::before{content:"";position:absolute;inset:0;border-radius:inherit;box-shadow:0 0 0 0 rgba(23,102,230,.5);animation:ring 2.6s ease-out infinite;pointer-events:none;z-index:-1}
 @keyframes ring{0%{box-shadow:0 0 0 0 rgba(23,102,230,.5)}70%{box-shadow:0 0 0 14px rgba(23,102,230,0)}100%{box-shadow:0 0 0 0 rgba(23,102,230,0)}}
 @media(prefers-reduced-motion:reduce){html.anim .rv-up,html.anim .rv-fade{opacity:1;animation:none}html.anim .plan.pro .rib,html.anim .limited-badge,html.anim .trust .it .ic,html.anim .pulse::before,html.anim .btn:hover::after,html.anim .signup .cta:hover::after{animation:none}}
+
+.nic{display:inline-block;vertical-align:-0.16em;width:1.25em;height:1.25em;fill:none;stroke:#1f6fe5;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 1px #4cc5ff) drop-shadow(0 0 4px rgba(37,111,229,.75))}.nic.on-dark{stroke:#eaf7ff;filter:drop-shadow(0 0 1.5px #7fe0ff) drop-shadow(0 0 5px #38bdf8)}
 </style>
   <meta property="og:image" content="https://free-bizdocs.com/og/hero.jpg">
   <meta property="og:image:width" content="1200">
@@ -177,7 +179,7 @@ html.anim .pulse::before{content:"";position:absolute;inset:0;border-radius:inhe
 <script src="/docnav.js?v=20261017" defer></script>
 
 <section class="pr-head">
-  <span class="kw">🔥 期間限定キャンペーン｜月¥2,000</span>
+  <span class="kw"><svg class="nic" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 3 5 13h6l-2 8 8-10h-6z"/></svg> 期間限定キャンペーン｜月¥2,000</span>
   <h1>必要な分だけ、シンプルな料金</h1>
   <p>書類を「作る」機能はずっと無料。保存・取引先管理・入金管理まで本格的に使いたくなったら、PROへ。いつでも解約できます。</p>
 </section>
@@ -221,7 +223,7 @@ html.anim .pulse::before{content:"";position:absolute;inset:0;border-radius:inhe
   </div>
 
   <div class="plan pro">
-    <span class="rib">🔥 いちばん人気・最適な価格</span>
+    <span class="rib"><svg class="nic on-dark" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.2l2.6 5.3 5.8.8-4.2 4.1 1 5.8-5.2-2.8-5.2 2.8 1-5.8L5.6 9.3l5.8-.8z"/></svg> いちばん人気・最適な価格</span>
     <span class="tag">PRO</span>
     <h2>PROプラン</h2>
     <div class="for">中小企業・継続的に発行する方に</div>
@@ -270,10 +272,10 @@ html.anim .pulse::before{content:"";position:absolute;inset:0;border-radius:inhe
 
 <section class="trust">
   <div class="in">
-    <div class="it"><span class="ic">🔒</span>決済は Stripe 経由で安全</div>
-    <div class="it"><span class="ic">↩</span>いつでも自分で解約OK</div>
-    <div class="it"><span class="ic">🇯🇵</span>インボイス・源泉徴収に対応</div>
-    <div class="it"><span class="ic">💳</span>カード／Apple Pay／Link</div>
+    <div class="it"><span class="ic"><svg class="nic" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></span>決済は Stripe 経由で安全</div>
+    <div class="it"><span class="ic"><svg class="nic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 14 4 9l5-5"/><path d="M4 9h10a6 6 0 0 1 0 12h-4"/></svg></span>いつでも自分で解約OK</div>
+    <div class="it"><span class="ic"><svg class="nic" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 14.5l2 2 3.5-4"/></svg></span>インボイス・源泉徴収に対応</div>
+    <div class="it"><span class="ic"><svg class="nic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 10h18"/><path d="M7 15h3"/></svg></span>カード／Apple Pay／Link</div>
   </div>
 </section>
 
@@ -315,12 +317,12 @@ html.anim .pulse::before{content:"";position:absolute;inset:0;border-radius:inhe
     <div class="dprev-cap">PROのダッシュボード（イメージ）。ログイン直後に請求・入金状況をひと目で把握できます。</div>
   </div>
   <div class="fgrid">
-    <div class="fcard"><div class="h"><span class="ic">💾</span>保存・自動連番・再発行</div><p>作成した書類をクラウドに保存。請求書番号は自動で連番になり、過去分の再発行もかんたんです。</p></div>
-    <div class="fcard"><div class="h"><span class="ic">👥</span>取引先マスタ・発行履歴</div><p>取引先を登録しておけば宛先入力は一瞬。いつ・いくら発行したかを一覧で把握できます。</p></div>
-    <div class="fcard"><div class="h"><span class="ic">✅</span>入金管理・消込</div><p>入金を記録して請求書に紐づけ、未入金・期限超過を自動で見える化。回収漏れを防ぎます。</p></div>
-    <div class="fcard"><div class="h"><span class="ic">🔗</span>複数書類の一元管理</div><p>見積 → 納品 → 請求 → 領収まで、同じ取引先の書類をまとめて管理できます。</p></div>
-    <div class="fcard"><div class="h"><span class="ic">📊</span>ダッシュボード</div><p>今月の請求額・未入金・期限超過・入金額を、ログイン直後にひと目で把握できます。</p></div>
-    <div class="fcard"><div class="h"><span class="ic">∞</span>発行数は無制限</div><p>無料プランの「1時間に2枚まで」の制限なし。繁忙期もまとめて発行できます。</p></div>
+    <div class="fcard"><div class="h"><span class="ic"><svg class="nic on-dark" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h11l3 3v13a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/><path d="M8 3v5h7"/><rect x="8" y="13" width="8" height="6"/></svg></span>保存・自動連番・再発行</div><p>作成した書類をクラウドに保存。請求書番号は自動で連番になり、過去分の再発行もかんたんです。</p></div>
+    <div class="fcard"><div class="h"><span class="ic"><svg class="nic on-dark" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3"/><path d="M3 20a6 6 0 0 1 12 0"/><path d="M16 5.5a3 3 0 0 1 0 6"/><path d="M18.5 20a6 6 0 0 0-3-5.2"/></svg></span>取引先マスタ・発行履歴</div><p>取引先を登録しておけば宛先入力は一瞬。いつ・いくら発行したかを一覧で把握できます。</p></div>
+    <div class="fcard"><div class="h"><span class="ic"><svg class="nic on-dark" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5L16 9.5"/></svg></span>入金管理・消込</div><p>入金を記録して請求書に紐づけ、未入金・期限超過を自動で見える化。回収漏れを防ぎます。</p></div>
+    <div class="fcard"><div class="h"><span class="ic"><svg class="nic on-dark" viewBox="0 0 24 24" aria-hidden="true"><path d="M9.5 14.5l5-5"/><path d="M11 7l1.2-1.2a4 4 0 0 1 5.9 5.9L17 13"/><path d="M13 17l-1.2 1.2a4 4 0 0 1-5.9-5.9L7 11"/></svg></span>複数書類の一元管理</div><p>見積 → 納品 → 請求 → 領収まで、同じ取引先の書類をまとめて管理できます。</p></div>
+    <div class="fcard"><div class="h"><span class="ic"><svg class="nic on-dark" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4v16h16"/><rect x="7.5" y="12" width="2.6" height="5"/><rect x="12" y="8.5" width="2.6" height="8.5"/><rect x="16.5" y="5.5" width="2.6" height="11.5"/></svg></span>ダッシュボード</div><p>今月の請求額・未入金・期限超過・入金額を、ログイン直後にひと目で把握できます。</p></div>
+    <div class="fcard"><div class="h"><span class="ic"><svg class="nic on-dark" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.5 9.5a3.2 3.2 0 1 0 0 5c1.9 0 2.8-1.6 3.5-2.5s1.6-2.5 3.5-2.5a3.2 3.2 0 1 1 0 5c-1.9 0-2.8-1.6-3.5-2.5S10.4 9.5 8.5 9.5z"/></svg></span>発行数は無制限</div><p>無料プランの「1時間に2枚まで」の制限なし。繁忙期もまとめて発行できます。</p></div>
   </div>
 </section>
 

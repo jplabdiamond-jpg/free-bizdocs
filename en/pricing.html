@@ -106,6 +106,8 @@ html.anim .pulse{position:relative}
 html.anim .pulse::before{content:"";position:absolute;inset:0;border-radius:inherit;box-shadow:0 0 0 0 rgba(23,102,230,.5);animation:ring 2.6s ease-out infinite;pointer-events:none;z-index:-1}
 @keyframes ring{0%{box-shadow:0 0 0 0 rgba(23,102,230,.5)}70%{box-shadow:0 0 0 14px rgba(23,102,230,0)}100%{box-shadow:0 0 0 0 rgba(23,102,230,0)}}
 @media(prefers-reduced-motion:reduce){html.anim .rv-up,html.anim .rv-fade{opacity:1;animation:none}html.anim .plan.pro .tag,html.anim .trust .it .ic,html.anim .pulse::before,html.anim .pbtn.pri:hover::after{animation:none}}
+
+.nic{display:inline-block;vertical-align:-0.16em;width:1.25em;height:1.25em;fill:none;stroke:#1f6fe5;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 1px #4cc5ff) drop-shadow(0 0 4px rgba(37,111,229,.75))}.nic.on-dark{stroke:#eaf7ff;filter:drop-shadow(0 0 1.5px #7fe0ff) drop-shadow(0 0 5px #38bdf8)}
 </style>
 </head>
 <body>
@@ -118,7 +120,7 @@ html.anim .pulse::before{content:"";position:absolute;inset:0;border-radius:inhe
 
 <section class="pr-wrap">
   <div class="pr-head">
-    <span class="kw">⚡ Simple, honest pricing</span>
+    <span class="kw"><svg class="nic" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 3 5 13h6l-2 8 8-10h-6z"/></svg> Simple, honest pricing</span>
     <h1>Free to create. PRO to keep &amp; scale.</h1>
     <p>Every document tool is free with no sign-up. Upgrade to PRO when you want to drop the hourly limit and keep your documents in one place.</p>
   </div>
@@ -203,10 +205,10 @@ html.anim .pulse::before{content:"";position:absolute;inset:0;border-radius:inhe
 
   <section class="trust">
     <div class="in">
-      <div class="it"><span class="ic">🔒</span>Secure checkout via Stripe</div>
-      <div class="it"><span class="ic">↩</span>Cancel anytime yourself</div>
-      <div class="it"><span class="ic">🌐</span>US · UK · AU · CA tax models</div>
-      <div class="it"><span class="ic">🚫</span>No watermark, ever</div>
+      <div class="it"><span class="ic"><svg class="nic" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></span>Secure checkout via Stripe</div>
+      <div class="it"><span class="ic"><svg class="nic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 14 4 9l5-5"/><path d="M4 9h10a6 6 0 0 1 0 12h-4"/></svg></span>Cancel anytime yourself</div>
+      <div class="it"><span class="ic"><svg class="nic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c3 2.8 3 15.2 0 18M12 3c-3 2.8-3 15.2 0 18"/></svg></span>US · UK · AU · CA tax models</div>
+      <div class="it"><span class="ic"><svg class="nic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M5.6 5.6 18.4 18.4"/></svg></span>No watermark, ever</div>
     </div>
   </section>
 

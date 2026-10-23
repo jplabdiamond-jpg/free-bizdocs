@@ -83,13 +83,13 @@ document.getElementById('createbtn').setAttribute('href', TOOL[type]);
 function meisai(){
   document.getElementById('thead').innerHTML='<tr><th>番号</th><th>取引先</th><th class="hideS">発行日</th><th style="text-align:right">金額（税込）</th><th>状態</th><th style="width:150px"></th></tr>';
   var tb=document.getElementById('rows');
-  tb.addEventListener('click',async function(e){ var p=e.target.closest('[data-pdf]'); if(!p)return; p.textContent='生成中…'; try{ await API.invoicePdf(p.getAttribute('data-pdf')); p.textContent='📄 PDF'; }catch(err){ p.textContent='失敗'; } });
+  tb.addEventListener('click',async function(e){ var p=e.target.closest('[data-pdf]'); if(!p)return; p.textContent='生成中…'; try{ await API.invoicePdf(p.getAttribute('data-pdf')); p.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true" style="display:inline-block;vertical-align:-0.18em;width:1.1em;height:1.1em;fill:none;stroke:#1f6fe5;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 1px #4cc5ff) drop-shadow(0 0 4px rgba(37,111,229,.75))"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M8 13h8M8 17h5"/></svg> PDF'; }catch(err){ p.textContent='失敗'; } });
   API.get('/api/documents?type='+encodeURIComponent(type)+'&status=all').then(function(r){
     var list=r.documents||[];
     if(!list.length){ tb.innerHTML='<tr><td colspan="6" class="muted">まだ'+LABEL[type]+'がありません。「'+LABEL[type]+'を作成」から保存できます。</td></tr>'; return; }
     tb.innerHTML=list.map(function(r){
       var edit='<a class="ib" href="'+TOOL[type]+'?doc='+r.id+'">編集</a>';
-      var act=r.status==='draft'?'<div class="rowact">'+edit+'<span style="color:var(--faint);font-size:11.5px">下書き</span></div>':'<div class="rowact">'+edit+'<button class="ib" data-pdf="'+r.id+'">📄 PDF</button></div>';
+      var act=r.status==='draft'?'<div class="rowact">'+edit+'<span style="color:var(--faint);font-size:11.5px">下書き</span></div>':'<div class="rowact">'+edit+'<button class="ib" data-pdf="'+r.id+'"><svg viewBox="0 0 24 24" aria-hidden="true" style="display:inline-block;vertical-align:-0.18em;width:1.1em;height:1.1em;fill:none;stroke:#1f6fe5;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 1px #4cc5ff) drop-shadow(0 0 4px rgba(37,111,229,.75))"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M8 13h8M8 17h5"/></svg> PDF</button></div>';
       var pill=r.status==='draft'?'<span class="pill draft">下書き</span>':'<span class="pill issued">発行済み</span>';
       return '<tr><td><span class="no">'+API.esc(r.doc_no||'（下書き）')+'</span></td><td>'+API.esc(r.client_name||'—')+'</td><td class="hideS">'+API.esc(r.issue_date||'—')+'</td><td class="n">'+API.yen(r.total)+'</td><td>'+pill+'</td><td>'+act+'</td></tr>';
     }).join('');

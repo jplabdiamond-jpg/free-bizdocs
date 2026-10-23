@@ -113,7 +113,7 @@ function render(){
     var _e='<a class="ib" href="/invoice?doc='+r.id+'">編集</a>';
     var act = r.status==='draft'
       ? '<div class="rowact">'+_e+'<span style="color:var(--faint);font-size:11.5px">下書き</span></div>'
-      : '<div class="rowact">'+_e+'<button class="ib" data-pdf="'+r.id+'">📄 PDF</button></div>';
+      : '<div class="rowact">'+_e+'<button class="ib" data-pdf="'+r.id+'"><svg viewBox="0 0 24 24" aria-hidden="true" style="display:inline-block;vertical-align:-0.18em;width:1.1em;height:1.1em;fill:none;stroke:#1f6fe5;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 1px #4cc5ff) drop-shadow(0 0 4px rgba(37,111,229,.75))"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M8 13h8M8 17h5"/></svg> PDF</button></div>';
     return '<tr data-id="'+r.id+'"><td><input type="checkbox" data-rc'+(r.status==='draft'?' disabled':'')+' aria-label="選択"></td>'
       +'<td><span class="no">'+API.esc(r.doc_no||'（下書き）')+'</span></td>'
       +'<td>'+API.esc(r.client_name||'')+'</td>'
@@ -140,7 +140,7 @@ function refreshBulk(){
 document.getElementById('selall').addEventListener('change',function(){ rowChecks().forEach(function(c){c.checked=document.getElementById('selall').checked;}); refreshBulk(); });
 document.getElementById('rows').addEventListener('change',function(e){ if(e.target.hasAttribute('data-rc')) refreshBulk(); });
 document.getElementById('rows').addEventListener('click',async function(e){
-  var p=e.target.closest('[data-pdf]'); if(p){ p.textContent='生成中…'; try{ await API.invoicePdf(p.getAttribute('data-pdf')); p.textContent='📄 PDF'; }catch(err){ p.textContent='失敗'; } }
+  var p=e.target.closest('[data-pdf]'); if(p){ p.textContent='生成中…'; try{ await API.invoicePdf(p.getAttribute('data-pdf')); p.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true" style="display:inline-block;vertical-align:-0.18em;width:1.1em;height:1.1em;fill:none;stroke:#1f6fe5;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 1px #4cc5ff) drop-shadow(0 0 4px rgba(37,111,229,.75))"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M8 13h8M8 17h5"/></svg> PDF'; }catch(err){ p.textContent='失敗'; } }
 });
 document.getElementById('tabs').addEventListener('click',function(e){ var b=e.target.closest('button'); if(!b)return;
   Array.prototype.forEach.call(this.children,function(x){x.classList.remove('on');}); b.classList.add('on'); cur=b.getAttribute('data-tab'); render(); });
