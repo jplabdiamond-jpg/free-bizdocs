@@ -67,20 +67,30 @@ if (!pick) { saveState(state); writeResult({ published: false, reason: 'no-ready
 
 const slug = pick.slug;
 
-// --- 画像: バンク画像があればwebp変換、無ければ写真調アイキャッチを自動生成 ---
-if (fs.existsSync(path.join(IMGSRC, slug + '.png'))) {
-  execSync(`cwebp -q 82 "${IMGSRC}/${slug}.png" -o "${IMGOUT}/${slug}.webp"`, { stdio: 'inherit' });
-} else {
-  execSync(`python3 scripts/gen-eyecatch.py ${JSON.stringify(slug)} ${JSON.stringify(pick.title)} ${JSON.stringify(pick.cat)} ${JSON.stringify(IMGOUT + '/' + slug + '.webp')}`, { stdio: 'inherit' });
-}
-
-// --- 本文: カード情報抽出・日付差し込み・blog/ へ移動 ---
+// --- 本文読み込み & カード情報/画像スタイル抽出 ---
 let html = fs.readFileSync(path.join(DRAFTS, slug + '.html'), 'utf8');
-let cardTag = pick.cat, cardH2 = pick.title, cardDesc = '';
+let cardTag = pick.cat, cardH2 = pick.title, cardDesc = '', styleJson = '';
 const cm = html.match(/<!--CARD([\s\S]*?)-->/);
 if (cm) {
   const g = (k) => { const m = cm[1].match(new RegExp(k + '\\s*=\\s*([^|]*?)\\s*(?:\\||$)', 'm')); return m ? m[1].trim() : ''; };
   cardTag = g('tag') || cardTag; cardH2 = g('h2') || cardH2; cardDesc = g('desc') || cardDesc;
+  // 任意の画像スタイル個別指定: tcolor=#hex,#hex,#hex | tweight=900 | tscale=1.0 | font=sans|serif | pill=#hex
+  const style = {};
+  const tcolor = g('tcolor'); if (tcolor) style.colors = tcolor.split(',').map((s) => s.trim());
+  const tweight = g('tweight'); if (tweight) style.weight = parseInt(tweight, 10);
+  const tscale = g('tscale'); if (tscale) style.scale = parseFloat(tscale);
+  const fontk = g('font'); if (fontk) style.font = fontk;
+  const pill = g('pill'); if (pill) style.pill = pill;
+  if (Object.keys(style).length) styleJson = JSON.stringify(style);
+}
+
+// --- 画像: バンク画像があればwebp変換、無ければ写真調アイキャッチを自動生成 ---
+if (fs.existsSync(path.join(IMGSRC, slug + '.png'))) {
+  execSync(`cwebp -q 82 "${IMGSRC}/${slug}.png" -o "${IMGOUT}/${slug}.webp"`, { stdio: 'inherit' });
+} else {
+  const a = [slug, pick.title, pick.cat, IMGOUT + '/' + slug + '.webp'];
+  if (styleJson) a.push(styleJson);
+  execSync('python3 scripts/gen-eyecatch.py ' + a.map((s) => JSON.stringify(s)).join(' '), { stdio: 'inherit' });
 }
 html = html.replace(/__PUBDATE__/g, today).replace(/__PUBDATE_JP__/g, jdateJP);
 fs.writeFileSync(path.join('blog', slug + '.html'), html);
