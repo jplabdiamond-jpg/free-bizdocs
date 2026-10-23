@@ -1,0 +1,29 @@
+name: test-eyecatch
+on:
+  workflow_dispatch:
+
+jobs:
+  gen:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install deps
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y fonts-noto-cjk
+          pip install pillow
+      - name: Generate samples
+        run: |
+          mkdir -p _samples
+          python3 scripts/gen-eyecatch.py sample-invoice "フリーランスの請求書の書き方｜源泉徴収ありの記載例つき" "請求書" _samples/sample-invoice.webp
+          python3 scripts/gen-eyecatch.py sample-receipt "領収書の宛名「上様」はOK？正しい書き方と注意点" "領収書" _samples/sample-receipt.webp
+          python3 scripts/gen-eyecatch.py sample-quote "見積書の有効期限の書き方｜一般的な期間と記載例" "見積書" _samples/sample-quote.webp
+          python3 scripts/gen-eyecatch.py sample-resume "履歴書の写真のサイズとルール｜スマホ写真の貼り方" "履歴書" _samples/sample-resume.webp
+          ls -la _samples
+      - uses: actions/upload-artifact@v4
+        with:
+          name: eyecatch-samples
+          path: _samples/*.webp
