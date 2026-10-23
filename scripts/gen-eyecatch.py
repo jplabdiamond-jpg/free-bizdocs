@@ -2,74 +2,88 @@
 # -*- coding: utf-8 -*-
 """
 JA blog eyecatch generator -> webp 2560x1440.
-Cyberpunk / futuristic neon background + flashy neon-gradient Japanese title.
-Runs in GitHub Actions (full internet). Free, no API key.
+Flashy cyberpunk / synthwave background (procedural, reliable) + neon-gradient glowing title.
   python3 scripts/gen-eyecatch.py <slug> <title> <category> <out_webp_path>
-Background: Pollinations (Flux/Turbo). Fallback: neon gradient if generation fails.
-Requires: Pillow, and a CJK font (fonts-noto-cjk).
+Requires: Pillow, and a CJK font (fonts-noto-cjk). No network needed.
 """
-import sys, os, io, time, hashlib, urllib.parse, urllib.request
-from PIL import Image, ImageDraw, ImageFont, ImageFilter
+import sys, os, math, random, hashlib
+from PIL import Image, ImageDraw, ImageFont, ImageFilter, ImageChops
 
 slug, title, category, out = sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4]
 W, H = 2560, 1440
+seed = int(hashlib.md5(slug.encode("utf-8")).hexdigest(), 16) % (2**31)
+rnd = random.Random(seed)
 
-OBJ = {
-  "請求書": "a glowing holographic invoice document floating in the air",
-  "領収書": "a glowing holographic receipt and a neon stamp",
-  "見積書": "a glowing holographic quotation panel",
-  "履歴書": "a futuristic holographic resume profile card",
-  "職務経歴書": "glowing holographic career data panels",
-  "退職": "a glowing digital envelope hologram",
-  "税金・計算": "glowing holographic numbers and a neon calculator",
-  "転職・就活": "a futuristic holographic profile and rising neon graph",
+# per-category accent (secondary neon tint) — keeps variety between genres
+ACCENT = {
+  "請求書": (0, 230, 255), "領収書": (0, 235, 180), "見積書": (170, 120, 255),
+  "履歴書": (255, 170, 60), "職務経歴書": (60, 180, 255), "退職": (150, 170, 220),
+  "税金・計算": (255, 90, 120), "転職・就活": (255, 150, 70),
 }
-obj = OBJ.get(category, "a glowing holographic business document")
-prompt = (obj + ", futuristic cyberpunk scene, glowing neon holographic interface, dark high-tech "
-          "background, vivid neon cyan magenta and electric blue, dramatic volumetric lighting, "
-          "particles and light trails, sci-fi 3D render, ultra detailed, no text, no words, no letters, no watermark")
-seed = int(hashlib.md5(slug.encode("utf-8")).hexdigest(), 16) % 100000
+acc = ACCENT.get(category, (0, 230, 255))
 
-def _get(model, to):
-    url = ("https://image.pollinations.ai/prompt/" + urllib.parse.quote(prompt)
-           + "?width=1280&height=720&seed=%d&nologo=true&model=%s" % (seed, model))
-    req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
-    data = urllib.request.urlopen(req, timeout=to).read()
-    im = Image.open(io.BytesIO(data)).convert("RGB")
-    if im.width < 512:
-        raise ValueError("too small")
-    return im
-
-def fetch_bg():
-    plan = [("flux", 85), ("flux", 85), ("turbo", 60), ("turbo", 60), ("flux", 85)]
-    for i, (model, to) in enumerate(plan):
-        try:
-            im = _get(model, to)
-            im = im.crop((0, 0, im.width, int(im.height * 0.93)))  # drop watermark strip
-            return im.resize((W, H), Image.LANCZOS)
-        except Exception as e:
-            sys.stderr.write("pollinations attempt %d (%s) failed: %s\n" % (i, model, e))
-            time.sleep(3)
-    return None
-
-def neon_gradient_bg():
-    # fallback: dark base + diagonal cyan->magenta neon glow blobs
-    base = Image.new("RGB", (W, H), (8, 10, 26))
-    glow = Image.new("RGB", (W, H), (8, 10, 26))
+def cyber_bg():
+    # deep vertical gradient
+    img = Image.new("RGB", (W, H), (6, 8, 24))
+    d = ImageDraw.Draw(img)
+    top, bot = (16, 20, 58), (3, 4, 14)
+    for y in range(H):
+        t = y / H
+        d.line([(0, y), (W, y)], fill=tuple(int(top[i] + (bot[i] - top[i]) * t) for i in range(3)))
+    # big soft neon glow orbs (screen-blended)
+    glow = Image.new("RGB", (W, H), (0, 0, 0))
     gd = ImageDraw.Draw(glow)
-    gd.ellipse([-400, 200, 1200, 1600], fill=(20, 80, 150))
-    gd.ellipse([1500, -300, 2900, 1100], fill=(120, 20, 120))
-    glow = glow.filter(ImageFilter.GaussianBlur(220))
-    return Image.blend(base, glow, 0.9)
+    gd.ellipse([-360, -260, 1000, 1000], fill=(0, 90, 170))
+    gd.ellipse([1650, -160, 2950, 1050], fill=(130, 0, 140))
+    gd.ellipse([760, 820, 2000, 2050], fill=tuple(int(c * 0.55) for c in acc))
+    glow = glow.filter(ImageFilter.GaussianBlur(190))
+    img = ImageChops.screen(img, glow)
+    # synthwave perspective grid (bottom)
+    grid = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    gr = ImageDraw.Draw(grid)
+    gcol = acc + (170,)
+    horizon = int(H * 0.60)
+    yy, step = horizon + 10.0, 10.0
+    while yy < H + 5:
+        gr.line([(0, int(yy)), (W, int(yy))], fill=gcol, width=3)
+        step *= 1.17; yy += step
+    vpx = W // 2
+    for k in range(-22, 23):
+        bx = vpx + k * 175
+        gr.line([(vpx, horizon), (bx, H)], fill=gcol, width=3)
+    glow_grid = grid.filter(ImageFilter.GaussianBlur(9))
+    img = Image.alpha_composite(img.convert("RGBA"), glow_grid)
+    img = Image.alpha_composite(img, grid)
+    # horizon glow line
+    hl = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    ImageDraw.Draw(hl).line([(0, horizon), (W, horizon)], fill=(255, 255, 255, 220), width=5)
+    img = Image.alpha_composite(img, hl.filter(ImageFilter.GaussianBlur(14)))
+    img = Image.alpha_composite(img, hl.filter(ImageFilter.GaussianBlur(2)))
+    # light streaks (upper area)
+    st = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    sd = ImageDraw.Draw(st)
+    for _ in range(7):
+        y = rnd.randint(40, horizon - 120); x0 = rnd.randint(-200, W); ln = rnd.randint(360, 1000)
+        col = (acc if rnd.random() < 0.6 else (255, 60, 220)) + (130,)
+        sd.line([(x0, y), (x0 + ln, y + rnd.randint(-30, 30))], fill=col, width=rnd.choice([2, 3, 4]))
+    img = Image.alpha_composite(img, st.filter(ImageFilter.GaussianBlur(3)))
+    # faint particles
+    pt = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    pd = ImageDraw.Draw(pt)
+    for _ in range(90):
+        x = rnd.randint(0, W); y = rnd.randint(0, int(H * 0.7)); r = rnd.choice([2, 2, 3, 4])
+        pd.ellipse([x, y, x + r, y + r], fill=(220, 240, 255, rnd.randint(60, 160)))
+    img = Image.alpha_composite(img, pt.filter(ImageFilter.GaussianBlur(1)))
+    return img.convert("RGBA")
 
-bg = (fetch_bg() or neon_gradient_bg()).convert("RGBA")
+bg = cyber_bg()
 
 # darken + bottom scrim for title legibility
-bg = Image.blend(bg, Image.new("RGBA", (W, H), (4, 6, 20, 255)), 0.30)
+bg = Image.blend(bg, Image.new("RGBA", (W, H), (3, 5, 18, 255)), 0.22)
 ov = Image.new("L", (W, H), 0)
 od = ImageDraw.Draw(ov)
 for y in range(H):
-    a = int(225 * max(0.0, (y - H * 0.28)) / (H * 0.72))
+    a = int(225 * max(0.0, (y - H * 0.30)) / (H * 0.70))
     od.line([(0, y), (W, y)], fill=min(225, a))
 bg = Image.composite(Image.new("RGBA", (W, H), (3, 5, 18, 255)), bg, ov)
 
@@ -87,7 +101,7 @@ def font(size):
 
 main = title.split("｜")[0].strip()
 MAXW = W - 280
-fsize = 172
+fsize = 176
 f = font(fsize)
 def wrap(text, fnt):
     lines, cur = [], ""
@@ -99,7 +113,7 @@ def wrap(text, fnt):
     if cur: lines.append(cur)
     return lines
 lines = wrap(main, f)
-while len(lines) > 3 and fsize > 100:
+while len(lines) > 3 and fsize > 104:
     fsize -= 12; f = font(fsize); lines = wrap(main, f)
 
 LH = fsize + 24
@@ -108,7 +122,7 @@ title_bottom = H - 205
 y0 = title_bottom - len(lines) * LH
 pos = [(x, y0 + i * LH) for i in range(len(lines))]
 
-# brand (bottom-right) with soft cyan glow
+# brand (bottom-right) with cyan glow
 bf = font(48)
 bt = "free-bizdocs.com"
 bx = W - 150 - draw.textlength(bt, font=bf)
@@ -118,21 +132,15 @@ bg = Image.alpha_composite(bg, bglow.filter(ImageFilter.GaussianBlur(10)))
 ImageDraw.Draw(bg).text((bx, H - 122), bt, font=bf, fill=(235, 245, 255, 255))
 
 # ---- flashy neon title ----
-# 1) outer neon glow (cyan + magenta)
 for color, rad, off in [((0, 229, 255), 30, (0, 0)), ((255, 46, 224), 34, (6, 4))]:
     gl = Image.new("RGBA", (W, H), (0, 0, 0, 0))
     gld = ImageDraw.Draw(gl)
     for ln, (lx, ly) in zip(lines, pos):
         gld.text((lx + off[0], ly + off[1]), ln, font=f, fill=color + (255,))
     bg = Image.alpha_composite(bg, gl.filter(ImageFilter.GaussianBlur(rad)))
-bg = Image.alpha_composite(bg, Image.new("RGBA", (W, H), (0, 0, 0, 0)))  # noop keep RGBA
 draw = ImageDraw.Draw(bg)
-
-# 2) dark outline base for legibility
 for ln, (lx, ly) in zip(lines, pos):
     draw.text((lx, ly), ln, font=f, fill=(6, 10, 26), stroke_width=12, stroke_fill=(6, 10, 26))
-
-# 3) gradient-filled glyphs (cyan -> white -> magenta)
 maskimg = Image.new("L", (W, H), 0)
 md = ImageDraw.Draw(maskimg)
 for ln, (lx, ly) in zip(lines, pos):
@@ -149,7 +157,7 @@ for gx in range(0, W, 2):
     gdd.line([(gx, 0), (gx, H)], fill=col, width=2)
 bg.paste(grad, (0, 0), maskimg)
 
-# ---- category pill (neon yellow) ----
+# ---- category pill (neon yellow with glow) ----
 draw = ImageDraw.Draw(bg)
 cf = font(60)
 pill_w = draw.textlength(category, font=cf) + 72
@@ -162,5 +170,5 @@ draw.rounded_rectangle([x, py, x + pill_w, py + 100], radius=50, fill=(255, 221,
 draw.text((x + 36, py + 14), category, font=cf, fill=(16, 18, 30))
 
 os.makedirs(os.path.dirname(out) or ".", exist_ok=True)
-bg.convert("RGB").save(out, "WEBP", quality=82, method=6)
+bg.convert("RGB").save(out, "WEBP", quality=84, method=6)
 print("generated", out, bg.size)
