@@ -148,3 +148,15 @@ PY
 - **ワークフロー**: `auto-publish.yml` が JA(`publish.mjs`)＋EN(`publish-en.mjs`)を両方実行し、**どちらかが公開したら** Cloudflareデプロイ＋commit/push＋IndexNow（JA/EN両URL）。
 - **運用ルール（Claude）**: JA記事を作る／公開運用する際、対応する英語圏向けEN記事を `build-en-blog.py` の `DRAFTS` に追加して `python3 build-en-blog.py` を実行し、`en/blog/_drafts/` にドラフトを用意しておく。あとはパイプラインが自動公開する（＝JA投稿に続いてENも自動で公開される）。公開済みにしたENトピックは次回以降 `ARTICLES` 側へ移してもよい（--force-index で一覧を再生成する場合は必須）。
 - **シード済み(2026-10-19)**: how-to-write-an-invoice / estimate-vs-quote / payment-terms-explained / receipt-vs-invoice の4本。
+
+---
+
+# 【追加】JA画像の自動生成（2026-10-23〜）
+
+JAも英語ブログ同様、画像を自動生成して完全自動公開できるようにした。手動バンク画像が無い記事は、公開時に写真調アイキャッチを自動生成する。
+
+- **生成器**: `scripts/gen-eyecatch.py <slug> <title> <category> <out.webp>`。Pollinations(Flux/Turbo・無料APIキー不要)で写真調背景を生成→下部をクロップして透かし除去→日本語タイトル＋カテゴリピル＋free-bizdocs.com を合成→2560×1440 webp出力。失敗時はカテゴリ色グラデにフォールバック。
+- **公開ロジック**(`scripts/publish.mjs`): `blog/img-src/<slug>.png` があればそれをwebp化（従来どおり）、無ければ `gen-eyecatch.py` で自動生成。→ **画像は常に用意されるので在庫切れでも画像なし公開にならない**。公開可否は「本文ドラフトの有無」だけで判定。
+- **workflow**: `setup-python` ＋ `fonts-noto-cjk` ＋ `pip install pillow` を導入済み。生成は1枚あたり概ね30〜90秒。
+- **テスト**: `.github/workflows/test-eyecatch.yml`（手動）でサンプルを生成しartifactに出力。
+- 既存の手動バンク画像（〜No.44）はそのまま優先使用される。No.45以降は本文ドラフトを置けば画像も自動で付く。
