@@ -160,3 +160,14 @@ JAも英語ブログ同様、画像を自動生成して完全自動公開でき
 - **workflow**: `setup-python` ＋ `fonts-noto-cjk` ＋ `pip install pillow` を導入済み。生成は1枚あたり概ね30〜90秒。
 - **テスト**: `.github/workflows/test-eyecatch.yml`（手動）でサンプルを生成しartifactに出力。
 - 既存の手動バンク画像（〜No.44）はそのまま優先使用される。No.45以降は本文ドラフトを置けば画像も自動で付く。
+
+---
+
+# 【更新】アイキャッチ自動生成の仕様（2026-10-24）
+
+`scripts/gen-eyecatch.py` は note風のド派手サムネを生成：
+- 背景: ハイパーリアルAI写真（Pollinations/Flux・Turbo）＋サイバー調グレーディング。構図・書類配置・ライティングはスラッグ毎にランダム（俯瞰/接写/鳥瞰/ローアングル等）。生成失敗時のみシンセウェイ背景にフォールバック。明るめ設定。
+- タイトル: 極太・白＋太い黒フチ＋アクセント発光。キーワードのみ色強調。カテゴリ別にフォント(sans/serif)・色・サイズが自動変化。
+- サブタイトル: **全画像でタイトル下に常時表示**。タイトルの「｜」以降を自動でサブに使用。英語サブ(en)があればさらに下に併記。
+- 記事ごとの個別指定（CARD内）: `emph=語` `emphcolor=#hex` `en=English` `sub=日本語サブ` `font=sans|serif` `tweight=100-900` `tscale=倍率` `pill=#hex` `tcolor=#a,#b,#c`(指定時はネオングラデ)。
+- 日本語フォントは scripts/NotoSansJP-VF.ttf / NotoSerifJP-VF.ttf を同梱（apt不要）。
