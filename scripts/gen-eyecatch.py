@@ -14,7 +14,7 @@ style_json keys (all optional):
 Fonts are bundled next to this script.
 """
 import sys, os, io, json, time, random, hashlib, urllib.parse, urllib.request
-from PIL import Image, ImageDraw, ImageFont, ImageFilter, ImageChops
+from PIL import Image, ImageDraw, ImageFont, ImageFilter, ImageChops, ImageEnhance
 
 slug, title, category, out = sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4]
 STYLE = {}
@@ -67,19 +67,19 @@ def font(size, weight=None, family=None):
 
 # ---------- background ----------
 SCENE = {
- "請求書":"a sleek modern office desk with an invoice document, a laptop and a calculator, neon-lit night city through the window",
- "領収書":"a desk with paper receipts and a stamp under dramatic neon lighting, cinematic",
- "見積書":"a business desk with a quotation document and a tablet, neon reflections, cinematic",
- "履歴書":"a calm desk with a Japanese resume and a pen near a window, cinematic rim light",
- "職務経歴書":"a professional desk with career documents and a laptop, cinematic neon ambiance",
- "退職":"a quiet office desk with a white envelope by a window at night, moody neon light",
- "税金・計算":"a desk with a calculator, documents and stacked coins, dramatic cinematic lighting",
- "転職・就活":"a bright desk with a resume and laptop near a window, cinematic hopeful light",
+ "請求書":"a sleek bright modern office desk with an invoice document, a laptop and a calculator, large sunny window with a city view",
+ "領収書":"a clean bright desk with paper receipts and a stamp, soft natural daylight",
+ "見積書":"a bright airy business desk with a quotation document and a tablet, sunny window light",
+ "履歴書":"a calm bright desk with a Japanese resume and a pen by a sunny window",
+ "職務経歴書":"a bright professional desk with career documents and a laptop, airy daylight office",
+ "退職":"a serene bright office desk with a white envelope by a sunny window",
+ "税金・計算":"a bright clean desk with a calculator, documents and stacked coins, natural daylight",
+ "転職・就活":"a bright hopeful desk with a resume and a laptop by a large sunny window",
 }
-scene = SCENE.get(category, "a sleek modern business desk with documents and a laptop, cinematic neon lighting")
-prompt = (scene + ", hyperrealistic photograph, ultra detailed, 8k, cinematic color grading, "
-          "dramatic lighting, shallow depth of field, futuristic high-tech atmosphere, "
-          "no text, no words, no letters, no watermark")
+scene = SCENE.get(category, "a sleek bright modern business desk with documents and a laptop, sunny window light")
+prompt = (scene + ", hyperrealistic photograph, ultra detailed, 8k, bright and airy, well lit, "
+          "vibrant colors, clean, soft natural light, subtle futuristic high-tech accents, "
+          "shallow depth of field, no text, no words, no letters, no watermark")
 
 def _get(model, to):
     url = ("https://image.pollinations.ai/prompt/" + urllib.parse.quote(prompt)
@@ -100,14 +100,19 @@ def fetch_photo():
     return None
 
 def grade_photo(im):
-    # cinematic neon grade: edge glow + vignette (keeps it hyperreal, light touch)
+    # brighten first so the photo reads light and airy
+    im = ImageEnhance.Brightness(im).enhance(1.24)
+    im = ImageEnhance.Contrast(im).enhance(1.04)
+    im = ImageEnhance.Color(im).enhance(1.12)
+    # light neon edge accent (subtle)
     glow = Image.new("RGB",(W,H),(0,0,0)); gd = ImageDraw.Draw(glow)
-    gd.ellipse([-500,500,700,1700], fill=tuple(int(c*0.45) for c in accent))
-    gd.ellipse([1900,-400,3000,700], fill=(80,0,100))
-    im = ImageChops.screen(im, glow.filter(ImageFilter.GaussianBlur(210)))
-    vig = Image.new("L",(W,H),0); ImageDraw.Draw(vig).ellipse([-W*0.25,-H*0.25,W*1.25,H*1.25], fill=255)
-    vig = vig.filter(ImageFilter.GaussianBlur(300))
-    im = Image.composite(im, ImageChops.multiply(im, Image.new("RGB",(W,H),(120,120,140))), vig)
+    gd.ellipse([-500,500,700,1700], fill=tuple(int(c*0.28) for c in accent))
+    gd.ellipse([1900,-400,3000,700], fill=(55,0,70))
+    im = ImageChops.screen(im, glow.filter(ImageFilter.GaussianBlur(230)))
+    # very gentle vignette (edges only slightly dimmed)
+    vig = Image.new("L",(W,H),0); ImageDraw.Draw(vig).ellipse([-W*0.4,-H*0.4,W*1.4,H*1.4], fill=255)
+    vig = vig.filter(ImageFilter.GaussianBlur(340))
+    im = Image.composite(im, ImageChops.multiply(im, Image.new("RGB",(W,H),(205,205,220))), vig)
     return im.convert("RGBA")
 
 def synthwave_bg():
@@ -132,17 +137,17 @@ def synthwave_bg():
 photo = fetch_photo()
 bg = grade_photo(photo) if photo is not None else synthwave_bg()
 
-# contrast scrim: darken left side + top + bottom so the title pops (note-style)
+# contrast scrim: gently darken left + a touch of top/bottom so the title pops (lighter now)
 scr = Image.new("L",(W,H),0); sd = ImageDraw.Draw(scr)
 for x in range(W):
-    a = int(210 * max(0.0, 1.0 - x/(W*0.72)))
+    a = int(150 * max(0.0, 1.0 - x/(W*0.58)))
     sd.line([(x,0),(x,H)], fill=a)
-bg = Image.composite(Image.new("RGBA",(W,H),(3,5,16,255)), bg, scr)
+bg = Image.composite(Image.new("RGBA",(W,H),(4,6,18,255)), bg, scr)
 tb = Image.new("L",(W,H),0); td = ImageDraw.Draw(tb)
 for y in range(H):
-    a = 150 if y < H*0.30 else (int(180*max(0.0,(y-H*0.70))/(H*0.30)) if y>H*0.70 else 0)
-    td.line([(0,y),(W,y)], fill=min(200,a))
-bg = Image.composite(Image.new("RGBA",(W,H),(3,5,16,255)), bg, tb)
+    a = 95 if y < H*0.28 else (int(120*max(0.0,(y-H*0.74))/(H*0.26)) if y>H*0.74 else 0)
+    td.line([(0,y),(W,y)], fill=min(130,a))
+bg = Image.composite(Image.new("RGBA",(W,H),(4,6,18,255)), bg, tb)
 draw = ImageDraw.Draw(bg)
 
 # ---------- title (segment colors, heavy outline, glow) ----------
