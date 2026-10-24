@@ -424,3 +424,28 @@ function setupSave(){
   function boot(){ addPowered(); reportH(); setInterval(reportH,800); window.addEventListener('resize',reportH); }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',boot); else boot();
 })();
+
+/* ===== review nudge (AEO / social proof): after a PDF download, invite happy users to leave a real review. shows once per browser, dismissible. ===== */
+(function(){
+  try{
+    var KEY='fbd_rev_nudge_v1';
+    function shown(){ try{return localStorage.getItem(KEY)==='1';}catch(e){return false;} }
+    function mark(){ try{localStorage.setItem(KEY,'1');}catch(e){} }
+    function show(){
+      if(shown()||document.getElementById('fbd-rev')) return;
+      var b=document.createElement('div'); b.id='fbd-rev'; b.setAttribute('role','dialog');
+      b.style.cssText='position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:99999;max-width:420px;width:calc(100% - 32px);background:#13263b;color:#fff;border-radius:14px;box-shadow:0 14px 40px -10px rgba(0,0,0,.5);padding:15px 16px;font-size:14px;line-height:1.7';
+      b.innerHTML='<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px"><div style="font-weight:700">Free BizDoc は役に立ちましたか？ 🙏</div><button type="button" id="fbd-rev-x" aria-label="閉じる" style="background:none;border:none;color:#9fb4cc;font-size:18px;line-height:1;cursor:pointer;padding:0 2px">×</button></div>'
+        +'<div style="color:#cdd9e7;margin:6px 0 12px">よろしけれゐ30秒でレビューを書いて応援してください。開発の励みになります。</div>'
+        +'<div style="display:flex;gap:8px;flex-wrap:wrap"><a id="fbd-rev-sh" href="https://www.saashub.com/free-bizdoc" target="_blank" rel="noopener" style="flex:1;min-width:140px;text-align:center;background:#2f8cf0;color:#fff;text-decoration:none;font-weight:700;border-radius:9px;padding:9px 10px">SaaSHubでレビュー</a>'
+        +'<a id="fbd-rev-ph" href="https://www.producthunt.com/products/free-bizdoc" target="_blank" rel="noopener" style="flex:1;min-width:140px;text-align:center;background:#da552f;color:#fff;text-decoration:none;font-weight:700;border-radius:9px;padding:9px 10px">Product Huntで応援</a></div>';
+      document.body.appendChild(b);
+      b.addEventListener('click',function(e){
+        if(e.target.id==='fbd-rev-x'){ mark(); b.remove(); return; }
+        if(e.target.closest('a')){ mark(); setTimeout(function(){ if(b.parentNode) b.remove(); },300); }
+      });
+    }
+    function arm(){ if(shown()) return; setTimeout(show,3500); }
+    document.addEventListener('click',function(e){ if(e.target.closest('#make,#svdl')) arm(); }, true);
+  }catch(e){}
+})();
