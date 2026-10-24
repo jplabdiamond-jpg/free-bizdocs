@@ -66,20 +66,29 @@ def font(size, weight=None, family=None):
     return ImageFont.load_default()
 
 # ---------- background ----------
-SCENE = {
- "請求書":"a sleek bright modern office desk with an invoice document, a laptop and a calculator, large sunny window with a city view",
- "領収書":"a clean bright desk with paper receipts and a stamp, soft natural daylight",
- "見積書":"a bright airy business desk with a quotation document and a tablet, sunny window light",
- "履歴書":"a calm bright desk with a Japanese resume and a pen by a sunny window",
- "職務経歴書":"a bright professional desk with career documents and a laptop, airy daylight office",
- "退職":"a serene bright office desk with a white envelope by a sunny window",
- "税金・計算":"a bright clean desk with a calculator, documents and stacked coins, natural daylight",
- "転職・就活":"a bright hopeful desk with a resume and a laptop by a large sunny window",
+SUBJECT = {
+ "請求書":"Japanese invoice documents with a calculator and a pen",
+ "領収書":"paper receipts with a red stamp and a pen",
+ "見積書":"quotation documents with a pen and a tablet",
+ "履歴書":"Japanese resume (rirekisho) forms with a pen",
+ "職務経歴書":"career history documents with a laptop",
+ "退職":"a resignation letter and a white envelope",
+ "税金・計算":"tax documents with a calculator and stacked coins",
+ "転職・就活":"resume and job-hunting documents with a laptop",
 }
-scene = SCENE.get(category, "a sleek bright modern business desk with documents and a laptop, sunny window light")
-prompt = (scene + ", hyperrealistic photograph, ultra detailed, 8k, bright and airy, well lit, "
-          "vibrant colors, clean, soft natural light, subtle futuristic high-tech accents, "
-          "shallow depth of field, no text, no words, no letters, no watermark")
+subject = SUBJECT.get(category, "business documents with a laptop and a calculator")
+ARRANGE = ["a neat stack of", "scattered", "many", "an organized spread of", "a close-up of",
+           "piles of", "fanned-out", "a few", "overlapping sheets of"]
+COMPOS = ["top-down flat lay photo from directly above", "straight-on eye-level view",
+          "extreme close-up macro shot", "wide-angle desk scene", "overhead 45-degree view",
+          "dynamic low-angle shot", "bird's-eye view", "diagonal side perspective",
+          "centered symmetrical composition", "off-center rule-of-thirds composition"]
+LIGHT = ["bright soft natural daylight", "airy window light", "clean bright studio lighting",
+         "sunlit morning light", "soft diffused light"]
+arrange = rnd.choice(ARRANGE); comp = rnd.choice(COMPOS); light = rnd.choice(LIGHT)
+prompt = (comp + " of " + arrange + " " + subject + " on a bright modern desk, " + light +
+          ", hyperrealistic photograph, ultra detailed, 8k, bright and airy, vibrant colors, clean, "
+          "subtle futuristic high-tech neon accents, no text, no words, no letters, no watermark")
 
 def _get(model, to):
     url = ("https://image.pollinations.ai/prompt/" + urllib.parse.quote(prompt)
