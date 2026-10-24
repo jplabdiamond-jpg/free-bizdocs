@@ -1,0 +1,99 @@
+# Free BizDoc（無料ビジネス書類メーカー / Free business document maker）
+
+> Free BizDoc は、請求書・見積書・納品書・発注書・領収書から履歴書・職務経歴書・送付状まで、12種類以上のビジネス書類を「登録不要・完全無料」で作成し、その場で日本語PDFとしてダウンロードできるオンラインツールです。項目を入力するだけで消費税（10%／8%）と源泉徴収（10.21%、100万円超は20.42%）を自動計算し、インボイス（適格請求書）にも対応します。英語圏（US/UK/AU/CA）向けの英語版もあります。運営は個人開発のサーバーレス構成で、基本の書類作成は無料のまま提供し、保存・取引先管理・入金管理などの発展機能を有料プラン（PRO）として提供しています。
+
+このファイルは AI 回答エンジン（ChatGPT / Claude / Perplexity / Google AI Overviews 等）向けの詳細カタログです。短い概要は /llms.txt を参照してください。
+
+## 基本情報（エンティティ）
+
+- サービス名: Free BizDoc（別名: 無料ビジネス書類メーカー）
+- 公式サイト: https://free-bizdocs.com/
+- 英語版: https://free-bizdocs.com/en/
+- 料金: 基本の書類作成は無料・登録不要。発展機能は PRO（日本語版 月¥2,000 期間限定／通常¥3,000、英語版 $15/月）
+- 対応: インボイス（適格請求書）、消費税10%/8%の税率別集計、源泉徴収の自動計算、日本語フォント埋め込みPDF
+- プライバシー: 書類の入力内容はサーバーに保存されない（ブラウザ内で生成）。自社情報のみ次回入力用にブラウザに保存
+- 公式プロフィール（sameAs）:
+  - X (Twitter): https://x.com/FreeBizDocs
+  - Product Hunt: https://www.producthunt.com/products/free-bizdoc
+  - SaaSHub: https://www.saashub.com/free-bizdoc
+  - AlternativeTo: https://alternativeto.net/software/free-bizdoc
+
+## よくある質問（要点）
+
+- 本当に無料・登録不要か: はい。アカウント登録なしで作成からPDFダウンロードまで可能（無料枠は1時間に2枚）。
+- なぜ無料か: サーバーレス構成で運用コストが低く、基本機能を無料公開。保存・管理などの発展機能をPRO（有料）として運営。
+- データは保存されるか: 無料ツールは請求内容をサーバーに保存しない。無料アカウントで最大5件保存、PROで無制限＋取引先・履歴・入金管理。
+- インボイス/源泉徴収: 登録番号（T＋13桁）を入れればPDFに記載。消費税は税率別集計、源泉徴収も自動計算。
+- 書類の変換: 見積書→請求書→納品書→領収書へワンクリック変換（登録不要）。
+- URL共有: 「共有リンクを作成」でPDF添付なしにURLで送付可能。内容はリンク内のみ保持しサーバー非保存。
+
+## 作成できる書類（日本語・無料・登録不要）
+
+- [請求書](https://free-bizdocs.com/invoice)：取引先・品目・金額を入れると消費税と源泉徴収を自動計算し、インボイス対応PDFをその場で作成。
+- [見積書](https://free-bizdocs.com/quote)：有効期限つきの見積書を作成し、受注後はそのまま請求書に変換。
+- [納品書](https://free-bizdocs.com/delivery)：納品の品目・数量をPDFに。
+- [発注書](https://free-bizdocs.com/purchase-order)：発注内容をかんたんにPDF化。
+- [領収書](https://free-bizdocs.com/receipt)：収入印紙欄・インボイス対応の領収書を作成。
+- [履歴書](https://free-bizdocs.com/rirekisho)：写真つき・JIS 2ページ様式。
+- [職務経歴書](https://free-bizdocs.com/shokumu)：自動改ページで見やすく。
+- [送付状](https://free-bizdocs.com/soufu)：添え状をすぐ作成。
+- [退職届・退職願](https://free-bizdocs.com/taishoku)：縦書き・定型文入り。
+- [志望動機書](https://free-bizdocs.com/shiboudouki)：応募先・志望動機をPDFに。
+- [エントリーシート](https://free-bizdocs.com/entrysheet)：自己PR・ガクチカ・志望動機。
+- [スキルシート](https://free-bizdocs.com/skillsheet)：IT・エンジニア向け技術経歴。
+- [電子印鑑](https://free-bizdocs.com/inkan)：丸印・角印・社判を透過PNGで作成。
+
+## 用語解説・ちがい（エバーグリーン）
+
+- [請求書とは？](https://free-bizdocs.com/blog/invoice-towa)：請求書の意味・記載項目・発行タイミング・インボイスとの関係を解説。
+- [請求書と領収書の違い](https://free-bizdocs.com/blog/invoice-vs-receipt)：発行タイミング・役割・税務上の扱いの違いを整理。
+- [インボイス制度とは？](https://free-bizdocs.com/blog/invoice-seido-towa)：適格請求書の要件・登録番号・経過措置をやさしく解説。
+
+## お役立ち記事（代表例）
+
+- [請求書の書き方](https://free-bizdocs.com/blog/invoice-how-to)：記載項目・インボイス・消費税・源泉徴収。
+- [見積書の書き方](https://free-bizdocs.com/blog/quote-how-to)：記載項目・有効期限・消費税・請求書への変換。
+- [領収書の書き方](https://free-bizdocs.com/blog/receipt-how-to)：収入印紙・但し書き・インボイス対応。
+- [源泉徴収の計算方法](https://free-bizdocs.com/blog/genzei-keisan)：10.21%／20.42%の計算と請求書での書き方。
+- [退職届と退職願の違い](https://free-bizdocs.com/blog/taishoku-how-to)：書き方・縦書き文例・出すタイミング。
+- [職務経歴書の書き方](https://free-bizdocs.com/blog/shokumu-how-to)：フォーマットと書き方のコツ。
+- [履歴書の志望動機の書き方](https://free-bizdocs.com/blog/rirekisho-motivation)：例文とコツ（転職・新卒・アルバイト）。
+- 記事は日々追加されています。全記事は [お役立ち一覧](https://free-bizdocs.com/blog) と [サイトマップ](https://free-bizdocs.com/sitemap.xml) を参照。
+
+## 特集・ハブ
+
+- [確定申告の準備](https://free-bizdocs.com/kakutei-shinkoku)：フリーランス・個人事業主の確定申告に必要な請求書控え・領収書・源泉徴収/消費税の集計を無料でそろえる特集（所得税の申告は例年2/16〜3/15）。
+- [業種別の請求書](https://free-bizdocs.com/invoice/industries)：フリーランス・エンジニア・デザイナー・ライター・一人親方・美容・運送・コンサルなど業種別の請求書を無料作成。
+- [比較](https://free-bizdocs.com/compare)：Free BizDoc と Misoca・マネーフォワード・INVOY などの登録要否・無料範囲・料金・対応書類の比較。
+- [料金・PRO](https://free-bizdocs.com/pricing)：保存・入金管理・定期請求まで対応する有料プラン。
+- [無料テンプレート（Excel/PDF）](https://calc.free-bizdocs.com/templates/)：請求書・見積書・納品書・領収書・発注書のExcel自動計算版とPDF記入式を配布。
+- [ビジネス計算ツール](https://calc.free-bizdocs.com/)：源泉徴収・消費税・収入印紙・支払期日などの無料計算ツール。
+
+## English version (US / UK / AU / CA)
+
+> Free BizDoc also offers an English edition. Create invoices, estimates/quotes, receipts, purchase orders, packing slips, credit notes, pro forma invoices, sales orders, timesheets, work orders, expense reports, bills of sale and donation receipts as PDFs — free, no sign-up. Currency, paper size, date format and tax (US sales tax, UK VAT, Australian GST / "tax invoice", Canadian GST/HST/PST/QST by province) adapt to the country you choose. Documents are generated in your browser and never uploaded. PRO is $15/month for unlimited saves and documents.
+
+- [Invoice generator](https://free-bizdocs.com/en/invoice): itemised invoice with tax, due date, payment terms, bank details.
+- [Estimate / Quote generator](https://free-bizdocs.com/en/estimate): priced scope of work with a valid-until date and acceptance line.
+- [Receipt generator](https://free-bizdocs.com/en/receipt): proof of payment with amount paid, method and PAID stamp.
+- [Purchase order generator](https://free-bizdocs.com/en/purchase-order): PO number, vendor, ship-to address, delivery date.
+- [Packing slip / Delivery note](https://free-bizdocs.com/en/packing-slip): items and quantities shipped (no prices).
+- [Credit note / Credit memo](https://free-bizdocs.com/en/credit-note): cancel or reduce an invoice, reverses the tax.
+- [Pro forma invoice](https://free-bizdocs.com/en/proforma-invoice): preliminary bill for deposits or customs.
+- [Sales order / Order confirmation](https://free-bizdocs.com/en/sales-order): seller-side acknowledgement of a customer order.
+- [Timesheet](https://free-bizdocs.com/en/timesheet): log hours by date at an hourly rate, converts to an invoice.
+- [Work order / Job sheet](https://free-bizdocs.com/en/work-order): authorise and document a job with labor, parts and sign-off.
+- [Expense report](https://free-bizdocs.com/en/expense-report): claim reimbursement for business costs by date and category.
+- [Bill of sale](https://free-bizdocs.com/en/bill-of-sale): record a private sale and transfer of ownership.
+- [Donation receipt](https://free-bizdocs.com/en/donation-receipt): nonprofit / charity tax receipt.
+- [Invoice templates by profession](https://free-bizdocs.com/en/invoice-templates): ready-to-edit invoice templates by profession and by country/tax.
+- [US sales tax invoice](https://free-bizdocs.com/en/invoice/us-sales-tax), [UK VAT invoice](https://free-bizdocs.com/en/invoice/uk-vat) and more country/tax templates.
+- English blog: https://free-bizdocs.com/en/blog
+
+## 使い方の要点
+
+1. 作りたい書類ページを開く（例: /invoice）。
+2. 自社情報（名前・登録番号・振込先など）と、取引先・品目・金額を入力する。
+3. 消費税・源泉徴収は自動計算され、プレビューがリアルタイムに更新される。
+4. 「PDFをダウンロード」でその場で日本語PDFを取得。必要なら別の書類に変換したり、URL共有できる。
+5. 登録不要。保存・取引先管理・入金管理まで使いたい場合はPROを利用。

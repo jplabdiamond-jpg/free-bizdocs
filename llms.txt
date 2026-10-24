@@ -25,6 +25,12 @@
 - [エントリーシート](https://free-bizdocs.com/entrysheet)：自己PR・ガクチカ・志望動機
 - [スキルシート](https://free-bizdocs.com/skillsheet)：IT・エンジニア向け技術経歴
 
+## 用語解説
+
+- [請求書とは](https://free-bizdocs.com/blog/invoice-towa)：意味・記載項目・発行のタイミング・インボイスとの関係
+- [請求書と領収書の違い](https://free-bizdocs.com/blog/invoice-vs-receipt)：役割・発行タイミング・税務上の扱い
+- [インボイス制度とは](https://free-bizdocs.com/blog/invoice-seido-towa)：適格請求書の要件・登録番号・経過措置
+
 ## お役立ち記事
 
 - [請求書の書き方](https://free-bizdocs.com/blog/invoice-how-to)：記載項目・インボイス・消費税・源泉徴収
