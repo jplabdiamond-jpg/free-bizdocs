@@ -234,12 +234,24 @@ if grad_cols is not None:
         gdd.line([(gx,0),(gx,H)], fill=col, width=2)
     bg.paste(grad,(0,0),mask)
 
-# English subtitle (optional)
+# subtitle under the title (Japanese: text after ｜, or sub override) + optional English
 draw = ImageDraw.Draw(bg)
+sub_main = st.get("sub") or (title.split("｜", 1)[1].strip() if "｜" in title else "")
+sy = pos_y[-1] + LH + 12
+if sub_main:
+    ssz = 64
+    sf = font(ssz, weight=800, family=st["font"])
+    while draw.textlength(sub_main, font=sf) > (W - 300) and ssz > 42:
+        ssz -= 4; sf = font(ssz, weight=800, family=st["font"])
+    txt = sub_main
+    while draw.textlength(txt + "…", font=sf) > (W - 300) and len(txt) > 4:
+        txt = txt[:-1]
+    if txt != sub_main: txt += "…"
+    draw.text((x0, sy), txt, font=sf, fill=(255, 255, 255), stroke_width=8, stroke_fill=(8, 10, 22))
+    sy += int(ssz * 1.3)
 if en_sub:
-    ef = font(46, weight=700, family="sans")
-    ey = pos_y[-1] + LH + 6
-    draw.text((x0, ey), en_sub, font=ef, fill=(220,230,245), stroke_width=5, stroke_fill=(8,10,22))
+    ef = font(44, weight=700, family="sans")
+    draw.text((x0, sy), en_sub, font=ef, fill=(206, 224, 246), stroke_width=5, stroke_fill=(8, 10, 22))
 
 # brand (bottom-right)
 bf = font(46, weight=800, family="sans")

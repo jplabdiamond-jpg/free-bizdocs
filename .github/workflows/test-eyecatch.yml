@@ -15,12 +15,10 @@ jobs:
       - name: Generate samples
         run: |
           mkdir -p _samples
-          python3 scripts/gen-eyecatch.py comp-inv-a "フリーランスの請求書の書き方" "請求書" _samples/comp-inv-a.webp '{"emph":"請求書","emphcolor":"#ffd400"}'
-          python3 scripts/gen-eyecatch.py comp-inv-b "請求書の支払期限の書き方" "請求書" _samples/comp-inv-b.webp '{"emph":"支払期限","emphcolor":"#ffd400"}'
-          python3 scripts/gen-eyecatch.py comp-inv-c "建設業の請求書の書き方" "請求書" _samples/comp-inv-c.webp '{"emph":"建設業","emphcolor":"#ffd400"}'
-          python3 scripts/gen-eyecatch.py comp-rcpt-a "領収書の収入印紙はいくらから" "領収書" _samples/comp-rcpt-a.webp '{"emph":"収入印紙","emphcolor":"#00f0c0"}'
-          python3 scripts/gen-eyecatch.py comp-quote-a "見積書の有効期限の書き方" "見積書" _samples/comp-quote-a.webp '{"emph":"有効期限"}'
-          python3 scripts/gen-eyecatch.py comp-resume-a "履歴書の写真のサイズとルール" "履歴書" _samples/comp-resume-a.webp '{"emph":"写真","emphcolor":"#ff7a3c"}'
+          python3 scripts/gen-eyecatch.py comp-inv-a "フリーランスの請求書の書き方｜源泉徴収ありの記載例つき" "請求書" _samples/comp-inv-a.webp '{"emph":"請求書","emphcolor":"#ffd400","en":"How to Invoice as a Freelancer"}'
+          python3 scripts/gen-eyecatch.py comp-inv-b "請求書の支払期限の書き方｜月末締め翌月末払いの意味" "請求書" _samples/comp-inv-b.webp '{"emph":"支払期限","emphcolor":"#ffd400"}'
+          python3 scripts/gen-eyecatch.py comp-rcpt-a "領収書の収入印紙はいくらから？金額別の早見表" "領収書" _samples/comp-rcpt-a.webp '{"emph":"収入印紙","emphcolor":"#00f0c0"}'
+          python3 scripts/gen-eyecatch.py comp-resume-a "履歴書の写真のサイズとルール｜スマホ写真の貼り方" "履歴書" _samples/comp-resume-a.webp '{"emph":"写真","emphcolor":"#ff7a3c","en":"Resume Photo Size and Rules"}'
           ls -la _samples
       - uses: actions/upload-artifact@v4
         with:
