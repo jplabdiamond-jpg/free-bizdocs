@@ -56,7 +56,7 @@ jobs:
       - name: Read results
         id: res
         run: |
-          node -e "const fs=require('fs');const r=fs.existsSync('publish-result.json')?JSON.parse(fs.readFileSync('publish-result.json','utf8')):{};const e=fs.existsSync('publish-result-en.json')?JSON.parse(fs.readFileSync('publish-result-en.json','utf8')):{};const any=(r.published||e.published)?'yes':'no';const out=['published='+((r.published)?'yes':'no'),'slug='+(r.slug||''),'reason='+(r.reason||''),'en_published='+((e.published)?'yes':'no'),'en_slug='+(e.slug||''),'en_reason='+(e.reason||''),'any='+any];require('fs').appendFileSync(process.env.GITHUB_OUTPUT,out.join('\n')+'\n');" 
+          node -e "const fs=require('fs');const r=fs.existsSync('publish-result.json')?JSON.parse(fs.readFileSync('publish-result.json','utf8')):{};const e=fs.existsSync('publish-result-en.json')?JSON.parse(fs.readFileSync('publish-result-en.json','utf8')):{};const any=(r.published||e.published)?'yes':'no';const js=(r.slugs||(r.slug?[r.slug]:[])).join(' ');const es=(e.slugs||(e.slug?[e.slug]:[])).join(' ');const out=['published='+((r.published)?'yes':'no'),'slug='+(r.slug||''),'slugs='+js,'reason='+(r.reason||''),'en_published='+((e.published)?'yes':'no'),'en_slug='+(e.slug||''),'en_slugs='+es,'en_reason='+(e.reason||''),'any='+any];require('fs').appendFileSync(process.env.GITHUB_OUTPUT,out.join('\n')+'\n');" 
           echo "---- JA ----"; cat publish-result.json 2>/dev/null || true
           echo "---- EN ----"; cat publish-result-en.json 2>/dev/null || true
 
@@ -74,7 +74,7 @@ jobs:
           git config user.name "free-bizdocs-bot"
           git config user.email "bot@users.noreply.github.com"
           git add -A
-          git commit -m "auto-publish: ja=${{ steps.res.outputs.slug }} en=${{ steps.res.outputs.en_slug }}"
+          git commit -m "auto-publish: ja=[${{ steps.res.outputs.slugs }}] en=[${{ steps.res.outputs.en_slugs }}]"
           git pull --rebase --autostash origin main || true
           git push origin HEAD:main
 
@@ -85,9 +85,10 @@ jobs:
           const https=require("https");
           const key="a443fe2d01c64cdaa0d1e4a37a44edb3aac13d4e7e36461ab60734c6ac1bb773";
           const urls=[];
-          const ja=process.env.SLUG, en=process.env.EN_SLUG;
-          if(ja){urls.push(`https://free-bizdocs.com/blog/${ja}`,"https://free-bizdocs.com/blog");}
-          if(en){urls.push(`https://free-bizdocs.com/en/blog/${en}`,"https://free-bizdocs.com/en/blog");}
+          const ja=(process.env.SLUGS||"").trim().split(/\s+/).filter(Boolean);
+          const en=(process.env.EN_SLUGS||"").trim().split(/\s+/).filter(Boolean);
+          if(ja.length){ja.forEach(s=>urls.push(`https://free-bizdocs.com/blog/${s}`));urls.push("https://free-bizdocs.com/blog");}
+          if(en.length){en.forEach(s=>urls.push(`https://free-bizdocs.com/en/blog/${s}`));urls.push("https://free-bizdocs.com/en/blog");}
           if(!urls.length)process.exit(0);
           const body=JSON.stringify({host:"free-bizdocs.com",key,keyLocation:`https://free-bizdocs.com/${key}.txt`,urlList:urls});
           const req=https.request("https://api.indexnow.org/indexnow",{method:"POST",headers:{"Content-Type":"application/json; charset=utf-8"}},r=>{console.log("IndexNow status",r.statusCode);r.resume();});
@@ -95,8 +96,8 @@ jobs:
           req.write(body);req.end();
           '
         env:
-          SLUG: ${{ steps.res.outputs.slug }}
-          EN_SLUG: ${{ steps.res.outputs.en_slug }}
+          SLUGS: ${{ steps.res.outputs.slugs }}
+          EN_SLUGS: ${{ steps.res.outputs.en_slugs }}
 
       - name: Summary
         if: always()
