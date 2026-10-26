@@ -8,6 +8,7 @@ Disallow: /payments.html
 Disallow: /recurring.html
 Disallow: /quotes.html
 Disallow: /reports.html
+Disallow: /api/
 
 # AI検索・回答エンジン（AEO）を明示的に許可（非公開のアプリ画面のみ除外）
 User-agent: GPTBot
@@ -31,5 +32,6 @@ Disallow: /payments.html
 Disallow: /recurring.html
 Disallow: /quotes.html
 Disallow: /reports.html
+Disallow: /api/
 
 Sitemap: https://free-bizdocs.com/sitemap.xml
