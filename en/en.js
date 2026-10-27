@@ -42,6 +42,27 @@ var CA_PROV=[['ON','Ontario (HST 13%)',[['HST',13]]],['BC','British Columbia (GS
   ['NL','Newfoundland & Labrador (HST 15%)',[['HST',15]]],['PE','Prince Edward Island (HST 15%)',[['HST',15]]],
   ['NT','Northwest Territories (GST 5%)',[['GST',5]]],['NU','Nunavut (GST 5%)',[['GST',5]]],['YT','Yukon (GST 5%)',[['GST',5]]]];
 
+/* ---- EU (euro-area) regions: same engine, per-country VAT + intra-EU reverse charge ---- */
+(function(){
+  var T={invoice:'Invoice',quote:'Quotation',delivery:'Delivery Note',po:'Purchase Order',receipt:'Receipt',credit:'Credit Note',proforma:'Pro Forma Invoice',salesorder:'Sales Order',timesheet:'Timesheet',workorder:'Work Order',expense:'Expense Claim',billofsale:'Bill of Sale',donation:'Donation Receipt'};
+  var PX={invoice:'INV',quote:'QUO',delivery:'DN',po:'PO',receipt:'RCT',credit:'CN',proforma:'PF',salesorder:'SO',timesheet:'TS',workorder:'WO',expense:'EXP',billofsale:'BOS',donation:'DR'};
+  function rc(opts){ return opts.concat([['rc','Reverse charge (0%)'],['0','Zero-rated'],['none','Exempt']]); }
+  var EU=[
+    ['de','Germany','🇩🇪','DE123456789','Musterstraße 1\n10115 Berlin','Bank name\nIBAN DE89 3704 0044 0532 0130 00\nBIC COBADEFFXXX',[['19','VAT 19%'],['7','VAT 7%']]],
+    ['fr','France','🇫🇷','FR12345678901','10 rue de Rivoli\n75001 Paris','Bank name\nIBAN FR76 3000 6000 0112 3456 7890 189\nBIC AGRIFRPP',[['20','VAT 20%'],['10','VAT 10%'],['5.5','VAT 5.5%']]],
+    ['it','Italy','🇮🇹','IT12345678901','Via Roma 1\n00184 Roma','Bank name\nIBAN IT60 X054 2811 1010 0000 0123 456\nBIC …',[['22','VAT 22%'],['10','VAT 10%'],['4','VAT 4%']]],
+    ['es','Spain','🇪🇸','ESX1234567X','Calle Mayor 1\n28013 Madrid','Bank name\nIBAN ES91 2100 0418 4502 0005 1332\nBIC CAIXESBB',[['21','VAT 21%'],['10','VAT 10%'],['4','VAT 4%']]],
+    ['nl','Netherlands','🇳🇱','NL123456789B01','Damrak 1\n1012 LG Amsterdam','Bank name\nIBAN NL91 ABNA 0417 1643 00\nBIC ABNANL2A',[['21','VAT 21%'],['9','VAT 9%']]],
+    ['ie','Ireland','🇮🇪','IE1234567X','1 O\'Connell Street\nDublin 1','Bank name\nIBAN IE29 AIBK 9311 5212 3456 78\nBIC AIBKIE2D',[['23','VAT 23%'],['13.5','VAT 13.5%'],['9','VAT 9%']]]
+  ];
+  EU.forEach(function(c){
+    REGIONS[c[0]]={ id:c[0], name:c[1], flag:c[2], cur:'EUR', sym:'€', paper:'a4', date:'dmy', eu:1,
+      taxName:'VAT', taxIdLabel:'VAT No. (if registered)', taxIdPh:c[3],
+      addrPh:c[4], bankPh:c[5], mode:'fixed', taxOpts:rc(c[6]), titles:T, prefix:PX };
+  });
+})();
+var REGION_ORDER=['us','uk','au','ca','de','fr','it','es','nl','ie'];
+
 /* Document kinds */
 var KINDS={
   invoice:{ due:true, terms:true, bank:true, prices:true, amountLabel:'Amount Due', totalLabel:'Total', dateLabel:'Invoice date', numLabel:'Invoice #', partyLabel:'Bill To' },
@@ -81,7 +102,10 @@ function fmtDate(iso){ if(!iso)return ''; var m=String(iso).match(/^(\d{4})-(\d{
 function todayISO(){ return new Date().toISOString().slice(0,10); }
 function plusDays(n){ return new Date(Date.now()+864e5*n).toISOString().slice(0,10); }
 function guessRegion(){ try{ var s=localStorage.getItem('free_en_region'); if(s&&REGIONS[s])return s; }catch(e){}
-  var l=(navigator.language||'').toLowerCase(); if(l==='en-gb'||/-gb$|-ie$/.test(l))return 'uk'; if(/-au$|-nz$/.test(l))return 'au'; if(/-ca$/.test(l))return 'ca'; return 'us'; }
+  var l=(navigator.language||'').toLowerCase();
+  if(l==='en-gb'||/-gb$/.test(l))return 'uk'; if(/-au$|-nz$/.test(l))return 'au'; if(/-ca$/.test(l))return 'ca'; if(/-ie$/.test(l))return 'ie';
+  if(/^de(-|$)|-at$/.test(l))return 'de'; if(/^fr(-|$)/.test(l))return 'fr'; if(/^it(-|$)/.test(l))return 'it'; if(/^es(-|$)/.test(l))return 'es'; if(/^nl(-|$)/.test(l))return 'nl';
+  return 'us'; }
 function pad4(n){ return ('000'+n).slice(-4); }
 function nextDocNo(){ try{ var seq=parseInt(localStorage.getItem('free_en_seq')||'0',10)||0; return REGIONS[region].prefix[kind]+'-'+pad4(seq+1); }catch(e){ return 'INV-0001'; } }
 function bumpDocNo(){ try{ var seq=parseInt(localStorage.getItem('free_en_seq')||'0',10)||0; localStorage.setItem('free_en_seq',String(seq+1)); }catch(e){} }
@@ -126,7 +150,13 @@ function calc(items){
 }
 
 /* ================= Persistence ================= */
-var CO=['co-name','co-taxid','co-email','co-phone','co-addr','co-bank'];
+var CO=['co-name','co-taxid','co-email','co-phone','co-addr','co-bank','co-paylink'];
+/* "Pay now" (bring your own link): inject an optional payment-link field after the bank field.
+   Money never touches Free BizDoc — the link is the seller's own Stripe/PayPal/Wise URL. */
+function injectPayField(){ if($('co-paylink'))return; var bw=$('bank-wrap'); if(!bw||!bw.parentNode)return;
+  var l=document.createElement('label'); l.className='fl'; l.id='paylink-wrap';
+  l.innerHTML='Payment link &ndash; a &ldquo;Pay now&rdquo; button when you share by link (optional)<input id="co-paylink" placeholder="Stripe Payment Link, PayPal.me, Wise… (https://…)"><span class="hint">Your own payment link. The money goes straight to you &mdash; Free BizDoc never touches it.</span>';
+  bw.parentNode.insertBefore(l, bw.nextSibling); }
 function saveCo(){ try{ var o={}; CO.forEach(function(id){ if($(id)) o[id]=$(id).value; }); localStorage.setItem('free_en_company',JSON.stringify(o)); }catch(e){} }
 function loadCo(){ try{ var s=JSON.parse(localStorage.getItem('free_en_company')||'{}'); CO.forEach(function(id){ if(s[id]!=null&&$(id)) $(id).value=s[id]; }); var d=$('co-details'); if(d) d.open=!s['co-name']; }catch(e){} }
 window.__logo=''; try{ window.__logo=localStorage.getItem('free_en_logo')||''; }catch(e){}
@@ -149,12 +179,14 @@ function buildDoc(){ return {
   kind:kind, region:region, theme:window.__theme||'mono',
   doc_no:v('doc-no'), ref_no:v('ref-no'), issue:v('issue'), due:v('due'), terms:v('terms'), method:v('method'),
   client:{name:v('cl-name'), addr:v('cl-addr'), email:v('cl-email')}, ship_to:v('ship-to'),
-  co:{name:v('co-name'), taxid:v('co-taxid'), email:v('co-email'), phone:v('co-phone'), addr:v('co-addr'), bank:v('co-bank'), logo:window.__logo||''},
+  co:{name:v('co-name'), taxid:v('co-taxid'), email:v('co-email'), phone:v('co-phone'), addr:v('co-addr'), bank:v('co-bank'), paylink:v('co-paylink'), logo:window.__logo||''},
   notes:v('notes'), terms_text:v('terms-text'), tax_rate:v('tax-rate'), prov:v('ca-prov'),
   items:liveItems() }; }
 
 /* ================= UI: region & kind ================= */
 var TERMS=[['receipt','Due on receipt',0],['7','Net 7',7],['15','Net 15',15],['30','Net 30',30],['45','Net 45',45],['60','Net 60',60]];
+/* Build the country selector from REGIONS so EU countries appear without editing each page's HTML. */
+function buildRegSeg(){ var seg=$('regseg'); if(!seg)return; var h='<span class="rlb">Country</span>'; REGION_ORDER.forEach(function(r){ var R=REGIONS[r]; if(!R)return; h+='<button type="button" data-region="'+r+'">'+R.flag+' '+esc(R.name)+'</button>'; }); seg.innerHTML=h; }
 function applyRegion(r,keepDue){
   region=REGIONS[r]?r:'us'; var R=REGIONS[region];
   try{ localStorage.setItem('free_en_region',region); }catch(e){}
@@ -176,7 +208,7 @@ function applyKind(k,silent){
   function show(id,on){ var el=$(id); if(el) el.style.display=on?'':'none'; }
   show('due-wrap',!!(K.due||K.valid||K.deliveryDate)); show('terms-wrap',!!K.terms);
   var dl=$('due-lb'); if(dl) dl.textContent=K.due?'Due date':(K.valid?'Valid until':(kind==='workorder'?'Scheduled date':((kind==='po'||kind==='salesorder')?'Delivery date':'Ship date')));
-  show('method-wrap',!!K.method); show('shipto-wrap',!!K.shipTo); show('bank-wrap',kind==='invoice'||kind==='proforma');
+  show('method-wrap',!!K.method); show('shipto-wrap',!!K.shipTo); show('bank-wrap',kind==='invoice'||kind==='proforma'); show('paylink-wrap',kind==='invoice'||kind==='proforma');
   var nl=$('num-lb'); if(nl) nl.textContent=K.numLabel; var il=$('issue-lb'); if(il) il.textContent=K.dateLabel;
   var pl=$('party-lb'); if(pl) pl.textContent=K.partyLabel+' (name)';
   var h=$('pv-kind'); if(h) h.textContent=K.title;
@@ -280,7 +312,7 @@ async function buildPdf(D){
   y-=20;
   var items=D.items, maxRows=Math.max(1,Math.floor((y-(M+170))/19)), ovf=0, draw=items;
   if(items.length>maxRows){ draw=items.slice(0,maxRows-1); ovf=items.length-draw.length; }
-  function taxLabel(it){ if(it.tax==='none') return 'Exempt'; if(R.mode==='fixed'){ var o=R.taxOpts.filter(function(x){return x[0]===it.tax;})[0]; return o?o[1].replace(/^(VAT|GST) /,''):''; } return 'Taxable'; }
+  function taxLabel(it){ if(it.tax==='none') return 'Exempt'; if(it.tax==='rc') return 'RC'; if(R.mode==='fixed'){ var o=R.taxOpts.filter(function(x){return x[0]===it.tax;})[0]; return o?o[1].replace(/^(VAT|GST) /,''):''; } return 'Taxable'; }
   draw.forEach(function(it,i){ var amt=r2((it.qty||0)*(it.unit_price||0)); if(i%2===1) page.drawRectangle({x:M,y:y-19,width:W-2*M,height:19,color:zebra});
     dr(ell(it.name,9,descMax),M+8,y-13,9,ink);
     if(!amountOnly) drR(String(it.qty),xQty,y-13,9);
@@ -305,11 +337,12 @@ async function buildPdf(D){
 
   /* ---- Bottom boxes ---- */
   var boxes=[];
+  if(REGIONS[D.region]&&REGIONS[D.region].eu&&(D.items||[]).some(function(it){return it.tax==='rc';})) boxes.push(['Reverse charge',['VAT reverse charge — VAT is to be accounted for by the recipient.','Intra-EU B2B supply under Article 196 of the VAT Directive (2006/112/EC). No VAT has been charged.']]);
   if(D.kind==='proforma') boxes.push(['Pro forma invoice',['For information only - this is not a tax invoice or VAT invoice, and not a demand for payment.','It confirms the price and terms before the goods or services are supplied; a final invoice follows.']]);
   if(D.kind==='credit'){ var cw=(D.region==='au')?'adjustment note':'credit note'; boxes.push(['About this '+cw,['This '+cw+' cancels or reduces the amount of the referenced invoice'+(D.ref_no?' ('+D.ref_no+')':'')+'.','Apply it against that invoice or a future one, or refund the amount as agreed.']]); }
   if(D.kind==='billofsale') boxes.push(['Terms of sale',['The seller sells the item(s) above to the buyer for the total shown, "as-is" unless noted.','The seller certifies they are the lawful owner with the right to sell, free of undisclosed liens.']]);
   if(D.kind==='donation'){ var ds=['Thank you for your generous contribution.']; ds.push('No goods or services were provided in exchange for this donation'+(D.region==='us'?', which may be tax-deductible to the extent allowed by law.':'.')); if(D.co.taxid) ds.push((D.region==='us'?'Tax-exempt ID (EIN): ':'Charity / tax reg. no.: ')+D.co.taxid); ds.push('Please retain this receipt for your records.'); boxes.push(['Tax receipt',ds]); }
-  if(K.bank&&D.co.bank&&(D.kind==='invoice'||D.kind==='proforma')) boxes.push([D.kind==='proforma'?'How to pay in advance':'Payment details',lines(D.co.bank)]);
+  if(K.bank&&(D.co.bank||D.co.paylink)&&(D.kind==='invoice'||D.kind==='proforma')){ var _pl=D.co.bank?lines(D.co.bank):[]; if(D.co.paylink) _pl.push('Pay online: '+D.co.paylink); boxes.push([D.kind==='proforma'?'How to pay in advance':'Payment details',_pl]); }
   if(D.notes) boxes.push(['Notes',lines(D.notes)]);
   if(D.terms_text) boxes.push([D.kind==='quote'?'Terms':'Terms & conditions',lines(D.terms_text)]);
   boxes.forEach(function(bx){ var n=Math.min(bx[1].length,5), h=24+n*12; if(y-h<M+40) return; page.drawRectangle({x:M,y:y-h,width:W-2*M,height:h,borderColor:line,borderWidth:0.7,color:rgb(0.985,0.985,0.985)}); dr(bx[0],M+10,y-15,9,ink,bold); var yy=y-29; bx[1].slice(0,n).forEach(function(l){ dr(ell(l,8.8,W-2*M-24),M+10,yy,8.8,mut); yy-=12; }); y-=h+10; });
@@ -400,18 +433,19 @@ function setupShare(){ var box=$('sharebox'); if(!box)return;
 function enterShareView(P){
   window.__logo='';
   function set(id,val){ var el=$(id); if(el&&val!=null) el.value=val; }
-  applyRegion(P.region||'us'); set('co-name',P.co.name); set('co-taxid',P.co.taxid); set('co-email',P.co.email); set('co-phone',P.co.phone); set('co-addr',P.co.addr); set('co-bank',P.co.bank);
+  applyRegion(P.region||'us'); set('co-name',P.co.name); set('co-taxid',P.co.taxid); set('co-email',P.co.email); set('co-phone',P.co.phone); set('co-addr',P.co.addr); set('co-bank',P.co.bank); set('co-paylink',P.co.paylink);
   set('cl-name',P.client.name); set('cl-addr',P.client.addr); set('cl-email',P.client.email); set('ship-to',P.ship_to);
   set('doc-no',P.doc_no); set('ref-no',P.ref_no); set('issue',P.issue); set('due',P.due); set('terms',P.terms); set('method',P.method); set('notes',P.notes); set('terms-text',P.terms_text); set('tax-rate',P.tax_rate); set('ca-prov',P.prov);
   rowsEl.innerHTML=''; (P.items||[]).forEach(addRow);
   applyKind(P.kind||'invoice',true);
   document.body.classList.add('shared-view');
-  var st=document.createElement('style'); st.textContent='body.shared-view .hero,body.shared-view .art,body.shared-view .faqwrap,body.shared-view .card.pad,body.shared-view #convbar,body.shared-view #sharebox,body.shared-view #savebox,body.shared-view .remain,body.shared-view .limitbox,body.shared-view #clearbtn,body.shared-view #docnav-en{display:none!important}body.shared-view .wrap{grid-template-columns:1fr!important;max-width:720px;margin:0 auto}.paybar{background:linear-gradient(120deg,#0f2f7a,#1766e6);color:#fff;border-radius:16px;padding:18px 20px;margin:0 0 14px}.paybar .pb-from{font-size:12.5px;opacity:.9}.paybar .pb-amt{font-size:30px;font-weight:900;letter-spacing:-.02em;margin:2px 0 6px}.paybar .pb-row{font-size:13px;margin:3px 0}.paybar .pb-bank{background:rgba(255,255,255,.15);border-radius:10px;padding:9px 12px;margin-top:9px;font-size:13px;font-weight:700;white-space:pre-line}.sv-mk{text-align:center;font-size:12.5px;color:#5a6b7b;margin-top:10px}.sv-mk a{color:#1766e6;font-weight:700}'; document.head.appendChild(st);
+  var st=document.createElement('style'); st.textContent='body.shared-view .hero,body.shared-view .art,body.shared-view .faqwrap,body.shared-view .card.pad,body.shared-view #convbar,body.shared-view #sharebox,body.shared-view #savebox,body.shared-view .remain,body.shared-view .limitbox,body.shared-view #clearbtn,body.shared-view #docnav-en{display:none!important}body.shared-view .wrap{grid-template-columns:1fr!important;max-width:720px;margin:0 auto}.paybar{background:linear-gradient(120deg,#0f2f7a,#1766e6);color:#fff;border-radius:16px;padding:18px 20px;margin:0 0 14px}.paybar .pb-from{font-size:12.5px;opacity:.9}.paybar .pb-amt{font-size:30px;font-weight:900;letter-spacing:-.02em;margin:2px 0 6px}.paybar .pb-row{font-size:13px;margin:3px 0}.paybar .pb-bank{background:rgba(255,255,255,.15);border-radius:10px;padding:9px 12px;margin-top:9px;font-size:13px;font-weight:700;white-space:pre-line}.paybar .pb-pay{display:inline-flex;align-items:center;gap:7px;margin-top:12px;background:#fff;color:#1256cf;font-weight:900;font-size:15px;text-decoration:none;border-radius:11px;padding:12px 20px;box-shadow:0 10px 24px -10px rgba(0,0,0,.35)}.paybar .pb-pay:hover{background:#eef4ff}.sv-mk{text-align:center;font-size:12.5px;color:#5a6b7b;margin-top:10px}.sv-mk a{color:#1766e6;font-weight:700}'; document.head.appendChild(st);
   var K=kindLabels(kind,region), c=calc(liveItems());
   var pb=document.createElement('div'); pb.className='paybar';
   var h='<div class="pb-from">'+K.title+' from '+esc(P.co.name||'—')+'</div><div class="pb-amt">'+esc(money(c.total,true))+'</div>';
   if(K.due&&P.due) h+='<div class="pb-row">Due: '+esc(fmtDate(P.due))+'</div>';
   if(K.bank&&P.co.bank) h+='<div class="pb-bank">'+esc(P.co.bank)+'</div>';
+  if((kind==='invoice'||kind==='proforma')&&P.co.paylink&&/^https?:\/\//i.test(P.co.paylink)) h+='<a class="pb-pay" href="'+esc(P.co.paylink)+'" target="_blank" rel="noopener">Pay now &rarr;</a>';
   pb.innerHTML=h; var pvb=document.querySelector('.card.right .pvbody'); if(pvb) pvb.insertBefore(pb,pvb.firstChild);
   var mk=document.createElement('div'); mk.className='sv-mk'; mk.innerHTML='Create your own free '+esc(K.title.toLowerCase())+' at <a href="/en/invoice">Free BizDoc</a> — no sign-up.'; var cta=document.querySelector('.cta'); if(cta) cta.appendChild(mk);
   try{ document.title=(P.co.name?P.co.name+' — ':'')+K.title; }catch(e){}
@@ -526,7 +560,7 @@ async function loadSavedParam(){
 
 /* ================= Init ================= */
 (function init(){
-  injectCSS(); setupNav(); setupTheme(); setupTermsSelect(); setupProv();
+  injectCSS(); setupNav(); setupTheme(); setupTermsSelect(); setupProv(); buildRegSeg(); injectPayField();
   region=guessRegion();
   var SH=parseShare();
   if(SH){ try{ enterShareView(SH); }catch(e){ console.error(e); } }
