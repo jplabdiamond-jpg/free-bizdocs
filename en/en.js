@@ -598,3 +598,48 @@ async function loadSavedParam(){
   var cl=$('clearbtn'); if(cl) cl.addEventListener('click',function(){ if(!confirm('Clear the recipient and line items and start a new document?\n(Your business details and logo are kept.)'))return; clearDraft(); ['cl-name','cl-addr','cl-email','ref-no','ship-to','notes','terms-text'].forEach(function(id){ if($(id)) $(id).value=''; }); if($('issue')) $('issue').value=todayISO(); if($('due')) $('due').value=plusDays(30); rowsEl.innerHTML=''; addRow({}); if($('doc-no')) $('doc-no').value=nextDocNo(); window.__savedId=null; renderSave(); schedulePv(); });
 })();
 })();
+
+/* Post-download request box (EN). Ask what document/feature to add next —
+   one line, no sign-up, name optional. Review links are a secondary follow-up. */
+(function(){
+  try{
+    var KEY='fbd_req_nudge_en_v1';
+    function shown(){ try{return localStorage.getItem(KEY)==='1';}catch(e){return false;} }
+    function mark(){ try{localStorage.setItem(KEY,'1');}catch(e){} }
+    var REVIEW='<div style="margin-top:12px;border-top:1px solid rgba(255,255,255,.12);padding-top:11px">'
+      +'<div style="color:#9fb4cc;font-size:12.5px;margin-bottom:8px">Enjoying it? A quick shout-out helps a lot 🙏</div>'
+      +'<div style="display:flex;gap:8px;flex-wrap:wrap">'
+      +'<a href="https://www.producthunt.com/products/free-bizdoc" target="_blank" rel="noopener" style="flex:1;min-width:130px;text-align:center;background:#da552f;color:#fff;text-decoration:none;font-weight:700;border-radius:9px;padding:8px 10px;font-size:13px">Support on Product Hunt</a>'
+      +'<a href="https://www.saashub.com/free-bizdoc" target="_blank" rel="noopener" style="flex:1;min-width:130px;text-align:center;background:#2f8cf0;color:#fff;text-decoration:none;font-weight:700;border-radius:9px;padding:8px 10px;font-size:13px">Review on SaaSHub</a></div></div>';
+    function show(){
+      if(shown()||document.getElementById('fbd-req')) return;
+      var b=document.createElement('div'); b.id='fbd-req'; b.setAttribute('role','dialog'); b.setAttribute('aria-label','Send a request');
+      b.style.cssText='position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:99999;max-width:440px;width:calc(100% - 32px);background:#13263b;color:#fff;border-radius:14px;box-shadow:0 14px 40px -10px rgba(0,0,0,.5);padding:15px 16px;font-size:14px;line-height:1.6;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif';
+      b.innerHTML='<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px"><div style="font-weight:700">What should we add next?</div><button type="button" id="fbd-x" aria-label="Close" style="background:none;border:none;color:#9fb4cc;font-size:18px;line-height:1;cursor:pointer;padding:0 2px">&times;</button></div>'
+        +'<div id="fbd-main">'
+        +'<div style="color:#cdd9e7;margin:6px 0 10px;font-size:13px">Tell us the document or feature you wish we had — one line, no sign-up.</div>'
+        +'<textarea id="fbd-t" rows="2" maxlength="2000" placeholder="e.g. Add a VAT field for EU invoices / A delivery note with a signature line" style="width:100%;box-sizing:border-box;border:1px solid #2d4258;background:#0f1d2e;color:#fff;border-radius:10px;padding:10px 12px;font-size:14px;font-family:inherit;line-height:1.6;resize:vertical"></textarea>'
+        +'<input id="fbd-n" type="text" maxlength="100" placeholder="Name (optional)" style="width:100%;box-sizing:border-box;margin-top:8px;border:1px solid #2d4258;background:#0f1d2e;color:#fff;border-radius:10px;padding:9px 12px;font-size:13.5px;font-family:inherit">'
+        +'<div style="display:flex;align-items:center;gap:10px;margin-top:10px"><button type="button" id="fbd-send" style="background:#1766e6;color:#fff;border:none;font-weight:800;border-radius:10px;padding:10px 18px;font-size:14px;cursor:pointer">Send</button><span id="fbd-st" style="font-size:12.5px;color:#9fb4cc"></span></div>'
+        +'</div>';
+      document.body.appendChild(b);
+      var closed=false;
+      function close(){ if(closed)return; closed=true; mark(); if(b.parentNode) b.remove(); }
+      document.getElementById('fbd-x').addEventListener('click',close);
+      document.getElementById('fbd-send').addEventListener('click',function(){
+        var t=document.getElementById('fbd-t'), n=document.getElementById('fbd-n'), st=document.getElementById('fbd-st'), btn=this;
+        var text=(t.value||'').trim(); if(text.length<2){ st.textContent='Please enter your request.'; t.focus(); return; }
+        btn.disabled=true; btn.style.opacity='.6'; st.textContent='Sending…';
+        fetch('/api/feedback',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({kind:'Request',body:text,name:(n.value||'').trim(),page:location.pathname,lang:'en'})})
+          .then(function(r){return r.json();})
+          .then(function(j){
+            if(j&&j.ok){ mark(); document.getElementById('fbd-main').innerHTML='<div style="color:#cdd9e7;margin:8px 0 2px;font-size:13.5px">Thanks! This goes straight to the developer 🙏</div>'+REVIEW; }
+            else { btn.disabled=false; btn.style.opacity='1'; st.textContent=(j&&j.error)||'Could not send.'; }
+          })
+          .catch(function(){ btn.disabled=false; btn.style.opacity='1'; st.textContent='Could not send. Please try again later.'; });
+      });
+    }
+    function arm(){ if(shown()) return; setTimeout(show,2500); }
+    document.addEventListener('click',function(e){ if(e.target.closest('#make')) arm(); }, true);
+  }catch(e){}
+})();

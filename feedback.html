@@ -46,15 +46,15 @@
 
   <form id="fform" novalidate>
     <div class="fld">
-      <label for="f-name">お名前・ニックネーム<span class="req">*</span></label>
-      <input id="f-name" type="text" maxlength="100" placeholder="例：山田太郎">
+      <label for="f-name">お名前・ニックネーム<span class="opt">（任意）</span></label>
+      <input id="f-name" type="text" maxlength="100" placeholder="例：山田太郎（未入力でもOK）">
     </div>
     <div class="fld">
       <label for="f-kind">種別<span class="opt">（任意）</span></label>
       <select id="f-kind">
-        <option value="改善希望">改善のご要望</option>
-        <option value="バグ報告">バグ・不具合の報告</option>
+        <option value="改善希望">改善のご要望（こんな機能が欲しい）</option>
         <option value="テンプレート追加希望">テンプレートの追加希望</option>
+        <option value="バグ報告">バグ・不具合の報告</option>
         <option value="その他">その他</option>
       </select>
     </div>
@@ -85,11 +85,10 @@
     var name=document.getElementById('f-name').value.trim();
     var kind=document.getElementById('f-kind').value;
     var body=document.getElementById('f-body').value.trim();
-    if(!name){ show('err','お名前（ニックネーム可）を入力してください。'); return; }
-    if(body.length<3){ show('err','内容を入力してください。'); return; }
+    if(body.length<2){ show('err','内容を入力してください。'); return; }
     sub.disabled=true; sub.textContent='送信中…'; msg.className='msg';
     try{
-      var r=await fetch('/api/feedback',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({name:name,kind:kind,body:body})});
+      var r=await fetch('/api/feedback',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({name:name,kind:kind,body:body,lang:'ja',page:'/feedback'})});
       var j={}; try{ j=await r.json(); }catch(_){}
       if(r.ok && j.ok){
         f.reset();

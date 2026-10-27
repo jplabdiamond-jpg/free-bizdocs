@@ -434,26 +434,47 @@ function setupSave(){
 })();
 
 /* ===== review nudge (AEO / social proof): after a PDF download, invite happy users to leave a real review. shows once per browser, dismissible. ===== */
+/* ダウンロード直後に「ほしい機能・テンプレート」をその場で1行送れる要望ボックス。
+   登録不要・名前任意。送信後におまけでレビュー応援リンクを提示（レビューは副次）。 */
 (function(){
   try{
-    var KEY='fbd_rev_nudge_v1';
+    var KEY='fbd_req_nudge_v1';
     function shown(){ try{return localStorage.getItem(KEY)==='1';}catch(e){return false;} }
     function mark(){ try{localStorage.setItem(KEY,'1');}catch(e){} }
+    var REVIEW='<div style="margin-top:12px;border-top:1px solid rgba(255,255,255,.12);padding-top:11px">'
+      +'<div style="color:#9fb4cc;font-size:12.5px;margin-bottom:8px">気に入ったら、応援（レビュー）もぜひ 🙏</div>'
+      +'<div style="display:flex;gap:8px;flex-wrap:wrap">'
+      +'<a href="https://www.producthunt.com/products/free-bizdoc" target="_blank" rel="noopener" style="flex:1;min-width:130px;text-align:center;background:#da552f;color:#fff;text-decoration:none;font-weight:700;border-radius:9px;padding:8px 10px;font-size:13px">Product Huntで応援</a>'
+      +'<a href="https://www.saashub.com/free-bizdoc" target="_blank" rel="noopener" style="flex:1;min-width:130px;text-align:center;background:#2f8cf0;color:#fff;text-decoration:none;font-weight:700;border-radius:9px;padding:8px 10px;font-size:13px">SaaSHubでレビュー</a></div></div>';
     function show(){
-      if(shown()||document.getElementById('fbd-rev')) return;
-      var b=document.createElement('div'); b.id='fbd-rev'; b.setAttribute('role','dialog');
-      b.style.cssText='position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:99999;max-width:420px;width:calc(100% - 32px);background:#13263b;color:#fff;border-radius:14px;box-shadow:0 14px 40px -10px rgba(0,0,0,.5);padding:15px 16px;font-size:14px;line-height:1.7';
-      b.innerHTML='<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px"><div style="font-weight:700">Free BizDoc は役に立ちましたか？ 🙏</div><button type="button" id="fbd-rev-x" aria-label="閉じる" style="background:none;border:none;color:#9fb4cc;font-size:18px;line-height:1;cursor:pointer;padding:0 2px">×</button></div>'
-        +'<div style="color:#cdd9e7;margin:6px 0 12px">よろしけれゐ30秒でレビューを書いて応援してください。開発の励みになります。</div>'
-        +'<div style="display:flex;gap:8px;flex-wrap:wrap"><a id="fbd-rev-sh" href="https://www.saashub.com/free-bizdoc" target="_blank" rel="noopener" style="flex:1;min-width:140px;text-align:center;background:#2f8cf0;color:#fff;text-decoration:none;font-weight:700;border-radius:9px;padding:9px 10px">SaaSHubでレビュー</a>'
-        +'<a id="fbd-rev-ph" href="https://www.producthunt.com/products/free-bizdoc" target="_blank" rel="noopener" style="flex:1;min-width:140px;text-align:center;background:#da552f;color:#fff;text-decoration:none;font-weight:700;border-radius:9px;padding:9px 10px">Product Huntで応援</a></div>';
+      if(shown()||document.getElementById('fbd-req')) return;
+      var b=document.createElement('div'); b.id='fbd-req'; b.setAttribute('role','dialog'); b.setAttribute('aria-label','ご要望の送信');
+      b.style.cssText='position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:99999;max-width:440px;width:calc(100% - 32px);background:#13263b;color:#fff;border-radius:14px;box-shadow:0 14px 40px -10px rgba(0,0,0,.5);padding:15px 16px;font-size:14px;line-height:1.6';
+      b.innerHTML='<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px"><div style="font-weight:700">ほしい機能・テンプレートはありますか？</div><button type="button" id="fbd-x" aria-label="閉じる" style="background:none;border:none;color:#9fb4cc;font-size:18px;line-height:1;cursor:pointer;padding:0 2px">×</button></div>'
+        +'<div id="fbd-main">'
+        +'<div style="color:#cdd9e7;margin:6px 0 10px;font-size:13px">「こんな書類が欲しい」「ここが不便」——ひと言で開発に届きます（登録不要）。</div>'
+        +'<textarea id="fbd-t" rows="2" maxlength="2000" placeholder="例：英語の請求書にEUのVAT欄がほしい／○○テンプレを追加してほしい" style="width:100%;box-sizing:border-box;border:1px solid #2d4258;background:#0f1d2e;color:#fff;border-radius:10px;padding:10px 12px;font-size:14px;font-family:inherit;line-height:1.6;resize:vertical"></textarea>'
+        +'<input id="fbd-n" type="text" maxlength="100" placeholder="ニックネーム（任意）" style="width:100%;box-sizing:border-box;margin-top:8px;border:1px solid #2d4258;background:#0f1d2e;color:#fff;border-radius:10px;padding:9px 12px;font-size:13.5px;font-family:inherit">'
+        +'<div style="display:flex;align-items:center;gap:10px;margin-top:10px"><button type="button" id="fbd-send" style="background:#2f8cf0;color:#fff;border:none;font-weight:800;border-radius:10px;padding:10px 18px;font-size:14px;cursor:pointer">送信</button><span id="fbd-st" style="font-size:12.5px;color:#9fb4cc"></span></div>'
+        +'</div>';
       document.body.appendChild(b);
-      b.addEventListener('click',function(e){
-        if(e.target.id==='fbd-rev-x'){ mark(); b.remove(); return; }
-        if(e.target.closest('a')){ mark(); setTimeout(function(){ if(b.parentNode) b.remove(); },300); }
+      var closed=false;
+      function close(){ if(closed)return; closed=true; mark(); if(b.parentNode) b.remove(); }
+      document.getElementById('fbd-x').addEventListener('click',close);
+      document.getElementById('fbd-send').addEventListener('click',function(){
+        var t=document.getElementById('fbd-t'), n=document.getElementById('fbd-n'), st=document.getElementById('fbd-st'), btn=this;
+        var text=(t.value||'').trim(); if(text.length<2){ st.textContent='内容を入力してください'; t.focus(); return; }
+        btn.disabled=true; btn.style.opacity='.6'; st.textContent='送信中…';
+        fetch('/api/feedback',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({kind:'要望',body:text,name:(n.value||'').trim(),page:location.pathname,lang:'ja'})})
+          .then(function(r){return r.json();})
+          .then(function(j){
+            if(j&&j.ok){ mark(); document.getElementById('fbd-main').innerHTML='<div style="color:#cdd9e7;margin:8px 0 2px;font-size:13.5px">ありがとうございます！開発の参考にします 🙏</div>'+REVIEW; }
+            else { btn.disabled=false; btn.style.opacity='1'; st.textContent=(j&&j.error)||'送信に失敗しました'; }
+          })
+          .catch(function(){ btn.disabled=false; btn.style.opacity='1'; st.textContent='送信に失敗しました。時間をおいてお試しください'; });
       });
     }
-    function arm(){ if(shown()) return; setTimeout(show,3500); }
+    function arm(){ if(shown()) return; setTimeout(show,2500); }
     document.addEventListener('click',function(e){ if(e.target.closest('#make,#svdl')) arm(); }, true);
   }catch(e){}
 })();

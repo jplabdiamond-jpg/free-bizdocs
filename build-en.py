@@ -4,7 +4,7 @@
 import json, os, datetime
 ROOT = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(ROOT, 'en')
-V = datetime.date.today().strftime('%Y%m%d') + 's'  # bump suffix on each JS/asset change to bust browser cache
+V = datetime.date.today().strftime('%Y%m%d') + 't'  # bump suffix on each JS/asset change to bust browser cache
 
 # --- 本番ENページに存在する手直し要素（BreadcrumbList / In short / Related guides）を生成側に取り込み ---
 EN_EXTRAS = {
