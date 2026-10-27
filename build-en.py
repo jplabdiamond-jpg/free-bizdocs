@@ -315,6 +315,7 @@ def head(p, url):
     if p.get('ja'):
         alt += f'<link rel="alternate" hreflang="ja" href="{BASE}{p["ja"]}">\n'
     alt += f'<link rel="alternate" hreflang="x-default" href="{url}">\n'
+    ogimg = f'{BASE}/og/en-{p["slug"] or "home"}.jpg'  # 書類別OGカード
     return ('<!doctype html>\n<html lang="en">\n<head>\n'
       '<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1">\n'
       f'<title>{p["title"]}</title>\n<meta name="description" content="{p["desc"]}">\n'
@@ -325,8 +326,9 @@ def head(p, url):
       '<meta property="og:site_name" content="Free BizDoc">\n'
       '<meta property="og:locale" content="en_US">\n<meta property="og:locale:alternate" content="ja_JP">\n'
       f'<meta property="og:title" content="{p["title"]}">\n<meta property="og:description" content="{p["desc"]}">\n'
-      f'<meta property="og:url" content="{url}">\n<meta property="og:image" content="{BASE}/og.jpg">\n'
+      f'<meta property="og:url" content="{url}">\n<meta property="og:image" content="{ogimg}">\n'
       '<meta name="twitter:card" content="summary_large_image">\n'
+      f'<meta name="twitter:image" content="{ogimg}">\n'
       '<link rel="stylesheet" href="/suite.css?v=20261017d">\n'
       f'<script type="application/ld+json">{app}</script>\n'
       f'<script type="application/ld+json">{faqj}</script>\n'
