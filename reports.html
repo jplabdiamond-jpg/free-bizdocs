@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>レポート｜無料ビジネス書類メーカー</title>
+<title>レポート｜Free BizDoc</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap');
 body{margin:0}
@@ -11,8 +11,7 @@ body{margin:0}
 font-family:"Zen Kaku Gothic New",system-ui,sans-serif;color:var(--ink);background:var(--bg);display:flex;flex-wrap:wrap;width:100%;min-height:940px;box-sizing:border-box}
 .side{width:236px;background:var(--surf);border-right:1px solid var(--bd);padding:22px 16px;display:flex;flex-direction:column;gap:22px;box-sizing:border-box}
 .brand{display:flex;align-items:center;gap:9px;padding:0 6px}
-.brand .mk{width:30px;height:30px;border-radius:8px;background:var(--ac);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px}
-.brand .nm{font-weight:700;font-size:17px}.brand .pl{font-size:10px;font-weight:700;color:var(--ac);background:var(--ac-s);padding:2px 7px;border-radius:5px}
+.brand .pl{font-size:10px;font-weight:700;color:var(--ac);background:var(--ac-s);padding:2px 7px;border-radius:5px}
 .nav{display:flex;flex-direction:column;gap:2px}
 .nav .lb{font-size:10px;letter-spacing:.1em;color:var(--faint);font-weight:700;margin:10px 8px 4px}
 .nav a{display:flex;align-items:center;gap:10px;padding:9px 11px;border-radius:9px;color:var(--mut);text-decoration:none;font-size:14px;font-weight:500}
@@ -20,38 +19,45 @@ font-family:"Zen Kaku Gothic New",system-ui,sans-serif;color:var(--ink);backgrou
 .nav a.on{background:var(--ac-s);color:var(--ac);font-weight:700}
 .nav a .ic{width:17px;height:17px;flex:none}
 .main{flex:999 1 620px;min-width:0;display:flex;flex-direction:column}
-.top{min-height:62px;border-bottom:1px solid var(--bd);background:var(--surf);display:flex;align-items:center;gap:12px;padding:10px 26px;box-sizing:border-box}
+.top{min-height:62px;border-bottom:1px solid var(--bd);background:var(--surf);display:flex;align-items:center;gap:12px;padding:10px 26px;box-sizing:border-box;flex-wrap:wrap}
 .top h1{margin:0;font-size:20px;font-weight:700}.top .sp{flex:1}
 .btn{font-family:inherit;font-size:13px;font-weight:700;border-radius:9px;padding:9px 15px;border:1px solid var(--bd);background:var(--surf);color:var(--ink);cursor:pointer;display:inline-flex;align-items:center;gap:7px}
+.btn:hover{background:var(--surf2)}
+.sel{font-family:inherit;font-size:13px;font-weight:700;border-radius:9px;padding:9px 12px;border:1px solid var(--bd);background:var(--surf);color:var(--ink);cursor:pointer}
 .content{padding:22px 26px;display:flex;flex-direction:column;gap:18px}
 .kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
 .kpi{background:var(--surf);border:1px solid var(--bd);border-radius:13px;padding:16px 18px;display:flex;flex-direction:column;gap:6px}
 .kpi .k{font-size:12px;color:var(--mut);font-weight:500}.kpi .v{font-size:23px;font-weight:700;font-variant-numeric:tabular-nums}
-.kpi .d{font-size:11.5px;font-weight:600;color:var(--good)}
+.kpi .d{font-size:11.5px;font-weight:600;color:var(--mut)}
 .kpi.bar{border-top:3px solid var(--ac)}
 .row2{display:grid;grid-template-columns:1.4fr 1fr;gap:16px}
 .card{background:var(--surf);border:1px solid var(--bd);border-radius:13px;padding:18px 20px;min-width:0}
 .card h2{margin:0 0 16px;font-size:15px;font-weight:700}
-.chart{display:flex;align-items:flex-end;gap:12px;height:190px;padding-top:6px}
-.chart .col{flex:1;display:flex;flex-direction:column;align-items:center;gap:7px;height:100%;justify-content:flex-end}
-.chart .bk{width:68%;max-width:40px;background:var(--ac-s);border-radius:6px 6px 0 0}
+.chart{display:flex;align-items:flex-end;gap:6px;height:190px;padding-top:6px}
+.chart .col{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end;min-width:0}
+.chart .bk{width:70%;max-width:34px;background:var(--ac-s);border-radius:5px 5px 0 0;min-height:2px}
 .chart .col.cur .bk{background:var(--ac)}
-.chart .cap{font-size:11px;color:var(--mut)}
-.chart .amt{font-size:10px;color:var(--faint);font-variant-numeric:tabular-nums}
+.chart .cap{font-size:10.5px;color:var(--mut)}
+.chart .amt{font-size:9px;color:var(--faint);font-variant-numeric:tabular-nums;white-space:nowrap}
 .bars{display:flex;flex-direction:column;gap:13px}
 .brow{display:flex;flex-direction:column;gap:5px}
-.brow .lab{display:flex;justify-content:space-between;font-size:12.5px}
-.brow .lab .nm{font-weight:600}.brow .lab .vl{font-variant-numeric:tabular-nums;color:var(--mut)}
+.brow .lab{display:flex;justify-content:space-between;gap:10px;font-size:12.5px}
+.brow .lab .nm{font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.brow .lab .vl{font-variant-numeric:tabular-nums;color:var(--mut);flex:none}
 .track{height:9px;background:var(--surf2);border-radius:999px;overflow:hidden}
 .track .fill{height:100%;background:var(--ac);border-radius:999px}
 .note{font-size:12px;color:var(--faint);text-align:center;background:var(--surf2);border:1px dashed var(--bd);border-radius:10px;padding:12px}
+.empty{background:var(--surf);border:1px solid var(--bd);border-radius:13px;padding:40px 24px;text-align:center;color:var(--mut)}
+.empty h2{font-size:16px;color:var(--ink);margin:0 0 8px}.empty p{font-size:13.5px;line-height:1.7;margin:0 0 16px}
+.empty a{display:inline-flex;align-items:center;gap:7px;background:var(--ac);color:#fff;text-decoration:none;font-weight:700;font-size:14px;padding:11px 18px;border-radius:10px}
+.muted{color:var(--faint)}
 @media(max-width:980px){.kpis{grid-template-columns:repeat(2,1fr)}.row2{grid-template-columns:1fr}}
+@media(max-width:820px){.side{width:100%;flex-direction:row;flex-wrap:wrap;align-items:center}.nav{flex-direction:row;flex-wrap:wrap}}
 </style>
 </head>
 <body>
 <div class="app">
   <aside class="side">
-    <div class="brand"><img src="/logo.png?v=20261021" alt="Free BizDocs" style="height:30px;width:auto;display:block"><span class="pl">PRO</span></div>
+    <div class="brand"><img src="/logo.png?v=20261021" alt="Free BizDoc" style="height:30px;width:auto;display:block"><span class="pl">PRO</span></div>
     <nav class="nav">
       <a href="/dashboard"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>ダッシュボード</a>
       <div class="lb">書類</div>
@@ -65,55 +71,102 @@ font-family:"Zen Kaku Gothic New",system-ui,sans-serif;color:var(--ink);backgrou
   </aside>
 
   <div class="main">
-    <header class="top"><h1>レポート</h1><span class="sp"></span><button class="btn">2026年度 ▾</button><button class="btn">CSV出力</button></header>
+    <header class="top"><h1>レポート</h1><span class="sp"></span>
+      <select class="sel" id="yearsel" aria-label="対象年"></select>
+      <button class="btn" id="csvbtn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>CSV出力</button>
+    </header>
 
-    <div class="content">
-      <div class="kpis">
-        <div class="kpi bar"><span class="k">年間売上（累計）</span><span class="v">¥28,640,000</span><span class="d">前年比 +18%</span></div>
-        <div class="kpi"><span class="k">発行枚数</span><span class="v">164 件</span><span class="d" style="color:var(--mut)">月平均 16.4件</span></div>
-        <div class="kpi"><span class="k">平均請求額</span><span class="v">¥174,600</span><span class="d">前月比 +4%</span></div>
-        <div class="kpi"><span class="k">平均入金日数</span><span class="v">23.4 日</span><span class="d">前月比 −1.8日</span></div>
-      </div>
-
-      <div class="row2">
-        <section class="card">
-          <h2>月次売上推移</h2>
-          <div class="chart">
-            <div class="col"><div class="bk" style="height:52%"></div><span class="amt">¥2.1M</span><span class="cap">5月</span></div>
-            <div class="col"><div class="bk" style="height:66%"></div><span class="amt">¥2.7M</span><span class="cap">6月</span></div>
-            <div class="col"><div class="bk" style="height:58%"></div><span class="amt">¥2.4M</span><span class="cap">7月</span></div>
-            <div class="col"><div class="bk" style="height:76%"></div><span class="amt">¥3.1M</span><span class="cap">8月</span></div>
-            <div class="col"><div class="bk" style="height:70%"></div><span class="amt">¥2.9M</span><span class="cap">9月</span></div>
-            <div class="col cur"><div class="bk" style="height:84%"></div><span class="amt">¥3.4M</span><span class="cap">10月</span></div>
-          </div>
-        </section>
-
-        <section class="card">
-          <h2>取引先別 売上（上位）</h2>
-          <div class="bars">
-            <div class="brow"><div class="lab"><span class="nm">株式会社ひらがな商事</span><span class="vl">¥8,240,000</span></div><div class="track"><div class="fill" style="width:100%"></div></div></div>
-            <div class="brow"><div class="lab"><span class="nm">株式会社あおぞら建設</span><span class="vl">¥5,180,000</span></div><div class="track"><div class="fill" style="width:63%"></div></div></div>
-            <div class="brow"><div class="lab"><span class="nm">有限会社カタカナ工業</span><span class="vl">¥3,960,000</span></div><div class="track"><div class="fill" style="width:48%"></div></div></div>
-            <div class="brow"><div class="lab"><span class="nm">みどりデザイン事務所</span><span class="vl">¥2,310,000</span></div><div class="track"><div class="fill" style="width:28%"></div></div></div>
-            <div class="brow"><div class="lab"><span class="nm">株式会社さくら物産</span><span class="vl">¥1,480,000</span></div><div class="track"><div class="fill" style="width:18%"></div></div></div>
-          </div>
-        </section>
-      </div>
-
-      <section class="card">
-        <h2>税区分別 集計（今年度）</h2>
-        <div class="bars">
-          <div class="brow"><div class="lab"><span class="nm">10%対象 課税売上</span><span class="vl">¥25,900,000</span></div><div class="track"><div class="fill" style="width:90%"></div></div></div>
-          <div class="brow"><div class="lab"><span class="nm">8%対象（軽減税率）</span><span class="vl">¥1,240,000</span></div><div class="track"><div class="fill" style="width:12%;background:var(--warn)"></div></div></div>
-          <div class="brow"><div class="lab"><span class="nm">源泉徴収税 合計</span><span class="vl">¥1,500,000</span></div><div class="track"><div class="fill" style="width:16%;background:var(--over)"></div></div></div>
-        </div>
-      </section>
-
-      <p class="note">※ 数値はサンプルです。本実装では発行データ・入金データから自動集計します。</p>
+    <div class="content" id="content">
+      <p class="note" id="loading">読み込み中…</p>
     </div>
   </div>
 </div>
-<script src="app.js"></script>
+<script>
+var DATA=null;
+function yen(n){ return '¥'+Math.round(Number(n)||0).toLocaleString('ja-JP'); }
+function yenShort(n){ n=Number(n)||0; if(n>=1e8) return '¥'+(n/1e8).toFixed(1).replace(/\.0$/,'')+'億'; if(n>=1e4) return '¥'+(Math.round(n/1e3)/10).toFixed(1).replace(/\.0$/,'')+'万'; return '¥'+Math.round(n).toLocaleString('ja-JP'); }
+function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+
+function kpi(k,v,d){ return '<div class="kpi'+(d&&d.bar?' bar':'')+'"><span class="k">'+esc(k)+'</span><span class="v">'+v+'</span><span class="d">'+((d&&d.sub)||'')+'</span></div>'; }
+
+function render(){
+  var d=DATA, c=document.getElementById('content');
+  // 年セレクタ
+  var ys=document.getElementById('yearsel');
+  var years=(d.years&&d.years.length)?d.years:[d.year];
+  ys.innerHTML=years.map(function(y){return '<option value="'+y+'"'+(y===d.year?' selected':'')+'>'+y+'年</option>';}).join('');
+
+  if(!d.doc_count){
+    c.innerHTML='<div class="empty"><h2>'+esc(d.year)+'年の発行データがまだありません</h2>'
+      +'<p>請求書を作成・保存すると、ここに売上・取引先別・税区分の集計が自動で表示されます。</p>'
+      +'<a href="/invoice-create">請求書を作成する →</a></div>';
+    return;
+  }
+  // KPI
+  var khtml=''
+    +kpi('年間売上（税抜）', yen(d.sales), {bar:true, sub:d.year+'年 累計'})
+    +kpi('発行枚数', d.doc_count+' 件', {sub:'月平均 '+(Math.round(d.doc_count/12*10)/10)+' 件'})
+    +kpi('平均請求額（税込）', yen(d.avg_invoice), {sub:'1件あたり'})
+    +kpi('平均入金日数', d.avg_pay_days!=null?(d.avg_pay_days+' 日'):'—', {sub:d.avg_pay_days!=null?'発行→入金':'入金記録なし'});
+
+  // 月次チャート
+  var maxM=Math.max.apply(null,d.monthly.map(function(m){return m.sales;}).concat([1]));
+  var now=new Date(), curYm=now.toISOString().slice(0,7);
+  var chart=d.monthly.map(function(m){
+    var h=maxM>0?Math.max(2,Math.round(m.sales/maxM*100)):2;
+    return '<div class="col'+(m.ym===curYm?' cur':'')+'" title="'+m.month+'月: '+yen(m.sales)+'"><span class="amt">'+(m.sales>0?yenShort(m.sales):'')+'</span><div class="bk" style="height:'+h+'%"></div><span class="cap">'+m.month+'</span></div>';
+  }).join('');
+
+  // 取引先別
+  var maxC=Math.max.apply(null,d.by_client.map(function(x){return x.sales;}).concat([1]));
+  var cbars=d.by_client.length?d.by_client.map(function(x){
+    var w=maxC>0?Math.round(x.sales/maxC*100):0;
+    return '<div class="brow"><div class="lab"><span class="nm">'+esc(x.name)+'</span><span class="vl">'+yen(x.sales)+'</span></div><div class="track"><div class="fill" style="width:'+w+'%"></div></div></div>';
+  }).join(''):'<p class="muted" style="font-size:12.5px">データがありません</p>';
+
+  // 税区分別
+  var t=d.tax||{base10:0,base8:0,base0:0};
+  var maxT=Math.max(t.base10,t.base8,d.withholding,1);
+  function trow(nm,val,color){ var w=maxT>0?Math.round(val/maxT*100):0; return '<div class="brow"><div class="lab"><span class="nm">'+nm+'</span><span class="vl">'+yen(val)+'</span></div><div class="track"><div class="fill" style="width:'+w+'%'+(color?';background:'+color:'')+'"></div></div></div>'; }
+  var tbars=trow('10%対象 課税売上（税抜）',t.base10)+trow('8%対象（軽減税率・税抜）',t.base8,'var(--warn)')+trow('源泉徴収税 合計',d.withholding,'var(--over)');
+
+  c.innerHTML=''
+    +'<div class="kpis">'+khtml+'</div>'
+    +'<div class="row2">'
+    +  '<section class="card"><h2>月次売上推移（'+esc(d.year)+'年・税抜）</h2><div class="chart">'+chart+'</div></section>'
+    +  '<section class="card"><h2>取引先別 売上（上位・税抜）</h2><div class="bars">'+cbars+'</div></section>'
+    +'</div>'
+    +'<section class="card"><h2>税区分別 集計（'+esc(d.year)+'年）</h2><div class="bars">'+tbars+'</div></section>';
+}
+
+function load(year){
+  var c=document.getElementById('content');
+  fetch('/api/reports'+(year?('?year='+year):''),{credentials:'same-origin'}).then(function(r){
+    if(r.status===401){ location.href='/login'; return null; }
+    return r.json();
+  }).then(function(j){ if(!j) return; if(!j.ok){ c.innerHTML='<p class="note">読み込みに失敗しました。</p>'; return; } DATA=j; render(); })
+  .catch(function(e){ c.innerHTML='<p class="note">読み込みエラー: '+esc(e.message)+'</p>'; });
+}
+
+document.getElementById('yearsel').addEventListener('change',function(){ load(this.value); });
+document.getElementById('csvbtn').addEventListener('click',function(){
+  if(!DATA||!DATA.doc_count){ return; }
+  var rows=[['Free BizDoc 売上レポート',DATA.year+'年']];
+  rows.push([]); rows.push(['集計','金額']);
+  rows.push(['年間売上(税抜)',DATA.sales]); rows.push(['発行枚数',DATA.doc_count]); rows.push(['平均請求額(税込)',DATA.avg_invoice]); rows.push(['平均入金日数',DATA.avg_pay_days==null?'':DATA.avg_pay_days]);
+  rows.push([]); rows.push(['月','売上(税抜)']);
+  DATA.monthly.forEach(function(m){ rows.push([m.month+'月',m.sales]); });
+  rows.push([]); rows.push(['取引先','売上(税抜)']);
+  DATA.by_client.forEach(function(x){ rows.push([x.name,x.sales]); });
+  rows.push([]); rows.push(['税区分','金額(税抜)']);
+  rows.push(['10%対象',DATA.tax.base10]); rows.push(['8%対象',DATA.tax.base8]); rows.push(['源泉徴収税',DATA.withholding]);
+  var csv=rows.map(function(r){ return r.map(function(cell){ var s=String(cell==null?'':cell); return /[",\n]/.test(s)?('"'+s.replace(/"/g,'""')+'"'):s; }).join(','); }).join('\r\n');
+  var blob=new Blob(['﻿'+csv],{type:'text/csv;charset=utf-8'});
+  var a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='free-bizdoc-report-'+DATA.year+'.csv'; document.body.appendChild(a); a.click(); setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); },100);
+});
+
+load('');
+</script>
 <script src="/appshell.js?v=20261027"></script>
 </body>
 </html>
