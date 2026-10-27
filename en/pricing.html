@@ -235,7 +235,7 @@ html.anim .pulse::before{content:"";position:absolute;inset:0;border-radius:inhe
     <h2>Frequently asked questions</h2>
     <div class="q"><h3>Is the free version free?</h3><p>Yes. You can create and download documents without an account. The free version allows 2 PDF downloads per hour from the same network, which is plenty for occasional use.</p></div>
     <div class="q"><h3>What exactly do I get with PRO?</h3><p>Unlimited PDF downloads (the hourly limit is removed) and the ability to save your documents to your account and reopen or duplicate them later from any device.</p></div>
-    <div class="q"><h3>Is there a yearly plan?</h3><p>Switch the toggle to &ldquo;Yearly&rdquo; to see the annual rate &mdash; it works out to <b>2 months free</b> versus paying monthly. To subscribe annually, <a href="/en/contact">contact us</a> and we&rsquo;ll set it up.</p></div>
+    <div class="q"><h3>Is there a yearly plan?</h3><p>Yes. Switch the toggle to &ldquo;Yearly&rdquo; and choose <b>$150/year</b> &mdash; that&rsquo;s <b>2 months free</b> versus paying monthly ($12.50/mo, billed once a year). You can subscribe right here; no need to contact us.</p></div>
     <div class="q"><h3>Can I cancel anytime?</h3><p>Yes. You can cancel from the <a href="#" id="portal2">billing portal</a> at any time; your PRO access continues until the end of the current billing period. No long-term contract.</p></div>
     <div class="q"><h3>Which currency am I charged in?</h3><p>PRO is billed in US dollars (USD) via Stripe. Your card issuer handles any currency conversion.</p></div>
     <div class="q"><h3>Do you store my invoice contents?</h3><p>Only if you're signed in and choose "Save to account". Documents you create without saving are generated entirely in your browser and never reach our servers. See our <a href="/en/privacy">Privacy Policy</a>.</p></div>
@@ -313,7 +313,7 @@ html.anim .pulse::before{content:"";position:absolute;inset:0;border-radius:inhe
 (function(){
   // ---- CONFIG: set these to the USD Stripe payment links once created in the dashboard ----
   var EN_CHECKOUT_URL = "https://buy.stripe.com/4gMaEX7Nz9nkenM1zk9sk02"; // USD $15/mo Payment Link. Empty = route to contact.
-  var EN_YEARLY_URL   = "";  // ← USD yearly Payment Link. Empty = yearly routes to contact (monthly unaffected).
+  var EN_YEARLY_URL   = "https://buy.stripe.com/6oU8wPaZLgPMcfE5PA9sk04";  // USD $150/yr Payment Link (price pro_yearly_usd). Empty = yearly routes to contact.
   var PORTAL_URL = "https://billing.stripe.com/p/login/bJe8wP3xjczwbbA3Hs9sk00";
   document.querySelectorAll('#portal2,#portal3').forEach(function(a){ a.href=PORTAL_URL; a.target="_blank"; a.rel="noopener"; });
 
