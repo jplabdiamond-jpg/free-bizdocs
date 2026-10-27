@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>定期請求｜無料ビジネス書類メーカー</title>
+<title>定期請求｜Free BizDoc</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap');
 body{margin:0}
@@ -11,8 +11,7 @@ body{margin:0}
 font-family:"Zen Kaku Gothic New",system-ui,sans-serif;color:var(--ink);background:var(--bg);display:flex;flex-wrap:wrap;width:100%;min-height:940px;box-sizing:border-box}
 .side{width:236px;background:var(--surf);border-right:1px solid var(--bd);padding:22px 16px;display:flex;flex-direction:column;gap:22px;box-sizing:border-box}
 .brand{display:flex;align-items:center;gap:9px;padding:0 6px}
-.brand .mk{width:30px;height:30px;border-radius:8px;background:var(--ac);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px}
-.brand .nm{font-weight:700;font-size:17px}.brand .pl{font-size:10px;font-weight:700;color:var(--ac);background:var(--ac-s);padding:2px 7px;border-radius:5px}
+.brand .pl{font-size:10px;font-weight:700;color:var(--ac);background:var(--ac-s);padding:2px 7px;border-radius:5px}
 .nav{display:flex;flex-direction:column;gap:2px}
 .nav .lb{font-size:10px;letter-spacing:.1em;color:var(--faint);font-weight:700;margin:10px 8px 4px}
 .nav a{display:flex;align-items:center;gap:10px;padding:9px 11px;border-radius:9px;color:var(--mut);text-decoration:none;font-size:14px;font-weight:500}
@@ -23,15 +22,16 @@ font-family:"Zen Kaku Gothic New",system-ui,sans-serif;color:var(--ink);backgrou
 .top{min-height:62px;border-bottom:1px solid var(--bd);background:var(--surf);display:flex;align-items:center;gap:12px;padding:10px 26px;box-sizing:border-box}
 .top h1{margin:0;font-size:20px;font-weight:700}.top .sp{flex:1}
 .btn{font-family:inherit;font-size:13px;font-weight:700;border-radius:9px;padding:9px 15px;border:1px solid var(--bd);background:var(--surf);color:var(--ink);cursor:pointer;display:inline-flex;align-items:center;gap:7px}
+.btn:hover{background:var(--surf2)}
 .btn.pri{background:var(--ac);border-color:var(--ac);color:#fff}.btn.pri:hover{background:#30399a}
 .content{padding:22px 26px;display:flex;flex-direction:column;gap:18px}
 .banner{display:flex;align-items:center;gap:13px;background:var(--ac-s);border:1px solid #cdd1f0;border-radius:12px;padding:14px 18px}
 .banner .ic{width:38px;height:38px;border-radius:10px;background:var(--ac);color:#fff;display:flex;align-items:center;justify-content:center;flex:none}
-.banner .tx{flex:1;font-size:13.5px}.banner .tx b{font-weight:700}
-.banner .sm{font-size:11.5px;color:var(--mut)}
+.banner .tx{flex:1;font-size:13.5px}.banner .tx b{font-weight:700}.banner .sm{font-size:11.5px;color:var(--mut)}
+.due{background:var(--good-s);border:1px solid #bfe3cf;border-radius:12px;padding:12px 16px;font-size:13px;color:var(--good);font-weight:700;display:flex;align-items:center;gap:10px}
 .card{background:var(--surf);border:1px solid var(--bd);border-radius:13px;overflow:hidden}
 .card .hd{padding:14px 18px;border-bottom:1px solid var(--bd);font-size:14px;font-weight:700;display:flex;align-items:center;gap:8px}
-.card .hd .sp{flex:1}
+.card .hd .sp{flex:1}.card .hd .sm{font-size:12px;font-weight:500;color:var(--mut)}
 table{width:100%;border-collapse:collapse;font-size:13px}
 th{text-align:left;font-size:11px;letter-spacing:.03em;color:var(--faint);font-weight:700;padding:11px 14px;border-bottom:1px solid var(--bd);background:var(--surf2)}
 td{padding:13px 14px;border-bottom:1px solid var(--bd);vertical-align:middle}
@@ -41,24 +41,42 @@ td.n{font-variant-numeric:tabular-nums;text-align:right}
 .cyc{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:var(--ac);background:var(--ac-s);padding:3px 10px;border-radius:999px}
 .mode{font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px}
 .mode.auto{background:var(--good-s);color:var(--good)}.mode.draft{background:var(--warn-s);color:var(--warn)}
-.next{font-weight:700;font-variant-numeric:tabular-nums}
-.soon{color:var(--ac)}
-/* toggle */
+.next{font-weight:700;font-variant-numeric:tabular-nums}.next.soon{color:var(--ac)}
+.rowact{display:inline-flex;gap:6px}
+.icbtn{border:none;background:none;cursor:pointer;color:var(--faint);padding:4px;border-radius:6px;font-size:13px}
+.icbtn:hover{background:var(--surf2);color:var(--over)}
 .sw{position:relative;width:40px;height:23px;flex:none;display:inline-block}
 .sw input{opacity:0;width:0;height:0;position:absolute}
-.sw .tk{position:absolute;inset:0;background:#cfceC7;border-radius:999px;transition:.15s}
+.sw .tk{position:absolute;inset:0;background:#cfcec7;border-radius:999px;transition:.15s;cursor:pointer}
 .sw .tk::before{content:"";position:absolute;width:17px;height:17px;border-radius:50%;background:#fff;top:3px;left:3px;transition:.15s}
 .sw input:checked + .tk{background:var(--good)}
 .sw input:checked + .tk::before{transform:translateX(17px)}
-.due{background:var(--warn-s);border:1px solid #e6d2a4;border-radius:12px;padding:14px 18px;display:flex;align-items:center;gap:13px}
-.due .tx{flex:1;font-size:13px}.due b{font-weight:700}
-@media(max-width:860px){.hideS{display:none}}
+.empty{padding:34px 20px;text-align:center;color:var(--mut)}
+.empty p{font-size:13.5px;margin:0 0 14px;line-height:1.7}
+.modal{position:fixed;inset:0;background:rgba(15,23,42,.5);display:none;align-items:flex-start;justify-content:center;z-index:999;padding:24px 14px;overflow:auto}
+.modal.on{display:flex}
+.sheet{background:#fff;border-radius:16px;max-width:640px;width:100%;padding:22px 24px 20px;box-shadow:0 30px 80px -20px rgba(15,23,42,.5)}
+.sheet h2{margin:0 0 4px;font-size:18px;font-weight:800}
+.sheet .sub{font-size:12.5px;color:var(--mut);margin:0 0 16px}
+.fl{display:block;margin-bottom:12px;font-size:12.5px;font-weight:700;color:#334}
+.fl input,.fl select,.fl textarea{display:block;width:100%;box-sizing:border-box;margin-top:5px;font-family:inherit;font-size:14px;padding:9px 11px;border:1px solid var(--bd);border-radius:9px;background:#fff;color:var(--ink);font-weight:400}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.items{border:1px solid var(--bd);border-radius:10px;padding:10px;margin-top:5px;background:var(--surf2)}
+.irow{display:grid;grid-template-columns:1fr 54px 70px 66px 30px;gap:6px;margin-bottom:6px;align-items:center}
+.irow input,.irow select{font-size:12.5px;padding:7px 8px;border:1px solid var(--bd);border-radius:7px;font-family:inherit;width:100%;box-sizing:border-box;background:#fff}
+.irow .del{border:none;background:none;color:var(--faint);cursor:pointer;font-size:16px}
+.addrow{font-size:12px;font-weight:700;color:var(--ac);background:none;border:none;cursor:pointer;padding:4px}
+.mact{display:flex;gap:10px;margin-top:18px}
+.mact .sp{flex:1}
+@media(max-width:860px){.hideS{display:none}.side{width:100%;flex-direction:row;flex-wrap:wrap;align-items:center}.nav{flex-direction:row;flex-wrap:wrap}.grid3{grid-template-columns:1fr}.irow{grid-template-columns:1fr 46px 62px 58px 26px}}
+.toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);background:#13263b;color:#fff;font-size:13px;font-weight:700;padding:11px 18px;border-radius:12px;z-index:2000;opacity:0;transition:.25s;pointer-events:none}
+.toast.on{opacity:1}
 </style>
 </head>
 <body>
 <div class="app">
   <aside class="side">
-    <div class="brand"><img src="/logo.png?v=20261021" alt="Free BizDocs" style="height:30px;width:auto;display:block"><span class="pl">PRO</span></div>
+    <div class="brand"><img src="/logo.png?v=20261021" alt="Free BizDoc" style="height:30px;width:auto;display:block"><span class="pl">PRO</span></div>
     <nav class="nav">
       <a href="/dashboard"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>ダッシュボード</a>
       <div class="lb">書類</div>
@@ -72,36 +90,137 @@ td.n{font-variant-numeric:tabular-nums;text-align:right}
   </aside>
 
   <div class="main">
-    <header class="top"><h1>定期請求</h1><span class="sp"></span><button class="btn pri"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>定期請求を追加</button></header>
-
-    <div class="content">
-      <div class="banner">
-        <span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 4v5h-5"/></svg></span>
-        <div class="tx"><b>毎月の請求書を自動で生成します。</b><div class="sm">顧問料・保守費・家賃など、繰り返す請求を登録しておけば、指定日に自動で作成されます。</div></div>
-      </div>
-
-      <div class="due">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--warn)" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
-        <div class="tx"><b>今日生成される定期請求が 3件</b> あります（うち自動発行 2件・下書き 1件）</div>
-        <button class="btn">内容を確認</button>
-      </div>
-
-      <div class="card">
-        <div class="hd">登録中の定期請求<span class="sp"></span><span class="sm">5件</span></div>
-        <table>
-          <thead><tr><th>取引先 / 内容</th><th>サイクル</th><th class="hideS" style="text-align:right">金額（税込）</th><th>次回生成</th><th>発行方法</th><th style="text-align:center">有効</th></tr></thead>
-          <tbody>
-            <tr><td><span class="cl">株式会社ひらがな商事</span><div class="sm">月額顧問料・運用サポート</div></td><td><span class="cyc">毎月 25日</span></td><td class="n hideS">¥330,000</td><td class="next soon">10/25</td><td><span class="mode auto">自動発行</span></td><td style="text-align:center"><label class="sw"><input type="checkbox" checked aria-label="有効"><span class="tk"></span></label></td></tr>
-            <tr><td><span class="cl">有限会社カタカナ工業</span><div class="sm">サーバー保守費</div></td><td><span class="cyc">毎月 末日</span></td><td class="n hideS">¥55,000</td><td class="next soon">10/31</td><td><span class="mode auto">自動発行</span></td><td style="text-align:center"><label class="sw"><input type="checkbox" checked aria-label="有効"><span class="tk"></span></label></td></tr>
-            <tr><td><span class="cl">みどりデザイン事務所</span><div class="sm">共同オフィス 賃料</div></td><td><span class="cyc">毎月 1日</span></td><td class="n hideS">¥88,000</td><td class="next">11/01</td><td><span class="mode draft">下書きで作成</span></td><td style="text-align:center"><label class="sw"><input type="checkbox" checked aria-label="有効"><span class="tk"></span></label></td></tr>
-            <tr><td><span class="cl">株式会社あおぞら建設</span><div class="sm">保守・点検 契約</div></td><td><span class="cyc">3ヶ月ごと 10日</span></td><td class="n hideS">¥132,000</td><td class="next">12/10</td><td><span class="mode auto">自動発行</span></td><td style="text-align:center"><label class="sw"><input type="checkbox" checked aria-label="有効"><span class="tk"></span></label></td></tr>
-            <tr><td><span class="cl">佐藤司法書士事務所</span><div class="sm">記帳代行（停止中）</div></td><td><span class="cyc">毎月 20日</span></td><td class="n hideS">¥22,000</td><td class="next" style="color:var(--faint)">— 停止中</td><td><span class="mode draft">下書きで作成</span></td><td style="text-align:center"><label class="sw"><input type="checkbox" aria-label="有効"><span class="tk"></span></label></td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
+    <header class="top"><h1>定期請求</h1><span class="sp"></span><button class="btn pri" id="addbtn"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>定期請求を追加</button></header>
+    <div class="content" id="content"><p class="sm" style="padding:8px">読み込み中…</p></div>
   </div>
 </div>
+
+<div class="modal" id="modal"><div class="sheet">
+  <h2 id="mtitle">定期請求を追加</h2>
+  <p class="sub">登録しておくと、指定日に自動で請求書が作成されます（ログイン時に生成）。</p>
+  <label class="fl">内容（メモ）<input id="f-title" placeholder="例）月額顧問料・運用サポート"></label>
+  <label class="fl">取引先<select id="f-client"></select></label>
+  <div id="f-newclient-wrap" style="display:none"><label class="fl">新しい取引先名<input id="f-newclient" placeholder="株式会社○○"></label></div>
+  <label class="fl">明細</label>
+  <div class="items" id="f-items"></div>
+  <button type="button" class="addrow" id="f-addrow">＋ 明細を追加</button>
+  <div class="grid3" style="margin-top:14px">
+    <label class="fl">サイクル<select id="f-cycle"><option value="monthly">毎月</option><option value="bimonthly">隔月</option><option value="quarterly">3ヶ月ごと</option><option value="halfyear">半年ごと</option><option value="yearly">毎年</option></select></label>
+    <label class="fl">起算日<select id="f-dom"></select></label>
+    <label class="fl">支払期限<select id="f-due"><option value="0">当日</option><option value="7">7日後</option><option value="15">15日後</option><option value="30" selected>30日後</option><option value="45">45日後</option><option value="60">60日後</option></select></label>
+  </div>
+  <label class="fl">発行方法<select id="f-mode"><option value="auto">自動発行（すぐ請求書として作成）</option><option value="draft">下書きで作成（確認してから発行）</option></select></label>
+  <label class="fl">振込先・備考（任意・請求書に印字）<textarea id="f-bank" rows="2" placeholder="銀行名・支店・口座番号 など"></textarea></label>
+  <div class="mact"><button class="btn" id="m-cancel" type="button">キャンセル</button><span class="sp"></span><button class="btn pri" id="m-save" type="button">保存する</button></div>
+</div></div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+var CLIENTS=[], EDIT_ID=null;
+function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+function yen(n){ return '¥'+Math.round(Number(n)||0).toLocaleString('ja-JP'); }
+function toast(m){ var t=document.getElementById('toast'); t.textContent=m; t.classList.add('on'); clearTimeout(t._h); t._h=setTimeout(function(){t.classList.remove('on');},2400); }
+var CYCLE_LB={monthly:'毎月',bimonthly:'隔月',quarterly:'3ヶ月ごと',halfyear:'半年ごと',yearly:'毎年'};
+function domLabel(d){ return d>=99?'末日':(d+'日'); }
+function fmtDate(iso){ if(!iso)return '—'; var m=String(iso).match(/^\d{4}-(\d{2})-(\d{2})/); return m?(m[1]+'/'+m[2]):iso; }
+
+function render(d){
+  var c=document.getElementById('content'); var list=d.recurring||[];
+  if(d.generated>0) toast(d.generated+'件の定期請求を自動生成しました（請求書一覧に追加）');
+  var html='';
+  html+='<div class="banner"><span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 4v5h-5"/></svg></span><div class="tx"><b>毎月の請求書を自動で作成します。</b><div class="sm">顧問料・保守費・家賃など繰り返す請求を登録すると、指定日に自動で作成されます（ログイン時にチェック）。</div></div></div>';
+  if(d.due_today>0) html+='<div class="due"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>本日が生成日の定期請求があります。次回ログイン時に自動作成されます。</div>';
+  if(!list.length){
+    html+='<div class="card"><div class="empty"><p>まだ定期請求が登録されていません。<br>繰り返す請求を登録すると、毎回手で作る必要がなくなります。</p><button class="btn pri" id="emptyadd">＋ 最初の定期請求を追加</button></div></div>';
+    c.innerHTML=html; var ea=document.getElementById('emptyadd'); if(ea) ea.addEventListener('click',openAdd); return;
+  }
+  var rows=list.map(function(r){
+    var soon=r.active&&r.next_run&&(new Date(r.next_run)-new Date())<1000*60*60*24*7;
+    return '<tr>'
+      +'<td><span class="cl">'+esc(r.client_name||'（取引先未設定）')+'</span><div class="sm">'+esc(r.title||'')+'</div></td>'
+      +'<td><span class="cyc">'+CYCLE_LB[r.cycle]+' '+domLabel(r.day_of_month)+'</span></td>'
+      +'<td class="n hideS">'+yen(r.amount)+'</td>'
+      +'<td class="next'+(soon?' soon':'')+'">'+(r.active?fmtDate(r.next_run):'<span style="color:var(--faint)">— 停止中</span>')+'</td>'
+      +'<td><span class="mode '+(r.mode==='auto'?'auto':'draft')+'">'+(r.mode==='auto'?'自動発行':'下書き')+'</span></td>'
+      +'<td style="text-align:center"><label class="sw"><input type="checkbox" data-act="toggle" data-id="'+r.id+'"'+(r.active?' checked':'')+' aria-label="有効"><span class="tk"></span></label></td>'
+      +'<td><span class="rowact"><button class="icbtn" data-act="edit" data-id="'+r.id+'" title="編集">&#9998;</button><button class="icbtn" data-act="del" data-id="'+r.id+'" title="削除">&#128465;</button></span></td>'
+      +'</tr>';
+  }).join('');
+  html+='<div class="card"><div class="hd">登録中の定期請求<span class="sp"></span><span class="sm">'+list.length+'件</span></div>'
+    +'<table><thead><tr><th>取引先 / 内容</th><th>サイクル</th><th class="hideS" style="text-align:right">金額（税込）</th><th>次回生成</th><th>発行方法</th><th style="text-align:center">有効</th><th></th></tr></thead><tbody>'+rows+'</tbody></table></div>';
+  c.innerHTML=html;
+  window.__list=list;
+}
+
+function load(){
+  Promise.all([
+    fetch('/api/clients',{credentials:'same-origin'}).then(function(r){return r.ok?r.json():{clients:[]};}).catch(function(){return{clients:[]};}),
+    fetch('/api/recurring',{credentials:'same-origin'}).then(function(r){ if(r.status===401){location.href='/login';return null;} return r.json(); })
+  ]).then(function(res){
+    if(!res[1])return; CLIENTS=res[0].clients||[];
+    if(!res[1].ok){ document.getElementById('content').innerHTML='<p class="sm" style="padding:10px">読み込みに失敗しました。</p>'; return; }
+    render(res[1]);
+  }).catch(function(e){ document.getElementById('content').innerHTML='<p class="sm" style="padding:10px">読み込みエラー: '+esc(e.message)+'</p>'; });
+}
+
+function itemRow(it){ it=it||{}; var div=document.createElement('div'); div.className='irow';
+  div.innerHTML='<input class="i-name" placeholder="品目" value="'+esc(it.name||'')+'">'
+    +'<input class="i-qty" type="number" step="0.01" placeholder="数量" value="'+(it.qty!=null?it.qty:1)+'">'
+    +'<input class="i-price" type="number" step="1" placeholder="単価" value="'+(it.unit_price!=null?it.unit_price:'')+'">'
+    +'<select class="i-tax"><option value="10"'+(String(it.tax_rate)==='10'||it.tax_rate==null?' selected':'')+'>10%</option><option value="8"'+(String(it.tax_rate)==='8'?' selected':'')+'>8%</option><option value="0"'+(String(it.tax_rate)==='0'?' selected':'')+'>非課税</option></select>'
+    +'<button type="button" class="del" aria-label="削除">&times;</button>';
+  div.querySelector('.del').addEventListener('click',function(){ div.remove(); if(!document.querySelectorAll('#f-items .irow').length) document.getElementById('f-items').appendChild(itemRow({})); });
+  return div;
+}
+function fillClients(sel){ var s=document.getElementById('f-client'); s.innerHTML='<option value="">— 取引先を選択 —</option>'+CLIENTS.map(function(c){return '<option value="'+c.id+'"'+(String(sel)===String(c.id)?' selected':'')+'>'+esc(c.name)+'</option>';}).join('')+'<option value="__new">＋ 新しい取引先を入力</option>'; }
+function fillDom(sel){ var s=document.getElementById('f-dom'); var o=''; for(var i=1;i<=28;i++)o+='<option value="'+i+'"'+(String(sel)===String(i)?' selected':'')+'>'+i+'日</option>'; o+='<option value="99"'+(String(sel)==='99'?' selected':'')+'>末日</option>'; s.innerHTML=o; }
+function openAdd(){ EDIT_ID=null; document.getElementById('mtitle').textContent='定期請求を追加';
+  document.getElementById('f-title').value=''; fillClients(''); document.getElementById('f-newclient-wrap').style.display='none'; document.getElementById('f-newclient').value='';
+  var box=document.getElementById('f-items'); box.innerHTML=''; box.appendChild(itemRow({}));
+  document.getElementById('f-cycle').value='monthly'; fillDom(1); document.getElementById('f-due').value='30'; document.getElementById('f-mode').value='auto'; document.getElementById('f-bank').value='';
+  document.getElementById('modal').classList.add('on');
+}
+function openEdit(r){ EDIT_ID=r.id; document.getElementById('mtitle').textContent='定期請求を編集';
+  document.getElementById('f-title').value=r.title||''; fillClients(r.client_id); document.getElementById('f-newclient-wrap').style.display='none';
+  var box=document.getElementById('f-items'); box.innerHTML=''; box.appendChild(itemRow({name:r.title||'', qty:1, unit_price:'', tax_rate:10}));
+  document.getElementById('f-cycle').value=r.cycle; fillDom(r.day_of_month); document.getElementById('f-due').value=String(r.due_days); document.getElementById('f-mode').value=r.mode; document.getElementById('f-bank').value='';
+  document.getElementById('modal').classList.add('on');
+}
+function closeModal(){ document.getElementById('modal').classList.remove('on'); }
+function collectItems(){ return [].slice.call(document.querySelectorAll('#f-items .irow')).map(function(row){ return { name:row.querySelector('.i-name').value.trim(), qty:parseFloat(row.querySelector('.i-qty').value)||0, unit_price:Math.round(parseFloat(row.querySelector('.i-price').value)||0), tax_rate:parseInt(row.querySelector('.i-tax').value,10), withholding:0 }; }).filter(function(it){return it.name||it.unit_price;}); }
+
+document.getElementById('addbtn').addEventListener('click',openAdd);
+document.getElementById('f-addrow').addEventListener('click',function(){ document.getElementById('f-items').appendChild(itemRow({})); });
+document.getElementById('f-client').addEventListener('change',function(){ document.getElementById('f-newclient-wrap').style.display=(this.value==='__new')?'block':'none'; });
+document.getElementById('m-cancel').addEventListener('click',closeModal);
+document.getElementById('modal').addEventListener('click',function(e){ if(e.target.id==='modal') closeModal(); });
+document.getElementById('m-save').addEventListener('click',function(){
+  var items=collectItems(); if(!items.length){ toast('明細を入力してください'); return; }
+  var cid=document.getElementById('f-client').value;
+  var body={ title:document.getElementById('f-title').value, items:items, cycle:document.getElementById('f-cycle').value, day_of_month:parseInt(document.getElementById('f-dom').value,10), due_days:parseInt(document.getElementById('f-due').value,10), mode:document.getElementById('f-mode').value, bank:document.getElementById('f-bank').value };
+  if(cid==='__new'){ body.client_name=document.getElementById('f-newclient').value.trim(); if(!body.client_name){ toast('取引先名を入力してください'); return; } }
+  else if(cid){ body.client_id=parseInt(cid,10); }
+  var btn=document.getElementById('m-save'); btn.disabled=true; btn.textContent='保存中…';
+  var url=EDIT_ID?('/api/recurring/'+EDIT_ID):'/api/recurring'; var method=EDIT_ID?'PUT':'POST';
+  fetch(url,{method:method,headers:{'content-type':'application/json'},credentials:'same-origin',body:JSON.stringify(body)}).then(function(r){return r.json().catch(function(){return{};});}).then(function(j){
+    btn.disabled=false; btn.textContent='保存する';
+    if(j&&j.upsell){ toast('定期請求はPROプランの機能です'); setTimeout(function(){location.href='/pricing';},800); return; }
+    if(j&&j.ok){ toast(EDIT_ID?'更新しました':'定期請求を登録しました'); closeModal(); load(); }
+    else { toast((j&&j.error)||'保存に失敗しました'); }
+  }).catch(function(){ btn.disabled=false; btn.textContent='保存する'; toast('通信エラー'); });
+});
+
+document.getElementById('content').addEventListener('click',function(e){
+  var t=e.target.closest('[data-act]'); if(!t)return; var id=t.getAttribute('data-id'); var act=t.getAttribute('data-act');
+  var r=(window.__list||[]).filter(function(x){return String(x.id)===String(id);})[0];
+  if(act==='toggle'){ fetch('/api/recurring/'+id,{method:'PUT',headers:{'content-type':'application/json'},credentials:'same-origin',body:JSON.stringify({active:t.checked})}).then(function(){ toast(t.checked?'有効にしました':'停止しました'); load(); }).catch(function(){ toast('通信エラー'); t.checked=!t.checked; }); }
+  else if(act==='edit'){ if(r) openEdit(r); }
+  else if(act==='del'){ if(!confirm('この定期請求を削除しますか？（生成済みの請求書は残ります）'))return; fetch('/api/recurring/'+id,{method:'DELETE',credentials:'same-origin'}).then(function(){ toast('削除しました'); load(); }).catch(function(){ toast('通信エラー'); }); }
+});
+
+load();
+</script>
 <script src="/appshell.js?v=20261027"></script>
 </body>
 </html>

@@ -114,3 +114,13 @@ CREATE TABLE IF NOT EXISTS referral_hits (
   utm_source TEXT, utm_medium TEXT, utm_campaign TEXT,
   ref_host TEXT, country TEXT
 );
+
+-- 定期請求テンプレート（_recgen.js が自動作成）
+CREATE TABLE IF NOT EXISTS recurring (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER NOT NULL, client_id INTEGER,
+  title TEXT DEFAULT '', items_json TEXT NOT NULL, bank TEXT DEFAULT '', notes TEXT DEFAULT '',
+  cycle TEXT NOT NULL DEFAULT 'monthly', day_of_month INTEGER NOT NULL DEFAULT 1,
+  due_days INTEGER NOT NULL DEFAULT 30, mode TEXT NOT NULL DEFAULT 'auto',
+  next_run TEXT, active INTEGER NOT NULL DEFAULT 1, last_run TEXT,
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
