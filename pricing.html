@@ -368,7 +368,7 @@ html.anim .pulse::before{content:"";position:absolute;inset:0;border-radius:inhe
   var CONFIG={
     monthlyUrl:'https://buy.stripe.com/6oU9ATc3PdDAcfE4Lw9sk01', // 月額¥2,000 決済リンク
     yearlyUrl:'',            // ← 年額決済リンクを入れると年払いが有効化（1行で切替）
-    yearlyNow:'¥24,000', yearlyWas:'¥36,000',
+    yearlyNow:'¥20,000', yearlyWas:'¥24,000',  // ¥2,000×10ヶ月（2か月分おトク）／打ち消しは12ヶ月分
     contactUrl:'/contact'
   };
   var segM=document.getElementById('segM'),segY=document.getElementById('segY');
@@ -393,10 +393,10 @@ html.anim .pulse::before{content:"";position:absolute;inset:0;border-radius:inhe
     segM.classList.remove('on');segM.setAttribute('aria-selected','false');
     pwas.textContent=CONFIG.yearlyWas;pnow.textContent=CONFIG.yearlyNow;pper.textContent='/ 年（税込）';
     if(CONFIG.yearlyUrl){
-      psub.textContent='月あたり ¥2,000 ・ まとめて1年分';
+      psub.textContent='月あたり 約¥1,667 ・ 2か月分おトク';
       setBtn('年払いで申し込む →', CONFIG.yearlyUrl, true);
     }else{
-      psub.textContent='月あたり ¥2,000 ・ 年払いはお問い合わせください';
+      psub.textContent='月あたり 約¥1,667 ・ 2か月分おトク（年払いはお問い合わせ）';
       setBtn('年払いを相談する →', CONFIG.contactUrl, false);
     }
   }
