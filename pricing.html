@@ -355,22 +355,49 @@ html.anim .pulse::before{content:"";position:absolute;inset:0;border-radius:inhe
 </div></footer>
 
 <script>
-/* 月/年トグル：表示のみ切替（申込は月額リンクを維持） */
+/* 月/年トグル：価格表示＋申込ボタンの配線（config駆動） */
 (function(){
+  /* ============================================================
+   * ★年払いの有効化はここだけ：CONFIG.yearlyUrl に Stripe の
+   *   年額決済リンクを入れると「年払い」申込ボタンが有効になります。
+   *   空（''）の間は「年払い」ボタンはお問い合わせ(/contact)へ流れ、
+   *   月払いの申込には一切影響しません（＝安全）。
+   *   年額の表示金額(yearlyNow/yearlyWas)もここで合わせて調整。
+   * ============================================================ */
+  var CONFIG={
+    monthlyUrl:'https://buy.stripe.com/6oU9ATc3PdDAcfE4Lw9sk01', // 月額¥2,000 決済リンク
+    yearlyUrl:'',            // ← 年額決済リンクを入れると年払いが有効化（1行で切替）
+    yearlyNow:'¥24,000', yearlyWas:'¥36,000',
+    contactUrl:'/contact'
+  };
   var segM=document.getElementById('segM'),segY=document.getElementById('segY');
   var pnow=document.getElementById('pnow'),pwas=document.getElementById('pwas'),pper=document.getElementById('pper'),psub=document.getElementById('psub');
+  var probtn=document.getElementById('probtn');
   if(!segM||!segY)return;
+  function setBtn(text,href,ext){
+    if(!probtn)return;
+    probtn.textContent=text; probtn.href=href;
+    if(ext){ probtn.setAttribute('target','_blank'); probtn.setAttribute('rel','noopener'); }
+    else{ probtn.removeAttribute('target'); probtn.removeAttribute('rel'); }
+  }
   function setMonthly(){
     segM.classList.add('on');segM.setAttribute('aria-selected','true');
     segY.classList.remove('on');segY.setAttribute('aria-selected','false');
     pwas.textContent='¥3,000';pnow.textContent='¥2,000';pper.textContent='/ 月（税込）';
     psub.textContent='通常 ¥3,000 → いま申し込むと ¥2,000 / 月';
+    setBtn('今すぐPROに申し込む →', CONFIG.monthlyUrl, false);
   }
   function setYearly(){
     segY.classList.add('on');segY.setAttribute('aria-selected','true');
     segM.classList.remove('on');segM.setAttribute('aria-selected','false');
-    pwas.textContent='¥36,000';pnow.textContent='¥24,000';pper.textContent='/ 年（税込）';
-    psub.textContent='月あたり ¥2,000 ・ 2か月分おトク（年払いはお問い合わせ）';
+    pwas.textContent=CONFIG.yearlyWas;pnow.textContent=CONFIG.yearlyNow;pper.textContent='/ 年（税込）';
+    if(CONFIG.yearlyUrl){
+      psub.textContent='月あたり ¥2,000 ・ まとめて1年分';
+      setBtn('年払いで申し込む →', CONFIG.yearlyUrl, true);
+    }else{
+      psub.textContent='月あたり ¥2,000 ・ 年払いはお問い合わせください';
+      setBtn('年払いを相談する →', CONFIG.contactUrl, false);
+    }
   }
   segM.addEventListener('click',setMonthly);
   segY.addEventListener('click',setYearly);

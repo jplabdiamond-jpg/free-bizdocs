@@ -274,22 +274,26 @@ html.anim .pulse::before{content:"";position:absolute;inset:0;border-radius:inhe
 </div></footer>
 
 <script>
-/* Monthly/Yearly toggle: display only (checkout keeps the monthly USD link) */
+/* Monthly/Yearly toggle: updates price display AND re-points the checkout button */
 (function(){
   var segM=document.getElementById('segM'),segY=document.getElementById('segY');
   var price=document.getElementById('price'),per=document.getElementById('per'),launch=document.getElementById('launch');
   if(!segM||!segY)return;
+  window.FB_CYCLE='monthly';
+  function apply(){ if(window.FB_applyCheckout) window.FB_applyCheckout(); }
   function setMonthly(){
     segM.classList.add('on');segM.setAttribute('aria-selected','true');
     segY.classList.remove('on');segY.setAttribute('aria-selected','false');
     price.textContent='$15';per.textContent='/ month';
     launch.textContent='Billed monthly in USD · cancel anytime';
+    window.FB_CYCLE='monthly'; apply();
   }
   function setYearly(){
     segY.classList.add('on');segY.setAttribute('aria-selected','true');
     segM.classList.remove('on');segM.setAttribute('aria-selected','false');
     price.textContent='$150';per.textContent='/ year';
-    launch.textContent='$12.50/mo billed yearly · 2 months free (contact us to set up)';
+    launch.textContent='$12.50/mo billed yearly · 2 months free';
+    window.FB_CYCLE='yearly'; apply();
   }
   segM.addEventListener('click',setMonthly);
   segY.addEventListener('click',setYearly);
@@ -307,15 +311,20 @@ html.anim .pulse::before{content:"";position:absolute;inset:0;border-radius:inhe
 </script>
 <script>
 (function(){
-  // ---- CONFIG: set EN_CHECKOUT_URL to the USD Stripe payment link once created in the dashboard ----
+  // ---- CONFIG: set these to the USD Stripe payment links once created in the dashboard ----
   var EN_CHECKOUT_URL = "https://buy.stripe.com/4gMaEX7Nz9nkenM1zk9sk02"; // USD $15/mo Payment Link. Empty = route to contact.
+  var EN_YEARLY_URL   = "";  // ← USD yearly Payment Link. Empty = yearly routes to contact (monthly unaffected).
   var PORTAL_URL = "https://billing.stripe.com/p/login/bJe8wP3xjczwbbA3Hs9sk00";
   document.querySelectorAll('#portal2,#portal3').forEach(function(a){ a.href=PORTAL_URL; a.target="_blank"; a.rel="noopener"; });
 
   var sub=document.getElementById('subscribe'), submk=document.getElementById('submk'), prostate=document.getElementById('prostate');
-  function checkoutHref(){ return EN_CHECKOUT_URL || '/en/contact'; }
+  function yearly(){ return window.FB_CYCLE==='yearly'; }
+  function checkoutUrl(){ return (yearly()?EN_YEARLY_URL:EN_CHECKOUT_URL); }
+  function checkoutHref(){ return checkoutUrl() || '/en/contact'; }
 
-  fetch('/api/auth/me',{credentials:'same-origin'}).then(function(r){return r.json();}).then(function(me){
+  var lastMe=null;
+  function render(me){
+    lastMe=me;
     if(me && me.authed){
       if(me.plan==='pro'){
         sub.textContent='You’re on PRO ✓';
@@ -324,18 +333,25 @@ html.anim .pulse::before{content:"";position:absolute;inset:0;border-radius:inhe
         prostate.innerHTML='Signed in as <b>'+(me.email||'')+'</b> — PRO is active.';
       } else {
         // logged in, free -> go straight to checkout (Stripe collects the email)
-        sub.textContent='Upgrade to PRO';
+        sub.textContent = yearly() ? 'Upgrade to PRO (yearly)' : 'Upgrade to PRO';
         sub.href=checkoutHref();
-        if(EN_CHECKOUT_URL){ sub.target='_blank'; sub.rel='noopener'; submk.innerHTML='Use <b>'+(me.email||'your account email')+'</b> at checkout so PRO unlocks on this account.'; }
-        else { submk.innerHTML='Checkout is being set up — <a href="/en/contact">contact us</a> for early PRO access.'; }
+        if(checkoutUrl()){ sub.target='_blank'; sub.rel='noopener'; submk.innerHTML='Use <b>'+(me.email||'your account email')+'</b> at checkout so PRO unlocks on this account.'; }
+        else if(yearly()){ sub.removeAttribute('target'); sub.removeAttribute('rel'); submk.innerHTML='Annual billing — <a href="/en/contact">contact us</a> and we’ll set it up.'; }
+        else { sub.removeAttribute('target'); sub.removeAttribute('rel'); submk.innerHTML='Checkout is being set up — <a href="/en/contact">contact us</a> for early PRO access.'; }
         prostate.innerHTML='Signed in as <b>'+(me.email||'')+'</b> (Free plan).';
       }
     } else {
       // not logged in -> send to login first, then pricing
+      sub.textContent='Upgrade to PRO';
       sub.href='/en/login?next=pricing';
+      sub.removeAttribute('target'); sub.removeAttribute('rel');
       submk.innerHTML='You’ll create or sign in to an account, then check out securely via Stripe.';
     }
-  }).catch(function(){});
+  }
+  // Re-point the button when the Monthly/Yearly toggle changes.
+  window.FB_applyCheckout=function(){ if(lastMe!==null) render(lastMe); };
+
+  fetch('/api/auth/me',{credentials:'same-origin'}).then(function(r){return r.json();}).then(render).catch(function(){ render({authed:false}); });
 })();
 </script>
 <script>(function(){var h=document.getElementById("docnav-en");if(!h)return;var D=[["/en/invoice","Invoice"],["/en/estimate","Estimate / Quote"],["/en/receipt","Receipt"],["/en/purchase-order","Purchase Order"],["/en/packing-slip","Packing Slip / Delivery Note"]];var s=document.createElement("style");s.textContent="#docnav-en{background:#fff;border-bottom:1px solid #e6ebf2;overflow-x:auto}#docnav-en .t{display:flex;gap:8px;width:max-content;padding:12px 16px;margin:0 auto}#docnav-en a{font-size:13px;font-weight:700;color:#5a6b80;text-decoration:none;padding:8px 15px;border-radius:999px;background:#f1f5fb;border:1px solid #dce5f0;white-space:nowrap}";document.head.appendChild(s);h.innerHTML="<div class=\"t\">"+D.map(function(d){return "<a href=\""+d[0]+"\">"+d[1]+"</a>";}).join("")+"</div>";})();</script>

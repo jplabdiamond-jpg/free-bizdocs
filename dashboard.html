@@ -51,6 +51,18 @@ tr:last-child td{border-bottom:none}
 .st.partial{background:var(--ac-s);color:var(--ac)}.st.overdue{background:var(--over-s);color:var(--over)}
 .n{text-align:right;font-variant-numeric:tabular-nums}
 .quick{display:flex;gap:10px;flex-wrap:wrap}
+/* FREE向け: PRO機能の発見カード */
+.pteaser{background:var(--surf);border:1px solid var(--bd);border-radius:14px;padding:18px 20px}
+.pteaser .ph{display:flex;align-items:center;gap:8px;font-size:14.5px;font-weight:800;margin:0}
+.pteaser .ph .bd{font-size:10px;font-weight:900;color:#9c6b15;background:#f6ecd2;border-radius:999px;padding:2px 8px}
+.pteaser .psub{font-size:12.5px;color:var(--mut);margin:5px 0 15px;line-height:1.6}
+.pteaser .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:11px;margin-bottom:16px}
+.pteaser .f{border:1px solid var(--bd);border-radius:11px;padding:13px 14px;background:var(--surf2)}
+.pteaser .f .ic{width:21px;height:21px;color:var(--ac);display:block;margin-bottom:7px}
+.pteaser .f .ft{font-size:13px;font-weight:800}
+.pteaser .f .fd{font-size:11.5px;color:var(--mut);margin-top:3px;line-height:1.55}
+.pteaser .cta{display:inline-flex;align-items:center;gap:7px;background:linear-gradient(120deg,#1766e6,#2f9bf0);color:#fff;text-decoration:none;font-weight:800;font-size:14px;padding:11px 19px;border-radius:11px;box-shadow:0 10px 24px -10px rgba(23,102,230,.5)}
+@media(max-width:620px){.pteaser .grid{grid-template-columns:1fr}}
 @media(max-width:820px){.kpis{grid-template-columns:1fr 1fr}.side{width:100%;flex-direction:row;flex-wrap:wrap;align-items:center}.side .sp{display:none}.nav{flex-direction:row;flex-wrap:wrap}}
 </style>
 </head>
@@ -82,6 +94,7 @@ tr:last-child td{border-bottom:none}
       <div class="planbox" id="planbox"></div>
       <div class="kpis" id="kpis"></div>
       <div class="panel"><h2>直近の請求書</h2><table><thead><tr><th>番号</th><th>取引先</th><th>発行日</th><th>状態</th><th class="n">金額</th></tr></thead><tbody id="recent"><tr><td colspan="5" style="color:var(--faint)">読み込み中…</td></tr></tbody></table></div>
+      <div id="proteaser"></div>
     </div>
   </div>
 </div>
@@ -102,6 +115,7 @@ function stTag(r){ if(r.overdue) return '<span class="st overdue">期限超過</
         +'<div class="bar"><i style="width:'+pct+'%"></i></div>'
         +'<div class="pl-u">書類の保存 '+used+' / '+lim+' 件'+(me.remaining<=0?'（上限に達しています）':'（あと'+me.remaining+'件）')+'</div></div>'
         +'<div class="sp"></div><a class="up" href="/pricing">PROにアップグレード →</a>';
+      renderProTeaser();
     }
     var d=await API.get('/api/dashboard');
     document.getElementById('kpis').innerHTML=
@@ -116,8 +130,25 @@ function stTag(r){ if(r.overdue) return '<span class="st overdue">期限超過</
   }catch(e){ document.getElementById('recent').innerHTML='<tr><td colspan="5" style="color:var(--over)">読み込みエラー: '+API.esc(e.message)+'</td></tr>'; }
 })();
 function kpi(k,v,s,over){ return '<div class="kpi'+(over?' over':'')+'"><div class="k">'+k+'</div><div class="v">'+v+'</div><div class="s">'+(s||'')+'</div></div>'; }
+function renderProTeaser(){
+  var el=document.getElementById('proteaser'); if(!el) return;
+  function f(ic,t,d){ return '<div class="f">'+ic+'<div class="ft">'+t+'</div><div class="fd">'+d+'</div></div>'; }
+  var icRec='<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 4v5h-5"/></svg>';
+  var icPay='<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5L16 9.5"/></svg>';
+  var icRep='<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>';
+  el.className='pteaser';
+  el.innerHTML=''
+    +'<div class="ph"><span class="bd">PRO</span>保存だけじゃない、こんな機能も</div>'
+    +'<div class="psub">発行して終わりにせず、入金まで管理できます。繰り返す請求は自動化、売掛はひと目で。</div>'
+    +'<div class="grid">'
+    + f(icRec,'定期請求の自動作成','顧問料・保守費など毎月の請求を自動で発行。')
+    + f(icPay,'入金管理・消込','未入金・期限超過を自動で見える化、回収もれを防止。')
+    + f(icRep,'売上レポート','月次・取引先別に集計。確定申告の準備にも。')
+    +'</div>'
+    +'<a class="cta" href="/pricing"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg>PROにアップグレード（月¥2,000）→</a>';
+}
 document.getElementById('logout').addEventListener('click',function(){ API.logout(); });
 </script>
-<script src="/appshell.js?v=20261018b"></script>
+<script src="/appshell.js?v=20261027"></script>
 </body>
 </html>

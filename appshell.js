@@ -44,19 +44,37 @@
     var side=app.querySelector('.side'); if(side) side.addEventListener('click',function(e){ if(e.target.closest('a')) app.classList.remove('side-open'); });
   }
 
+  // ---- 機能ごとの訴求文（PRO限定の各画面に最適化） ----
+  var GEN={ t:'この機能はPROプランの機能です', p:'定期請求・入金管理・レポートは、発行から回収までを効率化するPROの機能です。無料プランでは書類の作成・保存（5件まで）がお使いいただけます。',
+    li:['定期請求の自動作成','入金管理・消込（売掛の見える化）','売上レポート・取引先別集計','書類の保存が無制限'] };
+  var FEAT={
+    '/recurring':{ t:'定期請求で毎月の請求を自動化', p:'顧問料・保守費・家賃など繰り返す請求を登録すれば、毎月あなたの代わりに請求書を作成。作成忘れ・請求もれを防げます。',
+      li:['毎月の請求書を自動で作成','「自動発行」か「下書き作成」を選べる','サイクル（毎月・隔月・四半期）に対応','もちろん書類の保存は無制限'] },
+    '/payments':{ t:'入金管理・消込で売掛を見える化', p:'入金を記録すると請求書に自動で紐づき、未入金・一部入金・期限超過がひと目で分かります。回収もれを防ぎましょう。',
+      li:['入金の記録と自動消込','未入金・期限超過を自動で把握','取引先ごとの売掛を一覧','ダッシュボードに即反映'] },
+    '/reports':{ t:'売上レポートで数字をまとめて把握', p:'月次の売上・入金や取引先別の集計を自動で。確定申告の準備や、取引先の見直しの材料になります。',
+      li:['月次の売上・入金レポート','取引先別の売上集計','期間を指定して振り返り','PDFでまとめて出力'] }
+  };
+  function liHtml(a){ return a.map(function(x){return '<li>'+x+'</li>';}).join(''); }
+
   // ---- アップセル・モーダル ----
   function buildModal(){
     var m=document.createElement('div'); m.className='fb-modal'; m.id='fbModal';
     m.innerHTML='<div class="fb-card"><div class="bd">🔒 PRO プラン限定の機能</div>'
-      +'<h3 id="fbModalТtl">この機能はPROプランでご利用いただけます</h3>'
-      +'<p>定期請求・入金管理・レポートは、発行から回収までを効率化するPROの機能です。アップグレードすると今すぐ使えます。</p>'
-      +'<ul><li>定期請求の自動作成</li><li>入金管理・消込（売掛の見える化）</li><li>売上レポート・取引先別集計</li><li>書類の保存が無制限</li></ul>'
+      +'<h3 id="fbmTtl"></h3><p id="fbmDesc"></p><ul id="fbmList"></ul>'
       +'<a class="cta" href="/pricing">PROにアップグレード（期間限定 月¥2,000）→</a>'
       +'<button class="later" type="button" data-close>あとで</button></div>';
     m.addEventListener('click',function(e){ if(e.target.id==='fbModal'||(e.target.dataset&&e.target.dataset.close!=null)) m.style.display='none'; });
     document.body.appendChild(m);
   }
-  function showModal(){ var m=document.getElementById('fbModal'); if(m) m.style.display='flex'; }
+  function showModal(feat){
+    var m=document.getElementById('fbModal'); if(!m) return;
+    var f=feat||GEN;
+    m.querySelector('#fbmTtl').textContent=f.t;
+    m.querySelector('#fbmDesc').textContent=f.p;
+    m.querySelector('#fbmList').innerHTML=liHtml(f.li);
+    m.style.display='flex';
+  }
   window.fbShowModal=showModal;
 
   // ---- PRO限定ナビの横取り＆オーバーレイ ----
@@ -66,17 +84,16 @@
       var href=(a.getAttribute('href')||'').replace(/\.html$/,'');
       if(GATED[href]){
         if(!a.querySelector('.fb-lock')){ var s=document.createElement('span'); s.className='fb-lock'; s.textContent='PRO'; a.appendChild(s); }
-        a.addEventListener('click',function(e){ e.preventDefault(); var app=document.querySelector('.app'); if(app)app.classList.remove('side-open'); showModal(); });
+        a.addEventListener('click',function(e){ e.preventDefault(); var app=document.querySelector('.app'); if(app)app.classList.remove('side-open'); showModal(FEAT[href]); });
       }
     });
   }
   function showOverlay(){
     var main=document.querySelector('.app .main')||document.querySelector('.main'); if(!main) return;
+    var f=FEAT[path]||GEN;
     var ov=document.createElement('div'); ov.className='fb-ov';
     ov.innerHTML='<div class="fb-card"><div class="bd">🔒 PRO プラン限定の機能</div>'
-      +'<h3>この画面はPROプランの機能です</h3>'
-      +'<p>定期請求・入金管理・レポートは、PROプランでご利用いただけます。無料プランでは書類の作成・保存（5件まで）がお使いいただけます。</p>'
-      +'<ul><li>定期請求の自動作成</li><li>入金管理・消込</li><li>売上レポート・取引先別集計</li></ul>'
+      +'<h3>'+f.t+'</h3><p>'+f.p+'</p><ul>'+liHtml(f.li)+'</ul>'
       +'<a class="cta" href="/pricing">PROにアップグレード（期間限定 月¥2,000）→</a>'
       +'<button class="later" type="button" onclick="location.href=\'/dashboard\'">ダッシュボードへ戻る</button></div>';
     main.style.position='relative';
