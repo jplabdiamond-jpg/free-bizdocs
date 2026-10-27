@@ -11,17 +11,19 @@ export async function onRequestGet(context) {
   if (OWNER_IDS.indexOf(uid) < 0) return json({ error: 'forbidden' }, 403);
 
   try { await env.DB.prepare(DDL).run(); } catch (e) {}
-  // 旧テーブルに page/lang 列が無くても落とさない
-  try { await env.DB.prepare('ALTER TABLE feedback ADD COLUMN page TEXT').run(); } catch (e) {}
-  try { await env.DB.prepare('ALTER TABLE feedback ADD COLUMN lang TEXT').run(); } catch (e) {}
+  // 旧テーブルに列が無くても落とさない（非破壊マイグレーション）
+  for (const col of ['page TEXT', 'lang TEXT', 'status TEXT', 'note TEXT', 'updated_at INTEGER']) {
+    try { await env.DB.prepare('ALTER TABLE feedback ADD COLUMN ' + col).run(); } catch (e) {}
+  }
 
   async function q(sql) {
     try { return (await env.DB.prepare(sql).all()).results || []; } catch (e) { return []; }
   }
-  const items = await q("SELECT id, name, kind, body, ts, page, lang FROM feedback ORDER BY id DESC LIMIT 300");
+  const items = await q("SELECT id, name, kind, body, ts, page, lang, COALESCE(NULLIF(status,''),'open') AS status, note, updated_at FROM feedback ORDER BY id DESC LIMIT 300");
   const byKind = await q("SELECT COALESCE(NULLIF(kind,''),'(なし)') AS k, COUNT(*) AS n FROM feedback GROUP BY k ORDER BY n DESC");
   const byLang = await q("SELECT COALESCE(NULLIF(lang,''),'(不明)') AS k, COUNT(*) AS n FROM feedback GROUP BY k ORDER BY n DESC");
   let total = 0; byKind.forEach(function (r) { total += r.n; });
+  let done = 0; items.forEach(function (r) { if (r.status === 'done') done += 1; });
 
-  return json({ ok: true, total, items, byKind, byLang });
+  return json({ ok: true, total, done, open: items.length - done, items, byKind, byLang });
 }

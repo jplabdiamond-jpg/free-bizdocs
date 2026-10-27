@@ -29,6 +29,16 @@ h1{font-size:20px;font-weight:900;margin:0 0 4px}
 .empty,.msg{background:#fff;border:1px solid #e6e4dd;border-radius:14px;padding:30px;text-align:center;color:#6c6f78}
 .msg a{color:#1766e6;font-weight:700}
 .count{font-size:12px;color:#8a8f98;margin:0 0 12px}
+.item.done{opacity:.6}
+.done-ck{margin-left:auto;display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:#2e7d32;cursor:pointer;user-select:none}
+.done-ck input{width:15px;height:15px;cursor:pointer}
+.noterow{display:flex;gap:8px;align-items:flex-start;margin-top:10px}
+.noterow .note{flex:1;min-width:0;border:1px solid #e0ddd4;border-radius:9px;padding:8px 10px;font-family:inherit;font-size:13px;resize:vertical;min-height:34px;line-height:1.6;color:#171a21;background:#fafafa}
+.noterow .note:focus{outline:none;border-color:#1766e6;background:#fff}
+.noterow .savebtn{border:none;background:#1766e6;color:#fff;font-weight:800;border-radius:9px;padding:8px 14px;font-size:12.5px;cursor:pointer;white-space:nowrap}
+.noterow .savebtn:disabled{opacity:.5;cursor:default}
+.noterow .notest{font-size:11.5px;color:#8a8f98;align-self:center;white-space:nowrap}
+.kpi.done-k{background:linear-gradient(120deg,#2e7d32,#43a047)}
 </style>
 </head>
 <body>
@@ -40,18 +50,42 @@ h1{font-size:20px;font-weight:900;margin:0 0 4px}
 <script>
 function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
 function jst(ts){ if(!ts) return ''; try{ return new Date(ts*1000).toLocaleString('ja-JP',{timeZone:'Asia/Tokyo',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'}); }catch(e){ return ''; } }
-var ALL=[], FILTER='all';
+var ALL=[], FL='all', FS='open'; // FL=言語フィルタ, FS=状態フィルタ(open/done/all)
+function byId(id){ for(var i=0;i<ALL.length;i++){ if(ALL[i].id===id) return ALL[i]; } return null; }
+async function post(id,payload){
+  payload.id=id;
+  var r=await fetch('/api/feedback-update',{method:'POST',credentials:'same-origin',headers:{'content-type':'application/json'},body:JSON.stringify(payload)});
+  var j={}; try{ j=await r.json(); }catch(_){}
+  if(!r.ok||!j.ok){ throw new Error((j&&j.error)||'更新に失敗しました'); }
+  return j;
+}
 function render(){
   var root=document.getElementById('root');
-  var rows=ALL.filter(function(x){ return FILTER==='all' || (x.lang||'ja')===FILTER; });
+  var rows=ALL.filter(function(x){
+    if(FL!=='all' && (x.lang||'ja')!==FL) return false;
+    var st=(x.status==='done')?'done':'open';
+    if(FS!=='all' && st!==FS) return false;
+    return true;
+  });
+  var done=0; ALL.forEach(function(x){ if(x.status==='done') done+=1; });
+  var openN=ALL.length-done;
   var kinds={}; ALL.forEach(function(x){ var k=x.kind||'(なし)'; kinds[k]=(kinds[k]||0)+1; });
   var kindChips=Object.keys(kinds).map(function(k){ return '<span class="chip" style="cursor:default">'+esc(k)+' '+kinds[k]+'</span>'; }).join('');
   var html=''
-    +'<div class="kpirow"><div class="kpi"><span class="t">要望・FB 累計</span><span class="v">'+ALL.length+'</span></div></div>'
+    +'<div class="kpirow">'
+    +'<div class="kpi"><span class="t">要望・FB 累計</span><span class="v">'+ALL.length+'</span></div>'
+    +'<div class="kpi"><span class="t">未対応</span><span class="v">'+openN+'</span></div>'
+    +'<div class="kpi done-k"><span class="t">対応済み</span><span class="v">'+done+'</span></div>'
+    +'</div>'
     +'<div class="chips">'
-    +'<span class="chip'+(FILTER==='all'?' on':'')+'" data-f="all">すべて</span>'
-    +'<span class="chip'+(FILTER==='ja'?' on':'')+'" data-f="ja">日本語</span>'
-    +'<span class="chip'+(FILTER==='en'?' on':'')+'" data-f="en">English</span>'
+    +'<span class="chip'+(FS==='open'?' on':'')+'" data-s="open">未対応</span>'
+    +'<span class="chip'+(FS==='done'?' on':'')+'" data-s="done">対応済み</span>'
+    +'<span class="chip'+(FS==='all'?' on':'')+'" data-s="all">すべて</span>'
+    +'</div>'
+    +'<div class="chips">'
+    +'<span class="chip'+(FL==='all'?' on':'')+'" data-f="all">全言語</span>'
+    +'<span class="chip'+(FL==='ja'?' on':'')+'" data-f="ja">日本語</span>'
+    +'<span class="chip'+(FL==='en'?' on':'')+'" data-f="en">English</span>'
     +'</div>'
     +'<div class="chips">'+kindChips+'</div>'
     +'<p class="count">'+rows.length+' 件</p>';
@@ -59,17 +93,47 @@ function render(){
   else {
     html+='<div class="list">'+rows.map(function(x){
       var lang=(x.lang==='en')?'en':'ja';
-      return '<div class="item"><div class="meta">'
+      var isDone=(x.status==='done');
+      return '<div class="item'+(isDone?' done':'')+'" data-id="'+x.id+'"><div class="meta">'
         +'<span class="tag '+lang+'">'+(lang==='en'?'EN':'JA')+'</span>'
         +'<span class="tag">'+esc(x.kind||'-')+'</span>'
         +'<span class="who">'+esc(x.name||'-')+'</span>'
         +'<span>'+esc(jst(x.ts))+'</span>'
         +(x.page?'<span class="pg">'+esc(x.page)+'</span>':'')
-        +'</div><div class="body">'+esc(x.body||'')+'</div></div>';
+        +'<label class="done-ck"><input type="checkbox" data-act="done"'+(isDone?' checked':'')+'> 対応済み</label>'
+        +'</div><div class="body">'+esc(x.body||'')+'</div>'
+        +'<div class="noterow"><textarea class="note" data-act="note" rows="1" placeholder="メモ（対応状況・返信内容など）">'+esc(x.note||'')+'</textarea>'
+        +'<button class="savebtn" data-act="save">保存</button><span class="notest"></span></div>'
+        +'</div>';
     }).join('')+'</div>';
   }
   root.innerHTML=html;
-  [].forEach.call(root.querySelectorAll('.chip[data-f]'),function(c){ c.addEventListener('click',function(){ FILTER=this.getAttribute('data-f'); render(); }); });
+  // フィルタチップ
+  [].forEach.call(root.querySelectorAll('.chip[data-f]'),function(c){ c.addEventListener('click',function(){ FL=this.getAttribute('data-f'); render(); }); });
+  [].forEach.call(root.querySelectorAll('.chip[data-s]'),function(c){ c.addEventListener('click',function(){ FS=this.getAttribute('data-s'); render(); }); });
+  // 対応済みチェック（即保存→再描画でフィルタ反映）
+  [].forEach.call(root.querySelectorAll('input[data-act="done"]'),function(ck){
+    ck.addEventListener('change',function(){
+      var item=this.closest('.item'), id=parseInt(item.getAttribute('data-id'),10), rec=byId(id);
+      var next=this.checked?'done':'open', prev=rec?rec.status:'open';
+      if(rec) rec.status=next;
+      var self=this; self.disabled=true;
+      post(id,{status:next}).then(function(){ render(); }).catch(function(e){
+        if(rec) rec.status=prev; self.checked=(prev==='done'); self.disabled=false;
+        alert(e.message);
+      });
+    });
+  });
+  // メモ保存
+  [].forEach.call(root.querySelectorAll('button[data-act="save"]'),function(btn){
+    btn.addEventListener('click',function(){
+      var item=this.closest('.item'), id=parseInt(item.getAttribute('data-id'),10), rec=byId(id);
+      var ta=item.querySelector('textarea[data-act="note"]'), st=item.querySelector('.notest');
+      var val=ta.value; this.disabled=true; st.textContent='保存中…';
+      post(id,{note:val}).then(function(){ if(rec) rec.note=val; st.textContent='保存しました'; btn.disabled=false; setTimeout(function(){ st.textContent=''; },2500); })
+        .catch(function(e){ st.textContent=e.message; btn.disabled=false; });
+    });
+  });
 }
 (async function(){
   var root=document.getElementById('root');
