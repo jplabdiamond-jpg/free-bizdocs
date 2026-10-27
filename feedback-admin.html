@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>要望・フィードバック一覧｜Free BizDoc</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap');
+body{margin:0;font-family:"Zen Kaku Gothic New",system-ui,sans-serif;color:#171a21;background:#f6f6f2}
+.wrap{max-width:980px;margin:0 auto;padding:24px 20px 60px}
+h1{font-size:20px;font-weight:900;margin:0 0 4px}
+.sub{font-size:12.5px;color:#6c6f78;margin:0 0 20px}
+.sub a{color:#1766e6;font-weight:700;text-decoration:none}
+.kpirow{display:flex;gap:12px;flex-wrap:wrap;margin:0 0 18px}
+.kpi{display:inline-flex;flex-direction:column;background:linear-gradient(120deg,#0f2f7a,#1766e6);color:#fff;border-radius:14px;padding:14px 20px;box-shadow:0 16px 40px -22px rgba(23,102,230,.5)}
+.kpi .t{font-size:12px;opacity:.9}.kpi .v{font-size:26px;font-weight:900;font-variant-numeric:tabular-nums}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 16px}
+.chip{border:1px solid #d3dbe6;background:#fff;color:#2b3a4b;border-radius:999px;padding:6px 14px;font-size:12.5px;font-weight:700;cursor:pointer}
+.chip.on{background:#1766e6;border-color:#1766e6;color:#fff}
+.list{display:flex;flex-direction:column;gap:10px}
+.item{background:#fff;border:1px solid #e6e4dd;border-radius:14px;padding:14px 16px}
+.item .meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:11.5px;color:#6c6f78;margin-bottom:7px}
+.tag{font-size:11px;font-weight:800;border-radius:999px;padding:2px 9px;background:#eef3fb;color:#1766e6}
+.tag.ja{background:#eef7ee;color:#2e7d32}.tag.en{background:#fff0e8;color:#da552f}
+.who{font-weight:700;color:#2b3a4b}
+.pg{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;color:#8a8f98;word-break:break-all}
+.body{font-size:14px;line-height:1.75;color:#171a21;white-space:pre-wrap;word-break:break-word}
+.empty,.msg{background:#fff;border:1px solid #e6e4dd;border-radius:14px;padding:30px;text-align:center;color:#6c6f78}
+.msg a{color:#1766e6;font-weight:700}
+.count{font-size:12px;color:#8a8f98;margin:0 0 12px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>要望・フィードバック一覧</h1>
+  <p class="sub">ユーザーから届いた要望を新しい順に表示（オーナー限定）。 <a href="/dashboard">← ダッシュボード</a></p>
+  <div id="root"><p class="sub">読み込み中…</p></div>
+</div>
+<script>
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function jst(ts){ if(!ts) return ''; try{ return new Date(ts*1000).toLocaleString('ja-JP',{timeZone:'Asia/Tokyo',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'}); }catch(e){ return ''; } }
+var ALL=[], FILTER='all';
+function render(){
+  var root=document.getElementById('root');
+  var rows=ALL.filter(function(x){ return FILTER==='all' || (x.lang||'ja')===FILTER; });
+  var kinds={}; ALL.forEach(function(x){ var k=x.kind||'(なし)'; kinds[k]=(kinds[k]||0)+1; });
+  var kindChips=Object.keys(kinds).map(function(k){ return '<span class="chip" style="cursor:default">'+esc(k)+' '+kinds[k]+'</span>'; }).join('');
+  var html=''
+    +'<div class="kpirow"><div class="kpi"><span class="t">要望・FB 累計</span><span class="v">'+ALL.length+'</span></div></div>'
+    +'<div class="chips">'
+    +'<span class="chip'+(FILTER==='all'?' on':'')+'" data-f="all">すべて</span>'
+    +'<span class="chip'+(FILTER==='ja'?' on':'')+'" data-f="ja">日本語</span>'
+    +'<span class="chip'+(FILTER==='en'?' on':'')+'" data-f="en">English</span>'
+    +'</div>'
+    +'<div class="chips">'+kindChips+'</div>'
+    +'<p class="count">'+rows.length+' 件</p>';
+  if(!rows.length){ html+='<div class="empty">該当する要望はまだありません。</div>'; }
+  else {
+    html+='<div class="list">'+rows.map(function(x){
+      var lang=(x.lang==='en')?'en':'ja';
+      return '<div class="item"><div class="meta">'
+        +'<span class="tag '+lang+'">'+(lang==='en'?'EN':'JA')+'</span>'
+        +'<span class="tag">'+esc(x.kind||'-')+'</span>'
+        +'<span class="who">'+esc(x.name||'-')+'</span>'
+        +'<span>'+esc(jst(x.ts))+'</span>'
+        +(x.page?'<span class="pg">'+esc(x.page)+'</span>':'')
+        +'</div><div class="body">'+esc(x.body||'')+'</div></div>';
+    }).join('')+'</div>';
+  }
+  root.innerHTML=html;
+  [].forEach.call(root.querySelectorAll('.chip[data-f]'),function(c){ c.addEventListener('click',function(){ FILTER=this.getAttribute('data-f'); render(); }); });
+}
+(async function(){
+  var root=document.getElementById('root');
+  try{
+    var r=await fetch('/api/feedback-list',{credentials:'same-origin'});
+    if(r.status===401){ location.href='/login'; return; }
+    if(r.status===403){ root.innerHTML='<div class="msg">この画面は管理者のみ閲覧できます。</div>'; return; }
+    var d=await r.json();
+    ALL=d.items||[];
+    render();
+  }catch(e){ root.innerHTML='<div class="msg">読み込みエラー: '+esc(e.message)+'</div>'; }
+})();
+</script>
+<script src="/siteheader.js?v=20261019en"></script>
+</body>
+</html>
