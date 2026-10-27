@@ -95,8 +95,8 @@ td.n{font-variant-numeric:tabular-nums;text-align:right}
   </div>
 </div>
 
-<div class="modal" id="modal"><div class="sheet">
-  <h2 id="mtitle">定期請求を追加</h2>
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mtitle" aria-hidden="true"><div class="sheet">
+  <h2 id="mtitle" tabindex="-1">定期請求を追加</h2>
   <p class="sub">登録しておくと、指定日に自動で請求書が作成されます（ログイン時に生成）。</p>
   <label class="fl">内容（メモ）<input id="f-title" placeholder="例）月額顧問料・運用サポート"></label>
   <label class="fl">取引先<select id="f-client"></select></label>
@@ -144,7 +144,7 @@ function render(d){
       +'<td class="next'+(soon?' soon':'')+'">'+(r.active?fmtDate(r.next_run):'<span style="color:var(--faint)">— 停止中</span>')+'</td>'
       +'<td><span class="mode '+(r.mode==='auto'?'auto':'draft')+'">'+(r.mode==='auto'?'自動発行':'下書き')+'</span></td>'
       +'<td style="text-align:center"><label class="sw"><input type="checkbox" data-act="toggle" data-id="'+r.id+'"'+(r.active?' checked':'')+' aria-label="有効"><span class="tk"></span></label></td>'
-      +'<td><span class="rowact"><button class="icbtn" data-act="edit" data-id="'+r.id+'" title="編集">&#9998;</button><button class="icbtn" data-act="del" data-id="'+r.id+'" title="削除">&#128465;</button></span></td>'
+      +'<td><span class="rowact"><button class="icbtn" data-act="edit" data-id="'+r.id+'" title="編集" aria-label="編集"><span aria-hidden="true">&#9998;</span></button><button class="icbtn" data-act="del" data-id="'+r.id+'" title="削除" aria-label="削除"><span aria-hidden="true">&#128465;</span></button></span></td>'
       +'</tr>';
   }).join('');
   html+='<div class="card"><div class="hd">登録中の定期請求<span class="sp"></span><span class="sm">'+list.length+'件</span></div>'
@@ -179,15 +179,32 @@ function openAdd(){ EDIT_ID=null; document.getElementById('mtitle').textContent=
   document.getElementById('f-title').value=''; fillClients(''); document.getElementById('f-newclient-wrap').style.display='none'; document.getElementById('f-newclient').value='';
   var box=document.getElementById('f-items'); box.innerHTML=''; box.appendChild(itemRow({}));
   document.getElementById('f-cycle').value='monthly'; fillDom(1); document.getElementById('f-due').value='30'; document.getElementById('f-mode').value='auto'; document.getElementById('f-bank').value='';
-  document.getElementById('modal').classList.add('on');
+  openModalA11y();
 }
 function openEdit(r){ EDIT_ID=r.id; document.getElementById('mtitle').textContent='定期請求を編集';
   document.getElementById('f-title').value=r.title||''; fillClients(r.client_id); document.getElementById('f-newclient-wrap').style.display='none';
   var box=document.getElementById('f-items'); box.innerHTML=''; box.appendChild(itemRow({name:r.title||'', qty:1, unit_price:'', tax_rate:10}));
   document.getElementById('f-cycle').value=r.cycle; fillDom(r.day_of_month); document.getElementById('f-due').value=String(r.due_days); document.getElementById('f-mode').value=r.mode; document.getElementById('f-bank').value='';
-  document.getElementById('modal').classList.add('on');
+  openModalA11y();
 }
-function closeModal(){ document.getElementById('modal').classList.remove('on'); }
+var _lastFocus=null;
+function openModalA11y(){ var m=document.getElementById('modal'); m.classList.add('on'); m.setAttribute('aria-hidden','false');
+  _lastFocus=document.activeElement;
+  // 最初のフォーカス可能要素へ（見出しに逃がさず入力へ）
+  setTimeout(function(){ var t=document.getElementById('f-title'); if(t) t.focus(); },0); }
+function closeModal(){ var m=document.getElementById('modal'); m.classList.remove('on'); m.setAttribute('aria-hidden','true');
+  if(_lastFocus&&_lastFocus.focus){ try{ _lastFocus.focus(); }catch(e){} } _lastFocus=null; }
+// Escape で閉じる・Tab でフォーカスをモーダル内に閉じ込める
+document.getElementById('modal').addEventListener('keydown',function(e){
+  if(e.key==='Escape'){ e.preventDefault(); closeModal(); return; }
+  if(e.key!=='Tab') return;
+  var f=this.querySelectorAll('a[href],button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])');
+  f=[].filter.call(f,function(el){ return el.offsetParent!==null; });
+  if(!f.length) return;
+  var first=f[0], last=f[f.length-1];
+  if(e.shiftKey && document.activeElement===first){ e.preventDefault(); last.focus(); }
+  else if(!e.shiftKey && document.activeElement===last){ e.preventDefault(); first.focus(); }
+});
 function collectItems(){ return [].slice.call(document.querySelectorAll('#f-items .irow')).map(function(row){ return { name:row.querySelector('.i-name').value.trim(), qty:parseFloat(row.querySelector('.i-qty').value)||0, unit_price:Math.round(parseFloat(row.querySelector('.i-price').value)||0), tax_rate:parseInt(row.querySelector('.i-tax').value,10), withholding:0 }; }).filter(function(it){return it.name||it.unit_price;}); }
 
 document.getElementById('addbtn').addEventListener('click',openAdd);

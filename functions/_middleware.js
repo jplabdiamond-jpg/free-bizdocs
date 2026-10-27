@@ -67,7 +67,23 @@ export async function onRequest(context) {
   const isApi = p.startsWith('/api/');
 
   // 保護対象でなければ公開（トップ・ツール・ブログ・料金・法務など）
-  if (!isAppPage && !isApi) return next();
+  if (!isAppPage && !isApi) {
+    // 獲得ファネル: 初回のHTML閲覧でファーストタッチ流入元を記録（既にあれば触らない）
+    if (request.method === 'GET' && !getCookie(request, 'fb_ft')
+        && !/\.(?:css|js|png|jpe?g|webp|svg|ico|woff2?|ttf|json|xml|txt|map)$/i.test(p)) {
+      const res = await next();
+      try {
+        const ct = res.headers.get('content-type') || '';
+        if (ct.indexOf('text/html') >= 0) {
+          const h = new Headers(res.headers);
+          h.append('Set-Cookie', firstTouchCookie(url, request));
+          return new Response(res.body, { status: res.status, statusText: res.statusText, headers: h });
+        }
+      } catch (e) { /* 失敗しても本体は返す */ }
+      return res;
+    }
+    return next();
+  }
 
   // ここからは認証が必要
   const uid = await verifySession(env.SESSION_SECRET, getCookie(request, 'sess'));
@@ -102,3 +118,25 @@ async function logReferral(env, url, request) {
 }
 
 export { REFERRAL_DDL };
+
+// 獲得ファネル: ファーストタッチ流入元を server 側 Cookie(fb_ft) に符号化。
+// utm_source 優先、無ければ外部参照元ドメイン、どちらも無ければ direct。
+function b64url(str) {
+  return btoa(unescape(encodeURIComponent(str))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+}
+function firstTouchCookie(url, request) {
+  const g = (k) => (url.searchParams.get(k) || '').slice(0, 80);
+  let s = g('utm_source'), m = g('utm_medium'), c = g('utm_campaign');
+  if (!s) {
+    try {
+      const r = request.headers.get('Referer');
+      if (r) {
+        const rh = new URL(r).hostname;
+        if (rh && !/(^|\.)free-bizdocs\.com$/i.test(rh)) { s = rh.slice(0, 80); m = 'referral'; }
+      }
+    } catch (e) {}
+  }
+  if (!s) s = 'direct';
+  const v = b64url(JSON.stringify({ s: s, m: m, c: c, l: url.pathname.slice(0, 120) }));
+  return 'fb_ft=' + v + '; Path=/; Max-Age=7776000; SameSite=Lax; Secure; HttpOnly';
+}

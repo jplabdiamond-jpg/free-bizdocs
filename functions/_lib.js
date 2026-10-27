@@ -62,6 +62,32 @@ export async function currentUserId(request, env) {
   return await verifySession(env.SESSION_SECRET, getCookie(request, 'sess'));
 }
 
+// 獲得ファネル: 登録時にファーストタッチ流入元(fb_ft Cookie)をD1へ保存。
+// テーブルは自動作成（Mac非依存）。失敗しても登録本体は止めない。
+export const ATTRIB_DDL = 'CREATE TABLE IF NOT EXISTS signup_attrib (user_id INTEGER PRIMARY KEY, source TEXT, medium TEXT, campaign TEXT, landing TEXT, ts TEXT)';
+export async function recordSignupAttrib(env, request, uid) {
+  try {
+    if (!env || !env.DB || !uid) return;
+    let o = {};
+    try {
+      const raw = getCookie(request, 'fb_ft');
+      if (raw) {
+        const s = raw.replace(/-/g, '+').replace(/_/g, '/');
+        o = JSON.parse(decodeURIComponent(escape(atob(s))));
+      }
+    } catch (e) { o = {}; }
+    const src = String(o.s || 'direct').slice(0, 80);
+    const med = String(o.m || '').slice(0, 80);
+    const camp = String(o.c || '').slice(0, 80);
+    const land = String(o.l || '').slice(0, 120);
+    await env.DB.batch([
+      env.DB.prepare(ATTRIB_DDL),
+      env.DB.prepare('INSERT OR IGNORE INTO signup_attrib (user_id, source, medium, campaign, landing, ts) VALUES (?,?,?,?,?,?)')
+        .bind(uid, src, med, camp, land, new Date().toISOString()),
+    ]);
+  } catch (e) { /* 計測失敗は無視 */ }
+}
+
 // ---- パスワード（PBKDF2-SHA256）----
 const PBKDF2_ITERS = 100000;
 async function pbkdf2Hex(password, saltHex) {

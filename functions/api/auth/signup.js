@@ -1,4 +1,4 @@
-import { json, hashPassword, makeSession, sessionCookie, normalizeEmail } from '../../_lib.js';
+import { json, hashPassword, makeSession, sessionCookie, normalizeEmail, recordSignupAttrib } from '../../_lib.js';
 
 export async function onRequestPost(context) {
   const { request, env } = context;
@@ -19,6 +19,7 @@ export async function onRequestPost(context) {
     "INSERT INTO users (email, company_name, plan, password_hash, pw_salt, invoice_seq) VALUES (?, '', 'free', ?, ?, 0)"
   ).bind(email, hash, salt).run();
   const uid = r.meta.last_row_id;
+  await recordSignupAttrib(env, request, uid); // 獲得ファネル: 流入元を記録
   const token = await makeSession(env.SESSION_SECRET, uid);
   return new Response(JSON.stringify({ ok: true, email: email, plan: 'free' }), {
     status: 200,

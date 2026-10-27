@@ -24,5 +24,17 @@ export async function onRequestGet(context) {
   const daily = await q("SELECT day AS k, COUNT(*) AS n FROM referral_hits WHERE day>=? GROUP BY day ORDER BY day DESC LIMIT 30");
 
   let total = 0; bySource.forEach(function (r) { total += r.n; });
-  return json({ ok: true, since, total, bySource, byCampaign, byMedium, byRef, byPath, daily });
+
+  // 獲得ファネル: 登録(signup_attrib) と PRO転換(users.plan) を流入元別に集計。
+  async function qf(sql) {
+    try { return (await env.DB.prepare(sql).all()).results || []; } catch (e) { return []; }
+  }
+  const signupsBySource = await qf("SELECT COALESCE(NULLIF(source,''),'direct') AS k, COUNT(*) AS n FROM signup_attrib GROUP BY k ORDER BY n DESC LIMIT 50");
+  const proBySource = await qf("SELECT COALESCE(NULLIF(a.source,''),'direct') AS k, COUNT(*) AS n FROM signup_attrib a JOIN users u ON u.id=a.user_id WHERE u.plan='pro' GROUP BY k ORDER BY n DESC LIMIT 50");
+  const signupsByCampaign = await qf("SELECT COALESCE(NULLIF(campaign,''),'(なし)') AS k, COUNT(*) AS n FROM signup_attrib GROUP BY k ORDER BY n DESC LIMIT 50");
+  let signupsTotal = 0; signupsBySource.forEach(function (r) { signupsTotal += r.n; });
+  let proTotal = 0; proBySource.forEach(function (r) { proTotal += r.n; });
+  const funnel = { signupsTotal, proTotal, signupsBySource, proBySource, signupsByCampaign };
+
+  return json({ ok: true, since, total, bySource, byCampaign, byMedium, byRef, byPath, daily, funnel });
 }

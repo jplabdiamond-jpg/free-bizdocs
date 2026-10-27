@@ -4,7 +4,62 @@
 import json, os, datetime
 ROOT = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(ROOT, 'en')
-V = datetime.date.today().strftime('%Y%m%d') + 'r'  # bump suffix on each JS/asset change to bust browser cache
+V = datetime.date.today().strftime('%Y%m%d') + 's'  # bump suffix on each JS/asset change to bust browser cache
+
+# --- 本番ENページに存在する手直し要素（BreadcrumbList / In short / Related guides）を生成側に取り込み ---
+EN_EXTRAS = {
+  'bill-of-sale': {'crumb': 'Bill of Sale Generator', 'inshort': 'Create a bill of sale to record a private sale and the transfer of ownership of an item. Free PDF, no account.', 'guides': None},
+  'credit-note': {'crumb': 'Credit Note Generator', 'inshort': 'Issue a credit note to cancel or reduce a previously sent invoice - it reverses the related tax too. Free PDF, no account.', 'guides': None},
+  'donation-receipt': {'crumb': 'Donation Receipt Generator', 'inshort': 'Create a nonprofit / charity donation receipt for a donor’s tax records. Free, no sign-up.', 'guides': None},
+  'estimate': {'crumb': 'Estimate & Quote Generator', 'inshort': 'Create a priced estimate or quote with a valid-until date, then convert it into an invoice once the client accepts. Free, no sign-up, instant PDF download.', 'guides': [['/en/blog/estimate-vs-quote', 'Estimate vs quote'], ['/en/blog', 'All guides &rarr;']]},
+  'expense-report': {'crumb': 'Expense Report Generator', 'inshort': 'Create an expense report to claim reimbursement for business costs by date and category. Free PDF, no sign-up.', 'guides': None},
+  'invoice': {'crumb': 'Invoice Generator', 'inshort': 'A free invoice generator: fill in your client, line items and tax, then download a professional PDF invoice in seconds. No sign-up, with US sales tax, UK VAT, Australian GST and Canadian GST/HST supported.', 'guides': [['/en/blog/how-to-write-an-invoice', 'How to write an invoice'], ['/en/blog/receipt-vs-invoice', 'Invoice vs receipt'], ['/en/blog/payment-terms-explained', 'Payment terms (Net 30)'], ['/en/blog/common-invoice-mistakes', 'Common invoice mistakes'], ['/en/blog/how-to-invoice-as-a-freelancer', 'Invoicing as a freelancer'], ['/en/blog', 'All guides &rarr;']]},
+  'packing-slip': {'crumb': 'Packing Slip / Delivery Note', 'inshort': 'Create a packing slip / delivery note listing the items and quantities shipped (no prices). Free, no sign-up.', 'guides': None},
+  'proforma-invoice': {'crumb': 'Pro Forma Invoice Generator', 'inshort': 'Create a pro forma invoice - a preliminary bill used for deposits, quotes or customs before the final invoice is issued. Free, no sign-up.', 'guides': None},
+  'purchase-order': {'crumb': 'Purchase Order Generator', 'inshort': 'Create a purchase order (PO) with a PO number, vendor, ship-to address and delivery date to formally place an order. Free PDF, no sign-up.', 'guides': [['/en/blog/what-is-a-purchase-order', 'What is a purchase order'], ['/en/blog', 'All guides &rarr;']]},
+  'receipt': {'crumb': 'Receipt Generator', 'inshort': 'Generate a proof-of-payment receipt showing the amount paid, the method and a PAID stamp. Free and no account needed.', 'guides': [['/en/blog/receipt-vs-invoice', 'Receipt vs invoice'], ['/en/blog', 'All guides &rarr;']]},
+  'sales-order': {'crumb': 'Sales Order Generator', 'inshort': 'Create a sales order / order confirmation that acknowledges a customer order before you ship or invoice. Free PDF download.', 'guides': None},
+  'timesheet': {'crumb': 'Timesheet Generator', 'inshort': 'Log hours by date at an hourly rate and convert the total into an invoice. Free timesheet generator, no sign-up.', 'guides': None},
+  'work-order': {'crumb': 'Work Order Generator', 'inshort': 'Create a work order / job sheet to authorise and document a job with labour, parts and a sign-off line. Free, no account.', 'guides': None},
+}
+
+def breadcrumb_ld(p, url):
+    if not p['slug']:  # index has its own JSON-LD set, no breadcrumb
+        return ''
+    ex = EN_EXTRAS.get(p['slug'])
+    name = ex['crumb'] if (ex and ex.get('crumb')) else p['h1'].replace('Free ', '')
+    obj = {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":BASE+"/en/"},{"@type":"ListItem","position":2,"name":name,"item":url}]}
+    return '<script type="application/ld+json">' + json.dumps(obj, ensure_ascii=False, separators=(',', ':')) + '</script>'
+
+# Index-only structured data (Organization / WebSite / rich WebApplication).
+# The index carries these instead of a BreadcrumbList.
+INDEX_EXTRA_LD = (
+  '<script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"Free BizDoc","url":"https://free-bizdocs.com/","logo":{"@type":"ImageObject","url":"https://free-bizdocs.com/logo.png","width":471,"height":90},"description":"Free online generator for invoices, estimates, receipts, purchase orders and other business documents - no sign-up.","areaServed":["US","GB","AU","CA"],"inLanguage":"en","contactPoint":{"@type":"ContactPoint","contactType":"customer support","url":"https://free-bizdocs.com/en/contact","availableLanguage":["en"]},"sameAs":["https://x.com/FreeBizDocs","https://www.producthunt.com/products/free-bizdoc","https://www.saashub.com/free-bizdoc","https://alternativeto.net/software/free-bizdoc"]}</script>\n'
+  '<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Free BizDoc","url":"https://free-bizdocs.com/en/","inLanguage":"en","publisher":{"@type":"Organization","name":"Free BizDoc"}}</script>\n'
+  '<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Free BizDoc - Free Business Document Generator","url":"https://free-bizdocs.com/en/","applicationCategory":"BusinessApplication","operatingSystem":"Web browser","browserRequirements":"Requires JavaScript","inLanguage":"en","description":"Create invoices, estimates, receipts, purchase orders, packing slips and more as PDFs in seconds - free, no sign-up. Supports US sales tax, UK VAT, Australian GST and Canadian GST/HST.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"publisher":{"@type":"Organization","name":"Free BizDoc"}}</script>\n'
+)
+
+def inshort_html(p):
+    ex = EN_EXTRAS.get(p['slug'])
+    if not ex or not ex.get('inshort'): return ''
+    return ('<section style="max-width:980px;margin:0 auto;padding:0 20px"><div style="background:#f4f8ff;border:1px solid #d9e6fb;border-left:4px solid #1766e6;border-radius:12px;padding:15px 18px;margin:16px 0 0">'
+      '<strong style="display:block;font-size:13.5px;color:#1766e6;margin-bottom:5px">In short</strong>'
+      '<p style="margin:0;font-size:15px;line-height:1.85;color:#243">' + ex['inshort'] + '</p></div></section>')
+
+def guides_html(p):
+    ex = EN_EXTRAS.get(p['slug'])
+    if not ex or not ex.get('guides'): return ''
+    pills = []
+    for href, label in ex['guides']:
+        if href == '/en/blog':
+            pills.append('<a href="/en/blog" style="font-size:13.5px;font-weight:700;color:#5a6b85;border:1px solid #d9e6fb;border-radius:999px;padding:7px 13px;text-decoration:none">' + label + '</a>')
+        else:
+            pills.append('<a href="' + href + '" style="font-size:13.5px;font-weight:700;color:#1766e6;background:#eef3fd;border-radius:999px;padding:7px 13px;text-decoration:none">' + label + '</a>')
+    return ('<section style="max-width:860px;margin:0 auto;padding:6px 20px 0">\n'
+      '  <h2 style="font-size:clamp(18px,3vw,22px);font-weight:800;margin:0 0 6px">Related guides</h2>\n'
+      '  <p style="color:#5a6b85;font-size:14px;margin:0 0 12px">Learn the terms, formats and differences behind this document.</p>\n'
+      '  <div style="display:flex;flex-wrap:wrap;gap:8px">\n    ' + '\n    '.join(pills) + '\n  </div>\n</section>')
+
 BASE = 'https://free-bizdocs.com'
 
 PAGES = [
@@ -275,7 +330,8 @@ def head(p, url):
       '<link rel="stylesheet" href="/suite.css?v=20261017d">\n'
       f'<script type="application/ld+json">{app}</script>\n'
       f'<script type="application/ld+json">{faqj}</script>\n'
-      '</head>\n<body>')
+      + (breadcrumb_ld(p, url) + '\n' if p['slug'] else INDEX_EXTRA_LD)
+      + '</head>\n<body>')
 
 # Fallback header (no-JS). siteheader-en.js replaces it with the full shared
 # header (nav + language switch + login/account auth), matching the JA site.
@@ -422,8 +478,13 @@ FOOTER = '''<footer class="ft"><div class="in">
 
 def page(p):
     url = f"{BASE}/en/{p['slug']}"
-    parts = [head(p, url), HEADER, hero(p), tool(p),
-      f'<article class="art">{ARTICLES[p["slug"]]}</article>', faq_html(FAQS[p['slug']]), FOOTER,
+    ins = inshort_html(p); gds = guides_html(p)
+    parts = [head(p, url), HEADER, hero(p)]
+    if ins: parts.append(ins)
+    parts.append(tool(p))
+    parts.append(f'<article class="art">{ARTICLES[p["slug"]]}</article>')
+    if gds: parts.append(gds)
+    parts += [faq_html(FAQS[p['slug']]), FOOTER,
       f'<script src="/en/en.js?v={V}"></script>',
       f'<script src="/en/siteheader-en.js?v={V}"></script>', '</body>', '</html>', '']
     return '\n'.join(parts)
@@ -432,8 +493,9 @@ def index():
     p = dict(slug='', ja='/', title='Free BizDoc - Free Invoice, Estimate, Receipt, Purchase Order & Packing Slip Generator (No Sign-Up)',
       desc='Create professional business documents as PDFs in seconds - free, no account. Invoices, estimates & quotes, receipts, purchase orders and packing slips with US sales tax, UK VAT, Australian GST and Canadian GST/HST.',
       h1='Free business documents. No sign-up.', ey='Invoice &middot; Estimate &middot; Receipt &middot; Purchase Order &middot; Packing Slip',
+      h1_hero='Free business documents. No sign-up, nothing stored.',
       lead='Pick a document, choose your country, and fill in the details. Tax, currency, paper size, and dates are set correctly for the US, UK, Australia, and Canada. Download the PDF, or share it with a link &mdash; the document lives inside the link, not on our servers.',
-      tags=['No sign-up','US / UK / AU / CA','Sales tax, VAT &amp; GST','Share by link','Instant PDF'])
+      tags=['No sign-up','Nothing stored on our servers','Correct tax: US / UK / AU / CA','Share by link','Instant PDF'])
     url = f"{BASE}/en/"
     cards = [('/en/invoice','Invoice','An itemized invoice with tax, a due date, payment terms, and your bank details.','Create an invoice'),
              ('/en/estimate','Estimate / Quote','A scope of work with pricing, a valid-until date, and an acceptance line.','Create an estimate'),
@@ -453,15 +515,18 @@ def index():
       '.dcard{display:block;background:#fff;border:1px solid var(--bd,#e2eaf4);border-radius:16px;padding:22px 22px 18px;text-decoration:none;color:inherit;box-shadow:0 10px 30px -22px rgba(19,38,59,.35);transition:.15s}'
       '.dcard:hover{transform:translateY(-2px);border-color:var(--ac,#1766e6)}.dcard h3{margin:0 0 6px;font-size:17px}.dcard p{margin:0 0 12px;font-size:13.5px;color:#5a6b7b;line-height:1.55}.dcard .go{font-size:13px;font-weight:800;color:var(--ac,#1766e6)}'
       '.regions{max-width:1180px;margin:0 auto;padding:0 20px 34px}'
-      '.regions h2{font-size:clamp(18px,3vw,22px);font-weight:900;margin:0 0 14px}'
+      '.regions h2{font-size:clamp(18px,3vw,22px);font-weight:900;margin:0 0 6px}'
+      '.regions .rsub{font-size:14px;color:#5a6b7b;line-height:1.65;margin:0 0 14px;max-width:62ch}'
       '.rgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}'
-      '.rgrid .rc{background:#fff;border:1px solid var(--bd,#e2eaf4);border-radius:14px;padding:15px 16px}'
-      '.rgrid .rc b{display:block;font-size:14.5px;margin-bottom:4px}.rgrid .rc span{font-size:13px;color:#5a6b7b;line-height:1.6}</style>')
-    regions = ('<div class="regions"><h2>Built for your country</h2><div class="rgrid">'
-      '<div class="rc"><b>&#127482;&#127480; United States</b><span>Sales tax set per line, Net&nbsp;30 terms, Letter paper, USD.</span></div>'
-      '<div class="rc"><b>&#127468;&#127463; United Kingdom</b><span>VAT at 20% / 5% / 0%, your VAT number, A4 paper, GBP.</span></div>'
-      '<div class="rc"><b>&#127462;&#127482; Australia</b><span>GST 10%, your ABN, the title &ldquo;Tax Invoice&rdquo;, A4 paper, AUD.</span></div>'
-      '<div class="rc"><b>&#127464;&#127462; Canada</b><span>GST / HST / PST / QST by province, your GST/HST number, Letter paper, CAD.</span></div>'
+      '.rgrid .rc{display:block;background:#fff;border:1px solid var(--bd,#e2eaf4);border-radius:14px;padding:15px 16px;text-decoration:none;color:inherit;transition:.15s}'
+      '.rgrid .rc:hover{border-color:var(--ac,#1766e6);transform:translateY(-2px);box-shadow:0 14px 34px -24px rgba(19,38,59,.4)}'
+      '.rgrid .rc b{display:block;font-size:14.5px;margin-bottom:4px}.rgrid .rc span{font-size:13px;color:#5a6b7b;line-height:1.6}'
+      '.rgrid .rc em{display:block;margin-top:9px;font-size:12.5px;font-weight:800;font-style:normal;color:var(--ac,#1766e6)}</style>')
+    regions = ('<div class="regions"><h2>Built for your country</h2><p class="rsub">Open the editor already set to your country &mdash; the right tax, currency, paper size, date format and tax-ID label, with no US-centric defaults to undo.</p><div class="rgrid">'
+      '<a class="rc" href="/en/invoice/us-sales-tax"><b>&#127482;&#127480; United States</b><span>Sales tax set per line, Net&nbsp;30 terms, Letter paper, USD.</span><em>US sales-tax invoice &rarr;</em></a>'
+      '<a class="rc" href="/en/invoice/uk-vat"><b>&#127468;&#127463; United Kingdom</b><span>VAT at 20% / 5% / 0%, your VAT number, A4 paper, GBP.</span><em>UK VAT invoice &rarr;</em></a>'
+      '<a class="rc" href="/en/invoice/australia-tax-invoice"><b>&#127462;&#127482; Australia</b><span>GST 10%, your ABN, the title &ldquo;Tax Invoice&rdquo;, A4 paper, AUD.</span><em>Australian tax invoice &rarr;</em></a>'
+      '<a class="rc" href="/en/invoice/canada-gst-hst"><b>&#127464;&#127462; Canada</b><span>GST / HST / PST / QST by province, your GST/HST number, Letter paper, CAD.</span><em>Canada GST/HST invoice &rarr;</em></a>'
       '</div></div>')
     art = ('<article class="art"><p class="lead">Free BizDoc began in Japan as a free generator for Japanese business documents. The English edition isn&rsquo;t a translation of those forms &mdash; it follows the formats businesses actually use in each country: a US invoice with sales tax, a UK VAT invoice, an Australian tax invoice, and a Canadian GST/HST invoice, plus estimates, receipts, purchase orders, and packing slips.</p>'
       '<h2>How it works</h2><div class="steps"><div class="step"><span class="n">1</span><span class="t">Pick a document and your country.</span></div><div class="step"><span class="n">2</span><span class="t">Enter your business once &mdash; it&rsquo;s remembered in your browser.</span></div><div class="step"><span class="n">3</span><span class="t">Add the recipient and line items. The live preview is the actual PDF.</span></div><div class="step"><span class="n">4</span><span class="t">Download it, or send a share link instead of an attachment.</span></div></div></article>')
@@ -496,7 +561,7 @@ def index():
       '</style>')
     hero_html = ('<section class="hero hero-en"><div class="in">'
       '<div class="htext">'
-      f'<span class="ey">{p["ey"]}</span><h1>{p["h1"]}</h1><p>{p["lead"]}</p>'
+      f'<span class="ey">{p["ey"]}</span><h1>{p["h1_hero"]}</h1><p>{p["lead"]}</p>'
       '<div class="hcta"><a class="hbtn pri" href="/en/invoice">Create an invoice &rarr;</a><a class="hbtn gh" href="/en/pricing">See plans</a></div>'
       f'<div class="tags">{tags}</div>'
       '</div>'

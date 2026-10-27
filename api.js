@@ -84,7 +84,7 @@ window.API = (function () {
     _libReady = (async function () {
       if (!window.PDFLib) await loadScript('https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js');
       if (!window.fontkit) await loadScript('https://cdn.jsdelivr.net/npm/@pdf-lib/fontkit@1.1.1/dist/fontkit.umd.min.js');
-      if (!_fontBytes) _fontBytes = await fetch('/fonts/noto-jp.ttf').then(function (r) { return r.arrayBuffer(); });
+      if (!_fontBytes) _fontBytes = await fetch('/fonts/noto-jp.ttf', { cache: 'force-cache' }).then(function (r) { return r.arrayBuffer(); });
     })();
     return _libReady;
   }
@@ -160,7 +160,10 @@ window.API = (function () {
         + '.livepv-more{text-align:center;font-size:12px;color:#5a6b7d;font-weight:700}';
       document.head.appendChild(css);
     }
-    schedule();
+    // 初回プレビューはブラウザのアイドル時に実行し、pdf-lib と日本語フォント(約2.7MB)の
+    // 取得を初期表示のクリティカルパスから外す（表示/操作可能までを高速化）。
+    if ('requestIdleCallback' in window) { try { requestIdleCallback(function () { schedule(); }, { timeout: 2600 }); } catch (e) { schedule(); } }
+    else { setTimeout(schedule, 1400); }
     return schedule;
   }
   // doc: {doc_no, issue_date, due_date, client_name, honorific, client_address, bank, notes, payable}

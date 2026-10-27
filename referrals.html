@@ -32,8 +32,8 @@ td.n{text-align:right;font-variant-numeric:tabular-nums;font-weight:800;width:80
 </head>
 <body>
 <div class="wrap">
-  <h1>流入レポート</h1>
-  <p class="sub">utm付きリンク・外部サイトからの流入を第一者で計測（直近30日・<span id="since"></span>〜）。 <a href="/dashboard">← ダッシュボード</a></p>
+  <h1>獲得レポート</h1>
+  <p class="sub">流入元ごとの「登録 → PRO」転換と、生の流入（直近30日・<span id="since"></span>〜）を第一者で計測。 <a href="/dashboard">← ダッシュボード</a></p>
   <div id="root"><p class="sub">読み込み中…</p></div>
 </div>
 <script>
@@ -55,7 +55,33 @@ function tbl(title,rows,max){
     if(r.status===403){ root.innerHTML='<div class="msg">このレポートは管理者のみ閲覧できます。</div>'; return; }
     var d=await r.json();
     document.getElementById('since').textContent=d.since||'';
+    var f=d.funnel||{};
+    // 流入元別 登録→PRO ファネル表
+    function funnelTbl(){
+      var su=f.signupsBySource||[], pr=f.proBySource||[];
+      if(!su.length) return '<div class="card"><h2>流入元別 登録 → PRO</h2><div class="empty">まだ登録データがありません</div></div>';
+      var pm={}; pr.forEach(function(x){ pm[x.k]=x.n; });
+      var max=Math.max.apply(null,su.map(function(x){return x.n;}));
+      var body=su.map(function(x){
+        var p=pm[x.k]||0; var rate=x.n?Math.round(p/x.n*100):0; var w=max?Math.round(x.n/max*100):0;
+        return '<tr><td><span class="k">'+esc(x.k)+'</span><div class="bar"><i style="width:'+w+'%"></i></div></td>'
+          +'<td class="n">'+x.n+'</td><td class="n">'+p+'</td><td class="n">'+rate+'%</td></tr>';
+      }).join('');
+      return '<div class="card"><h2>流入元別 登録 → PRO</h2>'
+        +'<table><tr><th style="text-align:left;font-size:12px;color:#8795a5;font-weight:700">流入元</th><th style="font-size:12px;color:#8795a5;font-weight:700">登録</th><th style="font-size:12px;color:#8795a5;font-weight:700">PRO</th><th style="font-size:12px;color:#8795a5;font-weight:700">転換率</th></tr>'+body+'</table></div>';
+    }
+    var proRate=(f.signupsTotal?Math.round((f.proTotal||0)/f.signupsTotal*100):0);
     root.innerHTML=''
+      +'<div class="kpirow" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:18px">'
+      +'<div class="kpi"><span class="t">登録（累計）</span><span class="v">'+(f.signupsTotal||0)+'</span></div>'
+      +'<div class="kpi"><span class="t">PRO（累計）</span><span class="v">'+(f.proTotal||0)+'</span></div>'
+      +'<div class="kpi"><span class="t">登録→PRO 転換率</span><span class="v">'+proRate+'%</span></div>'
+      +'</div>'
+      +'<div class="grid">'
+      + funnelTbl()
+      + tbl('流入元別 キャンペーン（登録時）', f.signupsByCampaign)
+      +'</div>'
+      +'<h2 class="secttl" style="font-size:16px;font-weight:900;margin:28px 0 12px">生の流入（直近30日・utm/外部参照）</h2>'
       +'<div class="kpi"><span class="t">計測した流入（30日・utm/外部参照）</span><span class="v">'+(d.total||0)+'</span></div>'
       +'<div class="grid">'
       + tbl('流入元（utm_source）', d.bySource)

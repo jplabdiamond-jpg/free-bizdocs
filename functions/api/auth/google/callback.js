@@ -1,4 +1,4 @@
-import { getCookie, makeSession, sessionCookie, normalizeEmail } from '../../../_lib.js';
+import { getCookie, makeSession, sessionCookie, normalizeEmail, recordSignupAttrib } from '../../../_lib.js';
 
 const CLIENT_ID = '934709740515-p6pe9kbt5fqrr9iprc1kbtjmttg2igu2.apps.googleusercontent.com';
 const REDIRECT = 'https://free-bizdocs.com/api/auth/google/callback';
@@ -49,6 +49,7 @@ export async function onRequestGet(context) {
       "INSERT INTO users (email, company_name, plan, invoice_seq) VALUES (?, '', 'free', 0)"
     ).bind(email).run();
     uid = r.meta.last_row_id;
+    await recordSignupAttrib(env, request, uid); // 獲得ファネル: 新規登録のみ流入元を記録
   }
   const token = await makeSession(env.SESSION_SECRET, uid);
   // ログイン後の遷移先（英語フローは /en/account 等）。安全な自サイトパスのみ許可。

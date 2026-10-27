@@ -368,6 +368,14 @@ var _pdfjsP=null;
 function ensurePdfjs(){ if(_pdfjsP)return _pdfjsP; _pdfjsP=(async function(){ if(!window.pdfjsLib) await loadScript('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js'); window.pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js'; })(); return _pdfjsP; }
 var _pvT=null,_pvRun=null,_pvAgain=false,_pvSeq=0;
 function schedulePv(){ clearTimeout(_pvT); _pvT=setTimeout(runPv,650); }
+/* 初回プレビューはブラウザのアイドル時に実行し、pdf-lib/pdf.js の取得を
+   初期ロードのクリティカルパスから外す（LCP/操作可能までの時間を改善）。 */
+var _pvFirst=false;
+function firstPv(){ if(_pvFirst){ schedulePv(); return; } _pvFirst=true;
+  var go=function(){ schedulePv(); };
+  if('requestIdleCallback' in window){ try{ requestIdleCallback(go,{timeout:2600}); return; }catch(e){} }
+  setTimeout(go,1400);
+}
 async function runPv(){
   var host=$('livepv'); if(!host)return; if(_pvRun){ _pvAgain=true; return; }
   var my=++_pvSeq, st=host.querySelector('.livepv-st'), pagesEl=host.querySelector('.livepv-pages'); if(st) st.style.opacity='1';
@@ -449,7 +457,7 @@ function enterShareView(P){
   pb.innerHTML=h; var pvb=document.querySelector('.card.right .pvbody'); if(pvb) pvb.insertBefore(pb,pvb.firstChild);
   var mk=document.createElement('div'); mk.className='sv-mk'; mk.innerHTML='Create your own free '+esc(K.title.toLowerCase())+' at <a href="/en/invoice">Free BizDoc</a> — no sign-up.'; var cta=document.querySelector('.cta'); if(cta) cta.appendChild(mk);
   try{ document.title=(P.co.name?P.co.name+' — ':'')+K.title; }catch(e){}
-  setupPreview(); schedulePv();
+  setupPreview(); firstPv();
   var mkb=$('make'); if(mkb) mkb.lastChild.nodeValue=' Download this '+K.title+' (PDF)';
 }
 
@@ -573,7 +581,7 @@ async function loadSavedParam(){
     applyKind(qt||kind,true);
     if($('due')&&!$('due').value&&(KINDS[kind].due||KINDS[kind].valid)) $('due').value=plusDays(30);
     var PF=parsePrefill(); if(PF){ try{ applyPrefill(PF); }catch(e){ console.error(e); } }
-    setupPreview(); setupShare(); renderConvertBar(); refreshRemain(); schedulePv();
+    setupPreview(); setupShare(); renderConvertBar(); refreshRemain(); firstPv();
     // Accounts: load auth state, then (if ?doc) load the saved document.
     fetchMe().then(function(){ loadSavedParam(); });
   }
