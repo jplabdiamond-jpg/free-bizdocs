@@ -5,7 +5,7 @@ var toolRoot=document.getElementById('toolwrap');
 var kind=(toolRoot&&toolRoot.getAttribute('data-kind'))||'invoice';
 var rowsEl=document.getElementById('rows');
 var editDocId=null; try{ editDocId=new URLSearchParams(location.search).get('doc')||null; }catch(e){}
-var CO=['co-name','co-reg','co-email','co-addr','co-bank'];
+var CO=['co-name','co-reg','co-email','co-addr','co-bank','co-paylink'];
 function loadCo(){ try{ var s=JSON.parse(localStorage.getItem('free_company')||'{}'); CO.forEach(function(id){ if(s[id]!=null) document.getElementById(id).value=s[id]; }); var d=document.getElementById('co-details'); if(d){ d.open=!s['co-name']; } }catch(e){} }
 function saveCo(){ try{ var o={}; CO.forEach(function(id){o[id]=document.getElementById(id).value;}); localStorage.setItem('free_company',JSON.stringify(o)); }catch(e){} }
 
@@ -187,6 +187,7 @@ function buildPayload(){
     dn:(dn?dn.value:''), id:document.getElementById('issue').value, dd:document.getElementById('due').value,
     cn:document.getElementById('cl-name').value, ch:document.getElementById('cl-hon').value, no:document.getElementById('notes').value,
     co:document.getElementById('co-name').value, cr:document.getElementById('co-reg').value, ca:document.getElementById('co-addr').value, ce:document.getElementById('co-email').value, cb:document.getElementById('co-bank').value,
+    cpl:(document.getElementById('co-paylink')?document.getElementById('co-paylink').value:''),
     it:items.map(function(it){return [it.name,it.qty,it.unit,it.unit_price,it.tax_rate,it.withholding];}) };
 }
 function parseShare(){ try{ var m=(location.hash||'').match(/[#&]s=([^&]+)/); if(!m)return null; var o=JSON.parse(_b64d(decodeURIComponent(m[1]))); return (o&&o.it)?o:null; }catch(e){ return null; } }
@@ -285,7 +286,7 @@ function injectShareCSS(){
 function enterShareView(P){
   window.__colog=''; window.__coseal='';
   function set(id,v){ var el=document.getElementById(id); if(el!=null&&v!=null) el.value=v; }
-  set('co-name',P.co); set('co-reg',P.cr); set('co-addr',P.ca); set('co-email',P.ce); set('co-bank',P.cb);
+  set('co-name',P.co); set('co-reg',P.cr); set('co-addr',P.ca); set('co-email',P.ce); set('co-bank',P.cb); set('co-paylink',P.cpl);
   set('cl-name',P.cn); set('cl-hon',P.ch||'御中'); set('notes',P.no);
   set('doc-no',P.dn); set('issue',P.id); set('due',P.dd);
   rowsEl.innerHTML='';
@@ -304,6 +305,11 @@ function enterShareView(P){
   var h='<div class="pb-from">'+API.esc(P.co||'発行者')+' からの'+API.esc(K.t)+'</div><div class="pb-amt">'+API.yen(pay)+'</div>';
   if(K.due&&P.dd) h+='<div class="pb-row">お支払期限 : '+API.esc(P.dd)+'</div>';
   if(P.cb) h+='<div class="pb-bank">お振込先 : '+API.esc(P.cb)+'</div>';
+  // 発行者が自分の決済リンク(co-paylink)を入れていれば「今すぐお支払い」ボタンを表示（請求書のみ）。
+  // お金は発行者に直接入り、Free BizDoc は一切関与しません。
+  if(k==='invoice' && P.cpl && /^https?:\/\//i.test(P.cpl)){
+    h+='<a class="pb-pay" href="'+API.esc(P.cpl)+'" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:7px;margin-top:12px;background:#fff;color:#1256cf;font-weight:900;font-size:15px;text-decoration:none;border-radius:11px;padding:12px 20px;box-shadow:0 10px 24px -10px rgba(0,0,0,.35)">今すぐお支払い →</a>';
+  }
   pb.innerHTML=h;
   var dl=document.createElement('div'); dl.className='sv-dl';
   dl.innerHTML='<button type="button" class="dlbtn" id="svdl">この'+API.esc(K.t)+'をPDFでダウンロード</button>'
