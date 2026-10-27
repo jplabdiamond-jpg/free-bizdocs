@@ -10,7 +10,7 @@ BASE = 'https://free-bizdocs.com'
 PAGES = [
  dict(slug='invoice', kind='invoice', ja='/invoice', title='Free Invoice Generator - Create & Download a PDF Invoice (No Sign-Up)',
   desc='Create a professional invoice in seconds and download it as a PDF - free, no account needed. US sales tax, UK VAT, Australian GST (tax invoice) and Canadian GST/HST supported.',
-  h1='Free Invoice Generator', ey='Free - No sign-up - US / UK / AU / CA',
+  h1='Free Invoice Generator', ey='Free - No sign-up - US / UK / AU / CA / EU',
   lead='Enter your business, your client and the line items - tax is calculated automatically for your country and the PDF is ready to download. Nothing you type is stored on our servers.',
   tags=['No sign-up','Sales tax / VAT / GST','Net 30 &amp; due dates','Instant PDF','Share by link']),
  dict(slug='estimate', kind='quote', ja='/quote', title='Free Estimate & Quote Generator - Download a PDF Quote (No Sign-Up)',
