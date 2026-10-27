@@ -272,7 +272,13 @@ function injectShareCSS(){
   +'.sv-dl{display:flex;flex-direction:column;gap:9px;margin-top:12px}'
   +'.sv-dl .dlbtn{display:inline-flex;align-items:center;justify-content:center;gap:7px;background:var(--ac,#1766e6);color:#fff;border:none;border-radius:11px;padding:13px;font-size:15px;font-weight:800;cursor:pointer;font-family:inherit}'
   +'.sv-dl .mk{text-align:center;font-size:12.5px;color:var(--mut,#5a6b7b)}'
-  +'.sv-dl .mk a{color:var(--ac,#1766e6);font-weight:700}';
+  +'.sv-dl .mk a{color:var(--ac,#1766e6);font-weight:700}'
+  +'.sv-cta{margin-top:4px;border:1px solid var(--bd,#e2eaf4);background:var(--surf2,#f6faff);border-radius:13px;padding:15px 16px;text-align:center}'
+  +'.sv-cta .sct-h{font-size:14px;font-weight:800;color:var(--ink,#16202b)}'
+  +'.sv-cta .sct-h b{color:var(--ac,#1766e6)}'
+  +'.sv-cta .sct-p{font-size:12px;color:var(--mut,#5a6b7b);margin:5px 0 12px;line-height:1.6}'
+  +'.sv-cta .sct-btn{display:inline-flex;align-items:center;gap:6px;background:var(--ac,#1766e6);color:#fff;text-decoration:none;font-weight:800;font-size:13.5px;padding:10px 18px;border-radius:10px}'
+  +'.sv-cta .sct-btn:hover{background:#1257ca}';
   document.head.appendChild(s);
 }
 
@@ -301,7 +307,9 @@ function enterShareView(P){
   pb.innerHTML=h;
   var dl=document.createElement('div'); dl.className='sv-dl';
   dl.innerHTML='<button type="button" class="dlbtn" id="svdl">この'+API.esc(K.t)+'をPDFでダウンロード</button>'
-    +'<div class="mk">このツールで<a href="/invoice">自分も無料で書類を作成</a>（登録不要）</div>';
+    +'<div class="sv-cta"><div class="sct-h">あなたも <b>無料</b> で書類を作れます</div>'
+    +'<div class="sct-p">請求書・見積書・納品書・領収書を、登録不要・インボイス対応で。日本語PDFをその場でダウンロードできます。</div>'
+    +'<a class="sct-btn" href="/invoice?utm_source=shared_view&utm_medium=referral&utm_campaign=share_cta">無料で書類を作ってみる →</a></div>';
   var right=document.querySelector('.card.right'); var pvbody=right?right.querySelector('.pvbody'):null;
   if(pvbody){ pvbody.insertBefore(pb, pvbody.firstChild); }
   var cta=right?right.querySelector('.cta'):null; if(cta){ cta.appendChild(dl); }

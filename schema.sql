@@ -106,3 +106,11 @@ CREATE TABLE IF NOT EXISTS saved_docs (
 );
 CREATE INDEX IF NOT EXISTS idx_saved_user ON saved_docs(user_id);
 CREATE INDEX IF NOT EXISTS idx_saved_user_type ON saved_docs(user_id, type);
+
+-- 紹介/流入の第一者計測（_middleware.js が自動作成）
+CREATE TABLE IF NOT EXISTS referral_hits (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  ts TEXT, day TEXT, path TEXT,
+  utm_source TEXT, utm_medium TEXT, utm_campaign TEXT,
+  ref_host TEXT, country TEXT
+);

@@ -11,6 +11,15 @@ export async function onRequest(context) {
   }
   const p = url.pathname;
 
+  // --- 紹介/流入計測（utm付きのページ遷移を第一者でD1に記録。応答はブロックしない）---
+  try {
+    if (request.method === 'GET' && url.searchParams.get('utm_source')
+        && !p.startsWith('/api/')
+        && !/\.(?:css|js|png|jpe?g|webp|svg|ico|woff2?|ttf|json|xml|txt|map)$/i.test(p)) {
+      context.waitUntil(logReferral(env, url, request));
+    }
+  } catch (e) { /* 計測失敗は無視（本体に影響させない） */ }
+
   // --- 言語ルーティング（ブラウザ言語で日本語 / English を振り分け）---
   // 手動切替（?lang=ja|en）はCookieに記憶し、以後は自動判定より優先する。
   const qlang = url.searchParams.get('lang');
@@ -52,7 +61,7 @@ export async function onRequest(context) {
   if (p.startsWith('/api/free/')) return next();
 
   // 保護対象のアプリページ（クリーンURL・.html 両方）
-  const APP_PAGES = ['/dashboard', '/invoice-list', '/invoice-create', '/quotes', '/recurring', '/reports', '/payments'];
+  const APP_PAGES = ['/dashboard', '/invoice-list', '/invoice-create', '/quotes', '/recurring', '/reports', '/payments', '/referrals'];
   const pageKey = p.replace(/\.html$/, '');
   const isAppPage = APP_PAGES.indexOf(pageKey) >= 0;
   const isApi = p.startsWith('/api/');
@@ -72,3 +81,24 @@ export async function onRequest(context) {
   // 未認証のアプリページ → ログインへ
   return Response.redirect(url.origin + '/login', 302);
 }
+
+// 紹介/流入の第一者ロガー（D1 referral_hits。テーブルは自動作成＝Mac非依存）
+const REFERRAL_DDL = 'CREATE TABLE IF NOT EXISTS referral_hits (id INTEGER PRIMARY KEY AUTOINCREMENT, ts TEXT, day TEXT, path TEXT, utm_source TEXT, utm_medium TEXT, utm_campaign TEXT, ref_host TEXT, country TEXT)';
+async function logReferral(env, url, request) {
+  try {
+    if (!env || !env.DB) return;
+    const g = (k) => (url.searchParams.get(k) || '').slice(0, 80);
+    let refHost = '';
+    try { const r = request.headers.get('Referer'); if (r) refHost = new URL(r).hostname.slice(0, 120); } catch (e) {}
+    const country = (request.cf && request.cf.country) ? String(request.cf.country).slice(0, 4) : '';
+    const now = new Date();
+    const day = new Date(now.getTime() + 9 * 3600 * 1000).toISOString().slice(0, 10); // JST日付
+    await env.DB.batch([
+      env.DB.prepare(REFERRAL_DDL),
+      env.DB.prepare('INSERT INTO referral_hits (ts, day, path, utm_source, utm_medium, utm_campaign, ref_host, country) VALUES (?,?,?,?,?,?,?,?)')
+        .bind(now.toISOString(), day, url.pathname.slice(0, 160), g('utm_source'), g('utm_medium'), g('utm_campaign'), refHost, country),
+    ]);
+  } catch (e) { /* 無視 */ }
+}
+
+export { REFERRAL_DDL };

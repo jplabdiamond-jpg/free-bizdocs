@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>流入レポート｜Free BizDoc</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap');
+body{margin:0;font-family:"Zen Kaku Gothic New",system-ui,sans-serif;color:#171a21;background:#f6f6f2}
+.wrap{max-width:980px;margin:0 auto;padding:24px 20px 60px}
+h1{font-size:20px;font-weight:900;margin:0 0 4px}
+.sub{font-size:12.5px;color:#6c6f78;margin:0 0 20px}
+.sub a{color:#1766e6;font-weight:700;text-decoration:none}
+.kpi{display:inline-flex;flex-direction:column;background:linear-gradient(120deg,#0f2f7a,#1766e6);color:#fff;border-radius:14px;padding:16px 22px;margin:0 0 20px;box-shadow:0 16px 40px -22px rgba(23,102,230,.5)}
+.kpi .t{font-size:12px;opacity:.9}.kpi .v{font-size:28px;font-weight:900;font-variant-numeric:tabular-nums}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.card{background:#fff;border:1px solid #e6e4dd;border-radius:14px;overflow:hidden}
+.card h2{font-size:13px;font-weight:800;margin:0;padding:13px 16px;border-bottom:1px solid #e6e4dd}
+table{width:100%;border-collapse:collapse;font-size:13px}
+td{padding:9px 16px;border-bottom:1px solid #f0efe9}
+tr:last-child td{border-bottom:none}
+td.n{text-align:right;font-variant-numeric:tabular-nums;font-weight:800;width:80px}
+.bar{height:6px;background:#e7effb;border-radius:999px;overflow:hidden;margin-top:5px}
+.bar>i{display:block;height:100%;background:#1766e6;border-radius:999px}
+.k{font-weight:600;color:#2b3a4b;word-break:break-all}
+.empty{padding:18px 16px;color:#9a9ca3;font-size:12.5px}
+.msg{background:#fff;border:1px solid #e6e4dd;border-radius:14px;padding:30px;text-align:center;color:#6c6f78}
+.msg a{color:#1766e6;font-weight:700}
+@media(max-width:720px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>流入レポート</h1>
+  <p class="sub">utm付きリンク・外部サイトからの流入を第一者で計測（直近30日・<span id="since"></span>〜）。 <a href="/dashboard">← ダッシュボード</a></p>
+  <div id="root"><p class="sub">読み込み中…</p></div>
+</div>
+<script>
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function tbl(title,rows,max){
+  if(!rows||!rows.length) return '<div class="card"><h2>'+esc(title)+'</h2><div class="empty">データがありません</div></div>';
+  var m=max||Math.max.apply(null,rows.map(function(r){return r.n;}));
+  var body=rows.map(function(r){
+    var pct=m?Math.round(r.n/m*100):0;
+    return '<tr><td><span class="k">'+esc(r.k)+'</span><div class="bar"><i style="width:'+pct+'%"></i></div></td><td class="n">'+r.n+'</td></tr>';
+  }).join('');
+  return '<div class="card"><h2>'+esc(title)+'</h2><table>'+body+'</table></div>';
+}
+(async function(){
+  var root=document.getElementById('root');
+  try{
+    var r=await fetch('/api/referrals',{credentials:'same-origin'});
+    if(r.status===401){ location.href='/login'; return; }
+    if(r.status===403){ root.innerHTML='<div class="msg">このレポートは管理者のみ閲覧できます。</div>'; return; }
+    var d=await r.json();
+    document.getElementById('since').textContent=d.since||'';
+    root.innerHTML=''
+      +'<div class="kpi"><span class="t">計測した流入（30日・utm/外部参照）</span><span class="v">'+(d.total||0)+'</span></div>'
+      +'<div class="grid">'
+      + tbl('流入元（utm_source）', d.bySource)
+      + tbl('キャンペーン（utm_campaign）', d.byCampaign)
+      + tbl('手段（utm_medium）', d.byMedium)
+      + tbl('参照元ドメイン', d.byRef)
+      + tbl('着地ページ', d.byPath)
+      + tbl('日別', d.daily)
+      +'</div>';
+  }catch(e){ root.innerHTML='<div class="msg">読み込みエラー: '+esc(e.message)+'</div>'; }
+})();
+</script>
+</body>
+</html>
