@@ -53,6 +53,8 @@ window.API = (function () {
     receipt:  { t: '領収書', en: 'RECEIPT',        num: '領収書番号', amount: '領収金額（税込）',   total: '合計（税込）',   due: false, wh: false, bank: false, receipt: true }
   };
   function kindCfg(kind) { return KINDS[kind] || KINDS.invoice; }
+  // 発行者の決済リンク（請求書のみ・http(s)）。PDFに「お支払い（オンライン）」行を出すのに使う。
+  function _payLink(co, kind) { var p = (co && co.paylink) ? String(co.paylink).trim() : ''; return (kind === 'invoice' && /^https?:\/\//i.test(p)) ? p : ''; }
 
   // 税計算（サーバーと同一ロジック）
   function calc(items) {
@@ -288,10 +290,16 @@ window.API = (function () {
         dr('収入印紙', W - M - 68, y - 24, 8, muted); dr('（貼付）', W - M - 66, y - 37, 7.5, muted);
       }
     } else {
-      page.drawRectangle({ x: M, y: y - 50, width: W - 2 * M, height: 50, borderColor: line, borderWidth: 0.8, color: rgb(0.985, 0.985, 0.985) });
+      var _pl = _payLink(co, kind);
+      var _rows = [];
+      if (K.bank) _rows.push([ell(doc.bank || co.default_bank || '', 9, W - 2 * M - 28), 9, muted]);
+      if (doc.notes) _rows.push([ell('備考 : ' + doc.notes, 8.5, W - 2 * M - 28), 8.5, muted]);
+      if (_pl) _rows.push([ell('お支払い（オンライン） : ' + _pl, 8.5, W - 2 * M - 28), 8.5, ac]);
+      var _bh = Math.max(50, 24 + _rows.length * 14);
+      page.drawRectangle({ x: M, y: y - _bh, width: W - 2 * M, height: _bh, borderColor: line, borderWidth: 0.8, color: rgb(0.985, 0.985, 0.985) });
       dr(K.bank ? 'お振込先' : '備考', M + 12, y - 16, 10, ink);
-      if (K.bank) dr(ell(doc.bank || co.default_bank || '', 9, W - 2 * M - 28), M + 12, y - 32, 9, muted);
-      if (doc.notes) dr(ell('備考 : ' + doc.notes, 8.5, W - 2 * M - 28), M + 12, y - (K.bank ? 44 : 32), 8.5, muted);
+      var _ry = y - 32;
+      _rows.forEach(function (r) { dr(r[0], M + 12, _ry, r[1], r[2]); _ry -= 14; });
     }
     var bytes = await pdf.save();
     var blob = new Blob([bytes], { type: 'application/pdf' });
@@ -409,7 +417,9 @@ window.API = (function () {
     srow(K.total, payable, true);
 
     // 下部ボックス（左：振込先/備考 または 領収）
+    var _plC = _payLink(co, kind);
     var boxTop = tBot - 4, boxBot = sTop - 6, boxH = boxTop - boxBot; if (boxH < 46) boxH = 46;
+    if (_plC && boxH < 64) boxH = 64;
     rect(M, boxTop, sx - M - 10, boxH, 0.8);
     if (K.receipt) {
       dr('但し書き', M + 8, boxTop - 15, 9.5, ink);
@@ -417,8 +427,10 @@ window.API = (function () {
       dr('上記正に領収いたしました。', M + 8, boxTop - 45, 8.5, mut);
     } else {
       dr(K.bank ? 'お振込先' : '備考', M + 8, boxTop - 15, 9.5, ink);
-      if (K.bank && (doc.bank || co.default_bank)) dr(ell(doc.bank || co.default_bank, 9, sx - M - 28), M + 8, boxTop - 31, 9, mut);
-      if (doc.notes) dr(ell('備考 : ' + doc.notes, 8.5, sx - M - 28), M + 8, boxTop - (K.bank ? 45 : 31), 8.5, mut);
+      var _cy = boxTop - 31;
+      if (K.bank && (doc.bank || co.default_bank)) { dr(ell(doc.bank || co.default_bank, 9, sx - M - 28), M + 8, _cy, 9, mut); _cy -= 14; }
+      if (doc.notes) { dr(ell('備考 : ' + doc.notes, 8.5, sx - M - 28), M + 8, _cy, 8.5, mut); _cy -= 14; }
+      if (_plC) dr(ell('お支払い（オンライン） : ' + _plC, 8.5, sx - M - 28), M + 8, _cy, 8.5, ac);
     }
     // 収入印紙（領収・5万以上）
     if (K.receipt && payable >= 50000) { var ipx = sx - 10 - 60; rect(ipx, tBot - 10, 56, 36, 0.7); drC('収入印紙', ipx + 28, tBot - 31, 8, mut); }
@@ -499,8 +511,10 @@ window.API = (function () {
       if (payable >= 50000) { page.drawRectangle({ x: R - 60, y: y - 30, width: 56, height: 38, borderColor: rgb(0.6, 0.6, 0.6), borderWidth: 0.6 }); dr('収入印紙', R - 54, y - 10, 7.5, mut); dr('（貼付）', R - 52, y - 22, 7, mut); }
     } else {
       dr(K.bank ? 'お振込先' : '備考', M, y, 9.5, ink);
-      if (K.bank) dr(doc.bank || co.default_bank || '', M, y - 15, 9, mut);
-      if (doc.notes) dr('備考 : ' + doc.notes, M, y - (K.bank ? 29 : 15), 8.5, mut);
+      var _my = y - 15;
+      if (K.bank) { dr(doc.bank || co.default_bank || '', M, _my, 9, mut); _my -= 14; }
+      if (doc.notes) { dr('備考 : ' + doc.notes, M, _my, 8.5, mut); _my -= 14; }
+      var _plM = _payLink(co, kind); if (_plM) dr(ell('お支払い（オンライン） : ' + _plM, 8.5, R - M - 10), M, _my, 8.5, ac);
     }
     var bytes = await pdf.save();
     var blob = new Blob([bytes], { type: 'application/pdf' });
