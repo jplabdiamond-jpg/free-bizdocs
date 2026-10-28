@@ -18,6 +18,7 @@
   - SaaSHub: https://www.saashub.com/free-bizdoc
   - AlternativeTo: https://alternativeto.net/software/free-bizdoc
   - DEV Community: https://dev.to/free_bizdoc_c48cd26bb9251
+  - G2: https://www.g2.com/products/free-bizdocs
 
 ## よくある質問（要点）
 
