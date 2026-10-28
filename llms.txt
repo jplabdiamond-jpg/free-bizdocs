@@ -67,6 +67,8 @@
 - [Expense report / Expense claim generator](https://free-bizdocs.com/en/expense-report): claim reimbursement for business costs by date and category
 - [Bill of sale generator](https://free-bizdocs.com/en/bill-of-sale): record a private sale and transfer of ownership, signed by seller and buyer
 - [Donation receipt generator](https://free-bizdocs.com/en/donation-receipt): nonprofit / charity tax receipt with donor, amount and the required statement
+- [Compare free invoice tools](https://free-bizdocs.com/en/compare): honest comparison of Free BizDoc vs Invoice Simple, Wave, Zoho Invoice and Invoice Ninja by sign-up, free limits, data storage, tax and price
+- [Free invoice software alternatives](https://free-bizdocs.com/en/alternatives): free, no-sign-up alternatives to FreshBooks, QuickBooks, Wave, Zoho Invoice, Invoice Ninja and Invoice Simple, each compared with Free BizDoc
 - [Invoice templates by profession](https://free-bizdocs.com/en/invoice-templates): ready-to-edit invoice templates for freelancers, consultants, designers, developers, photographers, contractors, cleaners, tutors, virtual assistants and marketers, plus law firms, accountants, plumbers, electricians, landscapers, caterers, event planners and auto repair shops; also invoices by country/tax
 - [US sales tax invoice template](https://free-bizdocs.com/en/invoice/us-sales-tax): US invoice with sales tax, Letter paper, USD
 - [UK VAT invoice template](https://free-bizdocs.com/en/invoice/uk-vat): compliant UK VAT invoice with VAT number and per-rate VAT, A4, GBP
