@@ -6,6 +6,9 @@ var kind=(toolRoot&&toolRoot.getAttribute('data-kind'))||'invoice';
 var rowsEl=document.getElementById('rows');
 var editDocId=null; try{ editDocId=new URLSearchParams(location.search).get('doc')||null; }catch(e){}
 var CO=['co-name','co-reg','co-email','co-addr','co-bank','co-paylink'];
+// 都度払い（1日パス ¥500・24時間使い放題）の決済リンク。空ならPROのみ案内。
+var PASS_URL='https://buy.stripe.com/5kQ4gzgk5czw2F43Hs9sk05';
+function passCtaHtml(){ return PASS_URL ? '<div style="margin-top:11px"><a href="'+PASS_URL+'" style="display:inline-flex;align-items:center;gap:7px;background:#1766e6;color:#fff;font-weight:800;text-decoration:none;border-radius:10px;padding:10px 16px;font-size:14px">¥500で24時間 使い放題にする（登録不要）→</a><div style="font-size:12px;color:#8a97a6;margin-top:5px">今日だけたくさん作りたい方に。お支払い後すぐに解放されます。</div></div>' : ''; }
 function loadCo(){ try{ var s=JSON.parse(localStorage.getItem('free_company')||'{}'); CO.forEach(function(id){ if(s[id]!=null) document.getElementById(id).value=s[id]; }); var d=document.getElementById('co-details'); if(d){ d.open=!s['co-name']; } }catch(e){} }
 function saveCo(){ try{ var o={}; CO.forEach(function(id){o[id]=document.getElementById(id).value;}); localStorage.setItem('free_company',JSON.stringify(o)); }catch(e){} }
 
@@ -110,7 +113,7 @@ if(seg){ seg.addEventListener('click',function(e){ var b=e.target.closest('butto
   applyKind(b.getAttribute('data-kind'));
 }); }
 
-async function refreshRemain(){ try{ var r=await API.get('/api/free/check'); var el=document.getElementById('remain'); if(el) el.innerHTML='この1時間であと <b>'+r.remaining+'</b> 枚まで無料で作成できます'; }catch(e){} }
+async function refreshRemain(){ try{ var r=await API.get('/api/free/check'); var el=document.getElementById('remain'); if(!el)return; if(r.pass){ el.innerHTML='<b>1日パス有効</b> · 24時間 使い放題'; } else { el.innerHTML='この1時間であと <b>'+r.remaining+'</b> 枚まで無料で作成できます'; } }catch(e){} }
 document.getElementById('make').addEventListener('click',async function(){
   var items=collect().filter(function(it){return it.name||it.unit_price;});
   var m=document.getElementById('msg'); m.className='msg';
@@ -122,13 +125,19 @@ document.getElementById('make').addEventListener('click',async function(){
     if(chk.status===429 || !cj.ok){
       var lb=document.getElementById('limitbox');
       lb.style.display='block';
-      lb.innerHTML='無料ツールは1時間に2枚までです。あと約 <b>'+(cj.retry_min||60)+'分</b> で再び作成できます。<br>無制限で使うなら <a href="/pricing">PRO（月額¥3,000）</a> がおすすめです。';
+      lb.innerHTML='無料ツールは1時間に2枚までです。あと約 <b>'+(cj.retry_min||60)+'分</b> で再び作成できます。'
+        + passCtaHtml()
+        + '<div style="margin-top:9px;font-size:13px">ずっと使うなら <a href="/pricing">PRO（月額¥2,000〜）</a> もどうぞ。</div>';
       btn.disabled=false; btn.textContent='PDFを作成（無料）'; return;
     }
     await API.invoiceFromData(docObj(), items, companyObj(), kind, window.__tpl || 'standard', window.__theme || 'mono');
     bumpDocNo(); var _dnx=document.getElementById('doc-no'); if(_dnx) _dnx.value=nextDocNo(); recompute();
-    var rem=document.getElementById('remain'); if(rem) rem.innerHTML='この1時間であと <b>'+cj.remaining+'</b> 枚まで無料で作成できます';
-    if(cj.remaining<=0){ var lb2=document.getElementById('limitbox'); lb2.style.display='block'; lb2.innerHTML='今回で今の時間枠は終了です。無制限で使うなら <a href="/pricing">PRO（月額¥3,000）</a> がおすすめです。'; }
+    var rem=document.getElementById('remain');
+    if(cj.pass){ if(rem) rem.innerHTML='<b>1日パス有効</b> · 24時間 使い放題'; }
+    else {
+      if(rem) rem.innerHTML='この1時間であと <b>'+cj.remaining+'</b> 枚まで無料で作成できます';
+      if(cj.remaining<=0){ var lb2=document.getElementById('limitbox'); lb2.style.display='block'; lb2.innerHTML='今回で今の時間枠は終了です。'+passCtaHtml()+'<div style="margin-top:9px;font-size:13px">ずっと使うなら <a href="/pricing">PRO（月額¥2,000〜）</a> もどうぞ。</div>'; }
+    }
   }catch(e){ m.textContent='PDF作成に失敗しました: '+e.message; m.className='msg err'; }
   btn.disabled=false; btn.textContent='PDFを作成（無料）';
 });

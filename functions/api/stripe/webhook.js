@@ -71,10 +71,16 @@ export async function onRequestPost(context) {
 
   try {
     if (event.type === 'checkout.session.completed') {
-      // サブスク決済のみ対象（単発購入は無視）
       if (obj.mode === 'subscription' || obj.subscription) {
         const email = normalizeEmail((obj.customer_details && obj.customer_details.email) || obj.customer_email || '');
         await grantPro(env, email, obj.customer || null);
+      } else if (obj.mode === 'payment' || obj.payment_intent) {
+        // 都度払い（1日パス）＝一度きり決済。セッションIDを記録し、/pass で引き換える。
+        try {
+          await env.DB.prepare('CREATE TABLE IF NOT EXISTS day_pass (session_id TEXT PRIMARY KEY, ts INTEGER)').run();
+          await env.DB.prepare('INSERT OR IGNORE INTO day_pass (session_id, ts) VALUES (?, ?)')
+            .bind(String(obj.id || ''), Math.floor(Date.now() / 1000)).run();
+        } catch (e) {}
       }
     } else if (event.type === 'customer.subscription.deleted') {
       await revokePro(env, obj.customer || null);

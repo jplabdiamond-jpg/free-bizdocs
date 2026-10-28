@@ -57,6 +57,28 @@ export function getCookie(request, name) {
 export function sessionCookie(value, maxAge) {
   return 'sess=' + encodeURIComponent(value) + '; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=' + maxAge;
 }
+
+// 都度払い（1日パス）: 決済確認後に 24h 有効の署名トークンを発行。アカウント不要。
+// token = "<expiryMs>.<hmac>"。無料枠リミッターがこれを見て解放する。
+export async function makePassToken(secret, ms) {
+  const exp = Date.now() + (ms || 86400000); // 既定24時間
+  const sig = await hmac(secret, 'pass.' + exp);
+  return exp + '.' + sig;
+}
+// 有効なら expiryMs(Number)、無効なら 0
+export async function verifyPassToken(secret, token) {
+  if (!token) return 0;
+  const parts = token.split('.');
+  if (parts.length !== 2) return 0;
+  const exp = parseInt(parts[0], 10);
+  if (!exp || Date.now() >= exp) return 0;
+  const expected = await hmac(secret, 'pass.' + parts[0]);
+  if (expected !== parts[1]) return 0;
+  return exp;
+}
+export function passCookie(value, maxAge) {
+  return 'fb_pass=' + encodeURIComponent(value) + '; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=' + maxAge;
+}
 // リクエストからログイン中 user_id を取得（未ログインは null）
 export async function currentUserId(request, env) {
   return await verifySession(env.SESSION_SECRET, getCookie(request, 'sess'));

@@ -1,5 +1,6 @@
 // 無料ツールのレート制限（ネットワーク単位・直近1時間に2枚まで）。認証不要。
-import { json } from '../../_lib.js';
+// 都度払い（1日パス）の署名 Cookie(fb_pass) が有効な間は無制限に解放する。
+import { json, verifyPassToken, getCookie } from '../../_lib.js';
 
 const WINDOW = 3600;  // 秒
 const LIMIT = 2;
@@ -21,6 +22,9 @@ export function ipKey(request) {
 // 残回数の確認（消費しない）
 export async function onRequestGet(context) {
   const { env, request } = context;
+  // 1日パスが有効なら無制限
+  const pass = await verifyPassToken(env.SESSION_SECRET, getCookie(request, 'fb_pass'));
+  if (pass) return json({ remaining: 999, limit: LIMIT, pass: true, pass_until: Math.floor(pass / 1000) });
   const ip = ipKey(request);
   const since = Math.floor(Date.now() / 1000) - WINDOW;
   const row = await env.DB.prepare('SELECT COUNT(*) AS n FROM free_usage WHERE ip = ? AND ts > ?').bind(ip, since).first();
@@ -31,6 +35,9 @@ export async function onRequestGet(context) {
 // 1枚消費（発行の直前に呼ぶ）
 export async function onRequestPost(context) {
   const { env, request } = context;
+  // 1日パスが有効なら消費せず無制限に許可
+  const pass = await verifyPassToken(env.SESSION_SECRET, getCookie(request, 'fb_pass'));
+  if (pass) return json({ ok: true, remaining: 999, limit: LIMIT, pass: true });
   const ip = ipKey(request);
   const now = Math.floor(Date.now() / 1000);
   const since = now - WINDOW;

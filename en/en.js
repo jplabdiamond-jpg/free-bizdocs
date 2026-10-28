@@ -395,6 +395,9 @@ function setupPreview(){ var host=$('livepv'); if(!host)return; host.innerHTML='
   var t; window.addEventListener('resize',function(){ clearTimeout(t); t=setTimeout(schedulePv,300); }); }
 
 /* ================= Download (free: 2 per hour, same limiter as the Japanese tools) ================= */
+// Pay-per-use day pass ($5, 24h unlimited). Empty = only PRO is offered.
+var PASS_URL_EN='https://buy.stripe.com/cNifZh6Jv8jgbbA91M9sk06';
+function passCtaHtmlEn(){ return PASS_URL_EN ? '<div style="margin-top:11px"><a href="'+PASS_URL_EN+'" style="display:inline-flex;align-items:center;gap:7px;background:#1766e6;color:#fff;font-weight:800;text-decoration:none;border-radius:10px;padding:10px 16px;font-size:14px">Get a $5 day pass — unlimited for 24h (no sign-up) &rarr;</a><div style="font-size:12px;color:#8a97a6;margin-top:5px">Just need it for today? Unlocks right after payment.</div></div>' : ''; }
 async function download(){
   var items=liveItems(), m=$('msg'); m.className='msg'; m.textContent='';
   if(!items.length){ m.textContent='Add at least one line item.'; m.className='msg err'; return; }
@@ -405,16 +408,16 @@ async function download(){
     var isPro=!!(window.__me&&window.__me.plan==='pro');
     if(!isPro){
       var chk=await fetch('/api/free/check',{method:'POST'}); var cj=await chk.json();
-      if(chk.status===429||!cj.ok){ var lb=$('limitbox'); lb.style.display='block'; lb.innerHTML='The free tool allows <b>2 PDFs per hour</b>. You can create another in about <b>'+(cj.retry_min||60)+' min</b>.<br><a href="/en/pricing" style="color:#1766e6;font-weight:800">Upgrade to PRO for unlimited downloads &rarr;</a>'; btn.disabled=false; btn.innerHTML=old; return; }
+      if(chk.status===429||!cj.ok){ var lb=$('limitbox'); lb.style.display='block'; lb.innerHTML='The free tool allows <b>2 PDFs per hour</b>. You can create another in about <b>'+(cj.retry_min||60)+' min</b>.'+passCtaHtmlEn()+'<div style="margin-top:9px;font-size:13px"><a href="/en/pricing" style="color:#1766e6;font-weight:800">Or go unlimited with PRO &rarr;</a></div>'; btn.disabled=false; btn.innerHTML=old; return; }
     }
     var bytes=await buildPdf(buildDoc());
     var blob=new Blob([bytes],{type:'application/pdf'}), url=URL.createObjectURL(blob), a=document.createElement('a'); a.href=url; a.download=(v('doc-no')||kind)+'.pdf'; document.body.appendChild(a); a.click(); a.remove(); setTimeout(function(){URL.revokeObjectURL(url);},4000);
     bumpDocNo(); if($('doc-no')) $('doc-no').value=nextDocNo(); saveDraft();
-    var rem=$('remain'); if(rem){ if(isPro) rem.innerHTML='<b>PRO</b> · unlimited downloads'; else rem.innerHTML='<b>'+cj.remaining+'</b> free PDF'+(cj.remaining===1?'':'s')+' left this hour'; }
+    var rem=$('remain'); if(rem){ if(isPro) rem.innerHTML='<b>PRO</b> · unlimited downloads'; else if(cj.pass) rem.innerHTML='<b>Day pass active</b> · unlimited for 24h'; else rem.innerHTML='<b>'+cj.remaining+'</b> free PDF'+(cj.remaining===1?'':'s')+' left this hour'; }
   }catch(e){ m.textContent='Could not generate the PDF: '+e.message; m.className='msg err'; }
   btn.disabled=false; btn.innerHTML=old;
 }
-async function refreshRemain(){ if(window.__me&&window.__me.plan==='pro'){ var ep=$('remain'); if(ep) ep.innerHTML='<b>PRO</b> · unlimited downloads'; return; } try{ var r=await fetch('/api/free/check'); var j=await r.json(); var el=$('remain'); if(el) el.innerHTML='<b>'+j.remaining+'</b> free PDF'+(j.remaining===1?'':'s')+' left this hour · no sign-up needed'; }catch(e){} }
+async function refreshRemain(){ if(window.__me&&window.__me.plan==='pro'){ var ep=$('remain'); if(ep) ep.innerHTML='<b>PRO</b> · unlimited downloads'; return; } try{ var r=await fetch('/api/free/check'); var j=await r.json(); var el=$('remain'); if(!el)return; if(j.pass){ el.innerHTML='<b>Day pass active</b> · unlimited for 24h'; } else { el.innerHTML='<b>'+j.remaining+'</b> free PDF'+(j.remaining===1?'':'s')+' left this hour · no sign-up needed'; } }catch(e){} }
 
 /* ================= Share link (data lives in the URL hash only — nothing stored on our server) ================= */
 function _b64e(str){ return btoa(unescape(encodeURIComponent(str))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,''); }
