@@ -154,6 +154,118 @@ ARTICLES = [
 # publishes these one at a time, paced). Add future EN articles here.
 DRAFTS = [
  dict(
+  slug='free-invoice-template', cat='Invoicing', tool='/en/invoice',
+  title='Free Invoice Templates (Word, Excel, Google Docs &amp; PDF)',
+  desc='Where to get a free invoice template in Word, Excel, Google Docs or PDF — what a good one includes, and when an invoice generator beats a template.',
+  date='2026-10-28',
+  body='''
+<p class="lead">A free invoice template saves you from rebuilding an invoice from scratch every time. You can find them for Word, Excel, Google Docs and PDF &mdash; but a template still leaves you to do the math and tax by hand, which is where a generator can save you time.</p>
+<h2>Where to get a free invoice template</h2>
+<ul>
+<li><b>Word / Google Docs</b> &mdash; good for a clean, text-based invoice you type into.</li>
+<li><b>Excel / Google Sheets</b> &mdash; handy because formulas can total the line items for you.</li>
+<li><b>PDF</b> &mdash; a fixed layout you fill in and send; looks the most professional.</li>
+</ul>
+<p>Free BizDoc offers ready-to-edit templates by profession and country, and a generator that produces the PDF for you.</p>
+<h2>What a good invoice template includes</h2>
+<p>Whatever the format, make sure the template has your business details, the client, a unique invoice number and date, an itemised list with amounts, the tax, the total, and your payment terms and bank details.</p>
+<h2>Template vs invoice generator</h2>
+<p>A template is fine for the occasional invoice, but you do the tax math yourself and re-save a PDF each time. An <b>invoice generator</b> calculates the tax automatically (US sales tax, UK VAT, Australian GST, Canadian GST/HST), keeps your numbering tidy and exports a clean PDF in seconds &mdash; free and with no sign-up.</p>
+<p><a href="/en/invoice">Create an invoice free</a>, or browse <a href="/en/invoice-templates">invoice templates by profession</a>.</p>
+''',
+  faqs=[
+   ("Is there a free invoice template for Word, Excel or Google Docs?", "Yes. You can use a free template in any of those, or use Free BizDoc's generator, which fills in the layout and does the tax math for you and exports a PDF — no sign-up."),
+   ("Should I use an invoice template or an invoice generator?", "A template is fine occasionally, but you calculate the tax and re-save a PDF yourself. A generator auto-calculates tax, keeps numbering tidy and exports the PDF in seconds."),
+   ("Can I make an invoice in Google Docs?", "Yes, with a Google Docs template, but you type everything and work out the tax manually. A generator handles the totals and tax for you."),
+  ],
+  related=[('/en/invoice','Create an invoice'),('/en/invoice-templates','Invoice templates by profession'),('/en/blog/how-to-write-an-invoice','How to write an invoice')],
+ ),
+ dict(
+  slug='what-is-a-tax-invoice', cat='Tax', tool='/en/invoice',
+  title='What Is a Tax Invoice? (US, UK, Australia &amp; Canada)',
+  desc='A tax invoice shows the tax charged on a sale plus the seller&rsquo;s tax ID. Here is what makes an invoice a tax invoice and how the rules differ by country.',
+  date='2026-10-28',
+  body='''
+<p class="lead">A <b>tax invoice</b> is an invoice that clearly shows the tax charged on a sale, along with the seller&rsquo;s tax registration number. Registered businesses issue tax invoices so the buyer can reclaim the tax and both sides have a proper record.</p>
+<h2>What makes an invoice a &ldquo;tax invoice&rdquo;</h2>
+<p>On top of the usual invoice details, a tax invoice shows the <b>tax amount</b> (often broken out per rate) and the seller&rsquo;s <b>tax ID</b> (VAT number, ABN, GST/HST number, etc.). That is what lets a registered buyer claim the tax back.</p>
+<h2>By country</h2>
+<ul>
+<li><b>US</b> &mdash; an invoice showing <b>sales tax</b> by rate; there is no single national tax number.</li>
+<li><b>UK</b> &mdash; a <b>VAT invoice</b> showing your VAT number and the VAT per rate.</li>
+<li><b>Australia</b> &mdash; must carry the words <b>&ldquo;Tax invoice&rdquo;</b>, your ABN and the GST amount.</li>
+<li><b>Canada</b> &mdash; shows <b>GST/HST</b> (and PST/QST where it applies) and your registration number.</li>
+</ul>
+<h2>Do you need to issue one?</h2>
+<p>If you are registered for VAT/GST (or charging sales tax), you generally need to issue a tax invoice when you make a taxable sale. If you are not registered, you issue an ordinary invoice with no tax line.</p>
+<p><a href="/en/invoice">Create a tax invoice free</a> &mdash; pick your country and the tax is built in.</p>
+''',
+  faqs=[
+   ("What is the difference between an invoice and a tax invoice?", "A tax invoice additionally shows the tax charged and the seller&rsquo;s tax registration number, so a registered buyer can reclaim the tax. A plain invoice need not show those."),
+   ("Do I need to issue a tax invoice?", "If you are registered for VAT/GST or charging sales tax, you generally must issue a tax invoice for taxable sales. If you are not registered, you issue an ordinary invoice with no tax."),
+   ("What must a tax invoice show?", "The usual invoice details plus the tax amount (often per rate) and your tax ID — VAT number, ABN, or GST/HST number depending on the country."),
+  ],
+  related=[('/en/invoice','Create an invoice'),('/en/blog/uk-vat-invoice-requirements','UK VAT invoice requirements'),('/en/blog/australian-tax-invoice-requirements','Australian tax invoice requirements')],
+ ),
+ dict(
+  slug='how-to-write-a-receipt', cat='Invoicing', tool='/en/receipt',
+  title='How to Write a Receipt (With Examples)',
+  desc='A receipt confirms a payment was made. Here is exactly what to put on one, how it differs from an invoice, and when you should issue a receipt.',
+  date='2026-10-28',
+  body='''
+<p class="lead">A <b>receipt</b> is proof that a payment was made. You issue it <i>after</i> the customer pays, so both sides have a record. Writing one is simple once you know the handful of details it needs.</p>
+<h2>What a receipt must show</h2>
+<ul>
+<li>The word <b>&ldquo;Receipt&rdquo;</b> and a receipt number/date.</li>
+<li>Who issued it (your business) and who paid.</li>
+<li>What the payment was for (a short description or the invoice it settles).</li>
+<li>The <b>amount paid</b> and the <b>payment method</b> (cash, card, transfer).</li>
+<li>Any tax, if you are registered and it applies.</li>
+</ul>
+<h2>Receipt vs invoice</h2>
+<p>An <b>invoice</b> asks for payment; a <b>receipt</b> confirms it. You send an invoice to get paid, then issue a receipt once the money arrives. They often list the same items but do different jobs.</p>
+<h2>When to issue a receipt</h2>
+<p>It is good practice to give a receipt whenever a customer pays, and in some cases (cash payments, certain regulated sales) it may be expected. A clear receipt reduces disputes and helps the customer with their own records.</p>
+<p><a href="/en/receipt">Create a receipt free</a> &mdash; add the amount paid and method, download the PDF, no sign-up.</p>
+''',
+  faqs=[
+   ("What should a receipt include?", "The word &lsquo;Receipt&rsquo;, a number and date, who issued it and who paid, what the payment was for, the amount paid and the payment method, plus any tax that applies."),
+   ("Is a receipt the same as an invoice?", "No. An invoice requests payment before it is made; a receipt confirms payment after it is received."),
+   ("Do I have to give a receipt?", "It is good practice whenever someone pays, and for some payments (such as cash or certain regulated sales) it may be expected. It protects both sides with a clear record."),
+  ],
+  related=[('/en/receipt','Create a receipt'),('/en/blog/receipt-vs-invoice','Receipt vs invoice'),('/en/invoice','Create an invoice')],
+ ),
+ dict(
+  slug='how-to-write-a-quote', cat='Quoting', tool='/en/estimate',
+  title='How to Write a Quote (With a Free Template)',
+  desc='A quote gives a client a fixed price before work starts. Here is what to include, how it differs from an estimate, and how to turn it into an invoice.',
+  date='2026-10-28',
+  body='''
+<p class="lead">A <b>quote</b> (or quotation) gives a client a firm price for a job before any work starts. Unlike a rough estimate, a quote is a price you commit to, so it pays to be clear about exactly what is included.</p>
+<h2>What to include in a quote</h2>
+<ul>
+<li>Your business details and the client&rsquo;s details.</li>
+<li>A quote number and date, and a <b>valid-until date</b>.</li>
+<li>An itemised scope of work with prices.</li>
+<li>The total, and any tax if you are registered.</li>
+<li>An acceptance line so the client can confirm.</li>
+</ul>
+<h2>Quote vs estimate</h2>
+<p>An <b>estimate</b> is an approximate figure that can change; a <b>quote</b> is a fixed price the client can accept as-is. Use an estimate when the scope is uncertain and a quote when you can commit to the number.</p>
+<h2>Set a valid-until date</h2>
+<p>Prices and availability change, so put a valid-until date (commonly 30 days) on every quote. It protects you if costs move and nudges the client to decide.</p>
+<h2>Turning a quote into an invoice</h2>
+<p>Once the client accepts, you can convert the quote straight into an invoice without retyping it &mdash; same items, same figures, now a request for payment.</p>
+<p><a href="/en/estimate">Create a quote free</a> &mdash; add a valid-until date and convert it to an invoice in one click.</p>
+''',
+  faqs=[
+   ("What should a quote include?", "Your details and the client&rsquo;s, a quote number and date, a valid-until date, an itemised scope with prices, the total and any tax, plus an acceptance line."),
+   ("What is the difference between a quote and an estimate?", "A quote is a fixed price the client can accept as-is; an estimate is an approximate figure that can change as the work becomes clearer."),
+   ("How long should a quote be valid?", "Commonly 30 days. A valid-until date protects you if your costs change and encourages the client to decide."),
+  ],
+  related=[('/en/estimate','Create a quote'),('/en/blog/estimate-vs-quote','Estimate vs quote'),('/en/invoice','Create an invoice')],
+ ),
+ dict(
   slug='what-is-a-proforma-invoice', cat='Invoicing', tool='/en/proforma-invoice',
   title='What Is a Pro Forma Invoice? (With an Example)',
   desc='A pro forma invoice is a preliminary bill sent before the final invoice. Here is what it is for, what to put on it, and how it differs from a quote and a tax invoice.',
