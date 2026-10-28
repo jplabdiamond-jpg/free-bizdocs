@@ -17,6 +17,7 @@
   - Product Hunt: https://www.producthunt.com/products/free-bizdoc
   - SaaSHub: https://www.saashub.com/free-bizdoc
   - AlternativeTo: https://alternativeto.net/software/free-bizdoc
+  - DEV Community: https://dev.to/free_bizdoc_c48cd26bb9251
 
 ## よくある質問（要点）
 
