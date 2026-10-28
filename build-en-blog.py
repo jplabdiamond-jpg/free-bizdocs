@@ -154,6 +154,147 @@ ARTICLES = [
 # publishes these one at a time, paced). Add future EN articles here.
 DRAFTS = [
  dict(
+  slug='what-is-a-proforma-invoice', cat='Invoicing', tool='/en/proforma-invoice',
+  title='What Is a Pro Forma Invoice? (With an Example)',
+  desc='A pro forma invoice is a preliminary bill sent before the final invoice. Here is what it is for, what to put on it, and how it differs from a quote and a tax invoice.',
+  date='2026-10-28',
+  body='''
+<p class="lead">A <b>pro forma invoice</b> is a preliminary bill you send <i>before</i> the real invoice &mdash; a good-faith estimate of what a sale will cost, laid out like a normal invoice. It tells the buyer exactly what to expect, but it is not a demand for payment and does not go in your books as a sale.</p>
+<h2>When to use a pro forma invoice</h2>
+<p>Pro forma invoices are most useful in three situations:</p>
+<ul>
+<li><b>Deposits and prepayment</b> &mdash; to request a deposit or full payment up front before you start work or ship goods.</li>
+<li><b>Confirming a sale</b> &mdash; to give the buyer a document that looks like the final invoice so they can raise a purchase order or get internal approval.</li>
+<li><b>Customs and importing</b> &mdash; shipping and customs agents often ask for a pro forma invoice to value goods before the commercial invoice exists.</li>
+</ul>
+<h2>What to put on it</h2>
+<p>Use the same fields as a normal invoice, with one difference: label it clearly. Include your business details, the buyer, a description of the goods or services, quantities and prices, any tax, the total, and the words <b>&ldquo;Pro forma invoice&rdquo;</b> plus a note that it is not a tax invoice and not a demand for payment.</p>
+<h2>Pro forma invoice vs quote vs tax invoice</h2>
+<p>A <b>quote</b> is an offer of a price; a <b>pro forma invoice</b> presents that agreed price in invoice form, usually once the buyer intends to proceed; the <b>final (tax) invoice</b> is the real accounting document that records the sale and the tax. Only the final invoice is used for VAT/sales-tax and your accounts.</p>
+<h2>Example</h2>
+<p>A designer agrees a $1,200 project and asks for a 50% deposit. They send a pro forma invoice for $1,200 showing the deposit due now, so the client can pay and the designer can start. When the work is done, they issue the real invoice for the balance.</p>
+<p>You can <a href="/en/proforma-invoice">create a pro forma invoice free</a> &mdash; no sign-up, download the PDF in seconds.</p>
+''',
+  faqs=[
+   ("Is a pro forma invoice legally binding?", "No. A pro forma invoice is a good-faith estimate, not a demand for payment or a contract. The binding document is the final invoice (and whatever contract or purchase order sits behind it)."),
+   ("Can you claim VAT or sales tax on a pro forma invoice?", "No. A pro forma invoice is not a tax invoice, so neither side uses it to charge or reclaim tax. You need the final (tax) invoice for that."),
+   ("What is the difference between a pro forma invoice and a quote?", "A quote offers a price; a pro forma invoice presents that price in the layout of an invoice, usually once the buyer intends to go ahead or needs it for a deposit or customs."),
+  ],
+  related=[('/en/proforma-invoice','Create a pro forma invoice'),('/en/blog/estimate-vs-quote','Estimate vs quote'),('/en/invoice','Create an invoice')],
+ ),
+ dict(
+  slug='invoice-vs-bill', cat='Invoicing', tool='/en/invoice',
+  title='Invoice vs Bill: What&rsquo;s the Difference?',
+  desc='&ldquo;Invoice&rdquo; and &ldquo;bill&rdquo; usually describe the same document from two sides of the deal. Here is what each term means and which one to use.',
+  date='2026-10-28',
+  body='''
+<p class="lead">An <b>invoice</b> and a <b>bill</b> are usually the same document seen from two sides. The seller <i>issues an invoice</i> to request payment; the buyer <i>receives it as a bill</i> to pay. The paper is identical &mdash; the word just depends on who is holding it.</p>
+<h2>The same document, two viewpoints</h2>
+<p>When you send a client a request for payment, you call it an invoice. To that client it is a bill they owe. In accounting the same document sits in your <b>accounts receivable</b> (money owed to you) and in their <b>accounts payable</b> (money they owe).</p>
+<h2>Why the words differ</h2>
+<p>&ldquo;Invoice&rdquo; is the formal, business-to-business term and implies an itemised document with an invoice number, dates and payment terms. &ldquo;Bill&rdquo; is the everyday word, used for things you pay immediately or on receipt &mdash; a restaurant bill, a utility bill, a phone bill.</p>
+<h2>Which should your document say?</h2>
+<p>If you are a freelancer or business asking a client to pay, label it <b>Invoice</b>. It reads as professional, it is what accounting software and clients expect, and it carries the detail (number, due date, tax) that a plain &ldquo;bill&rdquo; often lacks.</p>
+<h2>Invoice, bill, receipt &mdash; don&rsquo;t mix them up</h2>
+<p>An invoice/bill <i>requests</i> payment; a <b>receipt</b> <i>confirms</i> payment after it is made. So you send an invoice, the client pays the bill, and you issue a receipt as proof.</p>
+<p><a href="/en/invoice">Create a professional invoice free</a> &mdash; no account needed.</p>
+''',
+  faqs=[
+   ("Is an invoice the same as a bill?", "Essentially yes. It is the same document from different sides: the seller issues an invoice, and the buyer receives it as a bill to pay."),
+   ("Should my document say &lsquo;Invoice&rsquo; or &lsquo;Bill&rsquo;?", "Use &lsquo;Invoice&rsquo; for business-to-business payment requests. It is the standard, professional term and carries the number, due date and tax detail clients expect."),
+   ("Is a bill the same as a receipt?", "No. A bill (invoice) asks for payment before it is made; a receipt confirms payment after it is received."),
+  ],
+  related=[('/en/invoice','Create an invoice'),('/en/blog/receipt-vs-invoice','Receipt vs invoice'),('/en/compare','Compare free invoice tools')],
+ ),
+ dict(
+  slug='how-to-invoice-as-a-sole-trader-uk', cat='Invoicing', tool='/en/invoice',
+  title='How to Invoice as a Sole Trader (UK)',
+  desc='A plain-English guide to invoicing as a UK sole trader: what every invoice must show, when VAT applies, numbering, records and getting paid on time.',
+  date='2026-10-28',
+  body='''
+<p class="lead">As a UK sole trader you invoice clients yourself &mdash; there is no special format required, but an invoice should carry a few standard details so it is clear, professional and ready for your Self Assessment. Here is what to include and where VAT fits in.</p>
+<h2>What a sole trader invoice must show</h2>
+<ul>
+<li>Your name and, if you use one, your trading name.</li>
+<li>The word <b>&ldquo;Invoice&rdquo;</b> and a <b>unique, sequential invoice number</b>.</li>
+<li>The invoice date (and the date the goods/services were supplied).</li>
+<li>The client&rsquo;s name and address.</li>
+<li>A clear description of what you are charging for, with amounts.</li>
+<li>The total due, your payment terms and how to pay (bank details).</li>
+</ul>
+<h2>Do you charge VAT?</h2>
+<p>Only if you are <b>VAT-registered</b>. Registration is compulsory once your taxable turnover passes the VAT threshold (&pound;90,000), and optional below it. If you are registered, show your <b>VAT number</b> and the VAT per rate, and the invoice becomes a VAT invoice. If you are not registered, you simply do not add VAT &mdash; and you should not show a VAT number or imply VAT is included.</p>
+<h2>Numbering and records</h2>
+<p>Give every invoice a unique number in sequence (0001, 0002&hellip;) so none are missing or duplicated. Keep copies of your invoices and records: HMRC expects you to keep business records for your Self Assessment, generally for at least <b>5 years after the 31 January</b> submission deadline of the relevant tax year.</p>
+<h2>Getting paid on time</h2>
+<p>State clear terms (for example &ldquo;payment due within 14 days&rdquo;). UK businesses also have a statutory right to charge interest and a fixed recovery sum on late commercial payments, which you can mention in your terms to encourage prompt payment.</p>
+<p><a href="/en/invoice">Create a UK invoice free</a> &mdash; add your details and download the PDF, no sign-up.</p>
+''',
+  faqs=[
+   ("Do I need to charge VAT as a sole trader?", "Only if you are VAT-registered, which is required once your taxable turnover passes the &pound;90,000 threshold and optional below it. If you are not registered, do not add VAT or show a VAT number."),
+   ("Do sole trader invoices need an invoice number?", "Yes. Each invoice should have a unique, sequential number so your records are complete and nothing is missing or duplicated."),
+   ("How long should I keep my invoices?", "HMRC generally expects sole traders to keep business records for at least 5 years after the 31 January Self Assessment deadline for that tax year."),
+  ],
+  related=[('/en/invoice','Create an invoice'),('/en/blog/how-to-invoice-as-a-freelancer','How to invoice as a freelancer'),('/en/invoice/uk-vat','UK VAT invoice template')],
+ ),
+ dict(
+  slug='independent-contractor-invoice', cat='Invoicing', tool='/en/invoice',
+  title='How to Invoice as an Independent Contractor (US)',
+  desc='How US independent contractors (1099) should invoice clients: what to include, whether to charge sales tax, W-9 vs invoice, and the 1099-NEC at year end.',
+  date='2026-10-28',
+  body='''
+<p class="lead">As a US independent contractor you send clients an invoice to get paid. There is no official form &mdash; you just need a clear, itemised document with the right details so clients can pay you quickly and you can report the income at tax time.</p>
+<h2>What to include</h2>
+<ul>
+<li>Your name or business name and contact details.</li>
+<li><b>Invoice number</b> and invoice date.</li>
+<li>The client&rsquo;s name and address.</li>
+<li>A description of the work, hours or units, your rate and the total.</li>
+<li>Payment terms (for example Net 15/Net 30) and how to pay.</li>
+</ul>
+<p>Do <b>not</b> print your Social Security Number on the invoice. If a client needs your taxpayer ID, give it on a <b>Form W-9</b> sent securely, not on every invoice.</p>
+<h2>Do contractors charge sales tax?</h2>
+<p>Usually not on services &mdash; most states do not tax professional services &mdash; but it <b>varies by state</b>, and selling physical goods can be taxable. If you are unsure whether your service is taxable where you operate, check your state&rsquo;s rules or a tax professional.</p>
+<h2>W-9 vs invoice vs 1099</h2>
+<p>These are three different things: the <b>W-9</b> is a one-time form giving the client your taxpayer details; the <b>invoice</b> is your request for payment for each job; the <b>1099-NEC</b> is the form the client files (and sends you) after year end if they paid you <b>$600 or more</b>. You still report all your income whether or not you receive a 1099.</p>
+<h2>Getting paid faster</h2>
+<p>Send the invoice promptly, keep terms short and clear, and number your invoices so nothing slips. A clean PDF with your payment details reduces back-and-forth.</p>
+<p><a href="/en/invoice">Create a contractor invoice free</a> &mdash; no account, instant PDF.</p>
+''',
+  faqs=[
+   ("Do independent contractors charge sales tax on invoices?", "Usually not on professional services, but it varies by state and taxable goods can be an exception. Check your state&rsquo;s rules if you are unsure."),
+   ("Should I put my SSN on an invoice?", "No. Avoid putting your Social Security Number on invoices. If a client needs your taxpayer ID, provide it once on a Form W-9 sent securely."),
+   ("What is the difference between a 1099 and an invoice?", "The invoice is your request for payment for a job. The 1099-NEC is the tax form a client files after year end if they paid you $600 or more."),
+  ],
+  related=[('/en/invoice','Create an invoice'),('/en/blog/how-to-invoice-as-a-freelancer','How to invoice as a freelancer'),('/en/invoice/us-sales-tax','US sales tax invoice template')],
+ ),
+ dict(
+  slug='how-to-charge-a-late-payment-fee', cat='Getting paid', tool='/en/invoice',
+  title='How to Charge a Late Payment Fee (With Wording)',
+  desc='How to set and charge a late payment fee the right way: agree it up front, pick a fair amount, know your statutory rights, and use clear wording on the invoice.',
+  date='2026-10-28',
+  body='''
+<p class="lead">A late payment fee nudges clients to pay on time and compensates you when they do not. To be enforceable it has to be <b>agreed up front</b> and reasonable &mdash; you cannot spring a surprise charge after the invoice is overdue.</p>
+<h2>Set it out before you bill</h2>
+<p>State your late fee in your terms and on the invoice itself <i>before</i> the work or the due date &mdash; for example in your payment terms and a line on the invoice footer. If the client never agreed to it, you generally cannot add it later.</p>
+<h2>How much can you charge?</h2>
+<p>Common choices are a <b>monthly percentage</b> (often 1&ndash;1.5% of the overdue balance per month) or a <b>flat fee</b>. Keep it reasonable: a fee that looks like a penalty rather than fair compensation can be unenforceable, and some places cap interest rates.</p>
+<h2>Your statutory rights</h2>
+<p>In the <b>UK</b>, the Late Payment of Commercial Debts Act lets businesses charge statutory interest (8% plus the Bank of England base rate) plus a fixed recovery sum on overdue B2B invoices, even without a clause. In the <b>US</b>, late fees are set by your contract and limited by state usury caps. Check what applies where you operate.</p>
+<h2>Example wording</h2>
+<p>Put a clear line in your terms, such as: <i>&ldquo;A late fee of 1.5% per month will be applied to balances not paid within 30 days of the invoice date.&rdquo;</i></p>
+<h2>Apply it fairly</h2>
+<p>Send a polite reminder first &mdash; most late payments are oversights. Keep the relationship intact: a reminder plus a clearly-stated fee usually gets you paid without having to enforce anything.</p>
+<p><a href="/en/invoice">Create an invoice with your payment terms</a> &mdash; free, no sign-up.</p>
+''',
+  faqs=[
+   ("How much late payment fee can I charge?", "A monthly rate of around 1&ndash;1.5% of the overdue balance, or a reasonable flat fee, is common. Keep it fair rather than punitive, and check any local interest-rate caps."),
+   ("Can I charge a late fee without warning?", "Generally no. The fee has to be agreed in advance &mdash; stated in your terms and on the invoice before the due date. You usually cannot add it retroactively."),
+   ("What wording should I use for a late fee?", "Something clear and specific, for example: &lsquo;A late fee of 1.5% per month applies to balances not paid within 30 days of the invoice date.&rsquo;"),
+  ],
+  related=[('/en/invoice','Create an invoice'),('/en/blog/payment-terms-explained','Payment terms explained'),('/en/blog/payment-reminder-email','Payment reminder email')],
+ ),
+ dict(
   slug='receipt-vs-invoice', cat='Invoicing', tool='/en/receipt',
   title='Receipt vs Invoice: What&rsquo;s the Difference?',
   desc='An invoice asks for payment; a receipt confirms it. Here is when to send each, what they must show, and how they work together.',
