@@ -54,16 +54,42 @@ export async function onRequestPost(context) {
   const fromAddr = env.SEND_FROM_ADDR || 'docs@free-bizdocs.com';
   const esc = (s) => String(s || '').replace(/[<>&]/g, (c) => ({ '<': '', '>': '', '&': '&amp;' }[c] || c));
   const from = esc(fromName) + ' <' + fromAddr + '>';
-  const htmlBody = '<div style="font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;font-size:15px;line-height:1.8;color:#1a2330;white-space:pre-wrap">'
-    + (bodyText ? bodyText.replace(/[<>&]/g, (c) => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;' }[c])) : T('書類を添付してお送りします。ご確認ください。', 'Please find the document attached.'))
-    + '</div><hr style="border:none;border-top:1px solid #e5e9f0;margin:22px 0 10px"><div style="font-size:12px;color:#8a97a6">'
-    + T('このメールは Free BizDoc（free-bizdocs.com）から送信されました。', 'Sent via Free BizDoc (free-bizdocs.com).') + '</div>';
+  const htmlEsc = (s) => String(s || '').replace(/[<>&]/g, (c) => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;' }[c]));
 
+  // 受け取り側にも Free BizDoc を知ってもらうブランドフッター（ロゴ＋概要＋無料で作れるリンク）
+  const siteUrl = (lang === 'en' ? 'https://free-bizdocs.com/en/' : 'https://free-bizdocs.com/') + '?utm_source=email&utm_medium=document&utm_campaign=doc_email';
+  const overview = T(
+    'Free BizDoc は、請求書・見積書・納品書・領収書などのビジネス書類を<b style="color:#1766e6">登録不要・無料</b>で作成できるサービスです。インボイス・源泉徴収にも対応。',
+    'Free BizDoc lets anyone create invoices, estimates, receipts and more — <b style="color:#1766e6">free, with no sign-up</b>. Correct tax for the US, UK, Australia and Canada.'
+  );
+  const ctaLabel = T('無料で書類を作る →', 'Create a document free →');
+  const footer =
+    '<div style="margin-top:28px;padding:20px;background:#f4f8ff;border:1px solid #dde8fb;border-radius:14px">'
+    + '<img src="https://free-bizdocs.com/logo.png" alt="Free BizDoc" width="150" height="29" style="display:block;border:0;height:auto;width:150px;margin-bottom:11px">'
+    + '<div style="font-size:13px;line-height:1.75;color:#4a5a6b">' + overview + '</div>'
+    + '<a href="' + siteUrl + '" style="display:inline-block;margin-top:13px;background:#1766e6;color:#ffffff;text-decoration:none;font-weight:800;font-size:14px;border-radius:10px;padding:11px 20px">' + ctaLabel + '</a>'
+    + '</div>'
+    + '<div style="font-size:11.5px;color:#9aa7b4;margin-top:12px">'
+    + T('このメールは送信者が Free BizDoc（free-bizdocs.com）を使って送信しました。', 'This email was sent by the sender using Free BizDoc (free-bizdocs.com).') + '</div>';
+
+  const htmlBody =
+    '<div style="max-width:560px;margin:0 auto;font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#1a2330">'
+    + '<div style="font-size:15px;line-height:1.85;white-space:pre-wrap">'
+    + (bodyText ? htmlEsc(bodyText) : T('書類を添付してお送りします。ご確認ください。', 'Please find the document attached.'))
+    + '</div>'
+    + footer
+    + '</div>';
+
+  const textOverview = T(
+    'Free BizDoc — 請求書・見積書・領収書などを登録不要・無料で作成',
+    'Free BizDoc — create invoices, estimates, receipts and more, free with no sign-up'
+  );
   const payload = {
     from: from,
     to: [to],
     subject: subject,
-    text: (bodyText || T('書類を添付してお送りします。ご確認ください。', 'Please find the document attached.')) + '\n\n— Free BizDoc (free-bizdocs.com)',
+    text: (bodyText || T('書類を添付してお送りします。ご確認ください。', 'Please find the document attached.'))
+      + '\n\n— ' + textOverview + '\n' + siteUrl,
     html: htmlBody,
     attachments: [{ filename: filename, content: pdf }],
   };
