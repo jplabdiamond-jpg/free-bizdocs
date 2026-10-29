@@ -1,14 +1,16 @@
 {
   "day": "2026-10-29",
-  "count": 1,
-  "lastEpoch": 1793249375,
+  "count": 3,
+  "lastEpoch": 1793272885,
   "slots": [
     646,
     861,
     1073
   ],
   "todayCats": [
-    "Tax"
+    "Tax",
+    "Industries",
+    "Invoicing"
   ],
-  "rot": 4
+  "rot": 1
 }
