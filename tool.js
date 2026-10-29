@@ -232,7 +232,24 @@ function buildShareUI(){
     +'<div class="so-lb">このリンクを送るだけ。相手はブラウザで内容を確認し、PDFもダウンロードできます。</div>'
     +'<div class="so-row"><input id="shareurl" readonly><button type="button" id="sharecopy">コピー</button></div>'
     +'<div class="so-note">※ ロゴ・印影はリンクに含まれません。内容はリンク内だけに保持され、サーバーには保存されません。</div>'
+    +'</div>'
+    +'<div class="send-row"><button type="button" id="emailbtn" class="send-btn email">✉ メールで送る</button><button type="button" id="linebtn" class="send-btn line">LINEで送る</button></div>'
+    +'<div id="emailform" class="emailform" style="display:none">'
+    +'<label class="ef-l">宛先メール<input id="em-to" type="email" placeholder="torihiki@example.com"></label>'
+    +'<label class="ef-l">件名<input id="em-sub" type="text" maxlength="200"></label>'
+    +'<label class="ef-l">本文<textarea id="em-body" rows="4" maxlength="2000"></textarea></label>'
+    +'<div class="ef-act"><button type="button" id="em-send">PDFを添付して送信</button><span id="em-st"></span></div>'
+    +'<div class="so-note">送信元は free-bizdocs.com（返信は自社メールに届きます）。無料枠は作成と同じ1時間2件までです。</div>'
     +'</div>';
+  function docLabel(){ try{ return API.kindCfg(kind).t; }catch(e){ return '書類'; } }
+  function prefillEmail(){
+    var co=(document.getElementById('co-name')||{}).value||'';
+    var cl=(document.getElementById('cl-name')||{}).value||'';
+    var hon=(document.getElementById('cl-hon')||{}).value||'御中';
+    var L=docLabel();
+    document.getElementById('em-sub').value='【'+(co||'Free BizDoc')+'】'+L+'のご送付';
+    document.getElementById('em-body').value=(cl?(cl+' '+hon):'ご担当者様')+'\n\nいつもお世話になっております。'+(co?('\n'+co+'です。'):'')+'\n'+L+'をお送りいたします。添付のPDFをご確認ください。\n\n何卒よろしくお願いいたします。';
+  }
   box.addEventListener('click',function(e){
     if(e.target.id==='sharebtn'){
       var items=collect().filter(function(it){return it.name||it.unit_price;});
@@ -245,10 +262,55 @@ function buildShareUI(){
       var inp=document.getElementById('shareurl'); inp.select(); var ok=false; try{ ok=document.execCommand('copy'); }catch(e){}
       if(navigator.clipboard){ navigator.clipboard.writeText(inp.value).then(function(){toast('共有リンクをコピーしました');},function(){ toast(ok?'共有リンクをコピーしました':'手動でコピーしてください'); }); }
       else { toast(ok?'共有リンクをコピーしました':'手動でコピーしてください'); }
+    } else if(e.target.id==='linebtn'){
+      var items=collect().filter(function(it){return it.name||it.unit_price;});
+      if(!items.length){ toast('明細を入力してからLINEで送ってください'); return; }
+      if(!document.getElementById('cl-name').value){ toast('取引先名を入力してください'); return; }
+      var url=location.origin+location.pathname+'#s='+_b64e(JSON.stringify(buildPayload()));
+      var msg=docLabel()+'をお送りします。こちらからご確認ください：\n'+url;
+      window.open('https://line.me/R/share?text='+encodeURIComponent(msg),'_blank','noopener');
+    } else if(e.target.id==='emailbtn'){
+      var items=collect().filter(function(it){return it.name||it.unit_price;});
+      if(!items.length){ toast('明細を入力してからメールで送ってください'); return; }
+      if(!document.getElementById('cl-name').value){ toast('取引先名を入力してください'); return; }
+      var f=document.getElementById('emailform');
+      if(f.style.display==='none'){ prefillEmail(); f.style.display='block'; document.getElementById('em-to').focus(); }
+      else { f.style.display='none'; }
+    } else if(e.target.id==='em-send'){
+      sendByEmail();
     }
   });
+  function sendByEmail(){
+    var to=(document.getElementById('em-to').value||'').trim();
+    var st=document.getElementById('em-st'); var btn=document.getElementById('em-send');
+    if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(to)){ st.textContent='宛先メールを正しく入力してください'; document.getElementById('em-to').focus(); return; }
+    var items=collect().filter(function(it){return it.name||it.unit_price;});
+    if(!items.length){ st.textContent='明細を入力してください'; return; }
+    btn.disabled=true; st.textContent='作成して送信中…';
+    API.captureBlob(function(){ return API.raw.invoiceFromData(docObj(), items, companyObj(), kind, window.__tpl||'standard', window.__theme||'mono'); })
+      .then(function(blob){ return _blobB64(blob); })
+      .then(function(b64){
+        return fetch('/api/send',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({
+          to:to, subject:document.getElementById('em-sub').value, body:document.getElementById('em-body').value,
+          pdf:b64, filename:((docObj().doc_no||kind)+'.pdf'),
+          from_name:(document.getElementById('co-name')||{}).value||'Free BizDoc',
+          reply_to:(document.getElementById('co-email')||{}).value||'', lang:'ja'
+        })});
+      })
+      .then(function(r){ return r.json().then(function(j){ return {s:r.status,j:j}; }); })
+      .then(function(o){
+        if(o.j&&o.j.ok){ st.textContent='✓ 送信しました（'+to+'）'; btn.disabled=false; bumpDocNo(); var dn=document.getElementById('doc-no'); if(dn) dn.value=nextDocNo();
+          if(!o.j.pass){ var rem=document.getElementById('remain'); if(rem&&typeof o.j.remaining==='number') rem.innerHTML='この1時間であと <b>'+o.j.remaining+'</b> 件まで無料で送れます'; }
+          setTimeout(function(){ var f=document.getElementById('emailform'); if(f) f.style.display='none'; },1800);
+        } else if(o.s===429){ st.innerHTML=(o.j&&o.j.error||'無料枠の上限に達しました')+(PASS_URL?' <a href="'+PASS_URL+'" style="color:#1766e6;font-weight:800">¥500で24時間使い放題→</a>':''); btn.disabled=false; }
+        else { st.textContent=(o.j&&o.j.error)||'送信に失敗しました'; btn.disabled=false; }
+      })
+      .catch(function(){ st.textContent='送信に失敗しました。時間をおいてお試しください'; btn.disabled=false; });
+  }
   return box;
 }
+// Blob → base64（data URL のヘッダを除去）
+function _blobB64(blob){ return new Promise(function(res,rej){ var r=new FileReader(); r.onload=function(){ var s=String(r.result||''); res(s.slice(s.indexOf(',')+1)); }; r.onerror=function(){ rej(new Error('read fail')); }; r.readAsDataURL(blob); }); }
 
 function injectToolCSS(){
   var s=document.createElement('style'); s.textContent=
@@ -266,7 +328,20 @@ function injectToolCSS(){
   +'.shareout .so-row{display:flex;gap:6px}'
   +'.shareout .so-row input{flex:1;min-width:0;font-family:inherit;font-size:12px;padding:8px 9px;border:1px solid var(--bd,#cfe0f2);border-radius:8px;background:#fff;color:#333}'
   +'.shareout .so-row button{font-family:inherit;font-size:12.5px;font-weight:800;border:none;border-radius:8px;padding:8px 14px;background:var(--ac,#1766e6);color:#fff;cursor:pointer}'
-  +'.shareout .so-note{font-size:11px;color:var(--faint,#8aa0b6);margin-top:7px;line-height:1.5}';
+  +'.shareout .so-note{font-size:11px;color:var(--faint,#8aa0b6);margin-top:7px;line-height:1.5}'
+  +'.send-row{display:flex;gap:8px;margin-top:9px}'
+  +'.send-btn{flex:1;font-family:inherit;font-size:13px;font-weight:800;border-radius:11px;padding:11px;cursor:pointer;border:1.5px solid}'
+  +'.send-btn.email{border-color:var(--ac,#1766e6);color:var(--ac,#1766e6);background:#fff}'
+  +'.send-btn.email:hover{background:var(--ac-s,#eaf1fe)}'
+  +'.send-btn.line{border-color:#06c755;color:#fff;background:#06c755}'
+  +'.send-btn.line:hover{background:#05b64c;border-color:#05b64c}'
+  +'.emailform{margin-top:10px;background:var(--surf2,#f3f8ff);border:1px solid var(--bd,#e2eaf4);border-radius:11px;padding:12px}'
+  +'.emailform .ef-l{display:block;font-size:12px;font-weight:700;color:var(--mut,#45607a);margin-bottom:9px}'
+  +'.emailform .ef-l input,.emailform .ef-l textarea{width:100%;box-sizing:border-box;margin-top:4px;font-family:inherit;font-size:13.5px;padding:9px 10px;border:1px solid var(--bd,#cfe0f2);border-radius:8px;background:#fff;color:#1a2330;line-height:1.7;resize:vertical}'
+  +'.emailform .ef-act{display:flex;align-items:center;gap:10px;margin-top:2px}'
+  +'.emailform .ef-act button{font-family:inherit;font-size:13.5px;font-weight:800;border:none;border-radius:9px;padding:10px 18px;background:var(--ac,#1766e6);color:#fff;cursor:pointer}'
+  +'.emailform .ef-act button:disabled{opacity:.6;cursor:default}'
+  +'.emailform .ef-act #em-st{font-size:12px;color:var(--mut,#45607a)}';
   document.head.appendChild(s);
 }
 function injectShareCSS(){

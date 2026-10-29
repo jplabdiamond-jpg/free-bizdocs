@@ -437,10 +437,54 @@ function applyPrefill(P){ if(!P)return;
   if($('doc-no')&&!$('doc-no').value) $('doc-no').value=nextDocNo();
   saveDraft();
 }
+function _b64FromBlob(blob){ return new Promise(function(res,rej){ var r=new FileReader(); r.onload=function(){ var s=String(r.result||''); res(s.slice(s.indexOf(',')+1)); }; r.onerror=function(){ rej(new Error('read fail')); }; r.readAsDataURL(blob); }); }
 function setupShare(){ var box=$('sharebox'); if(!box)return;
-  box.innerHTML='<button type="button" id="sharebtn" class="sharebtn"><svg viewBox="0 0 24 24" aria-hidden="true" style="display:inline-block;vertical-align:-0.18em;width:1.1em;height:1.1em;fill:none;stroke:#1f6fe5;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 1px #4cc5ff) drop-shadow(0 0 4px rgba(37,111,229,.75))"><path d="M9.5 14.5l5-5"/><path d="M11 7l1.2-1.2a4 4 0 0 1 5.9 5.9L17 13"/><path d="M13 17l-1.2 1.2a4 4 0 0 1-5.9-5.9L7 11"/></svg> Create a share link (send a URL instead of attaching a PDF)</button><div id="shareout" class="shareout" style="display:none"><div class="so-lb">Send this link. The recipient can view the document in their browser and download the PDF.</div><div class="so-row"><input id="shareurl" readonly><button type="button" id="sharecopy">Copy</button></div><div class="so-note">Your logo is not included in the link. The content lives only in the URL — nothing is saved on our servers.</div></div>';
-  box.addEventListener('click',function(e){ if(e.target.id==='sharebtn'){ if(!liveItems().length){ toast('Add a line item first'); return; } if(!v('cl-name')){ toast('Enter the recipient name first'); return; } var url=location.origin+location.pathname+'#s='+_b64e(JSON.stringify(sharePayload())); $('shareout').style.display='block'; var inp=$('shareurl'); inp.value=url; inp.focus(); inp.select(); }
-    else if(e.target.id==='sharecopy'){ var inp2=$('shareurl'); inp2.select(); var ok=false; try{ ok=document.execCommand('copy'); }catch(e2){} if(navigator.clipboard){ navigator.clipboard.writeText(inp2.value).then(function(){toast('Link copied');},function(){toast(ok?'Link copied':'Please copy manually');}); } else toast(ok?'Link copied':'Please copy manually'); } }); }
+  var iStyle='width:100%;box-sizing:border-box;margin-top:4px;font-family:inherit;font-size:13.5px;padding:9px 10px;border:1px solid #cfe0f2;border-radius:8px;background:#fff;color:#1a2330;line-height:1.7';
+  box.innerHTML='<button type="button" id="sharebtn" class="sharebtn"><svg viewBox="0 0 24 24" aria-hidden="true" style="display:inline-block;vertical-align:-0.18em;width:1.1em;height:1.1em;fill:none;stroke:#1f6fe5;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 1px #4cc5ff) drop-shadow(0 0 4px rgba(37,111,229,.75))"><path d="M9.5 14.5l5-5"/><path d="M11 7l1.2-1.2a4 4 0 0 1 5.9 5.9L17 13"/><path d="M13 17l-1.2 1.2a4 4 0 0 1-5.9-5.9L7 11"/></svg> Create a share link (send a URL instead of attaching a PDF)</button><div id="shareout" class="shareout" style="display:none"><div class="so-lb">Send this link. The recipient can view the document in their browser and download the PDF.</div><div class="so-row"><input id="shareurl" readonly><button type="button" id="sharecopy">Copy</button></div><div class="so-note">Your logo is not included in the link. The content lives only in the URL — nothing is saved on our servers.</div></div>'
+    +'<button type="button" id="emailbtn" style="width:100%;margin-top:9px;font-family:inherit;font-size:13.5px;font-weight:800;border:1.5px solid #1766e6;color:#1766e6;background:#fff;border-radius:11px;padding:11px;cursor:pointer">✉ Email this document</button>'
+    +'<div id="emailform" style="display:none;margin-top:10px;background:#f3f8ff;border:1px solid #e2eaf4;border-radius:11px;padding:12px">'
+    +'<label style="display:block;font-size:12px;font-weight:700;color:#45607a;margin-bottom:9px">Recipient email<input id="em-to" type="email" placeholder="client@example.com" style="'+iStyle+'"></label>'
+    +'<label style="display:block;font-size:12px;font-weight:700;color:#45607a;margin-bottom:9px">Subject<input id="em-sub" type="text" maxlength="200" style="'+iStyle+'"></label>'
+    +'<label style="display:block;font-size:12px;font-weight:700;color:#45607a;margin-bottom:9px">Message<textarea id="em-body" rows="4" maxlength="2000" style="'+iStyle+';resize:vertical"></textarea></label>'
+    +'<div style="display:flex;align-items:center;gap:10px"><button type="button" id="em-send" style="font-family:inherit;font-size:13.5px;font-weight:800;border:none;border-radius:9px;padding:10px 18px;background:#1766e6;color:#fff;cursor:pointer">Attach PDF &amp; send</button><span id="em-st" style="font-size:12px;color:#45607a"></span></div>'
+    +'<div class="so-note" style="margin-top:8px">Sent from free-bizdocs.com — replies go to your email. Free tier: 2 per hour, same as creating.</div>'
+    +'</div>';
+  function docLabel(){ try{ return kindLabels(kind,region).title; }catch(e){ return 'document'; } }
+  function prefillEmail(){
+    var co=v('co-name'), cl=v('cl-name'), L=docLabel();
+    $('em-to').value=v('cl-email')||'';
+    $('em-sub').value=(co?co+' — ':'')+L;
+    $('em-body').value='Hi'+(cl?' '+cl:' there')+',\n\nPlease find your '+L.toLowerCase()+' attached. Let me know if you have any questions.\n\nThanks,\n'+(co||'');
+  }
+  box.addEventListener('click',function(e){
+    if(e.target.id==='sharebtn'){ if(!liveItems().length){ toast('Add a line item first'); return; } if(!v('cl-name')){ toast('Enter the recipient name first'); return; } var url=location.origin+location.pathname+'#s='+_b64e(JSON.stringify(sharePayload())); $('shareout').style.display='block'; var inp=$('shareurl'); inp.value=url; inp.focus(); inp.select(); }
+    else if(e.target.id==='sharecopy'){ var inp2=$('shareurl'); inp2.select(); var ok=false; try{ ok=document.execCommand('copy'); }catch(e2){} if(navigator.clipboard){ navigator.clipboard.writeText(inp2.value).then(function(){toast('Link copied');},function(){toast(ok?'Link copied':'Please copy manually');}); } else toast(ok?'Link copied':'Please copy manually'); }
+    else if(e.target.id==='emailbtn'){ if(!liveItems().length){ toast('Add a line item first'); return; } if(!v('cl-name')){ toast('Enter the recipient name first'); return; } var f=$('emailform'); if(f.style.display==='none'){ prefillEmail(); f.style.display='block'; $('em-to').focus(); } else f.style.display='none'; }
+    else if(e.target.id==='em-send'){ sendByEmailEn(); }
+  });
+  function sendByEmailEn(){
+    var to=(v('em-to')||'').trim(), st=$('em-st'), btn=$('em-send');
+    if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(to)){ st.textContent='Enter a valid recipient email.'; $('em-to').focus(); return; }
+    if(!liveItems().length){ st.textContent='Add a line item first.'; return; }
+    btn.disabled=true; st.textContent='Generating & sending…';
+    (async function(){
+      try{
+        var bytes=await buildPdf(buildDoc());
+        var b64=await _b64FromBlob(new Blob([bytes],{type:'application/pdf'}));
+        var r=await fetch('/api/send',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({
+          to:to, subject:v('em-sub'), body:v('em-body'), pdf:b64,
+          filename:((v('doc-no')||kind)+'.pdf'), from_name:v('co-name')||'Free BizDoc', reply_to:v('co-email')||'', lang:'en'
+        })});
+        var j={}; try{ j=await r.json(); }catch(_){}
+        if(j&&j.ok){ st.textContent='✓ Sent to '+to; btn.disabled=false; bumpDocNo(); if($('doc-no')) $('doc-no').value=nextDocNo();
+          if(!j.pass){ var rem=$('remain'); if(rem&&typeof j.remaining==='number') rem.innerHTML='<b>'+j.remaining+'</b> free send'+(j.remaining===1?'':'s')+' left this hour'; }
+          setTimeout(function(){ var f=$('emailform'); if(f) f.style.display='none'; },1800);
+        } else if(r.status===429){ st.innerHTML=((j&&j.error)||'Free limit reached.')+(PASS_URL_EN?' <a href="'+PASS_URL_EN+'" style="color:#1766e6;font-weight:800">Get a $5 day pass →</a>':''); btn.disabled=false; }
+        else { st.textContent=(j&&j.error)||'Could not send.'; btn.disabled=false; }
+      }catch(e){ st.textContent='Could not send. Please try again later.'; btn.disabled=false; }
+    })();
+  }
+}
 function enterShareView(P){
   window.__logo='';
   function set(id,val){ var el=$(id); if(el&&val!=null) el.value=val; }

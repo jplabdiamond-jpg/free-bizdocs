@@ -1025,7 +1025,15 @@ window.API = (function () {
     setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
   }
 
-  return { get: function (p) { return req(p); }, post: function (p, b) { return req(p, 'POST', b); }, del: function (p) { return req(p, 'DELETE'); }, yen: yen, esc: esc, calc: calc, KINDS: KINDS, kindCfg: kindCfg, invoicePdf: _guardDl(invoicePdf), invoiceFromData: _guardDl(invoiceFromData), resumePdf: _guardDl(resumePdf), letterPdf: _guardDl(letterPdf), careerPdf: _guardDl(careerPdf), resignPdf: _guardDl(renderResign), docPdf: _guardDl(renderGeneric), logout: logout,
+  // PDFをダウンロードせずBlobで受け取る（メール送信用）。_cap をセットして描画し、_deliver からBlobを受ける。
+  function captureBlob(fn) {
+    return new Promise(function (resolve, reject) {
+      _cap = function (blob) { resolve(blob); };
+      Promise.resolve().then(fn).catch(function (e) { if (typeof _cap === 'function') _cap = null; reject(e); });
+    });
+  }
+
+  return { get: function (p) { return req(p); }, post: function (p, b) { return req(p, 'POST', b); }, del: function (p) { return req(p, 'DELETE'); }, yen: yen, esc: esc, calc: calc, KINDS: KINDS, kindCfg: kindCfg, invoicePdf: _guardDl(invoicePdf), invoiceFromData: _guardDl(invoiceFromData), resumePdf: _guardDl(resumePdf), letterPdf: _guardDl(letterPdf), careerPdf: _guardDl(careerPdf), resignPdf: _guardDl(renderResign), docPdf: _guardDl(renderGeneric), logout: logout, captureBlob: captureBlob,
     raw: { invoiceFromData: invoiceFromData, resumePdf: resumePdf, letterPdf: letterPdf, careerPdf: careerPdf, resignPdf: renderResign, docPdf: renderGeneric },
     livePreview: livePreview };
 })();
