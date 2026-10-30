@@ -1,0 +1,33 @@
+name: daily-cron
+
+# 毎日1回、本番の /api/cron を叩いて「定期請求の自動生成＋送付」と「未入金リマインド」を実行する。
+# 認証は CRON_SECRET（GitHub Secret）。Pages 側の環境変数 CRON_SECRET と一致させること。
+on:
+  schedule:
+    # UTC 23:41 = JST 08:41（午前の落ち着いた時間帯に送付・リマインド）
+    - cron: '41 23 * * *'
+  workflow_dispatch: {}
+
+concurrency:
+  group: daily-cron
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Hit cron endpoint
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+        run: |
+          if [ -z "$CRON_SECRET" ]; then echo "CRON_SECRET not set"; exit 1; fi
+          code=$(curl -sS -o /tmp/cron.json -w '%{http_code}' \
+            -H "x-cron-key: $CRON_SECRET" \
+            "https://free-bizdocs.com/api/cron")
+          echo "HTTP $code"
+          cat /tmp/cron.json || true
+          echo
+          test "$code" = "200"

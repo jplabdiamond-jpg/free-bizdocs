@@ -101,6 +101,7 @@ td.n{font-variant-numeric:tabular-nums;text-align:right}
   <label class="fl">内容（メモ）<input id="f-title" placeholder="例）月額顧問料・運用サポート"></label>
   <label class="fl">取引先<select id="f-client"></select></label>
   <div id="f-newclient-wrap" style="display:none"><label class="fl">新しい取引先名<input id="f-newclient" placeholder="株式会社○○"></label></div>
+  <label class="fl">宛先メール（自動送付・リンク用）<input id="f-email" type="email" placeholder="取引先の担当者メール（任意）"></label>
   <label class="fl">明細</label>
   <div class="items" id="f-items"></div>
   <button type="button" class="addrow" id="f-addrow">＋ 明細を追加</button>
@@ -110,6 +111,7 @@ td.n{font-variant-numeric:tabular-nums;text-align:right}
     <label class="fl">支払期限<select id="f-due"><option value="0">当日</option><option value="7">7日後</option><option value="15">15日後</option><option value="30" selected>30日後</option><option value="45">45日後</option><option value="60">60日後</option></select></label>
   </div>
   <label class="fl">発行方法<select id="f-mode"><option value="auto">自動発行（すぐ請求書として作成）</option><option value="draft">下書きで作成（確認してから発行）</option></select></label>
+  <label class="fl" style="flex-direction:row;align-items:flex-start;gap:9px;font-weight:600"><input type="checkbox" id="f-autosend" style="width:17px;height:17px;margin-top:2px;flex:none;accent-color:var(--good)"><span>生成時に宛先へオンライン請求書リンクを自動メールする<br><span class="sm" style="font-weight:400;color:var(--mut)">※「自動発行」かつ宛先メールが設定されている場合のみ。日次バッチで送信されます。</span></span></label>
   <label class="fl">振込先・備考（任意・請求書に印字）<textarea id="f-bank" rows="2" placeholder="銀行名・支店・口座番号 など"></textarea></label>
   <div class="mact"><button class="btn" id="m-cancel" type="button">キャンセル</button><span class="sp"></span><button class="btn pri" id="m-save" type="button">保存する</button></div>
 </div></div>
@@ -179,12 +181,14 @@ function openAdd(){ EDIT_ID=null; document.getElementById('mtitle').textContent=
   document.getElementById('f-title').value=''; fillClients(''); document.getElementById('f-newclient-wrap').style.display='none'; document.getElementById('f-newclient').value='';
   var box=document.getElementById('f-items'); box.innerHTML=''; box.appendChild(itemRow({}));
   document.getElementById('f-cycle').value='monthly'; fillDom(1); document.getElementById('f-due').value='30'; document.getElementById('f-mode').value='auto'; document.getElementById('f-bank').value='';
+  document.getElementById('f-email').value=''; document.getElementById('f-autosend').checked=false;
   openModalA11y();
 }
 function openEdit(r){ EDIT_ID=r.id; document.getElementById('mtitle').textContent='定期請求を編集';
   document.getElementById('f-title').value=r.title||''; fillClients(r.client_id); document.getElementById('f-newclient-wrap').style.display='none';
   var box=document.getElementById('f-items'); box.innerHTML=''; box.appendChild(itemRow({name:r.title||'', qty:1, unit_price:'', tax_rate:10}));
   document.getElementById('f-cycle').value=r.cycle; fillDom(r.day_of_month); document.getElementById('f-due').value=String(r.due_days); document.getElementById('f-mode').value=r.mode; document.getElementById('f-bank').value='';
+  document.getElementById('f-email').value=r.client_email||''; document.getElementById('f-autosend').checked=!!r.auto_send;
   openModalA11y();
 }
 var _lastFocus=null;
@@ -209,13 +213,16 @@ function collectItems(){ return [].slice.call(document.querySelectorAll('#f-item
 
 document.getElementById('addbtn').addEventListener('click',openAdd);
 document.getElementById('f-addrow').addEventListener('click',function(){ document.getElementById('f-items').appendChild(itemRow({})); });
-document.getElementById('f-client').addEventListener('change',function(){ document.getElementById('f-newclient-wrap').style.display=(this.value==='__new')?'block':'none'; });
+document.getElementById('f-client').addEventListener('change',function(){ document.getElementById('f-newclient-wrap').style.display=(this.value==='__new')?'block':'none';
+  var em=document.getElementById('f-email'); var c=CLIENTS.filter(function(x){return String(x.id)===String(this.value);}.bind(this))[0];
+  if(this.value!=='__new'){ em.value=(c&&c.email)||''; } else { em.value=''; }
+});
 document.getElementById('m-cancel').addEventListener('click',closeModal);
 document.getElementById('modal').addEventListener('click',function(e){ if(e.target.id==='modal') closeModal(); });
 document.getElementById('m-save').addEventListener('click',function(){
   var items=collectItems(); if(!items.length){ toast('明細を入力してください'); return; }
   var cid=document.getElementById('f-client').value;
-  var body={ title:document.getElementById('f-title').value, items:items, cycle:document.getElementById('f-cycle').value, day_of_month:parseInt(document.getElementById('f-dom').value,10), due_days:parseInt(document.getElementById('f-due').value,10), mode:document.getElementById('f-mode').value, bank:document.getElementById('f-bank').value };
+  var body={ title:document.getElementById('f-title').value, items:items, cycle:document.getElementById('f-cycle').value, day_of_month:parseInt(document.getElementById('f-dom').value,10), due_days:parseInt(document.getElementById('f-due').value,10), mode:document.getElementById('f-mode').value, bank:document.getElementById('f-bank').value, recipient_email:(document.getElementById('f-email').value||'').trim(), auto_send:document.getElementById('f-autosend').checked?1:0 };
   if(cid==='__new'){ body.client_name=document.getElementById('f-newclient').value.trim(); if(!body.client_name){ toast('取引先名を入力してください'); return; } }
   else if(cid){ body.client_id=parseInt(cid,10); }
   var btn=document.getElementById('m-save'); btn.disabled=true; btn.textContent='保存中…';

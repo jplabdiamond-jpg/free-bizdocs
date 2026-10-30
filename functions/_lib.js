@@ -137,6 +137,12 @@ export function normalizeEmail(e) {
   return String(e || '').trim().toLowerCase();
 }
 
+// 公開リンク用のURLセーフなランダムトークン（推測不可）。
+export function randToken() {
+  const b = crypto.getRandomValues(new Uint8Array(18));
+  return b64url(b);
+}
+
 // ---- 税計算エンジン（サーバー側が正）----
 // items: [{ qty, unit_price, tax_rate(10|8|0), withholding(0|1) }]
 export function calcTotals(items) {

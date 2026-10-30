@@ -1,4 +1,5 @@
-import { json, calcTotals, currentUserId, FREE_DOC_LIMIT } from '../../_lib.js';
+import { json, calcTotals, currentUserId, FREE_DOC_LIMIT, randToken, normalizeEmail } from '../../_lib.js';
+import { ensureCols } from '../../_schema.js';
 
 function pad4(n) { return ('000' + n).slice(-4); }
 function today() { return new Date().toISOString().slice(0, 10); }
@@ -11,6 +12,7 @@ export async function onRequestGet(context) {
   const { env, request } = context;
   const uid = await currentUserId(request, env);
   if (!uid) return json({ error: 'unauthorized' }, 401);
+  await ensureCols(env);
   const url = new URL(request.url);
   const type = TYPES[url.searchParams.get('type')] ? url.searchParams.get('type') : 'invoice';
   const status = url.searchParams.get('status');
@@ -38,6 +40,7 @@ export async function onRequestPost(context) {
   const { env, request } = context;
   const uid = await currentUserId(request, env);
   if (!uid) return json({ error: 'unauthorized' }, 401);
+  await ensureCols(env);
   let b = {};
   try { b = await request.json(); } catch (e) {}
   const type = TYPES[b.type] ? b.type : 'invoice';
@@ -57,24 +60,34 @@ export async function onRequestPost(context) {
     }
   }
 
-  // 自社情報（任意・受け取ったら更新）
+  // 自社情報（任意・受け取ったら更新）。決済リンク(paylink)も既定として保存。
   if (b.company && typeof b.company === 'object') {
     await env.DB.prepare('UPDATE users SET company_name=?, company_addr=?, reg_number=?, default_bank=? WHERE id=?')
       .bind(String(b.company.company_name || u.company_name || ''), String(b.company.company_addr || ''),
             String(b.company.reg_number || ''), String(b.company.default_bank || ''), uid).run();
+    if (b.company.paylink !== undefined) {
+      try { await env.DB.prepare('UPDATE users SET paylink=? WHERE id=?').bind(String(b.company.paylink || '').slice(0, 400), uid).run(); } catch (e) {}
+    }
   }
 
-  // 取引先: client_id 優先、無ければ client_name から find-or-create
+  const recipientEmail = normalizeEmail(b.recipient_email || '');
+  const docPaylink = (b.paylink !== undefined) ? String(b.paylink || '').slice(0, 400)
+    : (b.company && b.company.paylink !== undefined ? String(b.company.paylink || '').slice(0, 400) : '');
+
+  // 取引先: client_id 優先、無ければ client_name から find-or-create。宛先メールがあれば取引先に保存。
   let clientId = b.client_id || null;
   if (!clientId && b.client_name && String(b.client_name).trim()) {
     const nm = String(b.client_name).trim();
     const ex = await env.DB.prepare('SELECT id FROM clients WHERE user_id=? AND name=?').bind(uid, nm).first();
     if (ex) clientId = ex.id;
     else {
-      const ci = await env.DB.prepare('INSERT INTO clients (user_id, name, honorific) VALUES (?, ?, ?)')
-        .bind(uid, nm, b.honorific || '御中').run();
+      const ci = await env.DB.prepare('INSERT INTO clients (user_id, name, honorific, email) VALUES (?, ?, ?, ?)')
+        .bind(uid, nm, b.honorific || '御中', recipientEmail).run();
       clientId = ci.meta.last_row_id;
     }
+  }
+  if (clientId && recipientEmail) {
+    try { await env.DB.prepare('UPDATE clients SET email=? WHERE id=? AND user_id=?').bind(recipientEmail, clientId, uid).run(); } catch (e) {}
   }
 
   const c = calcTotals(items);
@@ -93,15 +106,19 @@ export async function onRequestPost(context) {
     }
   }
 
+  // 確定（下書き以外）の請求書には公開リンク用トークンを発行。
+  const shareToken = (status !== 'draft' && type === 'invoice') ? randToken() : null;
+
   const ins = await env.DB.prepare(
     `INSERT INTO documents
-     (user_id, client_id, type, doc_no, status, issue_date, due_date, subtotal, tax, withholding, total, payable, bank, notes, source_doc_id)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+     (user_id, client_id, type, doc_no, status, issue_date, due_date, subtotal, tax, withholding, total, payable, bank, notes, source_doc_id, recipient_email, paylink, share_token)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
   ).bind(
     uid, clientId, type, docNo, status,
     b.issue_date || today(), b.due_date || null,
     c.subtotal, c.tax, c.withholding, c.total, c.payable,
-    b.bank || '', b.notes || '', b.source_doc_id || null
+    b.bank || '', b.notes || '', b.source_doc_id || null,
+    recipientEmail || null, docPaylink || null, shareToken
   ).run();
   const docId = ins.meta.last_row_id;
 
@@ -114,5 +131,5 @@ export async function onRequestPost(context) {
   });
   if (stmts.length) await env.DB.batch(stmts);
 
-  return json({ ok: true, id: docId, doc_no: docNo, type: type, totals: c });
+  return json({ ok: true, id: docId, doc_no: docNo, type: type, totals: c, share_token: shareToken });
 }

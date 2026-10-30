@@ -1,24 +1,34 @@
-import { json, currentUserId, calcTotals } from '../../_lib.js';
+import { json, currentUserId, calcTotals, randToken, normalizeEmail } from '../../_lib.js';
+import { ensureCols } from '../../_schema.js';
 
 export async function onRequestGet(context) {
   const { env, params, request } = context;
   const uid = await currentUserId(request, env);
   if (!uid) return json({ error: 'unauthorized' }, 401);
+  await ensureCols(env);
   const id = params.id;
   const doc = await env.DB.prepare(
-    `SELECT d.*, c.name AS client_name, c.honorific, c.reg_number AS client_reg, c.address AS client_address
+    `SELECT d.*, c.name AS client_name, c.honorific, c.reg_number AS client_reg, c.address AS client_address, c.email AS client_email
      FROM documents d LEFT JOIN clients c ON c.id = d.client_id
      WHERE d.id = ? AND d.user_id = ?`
   ).bind(id, uid).first();
   if (!doc) return json({ error: 'not found' }, 404);
+  // 確定済み請求書で未発行なら公開リンク用トークンを発行（旧データの後方互換）。
+  if (!doc.share_token && doc.status !== 'draft' && doc.type === 'invoice') {
+    const tk = randToken();
+    try { await env.DB.prepare('UPDATE documents SET share_token=? WHERE id=? AND user_id=?').bind(tk, id, uid).run(); doc.share_token = tk; } catch (e) {}
+  }
   const items = (await env.DB.prepare(
     'SELECT * FROM line_items WHERE document_id = ? ORDER BY sort_order'
   ).bind(id).all()).results || [];
   const payments = (await env.DB.prepare(
     'SELECT * FROM payments WHERE document_id = ? ORDER BY id'
   ).bind(id).all()).results || [];
-  const user = await env.DB.prepare('SELECT id, email, company_name, company_addr, reg_number, default_bank FROM users WHERE id = ?').bind(uid).first();
-  return json({ document: doc, items: items, payments: payments, company: user });
+  const user = await env.DB.prepare('SELECT id, email, company_name, company_addr, reg_number, default_bank, paylink, auto_remind FROM users WHERE id = ?').bind(uid).first();
+  // PDF/画面表示用に、書類ごとの決済リンクが無ければユーザー既定を補完。
+  const co = Object.assign({}, user);
+  if (doc.paylink) co.paylink = doc.paylink;
+  return json({ document: doc, items: items, payments: payments, company: co });
 }
 
 export async function onRequestPut(context) {
@@ -26,6 +36,7 @@ export async function onRequestPut(context) {
   const uid = await currentUserId(request, env);
   if (!uid) return json({ error: 'unauthorized' }, 401);
   const id = params.id;
+  await ensureCols(env);
   const cur = await env.DB.prepare('SELECT * FROM documents WHERE id = ? AND user_id = ?').bind(id, uid).first();
   if (!cur) return json({ error: 'not found' }, 404);
   let b = {};
@@ -33,6 +44,11 @@ export async function onRequestPut(context) {
   const items = Array.isArray(b.items) ? b.items : [];
   if (!items.length) return json({ error: '明細が空です' }, 400);
   const status = b.status === 'draft' ? 'draft' : 'pending';
+  const recipientEmail = (b.recipient_email !== undefined) ? normalizeEmail(b.recipient_email) : (cur.recipient_email || '');
+  const docPaylink = (b.paylink !== undefined) ? String(b.paylink || '').slice(0, 400) : (cur.paylink || '');
+  // 下書き→確定で番号/トークン未設定なら公開リンク用トークンを発行。
+  let shareToken = cur.share_token || null;
+  if (!shareToken && status !== 'draft' && cur.type === 'invoice') shareToken = randToken();
 
   // 自社情報（任意・受け取ったら更新）
   if (b.company && typeof b.company === 'object') {
@@ -55,15 +71,20 @@ export async function onRequestPut(context) {
     }
   }
 
+  if (clientId && recipientEmail) {
+    try { await env.DB.prepare('UPDATE clients SET email=? WHERE id=? AND user_id=?').bind(recipientEmail, clientId, uid).run(); } catch (e) {}
+  }
+
   const c = calcTotals(items);
   // 番号は維持（編集で採番しない）。下書き→確定で番号未設定なら従来番号のまま。
   await env.DB.prepare(
-    `UPDATE documents SET client_id=?, status=?, issue_date=?, due_date=?, subtotal=?, tax=?, withholding=?, total=?, payable=?, bank=?, notes=? WHERE id=? AND user_id=?`
+    `UPDATE documents SET client_id=?, status=?, issue_date=?, due_date=?, subtotal=?, tax=?, withholding=?, total=?, payable=?, bank=?, notes=?, recipient_email=?, paylink=?, share_token=? WHERE id=? AND user_id=?`
   ).bind(
     clientId, status,
     b.issue_date || cur.issue_date, (b.due_date !== undefined ? b.due_date : cur.due_date),
     c.subtotal, c.tax, c.withholding, c.total, c.payable,
     (b.bank !== undefined ? b.bank : cur.bank), (b.notes !== undefined ? b.notes : cur.notes),
+    recipientEmail || null, docPaylink || null, shareToken,
     id, uid
   ).run();
 
@@ -78,7 +99,7 @@ export async function onRequestPut(context) {
   });
   await env.DB.batch(stmts);
 
-  return json({ ok: true, id: Number(id), doc_no: cur.doc_no, type: cur.type, totals: c });
+  return json({ ok: true, id: Number(id), doc_no: cur.doc_no, type: cur.type, totals: c, share_token: shareToken });
 }
 
 export async function onRequestDelete(context) {

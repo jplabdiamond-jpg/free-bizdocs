@@ -47,6 +47,10 @@ td.n{font-variant-numeric:tabular-nums;text-align:right}
 .pill.pend{background:var(--warn-s);color:var(--warn)}.pill.over{background:var(--over-s);color:var(--over)}.pill.partial{background:var(--ac-s);color:var(--ac)}
 .recbtn{font-family:inherit;font-size:11.5px;font-weight:700;border:1px solid var(--ac);background:var(--surf);color:var(--ac);border-radius:7px;padding:5px 10px;cursor:pointer}
 .recbtn:hover{background:var(--ac-s)}.recbtn.on{background:var(--ac);color:#fff}
+.recbtn.ghost{border-color:var(--bd);color:var(--mut)}.recbtn.ghost:hover{background:var(--surf2)}
+.swlabel{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;color:var(--mut);font-weight:600;cursor:pointer}
+.toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);background:#171a21;color:#fff;font-size:13px;font-weight:600;padding:11px 18px;border-radius:10px;opacity:0;pointer-events:none;transition:.25s;z-index:9999;max-width:90vw}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
 .panel{position:sticky;top:16px}
 .fl{display:flex;flex-direction:column;gap:5px;font-size:12px;color:var(--mut);font-weight:600;margin-bottom:12px}
 input,select{font-family:inherit;font-size:13.5px;padding:9px 11px;border:1px solid var(--bd);border-radius:8px;background:var(--surf);color:var(--ink);box-sizing:border-box;width:100%}
@@ -78,7 +82,9 @@ input,select{font-family:inherit;font-size:13.5px;padding:9px 11px;border:1px so
   </aside>
 
   <div class="main">
-    <header class="top"><h1>入金管理・消込</h1><span class="sp"></span></header>
+    <header class="top"><h1>入金管理・消込</h1><span class="sp"></span>
+      <label class="swlabel" title="オンライン請求書リンクを送った未入金の請求書に、期限前後で自動リマインドメールを送ります"><input type="checkbox" id="auto-remind" style="width:16px;height:16px;accent-color:var(--good)">未入金の自動リマインド</label>
+    </header>
 
     <div class="content">
       <div class="kpis">
@@ -131,8 +137,34 @@ function render(){
   tb.innerHTML=unpaid.map(function(r){
     return '<tr data-id="'+r.id+'"'+(sel&&sel.id===r.id?' class="on"':'')+'><td><b>'+API.esc(r.doc_no||'—')+'</b><div class="sm">'+API.esc(r.client_name||'')+'</div></td>'
       +'<td class="n">'+API.yen(remain(r))+'</td><td'+(r.overdue?' style="color:var(--over);font-weight:700"':'')+'>'+API.esc(r.due_date||'—')+'</td>'
-      +'<td>'+pillOf(r)+'</td><td><button class="recbtn'+(sel&&sel.id===r.id?' on':'')+'" data-rec="'+r.id+'">入金記録</button></td></tr>';
+      +'<td>'+pillOf(r)+'</td><td><div style="display:flex;gap:6px;justify-content:flex-end;flex-wrap:wrap">'
+      +(r.payer_reported?'<span class="pill partial" title="取引先が支払い報告済み">報告あり</span>':'')
+      +'<button class="recbtn ghost" data-link="'+r.id+'" title="オンライン請求書リンクをコピー">リンク</button>'
+      +'<button class="recbtn ghost" data-send="'+r.id+'" title="メールでリンクを送付">送付</button>'
+      +'<button class="recbtn'+(sel&&sel.id===r.id?' on':'')+'" data-rec="'+r.id+'">入金記録</button>'
+      +'</div></td></tr>';
   }).join('');
+}
+function toast(m){ var t=document.getElementById('toast'); t.textContent=m; t.classList.add('on'); clearTimeout(t._h); t._h=setTimeout(function(){t.classList.remove('on');},2800); }
+async function copyLink(id){
+  var r=unpaid.filter(function(x){return x.id==id;})[0]||{};
+  var tk=r.share_token;
+  if(!tk){ try{ var d=await API.get('/api/documents/'+id); tk=d.document&&d.document.share_token; }catch(e){} }
+  if(!tk){ toast('リンクを取得できませんでした'); return; }
+  var url='https://free-bizdocs.com/i/'+tk;
+  try{ await navigator.clipboard.writeText(url); toast('リンクをコピーしました'); }
+  catch(e){ window.prompt('オンライン請求書リンク', url); }
+}
+async function sendLink(id){
+  var r=unpaid.filter(function(x){return x.id==id;})[0]||{};
+  var to=r.recipient_email||'';
+  if(!to){ to=window.prompt('送付先メールアドレスを入力してください'); if(!to) return; }
+  toast('送信中…');
+  try{
+    var res=await API.post('/api/documents/'+id+'/sendlink',{to:to});
+    toast('送付しました（'+res.to+'）');
+    await load();
+  }catch(e){ toast('送付に失敗しました: '+(e&&e.message||'')); }
 }
 function select(r){
   sel=r; render();
@@ -148,6 +180,8 @@ function select(r){
   document.getElementById('rec-msg').className='msg';
 }
 document.getElementById('rows').addEventListener('click',function(e){
+  var lk=e.target.closest('[data-link]'); if(lk){ copyLink(lk.getAttribute('data-link')); return; }
+  var sd=e.target.closest('[data-send]'); if(sd){ sendLink(sd.getAttribute('data-send')); return; }
   var b=e.target.closest('[data-rec]'); if(!b)return;
   var id=b.getAttribute('data-rec'); select(unpaid.filter(function(x){return x.id==id;})[0]);
 });
@@ -175,8 +209,19 @@ async function load(){
   unpaid=(r.documents||[]).sort(function(a,b){ return (a.due_date||'9999')<(b.due_date||'9999')?-1:1; });
   render();
 }
-(async function(){ try{ await load(); }catch(e){ document.getElementById('rows').innerHTML='<tr><td colspan="5" class="muted">読み込み失敗: '+API.esc(e.message)+'</td></tr>'; } })();
+var COMPANY={};
+async function loadCompany(){
+  try{ var c=await API.get('/api/company'); COMPANY=c.company||{}; document.getElementById('auto-remind').checked=!!COMPANY.auto_remind; }catch(e){}
+}
+document.getElementById('auto-remind').addEventListener('change',function(){
+  var on=this.checked;
+  API.post('/api/company',{ company_name:COMPANY.company_name||'', company_addr:COMPANY.company_addr||'', reg_number:COMPANY.reg_number||'', default_bank:COMPANY.default_bank||'', auto_remind:on?1:0 })
+    .then(function(){ COMPANY.auto_remind=on?1:0; toast(on?'自動リマインドをオンにしました':'自動リマインドをオフにしました'); })
+    .catch(function(){ toast('設定の保存に失敗しました'); });
+});
+(async function(){ try{ await loadCompany(); await load(); }catch(e){ document.getElementById('rows').innerHTML='<tr><td colspan="5" class="muted">読み込み失敗: '+API.esc(e.message)+'</td></tr>'; } })();
 </script>
+<div class="toast" id="toast"></div>
 <script src="/appshell.js?v=20261027"></script>
 </body>
 </html>

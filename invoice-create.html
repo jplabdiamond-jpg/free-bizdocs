@@ -121,6 +121,13 @@ input:focus,select:focus{outline:2px solid var(--ac-s);border-color:var(--ac)}
           <label class="fl">振込先<input id="bank"></label>
           <label class="fl">備考<input id="notes" value="振込手数料は御社にてご負担ください"></label>
         </div>
+
+        <div class="fs" id="online-fs">
+          <span class="lg">オンライン請求・送付（任意）</span>
+          <label class="fl">宛先メール<input id="recipient-email" type="email" placeholder="取引先の担当者メール（リンク送付・リマインドに使用）"></label>
+          <label class="fl">オンライン決済リンク<input id="paylink" type="url" placeholder="https://… Stripe / PayPal.me / Wise などの支払いリンク"></label>
+          <p style="font-size:11.5px;color:var(--faint);margin:2px 0 0;line-height:1.7">発行すると公開リンク（/i/…）が作成され、取引先はブラウザで内容確認・PDF取得・「支払いました」の報告ができます。決済リンクを設定すると「今すぐ支払う」ボタンが表示されます（入金は自動では消し込まれないため、確認後に入金管理で記録してください）。</p>
+        </div>
       </div>
 
       <div class="pvwrap">
@@ -189,7 +196,12 @@ rowsEl.addEventListener('input', recompute);
 rowsEl.addEventListener('change', recompute);
 rowsEl.addEventListener('click', function(e){ var d=e.target.closest('.del'); if(d){ d.closest('.rw').remove(); recompute(); } });
 document.getElementById('addrow').addEventListener('click', function(){ addRow({unit:'式',unit_price:0}); });
-document.getElementById('client').addEventListener('change', recompute);
+function fillRecipientEmail(){
+  var cl=clients.filter(function(x){return x.id==document.getElementById('client').value;})[0]||{};
+  var el=document.getElementById('recipient-email');
+  if(el && !el.value && cl.email) el.value=cl.email;
+}
+document.getElementById('client').addEventListener('change', function(){ document.getElementById('recipient-email').value=''; fillRecipientEmail(); recompute(); });
 document.getElementById('issue-date').addEventListener('change', recompute);
 document.getElementById('due').addEventListener('change', recompute);
 
@@ -207,10 +219,16 @@ function msg(t,cls){ var m=document.getElementById('msg'); m.textContent=t; m.cl
 async function save(status){
   var items=collect().filter(function(it){return it.name||it.unit_price;});
   if(!items.length){ msg('明細を1行以上入力してください','err'); return; }
+  var paylink=(document.getElementById('paylink').value||'').trim();
   var payload={ type:docType, status:status, client_id:document.getElementById('client').value||null,
     issue_date:document.getElementById('issue-date').value, due_date:document.getElementById('due').value||null,
-    bank:document.getElementById('bank').value, notes:document.getElementById('notes').value, items:items };
+    bank:document.getElementById('bank').value, notes:document.getElementById('notes').value, items:items,
+    recipient_email:(document.getElementById('recipient-email').value||'').trim(), paylink:paylink };
   document.getElementById('issue').disabled=true; document.getElementById('save-draft').disabled=true;
+  // 決済リンクが変わっていれば既定として保存（他の自社情報は上書きしない）。
+  if(docType==='invoice' && paylink && paylink!==(company.paylink||'')){
+    try{ await API.post('/api/company',{ company_name:company.company_name||'', company_addr:company.company_addr||'', reg_number:company.reg_number||'', default_bank:company.default_bank||'', paylink:paylink }); company.paylink=paylink; }catch(_){}
+  }
   try{
     var r=await API.post('/api/documents', payload);
     msg((status==='draft'?'下書きを保存しました':'発行しました')+'（'+(r.doc_no||'下書き')+'）。一覧へ移動します…','ok');
@@ -235,6 +253,8 @@ document.getElementById('save-draft').addEventListener('click', function(){ save
     document.getElementById('pv-coreg').textContent=company.reg_number?('登録番号 '+company.reg_number):'';
     document.getElementById('pv-coemail').textContent=company.email||'';
     document.getElementById('bank').value=company.default_bank||'';
+    if(company.paylink) document.getElementById('paylink').value=company.paylink;
+    fillRecipientEmail();
   }catch(e){ msg('読み込みエラー: '+e.message,'err'); }
   addRow({name:'',unit:'式',unit_price:0});
   recompute();

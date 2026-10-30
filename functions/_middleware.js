@@ -56,9 +56,10 @@ export async function onRequest(context) {
   if (LEGACY[p]) return Response.redirect(url.origin + LEGACY[p], 301);
 
   // 公開API（認証・無料ツール・問い合わせ等）
-  const PUBLIC_API = ['/api/auth/signup', '/api/auth/login', '/api/auth/logout', '/api/auth/me', '/api/auth/google/start', '/api/auth/google/callback', '/api/waitlist', '/api/contact', '/api/feedback', '/api/stripe/webhook', '/api/pass/claim', '/api/send'];
+  const PUBLIC_API = ['/api/auth/signup', '/api/auth/login', '/api/auth/logout', '/api/auth/me', '/api/auth/google/start', '/api/auth/google/callback', '/api/waitlist', '/api/contact', '/api/feedback', '/api/stripe/webhook', '/api/pass/claim', '/api/send', '/api/cron'];
   if (PUBLIC_API.indexOf(p) >= 0) return next();
   if (p.startsWith('/api/free/')) return next();
+  if (p.startsWith('/api/i/')) return next();
 
   // 保護対象のアプリページ（クリーンURL・.html 両方）
   const APP_PAGES = ['/dashboard', '/invoice-list', '/invoice-create', '/quotes', '/recurring', '/reports', '/payments', '/referrals', '/feedback-admin'];

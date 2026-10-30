@@ -1,5 +1,7 @@
 // 定期請求の共有ロジック: テーブル定義・日付計算・テンプレから請求書生成・期日到来分の自動生成。
-import { calcTotals } from '../_lib.js';
+import { calcTotals, randToken } from '../_lib.js';
+import { ensureCols } from '../_schema.js';
+import { sendMail, invoiceEmailHtml, invoiceEmailText } from '../_mail.js';
 
 export const RECURRING_DDL =
   'CREATE TABLE IF NOT EXISTS recurring (' +
@@ -46,22 +48,45 @@ async function createInvoiceFromTemplate(env, uid, t, items) {
     const uu = await env.DB.prepare('SELECT invoice_seq FROM users WHERE id = ?').bind(uid).first();
     docNo = 'INV-' + new Date().getFullYear() + '-' + pad4((uu && uu.invoice_seq) || 1);
   }
+  // 宛先メール（取引先マスタ）と公開リンク用トークンをスナップショット。
+  let clientEmail = '';
+  try { const cl = await env.DB.prepare('SELECT email FROM clients WHERE id=?').bind(t.client_id || 0).first(); clientEmail = (cl && cl.email) || ''; } catch (e) {}
+  const shareToken = (status !== 'draft') ? randToken() : null;
   const ins = await env.DB.prepare(
-    'INSERT INTO documents (user_id, client_id, type, doc_no, status, issue_date, due_date, subtotal, tax, withholding, total, payable, bank, notes) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
+    'INSERT INTO documents (user_id, client_id, type, doc_no, status, issue_date, due_date, subtotal, tax, withholding, total, payable, bank, notes, recipient_email, share_token) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
   ).bind(uid, t.client_id || null, 'invoice', docNo, status, today, due,
-    c.subtotal, c.tax, c.withholding, c.total, c.payable, t.bank || '', t.notes || '').run();
+    c.subtotal, c.tax, c.withholding, c.total, c.payable, t.bank || '', t.notes || '', clientEmail || null, shareToken).run();
   const docId = ins.meta.last_row_id;
   const stmts = items.map(function (it, i) {
     return env.DB.prepare('INSERT INTO line_items (document_id, name, qty, unit, unit_price, tax_rate, withholding, sort_order) VALUES (?,?,?,?,?,?,?,?)')
       .bind(docId, it.name || '', Number(it.qty) || 0, it.unit || '', Math.round(Number(it.unit_price) || 0), Number(it.tax_rate) || 0, Number(it.withholding) === 1 ? 1 : 0, i);
   });
   if (stmts.length) await env.DB.batch(stmts);
-  return { id: docId, doc_no: docNo };
+  return { id: docId, doc_no: docNo, share_token: shareToken, payable: c.payable, due_date: due, client_email: clientEmail };
+}
+
+// 生成した請求書のオンラインリンクを宛先へ自動メール（auto_send かつ宛先メールあり・自動発行のみ）。
+async function autoSendLink(env, uid, t, created) {
+  try {
+    if (!(t.auto_send && t.mode !== 'draft' && created && created.share_token && created.client_email)) return;
+    const u = await env.DB.prepare('SELECT company_name, email FROM users WHERE id=?').bind(uid).first() || {};
+    const link = 'https://free-bizdocs.com/i/' + created.share_token;
+    const opts = {
+      lang: 'ja', kind: 'notice', senderName: u.company_name || '', docNo: created.doc_no,
+      amount: created.payable, dueDate: created.due_date, link: link, message: t.notes || '',
+    };
+    await sendMail(env, {
+      to: created.client_email, fromName: u.company_name || 'Free BizDoc', replyTo: u.email || '',
+      subject: (u.company_name ? (u.company_name + ' より') : '') + '請求書のご案内' + (created.doc_no ? '（' + created.doc_no + '）' : ''),
+      html: invoiceEmailHtml(opts), text: invoiceEmailText(opts),
+    });
+  } catch (e) { /* メール失敗でも生成は成功扱い */ }
 }
 
 // 期日到来分（next_run <= 今日）を1件ずつ生成し next_run を未来へ。生成件数を返す。
+// auto_send 指定のテンプレは生成後にオンラインリンクを宛先へメール。
 export async function generateDueForUser(env, uid) {
-  try { await ensureTable(env); } catch (e) { return 0; }
+  try { await ensureTable(env); await ensureCols(env); } catch (e) { return 0; }
   const today = todayISO();
   let rows = [];
   try { rows = (await env.DB.prepare('SELECT * FROM recurring WHERE user_id=? AND active=1 AND next_run IS NOT NULL AND next_run<=?').bind(uid, today).all()).results || []; }
@@ -71,7 +96,8 @@ export async function generateDueForUser(env, uid) {
     try {
       const items = JSON.parse(t.items_json || '[]');
       if (!items.length) continue;
-      await createInvoiceFromTemplate(env, uid, t, items);
+      const created = await createInvoiceFromTemplate(env, uid, t, items);
+      await autoSendLink(env, uid, t, created);
       let nr = t.next_run, guard = 0;
       do { nr = advanceRun(nr, t.cycle, t.day_of_month); guard++; } while (nr <= today && guard < 60);
       await env.DB.prepare('UPDATE recurring SET next_run=?, last_run=? WHERE id=?').bind(nr, today, t.id).run();
@@ -79,4 +105,18 @@ export async function generateDueForUser(env, uid) {
     } catch (e) { /* 1件の失敗で全体を止めない */ }
   }
   return made;
+}
+
+// cron 用: 全ユーザー横断で期日到来分を生成（auto_send はメール送付）。
+export async function generateDueAllUsers(env) {
+  try { await ensureTable(env); await ensureCols(env); } catch (e) { return { users: 0, made: 0 }; }
+  const today = todayISO();
+  let uids = [];
+  try { uids = (await env.DB.prepare('SELECT DISTINCT user_id FROM recurring WHERE active=1 AND next_run IS NOT NULL AND next_run<=?').bind(today).all()).results || []; }
+  catch (e) { return { users: 0, made: 0 }; }
+  let made = 0;
+  for (const r of uids) {
+    try { made += await generateDueForUser(env, r.user_id); } catch (e) {}
+  }
+  return { users: uids.length, made: made };
 }

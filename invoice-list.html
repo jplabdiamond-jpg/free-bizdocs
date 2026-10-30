@@ -113,7 +113,7 @@ function render(){
     var _e='<a class="ib" href="/invoice?doc='+r.id+'">編集</a>';
     var act = r.status==='draft'
       ? '<div class="rowact">'+_e+'<span style="color:var(--faint);font-size:11.5px">下書き</span></div>'
-      : '<div class="rowact">'+_e+'<button class="ib" data-pdf="'+r.id+'"><svg viewBox="0 0 24 24" aria-hidden="true" style="display:inline-block;vertical-align:-0.18em;width:1.1em;height:1.1em;fill:none;stroke:#1f6fe5;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 1px #4cc5ff) drop-shadow(0 0 4px rgba(37,111,229,.75))"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M8 13h8M8 17h5"/></svg> PDF</button></div>';
+      : '<div class="rowact">'+_e+'<button class="ib" data-link="'+r.id+'" title="オンライン請求書リンクをコピー">リンク</button><button class="ib" data-send="'+r.id+'" title="メールでリンクを送付">送付</button><button class="ib" data-pdf="'+r.id+'"><svg viewBox="0 0 24 24" aria-hidden="true" style="display:inline-block;vertical-align:-0.18em;width:1.1em;height:1.1em;fill:none;stroke:#1f6fe5;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 1px #4cc5ff) drop-shadow(0 0 4px rgba(37,111,229,.75))"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M8 13h8M8 17h5"/></svg> PDF</button></div>';
     return '<tr data-id="'+r.id+'"><td><input type="checkbox" data-rc'+(r.status==='draft'?' disabled':'')+' aria-label="選択"></td>'
       +'<td><span class="no">'+API.esc(r.doc_no||'（下書き）')+'</span></td>'
       +'<td>'+API.esc(r.client_name||'')+'</td>'
@@ -139,7 +139,25 @@ function refreshBulk(){
 }
 document.getElementById('selall').addEventListener('change',function(){ rowChecks().forEach(function(c){c.checked=document.getElementById('selall').checked;}); refreshBulk(); });
 document.getElementById('rows').addEventListener('change',function(e){ if(e.target.hasAttribute('data-rc')) refreshBulk(); });
+function ilToast(m){ var t=document.getElementById('il-toast'); if(!t){ t=document.createElement('div'); t.id='il-toast'; t.style.cssText='position:fixed;left:50%;bottom:26px;transform:translateX(-50%);background:#171a21;color:#fff;font-size:13px;font-weight:600;padding:11px 18px;border-radius:10px;z-index:9999;transition:.25s;max-width:90vw'; document.body.appendChild(t); } t.textContent=m; t.style.opacity='1'; clearTimeout(t._h); t._h=setTimeout(function(){t.style.opacity='0';},2800); }
+async function ilCopyLink(id){
+  var r=all.filter(function(x){return x.id==id;})[0]||{}; var tk=r.share_token;
+  if(!tk){ try{ var d=await API.get('/api/documents/'+id); tk=d.document&&d.document.share_token; }catch(e){} }
+  if(!tk){ ilToast('リンクを取得できませんでした'); return; }
+  var url='https://free-bizdocs.com/i/'+tk;
+  try{ await navigator.clipboard.writeText(url); ilToast('リンクをコピーしました'); }catch(e){ window.prompt('オンライン請求書リンク', url); }
+}
+async function ilSend(btn,id){
+  var r=all.filter(function(x){return x.id==id;})[0]||{}; var to=r.recipient_email||'';
+  if(!to){ to=window.prompt('送付先メールアドレスを入力してください'); if(!to) return; }
+  var old=btn.textContent; btn.textContent='送信中…'; btn.disabled=true;
+  try{ var res=await API.post('/api/documents/'+id+'/sendlink',{to:to}); ilToast('送付しました（'+res.to+'）'); btn.textContent='送付済み'; }
+  catch(e){ ilToast('送付に失敗しました'); btn.textContent=old; }
+  btn.disabled=false;
+}
 document.getElementById('rows').addEventListener('click',async function(e){
+  var lk=e.target.closest('[data-link]'); if(lk){ ilCopyLink(lk.getAttribute('data-link')); return; }
+  var sn=e.target.closest('[data-send]'); if(sn){ ilSend(sn, sn.getAttribute('data-send')); return; }
   var p=e.target.closest('[data-pdf]'); if(p){ p.textContent='生成中…'; try{ await API.invoicePdf(p.getAttribute('data-pdf')); p.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true" style="display:inline-block;vertical-align:-0.18em;width:1.1em;height:1.1em;fill:none;stroke:#1f6fe5;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 1px #4cc5ff) drop-shadow(0 0 4px rgba(37,111,229,.75))"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M8 13h8M8 17h5"/></svg> PDF'; }catch(err){ p.textContent='失敗'; } }
 });
 document.getElementById('tabs').addEventListener('click',function(e){ var b=e.target.closest('button'); if(!b)return;
