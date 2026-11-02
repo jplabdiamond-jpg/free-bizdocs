@@ -137,7 +137,7 @@ function render(){
   tb.innerHTML=unpaid.map(function(r){
     return '<tr data-id="'+r.id+'"'+(sel&&sel.id===r.id?' class="on"':'')+'><td><b>'+API.esc(r.doc_no||'—')+'</b><div class="sm">'+API.esc(r.client_name||'')+'</div></td>'
       +'<td class="n">'+API.yen(remain(r))+'</td><td'+(r.overdue?' style="color:var(--over);font-weight:700"':'')+'>'+API.esc(r.due_date||'—')+'</td>'
-      +'<td>'+pillOf(r)+'</td><td><div style="display:flex;gap:6px;justify-content:flex-end;flex-wrap:wrap">'
+      +'<td>'+pillOf(r)+(r.viewed_at?'<div class="sm" style="color:var(--good);margin-top:3px" title="取引先がオンライン請求書を開封">✓ 開封済み</div>':'')+'</td><td><div style="display:flex;gap:6px;justify-content:flex-end;flex-wrap:wrap">'
       +(r.payer_reported?'<span class="pill partial" title="取引先が支払い報告済み">報告あり</span>':'')
       +'<button class="recbtn ghost" data-link="'+r.id+'" title="オンライン請求書リンクをコピー">リンク</button>'
       +'<button class="recbtn ghost" data-send="'+r.id+'" title="メールでリンクを送付">送付</button>'
@@ -222,6 +222,6 @@ document.getElementById('auto-remind').addEventListener('change',function(){
 (async function(){ try{ await loadCompany(); await load(); }catch(e){ document.getElementById('rows').innerHTML='<tr><td colspan="5" class="muted">読み込み失敗: '+API.esc(e.message)+'</td></tr>'; } })();
 </script>
 <div class="toast" id="toast"></div>
-<script src="/appshell.js?v=20261027"></script>
+<script src="/appshell.js?v=20261103"></script>
 </body>
 </html>

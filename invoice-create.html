@@ -113,7 +113,11 @@ input:focus,select:focus{outline:2px solid var(--ac-s);border-color:var(--ac)}
             <div class="hd"><span>品目・摘要</span><span>数量</span><span>単位</span><span>単価</span><span>税率</span><span style="text-align:center">源</span><span></span></div>
             <div id="rows"></div>
           </div>
-          <button class="addrow" id="addrow" type="button">＋ 明細行を追加</button>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <button class="addrow" id="addrow" type="button">＋ 明細行を追加</button>
+            <button class="addrow" id="save-items" type="button" style="background:var(--surf2);color:var(--mut);border:1px solid var(--bd)" title="入力中の明細をよく使う品目として保存します">★ よく使う品目に保存</button>
+          </div>
+          <datalist id="item-master"></datalist>
         </div>
 
         <div class="fs">
@@ -146,13 +150,13 @@ input:focus,select:focus{outline:2px solid var(--ac-s);border-color:var(--ac)}
 </div>
 <script src="api.js?v=20261029a"></script>
 <script>
-var clients=[], company={}, docType='invoice';
+var clients=[], company={}, docType='invoice', ITEMS=[];
 var rowsEl=document.getElementById('rows');
 
 function rowHtml(it){
   it=it||{};
   return '<div class="rw">'
-    +'<input class="i-name" value="'+API.esc(it.name||'')+'" placeholder="品目を入力">'
+    +'<input class="i-name" list="item-master" value="'+API.esc(it.name||'')+'" placeholder="品目を入力">'
     +'<input class="i-qty n" value="'+(it.qty!=null?it.qty:1)+'">'
     +'<input class="i-unit" value="'+API.esc(it.unit||'式')+'">'
     +'<input class="i-price n" value="'+(it.unit_price!=null?it.unit_price:0)+'">'
@@ -196,6 +200,30 @@ rowsEl.addEventListener('input', recompute);
 rowsEl.addEventListener('change', recompute);
 rowsEl.addEventListener('click', function(e){ var d=e.target.closest('.del'); if(d){ d.closest('.rw').remove(); recompute(); } });
 document.getElementById('addrow').addEventListener('click', function(){ addRow({unit:'式',unit_price:0}); });
+// 品目マスタ: 名称入力が一致したら単価・単位・税率・源泉を自動補完
+function fillDatalist(){ var dl=document.getElementById('item-master'); if(dl) dl.innerHTML=ITEMS.map(function(it){return '<option value="'+API.esc(it.name)+'">'+API.yen(it.unit_price)+'</option>';}).join(''); }
+rowsEl.addEventListener('change', function(e){
+  if(!e.target.classList.contains('i-name')) return;
+  var nm=e.target.value.trim(); if(!nm) return;
+  var m=ITEMS.filter(function(it){return it.name===nm;})[0]; if(!m) return;
+  var rw=e.target.closest('.rw');
+  var pr=rw.querySelector('.i-price'); if(!parseInt(String(pr.value).replace(/[^0-9.-]/g,''),10)) pr.value=m.unit_price;
+  var un=rw.querySelector('.i-unit'); if(!un.value||un.value==='式') un.value=m.unit||'式';
+  rw.querySelector('.i-rate').value=String(m.tax_rate);
+  rw.querySelector('.i-wh').checked=(m.withholding===1);
+  recompute();
+});
+document.getElementById('save-items').addEventListener('click', async function(){
+  var items=collect().filter(function(it){return it.name&&it.unit_price;});
+  if(!items.length){ msg('保存する品目がありません（品目名と単価が必要です）','err'); return; }
+  this.disabled=true;
+  try{
+    for(var i=0;i<items.length;i++){ await API.post('/api/items', items[i]); }
+    var r=await API.get('/api/items'); ITEMS=r.items||[]; fillDatalist();
+    msg(items.length+'件の品目を保存しました','ok');
+  }catch(e){ msg('品目の保存に失敗しました','err'); }
+  this.disabled=false;
+});
 function fillRecipientEmail(){
   var cl=clients.filter(function(x){return x.id==document.getElementById('client').value;})[0]||{};
   var el=document.getElementById('recipient-email');
@@ -255,6 +283,7 @@ document.getElementById('save-draft').addEventListener('click', function(){ save
     document.getElementById('bank').value=company.default_bank||'';
     if(company.paylink) document.getElementById('paylink').value=company.paylink;
     fillRecipientEmail();
+    try{ var ir=await API.get('/api/items'); ITEMS=ir.items||[]; fillDatalist(); }catch(_){}
   }catch(e){ msg('読み込みエラー: '+e.message,'err'); }
   addRow({name:'',unit:'式',unit_price:0});
   recompute();
@@ -291,6 +320,6 @@ document.getElementById('upsell').addEventListener('click',function(e){if(e.targ
     if(sd){var b=document.createElement('span');b.style.cssText='font-size:12px;font-weight:700;color:'+(me.remaining<=0?'#b23a2c':'#6c6f78')+';align-self:center;margin-right:2px';
       b.textContent='保存 '+me.doc_count+'/'+me.limit+'件';sd.parentNode.insertBefore(b,sd);}}}catch(_){}})();
 </script>
-<script src="/appshell.js?v=20261027"></script>
+<script src="/appshell.js?v=20261103"></script>
 </body>
 </html>

@@ -89,6 +89,13 @@ export async function onRequestPost(context) {
   if (clientId && recipientEmail) {
     try { await env.DB.prepare('UPDATE clients SET email=? WHERE id=? AND user_id=?').bind(recipientEmail, clientId, uid).run(); } catch (e) {}
   }
+  // 取引先ポータル用トークンを用意（未発行なら発行）
+  if (clientId) {
+    try {
+      const cc = await env.DB.prepare('SELECT portal_token FROM clients WHERE id=? AND user_id=?').bind(clientId, uid).first();
+      if (cc && !cc.portal_token) await env.DB.prepare('UPDATE clients SET portal_token=? WHERE id=? AND user_id=?').bind(randToken(), clientId, uid).run();
+    } catch (e) {}
+  }
 
   const c = calcTotals(items);
 
@@ -106,8 +113,8 @@ export async function onRequestPost(context) {
     }
   }
 
-  // 確定（下書き以外）の請求書には公開リンク用トークンを発行。
-  const shareToken = (status !== 'draft' && type === 'invoice') ? randToken() : null;
+  // 確定（下書き以外）の請求書・見積書には公開リンク用トークンを発行。
+  const shareToken = (status !== 'draft' && (type === 'invoice' || type === 'quote')) ? randToken() : null;
 
   const ins = await env.DB.prepare(
     `INSERT INTO documents

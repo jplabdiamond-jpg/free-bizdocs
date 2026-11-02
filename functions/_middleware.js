@@ -60,9 +60,10 @@ export async function onRequest(context) {
   if (PUBLIC_API.indexOf(p) >= 0) return next();
   if (p.startsWith('/api/free/')) return next();
   if (p.startsWith('/api/i/')) return next();
+  if (p.startsWith('/api/c/')) return next();
 
   // 保護対象のアプリページ（クリーンURL・.html 両方）
-  const APP_PAGES = ['/dashboard', '/invoice-list', '/invoice-create', '/quotes', '/recurring', '/reports', '/payments', '/referrals', '/feedback-admin'];
+  const APP_PAGES = ['/dashboard', '/invoice-list', '/invoice-create', '/quotes', '/recurring', '/reports', '/payments', '/referrals', '/feedback-admin', '/settings'];
   const pageKey = p.replace(/\.html$/, '');
   const isAppPage = APP_PAGES.indexOf(pageKey) >= 0;
   const isApi = p.startsWith('/api/');

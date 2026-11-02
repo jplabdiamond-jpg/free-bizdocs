@@ -20,7 +20,8 @@ export async function onRequestPost(context) {
      WHERE d.id = ? AND d.user_id = ?`
   ).bind(id, uid).first();
   if (!doc) return json({ error: 'not found' }, 404);
-  if (doc.type !== 'invoice' || doc.status === 'draft') return json({ error: 'この書類はオンライン送付の対象外です' }, 400);
+  if ((doc.type !== 'invoice' && doc.type !== 'quote') || doc.status === 'draft') return json({ error: 'この書類はオンライン送付の対象外です' }, 400);
+  const isQuote = (doc.type === 'quote');
 
   // トークン未発行なら発行
   let token = doc.share_token;
@@ -37,13 +38,14 @@ export async function onRequestPost(context) {
 
   const link = 'https://free-bizdocs.com/i/' + token;
   const opts = {
-    lang: 'ja', kind: 'notice', senderName: u.company_name || '', docNo: doc.doc_no,
-    amount: Math.max(0, (doc.payable || 0) - (doc.paid_total || 0)), dueDate: doc.due_date,
+    lang: 'ja', kind: isQuote ? 'quote' : 'notice', senderName: u.company_name || '', docNo: doc.doc_no,
+    amount: isQuote ? (doc.total || 0) : Math.max(0, (doc.payable || 0) - (doc.paid_total || 0)), dueDate: doc.due_date,
     link: link, message: (b.message || '').toString().slice(0, 2000),
   };
+  const defSubject = (u.company_name ? (u.company_name + ' より') : '') + (isQuote ? '見積書のご案内' : '請求書のご案内') + (doc.doc_no ? '（' + doc.doc_no + '）' : '');
   const r = await sendMail(env, {
     to: to, fromName: u.company_name || 'Free BizDoc', replyTo: u.email || '',
-    subject: (b.subject || ((u.company_name ? (u.company_name + ' より') : '') + '請求書のご案内' + (doc.doc_no ? '（' + doc.doc_no + '）' : ''))).toString().slice(0, 200),
+    subject: (b.subject || defSubject).toString().slice(0, 200),
     html: invoiceEmailHtml(opts), text: invoiceEmailText(opts),
   });
   if (!r.ok) return json({ ok: false, error: '送信に失敗しました。時間をおいてお試しください', detail: r.error }, 502);

@@ -88,7 +88,7 @@ td .no{font-weight:700}
 <script src="/api.js?v=20261029a"></script>
 <script>
 var all=[], cur='all';
-function pill(r){ return r.status==='draft' ? '<span class="pill draft">下書き</span>' : '<span class="pill sent">送付済み</span>'; }
+function pill(r){ if(r.status==='draft')return '<span class="pill draft">下書き</span>'; if(r.status==='accepted'||r.accepted_at)return '<span class="pill" style="background:var(--good-s,#dcefe4);color:var(--good,#157a48)">承認済み</span>'; return '<span class="pill sent">送付済み</span>'; }
 function match(r,t){ return t==='all'?true:r.status===t; }
 function render(){
   var list=all.filter(function(r){return match(r,cur);});
@@ -98,13 +98,13 @@ function render(){
     var _e='<a class="ib" href="/quote?doc='+r.id+'">編集</a>';
     var act = r.status==='draft'
       ? '<div class="rowact">'+_e+'<span style="color:var(--faint);font-size:11.5px">下書き</span></div>'
-      : '<div class="rowact">'+_e+'<button class="ib" data-conv="'+r.id+'">請求書に変換 →</button></div>';
+      : '<div class="rowact">'+_e+'<button class="ib" data-link="'+r.id+'" title="承認リンクをコピー">リンク</button><button class="ib" data-send="'+r.id+'" title="メールで送付">送付</button><button class="ib" data-conv="'+r.id+'">請求書に変換 →</button></div>';
     return '<tr data-id="'+r.id+'"><td><span class="no">'+API.esc(r.doc_no||'（下書き）')+'</span></td>'
       +'<td>'+API.esc(r.client_name||'—')+'</td>'
       +'<td class="hideS">'+API.esc(r.issue_date||'—')+'</td>'
       +'<td class="hideS">'+API.esc(r.due_date||'—')+'</td>'
       +'<td class="n">'+API.yen(r.total)+'</td>'
-      +'<td>'+pill(r)+'</td><td>'+act+'</td></tr>';
+      +'<td>'+pill(r)+(r.viewed_at?' <span title="取引先が開封" style="color:#157a48;font-size:11px;font-weight:700">✓開封</span>':'')+'</td><td>'+act+'</td></tr>';
   }).join('');
 }
 function counts(){
@@ -114,7 +114,25 @@ function counts(){
 }
 document.getElementById('tabs').addEventListener('click',function(e){ var b=e.target.closest('button'); if(!b)return;
   Array.prototype.forEach.call(this.children,function(x){x.classList.remove('on');}); b.classList.add('on'); cur=b.getAttribute('data-tab'); render(); });
+function qToast(m){ var t=document.getElementById('q-toast'); if(!t){ t=document.createElement('div'); t.id='q-toast'; t.style.cssText='position:fixed;left:50%;bottom:26px;transform:translateX(-50%);background:#171a21;color:#fff;font-size:13px;font-weight:600;padding:11px 18px;border-radius:10px;z-index:9999;transition:.25s'; document.body.appendChild(t);} t.textContent=m; t.style.opacity='1'; clearTimeout(t._h); t._h=setTimeout(function(){t.style.opacity='0';},2800); }
+async function qLink(id){
+  var r=all.filter(function(x){return x.id==id;})[0]||{}; var tk=r.share_token;
+  if(!tk){ try{ var d=await API.get('/api/documents/'+id); tk=d.document&&d.document.share_token; }catch(e){} }
+  if(!tk){ qToast('リンクを取得できませんでした'); return; }
+  var url='https://free-bizdocs.com/i/'+tk;
+  try{ await navigator.clipboard.writeText(url); qToast('承認リンクをコピーしました'); }catch(e){ window.prompt('見積の承認リンク', url); }
+}
+async function qSend(btn,id){
+  var r=all.filter(function(x){return x.id==id;})[0]||{}; var to=r.recipient_email||'';
+  if(!to){ to=window.prompt('送付先メールアドレスを入力してください'); if(!to) return; }
+  var old=btn.textContent; btn.textContent='送信中…'; btn.disabled=true;
+  try{ var res=await API.post('/api/documents/'+id+'/sendlink',{to:to}); qToast('送付しました（'+res.to+'）'); btn.textContent='送付済み'; }
+  catch(e){ qToast('送付に失敗しました'); btn.textContent=old; }
+  btn.disabled=false;
+}
 document.getElementById('rows').addEventListener('click',async function(e){
+  var lk=e.target.closest('[data-link]'); if(lk){ qLink(lk.getAttribute('data-link')); return; }
+  var sn=e.target.closest('[data-send]'); if(sn){ qSend(sn, sn.getAttribute('data-send')); return; }
   var c=e.target.closest('[data-conv]'); if(!c)return;
   var id=c.getAttribute('data-conv'); c.disabled=true; var old=c.textContent; c.textContent='変換中…';
   try{
@@ -134,6 +152,6 @@ document.getElementById('rows').addEventListener('click',async function(e){
   catch(e){ document.getElementById('rows').innerHTML='<tr><td colspan="7" class="muted">読み込み失敗: '+API.esc(e.message)+'</td></tr>'; }
 })();
 </script>
-<script src="/appshell.js?v=20261027"></script>
+<script src="/appshell.js?v=20261103"></script>
 </body>
 </html>

@@ -97,16 +97,20 @@ table.items td.r,table.items th.r{text-align:right;white-space:nowrap}
     DATA=j; render(j);
   }).catch(function(){ document.getElementById('root').innerHTML='<div class="card"><div class="skel">'+t('読み込みに失敗しました。','Could not load.')+'</div></div>'; });
 
-  function statusBadge(st,overdue){
+  function statusBadge(j){
+    var d=j.doc, st=d.status, today=new Date().toISOString().slice(0,10);
+    if(j.kind==='quote'){
+      if(j.accepted_at||st==='accepted')return '<span class="badge b-paid">'+t('承認済み','Accepted')+'</span>';
+      return '<span class="badge b-pend">'+t('未承認','Pending')+'</span>';
+    }
     if(st==='paid')return '<span class="badge b-paid">'+t('支払い済み','Paid')+'</span>';
     if(st==='partial')return '<span class="badge b-part">'+t('一部入金','Partial')+'</span>';
-    if(overdue)return '<span class="badge b-over">'+t('期限超過','Overdue')+'</span>';
+    if((st==='pending'||st==='partial')&&d.due_date&&d.due_date<today)return '<span class="badge b-over">'+t('期限超過','Overdue')+'</span>';
     return '<span class="badge b-pend">'+t('未払い','Unpaid')+'</span>';
   }
   function render(j){
-    var d=j.doc, items=j.items||[], co=j.company||{};
-    var today=new Date().toISOString().slice(0,10);
-    var overdue=(d.status==='pending'||d.status==='partial')&&d.due_date&&d.due_date<today;
+    var d=j.doc, items=j.items||[], co=j.company||{}, isQuote=(j.kind==='quote');
+    var accepted=!!j.accepted_at||d.status==='accepted';
     var rows=items.map(function(it){
       var amt=Math.round((Number(it.qty)||0)*(Math.round(Number(it.unit_price)||0)));
       var q=(Number(it.qty)||0);
@@ -119,32 +123,48 @@ table.items td.r,table.items th.r{text-align:right;white-space:nowrap}
     totRows+='<div class="row"><span>'+t('小計','Subtotal')+'</span><b>'+yen(d.subtotal)+'</b></div>';
     if(d.tax)totRows+='<div class="row"><span>'+t('消費税','Tax')+'</span><b>'+yen(d.tax)+'</b></div>';
     if(d.withholding)totRows+='<div class="row"><span>'+t('源泉徴収','Withholding')+'</span><b>-'+yen(d.withholding)+'</b></div>';
-    totRows+='<div class="row grand"><span>'+t('ご請求額','Total due')+'</span><span>'+yen(d.payable)+'</span></div>';
-    if(d.paid_total)totRows+='<div class="row"><span>'+t('入金済み','Paid')+'</span><b>'+yen(d.paid_total)+'</b></div>';
+    if(isQuote){ totRows+='<div class="row grand"><span>'+t('お見積金額','Total')+'</span><span>'+yen(d.total)+'</span></div>'; }
+    else { totRows+='<div class="row grand"><span>'+t('ご請求額','Total due')+'</span><span>'+yen(d.payable)+'</span></div>';
+      if(d.paid_total)totRows+='<div class="row"><span>'+t('入金済み','Paid')+'</span><b>'+yen(d.paid_total)+'</b></div>'; }
 
-    var remaining=j.remaining;
-    var payBtn=j.paylink?('<a class="btn pri" href="'+esc(j.paylink)+'" target="_blank" rel="noopener">'+payIcon()+t('今すぐお支払い','Pay now')+'</a>'):'';
-    var paidReportBtn=(d.status!=='paid')?('<button class="btn sec" id="paidbtn">'+t('支払いました','I\\'ve paid')+'</button>'):'';
-    var payBox=(d.status==='paid')
-      ? '<div class="pay"><div class="amt">'+t('この請求書はお支払い済みです。ありがとうございました。','This invoice has been paid. Thank you.')+'</div><div class="btns"><button class="btn ghost" id="pdfbtn">'+t('PDFをダウンロード','Download PDF')+'</button></div></div>'
-      : '<div class="pay"><div class="amt">'+t('お支払い残額','Amount due')+' <b>'+yen(remaining)+'</b></div><div class="btns">'+payBtn+'<button class="btn ghost" id="pdfbtn">'+t('PDFをダウンロード','Download PDF')+'</button>'+paidReportBtn+'</div><div class="msg" id="msg"></div></div>';
+    var actionBox;
+    if(isQuote){
+      actionBox = accepted
+        ? '<div class="pay"><div class="amt">'+t('この見積は承認済みです。ありがとうございます。','This estimate has been accepted. Thank you.')+'</div><div class="btns"><button class="btn ghost" id="pdfbtn">'+t('PDFをダウンロード','Download PDF')+'</button></div></div>'
+        : '<div class="pay"><div class="amt">'+t('内容をご確認のうえ、よろしければご承認ください。','Please review and accept if everything looks correct.')+'</div>'
+          +'<input id="acceptor" placeholder="'+t('ご担当者名（任意）','Your name (optional)')+'" style="width:100%;max-width:280px;margin:0 0 10px;padding:10px 12px;border:1px solid var(--line);border-radius:10px;font-size:14px">'
+          +'<div class="btns"><button class="btn pri" id="acceptbtn">'+checkIcon()+t('この見積を承認する','Accept this estimate')+'</button><button class="btn ghost" id="pdfbtn">'+t('PDFをダウンロード','Download PDF')+'</button></div><div class="msg" id="msg"></div></div>';
+    } else {
+      var remaining=j.remaining;
+      var payBtn=j.paylink?('<a class="btn pri" href="'+esc(j.paylink)+'" target="_blank" rel="noopener">'+payIcon()+t('今すぐお支払い','Pay now')+'</a>'):'';
+      var paidReportBtn=(d.status!=='paid')?('<button class="btn sec" id="paidbtn">'+t('支払いました','I\\'ve paid')+'</button>'):'';
+      actionBox=(d.status==='paid')
+        ? '<div class="pay"><div class="amt">'+t('この請求書はお支払い済みです。ありがとうございました。','This invoice has been paid. Thank you.')+'</div><div class="btns"><button class="btn ghost" id="pdfbtn">'+t('PDFをダウンロード','Download PDF')+'</button></div></div>'
+        : '<div class="pay"><div class="amt">'+t('お支払い残額','Amount due')+' <b>'+yen(remaining)+'</b></div><div class="btns">'+payBtn+'<button class="btn ghost" id="pdfbtn">'+t('PDFをダウンロード','Download PDF')+'</button>'+paidReportBtn+'</div><div class="msg" id="msg"></div></div>';
+    }
 
-    var bank=(d.bank||co.default_bank||'');
+    var kindTitle=isQuote?t('見積書','ESTIMATE'):t('請求書','INVOICE');
+    var noLabel=isQuote?t('見積番号','Quote No.'):t('請求書番号','Invoice No.');
+    var toLabel=isQuote?t('お見積先','To'):t('請求先','Bill to');
+    var dueLabel=isQuote?t('有効期限','Valid until'):t('支払期限','Due');
+    var bank=(!isQuote)?(d.bank||co.default_bank||''):'';
+    var logoHtml=co.logo?('<img src="'+esc(co.logo)+'" alt="" style="max-height:40px;max-width:160px;width:auto;margin-bottom:8px;display:block">'):'';
     var html='<div class="card">'
-      +'<div class="hd"><h1>'+t('請求書','INVOICE')+'</h1>'+statusBadge(d.status,overdue)
-      +'<span style="margin-left:auto;text-align:right"><div class="lbl">'+t('請求書番号','Invoice No.')+'</div><div style="font-weight:700;font-size:14px">'+esc(d.doc_no||'—')+'</div></span></div>'
+      +'<div class="hd"><h1>'+kindTitle+'</h1>'+statusBadge(j)
+      +'<span style="margin-left:auto;text-align:right"><div class="lbl">'+noLabel+'</div><div style="font-weight:700;font-size:14px">'+esc(d.doc_no||'—')+'</div></span></div>'
       +'<div class="bd">'
       +'<div class="parties">'
-      +'<div class="pty"><div class="lbl">'+t('請求元','From')+'</div><div class="nm">'+esc(co.company_name||'')+'</div><div class="sub">'+esc(co.company_addr||'')+(co.reg_number?('\\n'+t('登録番号','Reg. No.')+': '+esc(co.reg_number)):'')+'</div></div>'
-      +'<div class="pty"><div class="lbl">'+t('請求先','Bill to')+'</div><div class="nm">'+esc(d.client_name||'')+(d.honorific?(' '+esc(d.honorific)):'')+'</div><div class="sub">'+esc(d.client_address||'')+'</div></div>'
+      +'<div class="pty"><div class="lbl">'+t('発行元','From')+'</div>'+logoHtml+'<div class="nm">'+esc(co.company_name||'')+'</div><div class="sub">'+esc(co.company_addr||'')+(co.reg_number?('\\n'+t('登録番号','Reg. No.')+': '+esc(co.reg_number)):'')+'</div></div>'
+      +'<div class="pty"><div class="lbl">'+toLabel+'</div><div class="nm">'+esc(d.client_name||'')+(d.honorific?(' '+esc(d.honorific)):'')+'</div><div class="sub">'+esc(d.client_address||'')+'</div></div>'
       +'</div>'
-      +'<div class="meta"><span>'+t('発行日','Issued')+': <b>'+fdate(d.issue_date)+'</b></span>'+(d.due_date?('<span>'+t('支払期限','Due')+': <b>'+fdate(d.due_date)+'</b></span>'):'')+'</div>'
+      +'<div class="meta"><span>'+t('発行日','Issued')+': <b>'+fdate(d.issue_date)+'</b></span>'+(d.due_date?('<span>'+dueLabel+': <b>'+fdate(d.due_date)+'</b></span>'):'')+'</div>'
       +'<table class="items"><thead><tr><th>'+t('品目','Item')+'</th><th class="r">'+t('数量','Qty')+'</th><th class="r">'+t('単価','Unit price')+'</th><th class="r">'+t('金額','Amount')+'</th></tr></thead><tbody>'+rows+'</tbody></table>'
       +'<div class="tot">'+totRows+'</div>'
-      +payBox
+      +actionBox
       +(bank?('<div class="bank"><b>'+t('お振込先','Bank transfer')+'</b>\\n'+esc(bank)+'</div>'):'')
       +(d.notes?('<div class="notes">'+esc(d.notes)+'</div>'):'')
       +'</div></div>'
+      +(j.portal?('<div class="ft" style="margin-top:14px"><a href="'+esc(j.portal)+'" style="color:var(--brand);font-weight:700;text-decoration:none">'+t('この会社からの書類一覧を見る →','View all documents from this company →')+'</a></div>'):'')
       +'<div class="ft">'+t('このページは ','Powered by ')+'<a href="https://free-bizdocs.com/'+(LANG==='en'?'en/':'')+'?utm_source=online_invoice&utm_medium=footer" target="_blank" rel="noopener">Free BizDoc</a>'+t(' で発行されました','')+'</div>';
     document.getElementById('root').innerHTML=html;
 
@@ -152,8 +172,11 @@ table.items td.r,table.items th.r{text-align:right;white-space:nowrap}
     if(pdfb)pdfb.addEventListener('click',function(){ downloadPdf(pdfb); });
     var pb=document.getElementById('paidbtn');
     if(pb)pb.addEventListener('click',function(){ reportPaid(pb); });
+    var ab=document.getElementById('acceptbtn');
+    if(ab)ab.addEventListener('click',function(){ acceptQuote(ab); });
   }
   function payIcon(){return '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>';}
+  function checkIcon(){return '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>';}
 
   async function downloadPdf(btn){
     if(!window.API){ alert(t('PDFを生成できませんでした。','Could not generate PDF.')); return; }
@@ -166,11 +189,22 @@ table.items td.r,table.items th.r{text-align:right;white-space:nowrap}
     var msg=document.getElementById('msg');
     btn.disabled=true; btn.textContent=t('送信中…','Sending…');
     try{
-      var r=await fetch('/api/i/'+encodeURIComponent(TOKEN),{method:'POST',headers:{'content-type':'application/json'},body:'{}'});
+      var r=await fetch('/api/i/'+encodeURIComponent(TOKEN),{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({action:'paid'})});
       var j=await r.json();
       if(j&&j.ok){ msg.className='msg ok'; msg.textContent=t('お支払いの報告を送信しました。発行者が確認します。ありがとうございました。','Your payment report has been sent. The sender will confirm it. Thank you.'); btn.style.display='none'; }
       else { throw new Error(); }
     }catch(e){ msg.className='msg err'; msg.textContent=t('送信に失敗しました。時間をおいてお試しください。','Could not send. Please try again later.'); btn.disabled=false; btn.textContent=t('支払いました','I\\'ve paid'); }
+  }
+  async function acceptQuote(btn){
+    var msg=document.getElementById('msg');
+    var name=(document.getElementById('acceptor')||{}).value||'';
+    btn.disabled=true; btn.textContent=t('送信中…','Sending…');
+    try{
+      var r=await fetch('/api/i/'+encodeURIComponent(TOKEN),{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({action:'accept',name:name})});
+      var j=await r.json();
+      if(j&&j.ok){ msg.className='msg ok'; msg.textContent=t('見積を承認しました。発行者へ通知されます。ありがとうございます。','You have accepted the estimate. The sender has been notified. Thank you.'); btn.style.display='none'; var ac=document.getElementById('acceptor'); if(ac)ac.style.display='none'; }
+      else { throw new Error(); }
+    }catch(e){ msg.className='msg err'; msg.textContent=t('送信に失敗しました。時間をおいてお試しください。','Could not send. Please try again later.'); btn.disabled=false; btn.textContent=t('この見積を承認する','Accept this estimate'); }
   }
 })();
 </script>

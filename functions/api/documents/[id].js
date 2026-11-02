@@ -8,13 +8,13 @@ export async function onRequestGet(context) {
   await ensureCols(env);
   const id = params.id;
   const doc = await env.DB.prepare(
-    `SELECT d.*, c.name AS client_name, c.honorific, c.reg_number AS client_reg, c.address AS client_address, c.email AS client_email
+    `SELECT d.*, c.name AS client_name, c.honorific, c.reg_number AS client_reg, c.address AS client_address, c.email AS client_email, c.portal_token AS client_portal_token
      FROM documents d LEFT JOIN clients c ON c.id = d.client_id
      WHERE d.id = ? AND d.user_id = ?`
   ).bind(id, uid).first();
   if (!doc) return json({ error: 'not found' }, 404);
-  // 確定済み請求書で未発行なら公開リンク用トークンを発行（旧データの後方互換）。
-  if (!doc.share_token && doc.status !== 'draft' && doc.type === 'invoice') {
+  // 確定済みの請求書・見積書で未発行なら公開リンク用トークンを発行（旧データの後方互換）。
+  if (!doc.share_token && doc.status !== 'draft' && (doc.type === 'invoice' || doc.type === 'quote')) {
     const tk = randToken();
     try { await env.DB.prepare('UPDATE documents SET share_token=? WHERE id=? AND user_id=?').bind(tk, id, uid).run(); doc.share_token = tk; } catch (e) {}
   }
@@ -48,7 +48,7 @@ export async function onRequestPut(context) {
   const docPaylink = (b.paylink !== undefined) ? String(b.paylink || '').slice(0, 400) : (cur.paylink || '');
   // 下書き→確定で番号/トークン未設定なら公開リンク用トークンを発行。
   let shareToken = cur.share_token || null;
-  if (!shareToken && status !== 'draft' && cur.type === 'invoice') shareToken = randToken();
+  if (!shareToken && status !== 'draft' && (cur.type === 'invoice' || cur.type === 'quote')) shareToken = randToken();
 
   // 自社情報（任意・受け取ったら更新）
   if (b.company && typeof b.company === 'object') {

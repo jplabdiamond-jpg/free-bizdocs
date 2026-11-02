@@ -59,18 +59,24 @@ export function invoiceEmailHtml(opts) {
   const link = String(opts.link || '');
   const sender = htmlEsc(opts.senderName || '');
   const amount = yen(opts.amount, lang);
-  const title = (opts.kind === 'reminder')
-    ? (opts.overdue ? T('お支払い期限が過ぎています', 'Your payment is overdue')
-                    : T('お支払い期限が近づいています', 'Your payment is due soon'))
-    : T('請求書のご案内', 'Invoice from ' + (opts.senderName || 'your supplier'));
-  const lead = (opts.kind === 'reminder')
-    ? T('下記のお支払いがまだ確認できておりません。ご確認をお願いいたします。',
-        'We have not yet confirmed the payment below. Please take a moment to review it.')
-    : T((opts.senderName || '') + ' 様より請求書が発行されました。下記よりご確認・お支払いいただけます。',
-        (opts.senderName || 'Your supplier') + ' has issued an invoice. You can review and pay it below.');
+  const isQuote = (opts.kind === 'quote');
+  const title = isQuote
+    ? T('見積書のご案内', 'Estimate from ' + (opts.senderName || 'your supplier'))
+    : (opts.kind === 'reminder')
+      ? (opts.overdue ? T('お支払い期限が過ぎています', 'Your payment is overdue')
+                      : T('お支払い期限が近づいています', 'Your payment is due soon'))
+      : T('請求書のご案内', 'Invoice from ' + (opts.senderName || 'your supplier'));
+  const lead = isQuote
+    ? T((opts.senderName || '') + ' 様より見積書が発行されました。下記よりご確認・ご承認いただけます。',
+        (opts.senderName || 'Your supplier') + ' has issued an estimate. You can review and accept it below.')
+    : (opts.kind === 'reminder')
+      ? T('下記のお支払いがまだ確認できておりません。ご確認をお願いいたします。',
+          'We have not yet confirmed the payment below. Please take a moment to review it.')
+      : T((opts.senderName || '') + ' 様より請求書が発行されました。下記よりご確認・お支払いいただけます。',
+          (opts.senderName || 'Your supplier') + ' has issued an invoice. You can review and pay it below.');
   const rows = [];
-  if (opts.docNo) rows.push([T('請求書番号', 'Invoice No.'), htmlEsc(opts.docNo)]);
-  rows.push([T('ご請求金額', 'Amount due'), '<b style="color:#0f2744">' + amount + '</b>']);
+  if (opts.docNo) rows.push([isQuote ? T('見積番号', 'Quote No.') : T('請求書番号', 'Invoice No.'), htmlEsc(opts.docNo)]);
+  rows.push([isQuote ? T('お見積金額', 'Estimate total') : T('ご請求金額', 'Amount due'), '<b style="color:#0f2744">' + amount + '</b>']);
   if (opts.dueDate) rows.push([T('お支払い期限', 'Due date'), htmlEsc(opts.dueDate) + (opts.overdue ? ' <span style="color:#d64545;font-weight:700">(' + T('期限超過', 'overdue') + ')</span>' : '')]);
   const rowsHtml = rows.map(function (r) {
     return '<tr><td style="padding:6px 12px 6px 0;color:#6b7a8d;font-size:13px;white-space:nowrap">' + r[0] + '</td>'
@@ -81,7 +87,7 @@ export function invoiceEmailHtml(opts) {
     + '<div style="font-size:14.5px;line-height:1.8;color:#3a4a5b">' + lead + '</div>'
     + (opts.message ? '<div style="margin-top:12px;padding:12px 14px;background:#f7f9fc;border-radius:10px;font-size:13.5px;line-height:1.8;white-space:pre-wrap;color:#3a4a5b">' + htmlEsc(opts.message) + '</div>' : '')
     + '<table style="margin:16px 0;border-collapse:collapse">' + rowsHtml + '</table>'
-    + (link ? '<a href="' + link + '" style="display:inline-block;background:#1766e6;color:#ffffff;text-decoration:none;font-weight:800;font-size:15px;border-radius:11px;padding:13px 26px">' + T('請求書を開く・お支払い →', 'View & pay invoice →') + '</a>'
+    + (link ? '<a href="' + link + '" style="display:inline-block;background:#1766e6;color:#ffffff;text-decoration:none;font-weight:800;font-size:15px;border-radius:11px;padding:13px 26px">' + (isQuote ? T('見積を開く・承認 →', 'View & accept estimate →') : T('請求書を開く・お支払い →', 'View & pay invoice →')) + '</a>'
             + '<div style="font-size:11.5px;color:#9aa7b4;margin-top:8px">' + T('ボタンが開かない場合: ', 'If the button does not work: ') + '<a href="' + link + '" style="color:#1766e6">' + link + '</a></div>' : '')
     + brandFooter(lang)
     + '</div>';

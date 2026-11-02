@@ -7,10 +7,15 @@ import { ensureCols } from '../_schema.js';
 import { sendMail, invoiceEmailHtml, invoiceEmailText } from '../_mail.js';
 import { generateDueAllUsers } from './_recgen.js';
 
-const REMIND_BEFORE = [3];            // 期日の何日前に送るか
-const REMIND_OVERDUE = [0, 3, 7, 14]; // 期日超過の何日後に送るか
+const REMIND_BEFORE_DEFAULT = [3];            // 期日の何日前に送るか（既定）
+const REMIND_OVERDUE_DEFAULT = [0, 3, 7, 14]; // 期日超過の何日後に送るか（既定）
 const REMIND_CAP = 5;                 // 1請求書あたりの最大送信回数
 const SWEEP_LIMIT = 300;              // 1回のリマインド走査上限
+
+function parseDays(csv, fallback) {
+  const a = String(csv || '').split(',').map(function (x) { return parseInt(x, 10); }).filter(function (n) { return n >= 0 && n <= 180; });
+  return a.length ? a : fallback;
+}
 
 function todayISO() { return new Date().toISOString().slice(0, 10); }
 function daysBetween(fromISO, toISO) {
@@ -33,7 +38,8 @@ async function runReminders(env) {
   try {
     rows = (await env.DB.prepare(
       `SELECT d.id, d.doc_no, d.payable, d.paid_total, d.due_date, d.share_token, d.recipient_email, d.remind_count,
-              c.name AS client_name, u.company_name AS sender_name, u.email AS sender_email
+              c.name AS client_name, u.company_name AS sender_name, u.email AS sender_email,
+              u.remind_before AS rb, u.remind_after AS ra, u.remind_msg AS rmsg
        FROM documents d
        JOIN users u ON u.id = d.user_id
        LEFT JOIN clients c ON c.id = d.client_id
@@ -49,10 +55,12 @@ async function runReminders(env) {
   let sent = 0;
   for (const d of rows) {
     try {
+      const before = parseDays(d.rb, REMIND_BEFORE_DEFAULT);
+      const after = parseDays(d.ra, REMIND_OVERDUE_DEFAULT);
       const diff = daysBetween(today, d.due_date); // >0: 期日まであと diff 日 / <=0: 超過
       let due = false, overdue = false;
-      if (diff > 0) { if (REMIND_BEFORE.indexOf(diff) >= 0) due = true; }
-      else { overdue = true; if (REMIND_OVERDUE.indexOf(-diff) < 0) overdue = 'skip'; }
+      if (diff > 0) { if (before.indexOf(diff) >= 0) due = true; }
+      else { overdue = true; if (after.indexOf(-diff) < 0) overdue = 'skip'; }
       if (!due && overdue !== true) continue;
 
       const remaining = Math.max(0, (d.payable || 0) - (d.paid_total || 0));
@@ -60,6 +68,7 @@ async function runReminders(env) {
       const opts = {
         lang: 'ja', kind: 'reminder', overdue: (overdue === true),
         senderName: d.sender_name || '', docNo: d.doc_no, amount: remaining, dueDate: d.due_date, link: link,
+        message: d.rmsg || '',
       };
       const r = await sendMail(env, {
         to: d.recipient_email, fromName: d.sender_name || 'Free BizDoc', replyTo: d.sender_email || '',

@@ -120,7 +120,7 @@ function render(){
       +'<td class="hideS">'+API.esc(r.issue_date||'—')+'</td>'
       +'<td class="n">'+API.yen(r.payable)+'</td>'
       +'<td>'+API.esc(r.due_date||'—')+'</td>'
-      +'<td>'+pill(r)+'</td><td>'+act+'</td></tr>';
+      +'<td>'+pill(r)+(r.viewed_at?' <span title="取引先が開封" style="color:#157a48;font-size:11px;font-weight:700">✓開封</span>':'')+'</td><td>'+act+'</td></tr>';
   }).join('');
   refreshBulk();
 }
@@ -173,6 +173,6 @@ document.getElementById('bulk-pdf').addEventListener('click',async function(){
   catch(e){ document.getElementById('rows').innerHTML='<tr><td colspan="8" class="muted">読み込み失敗: '+API.esc(e.message)+'</td></tr>'; }
 })();
 </script>
-<script src="/appshell.js?v=20261027"></script>
+<script src="/appshell.js?v=20261103"></script>
 </body>
 </html>

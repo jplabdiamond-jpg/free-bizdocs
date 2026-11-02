@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>設定｜Free BizDoc</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap');
+body{margin:0}
+.app{--ink:#171a21;--bg:#f6f6f2;--surf:#ffffff;--surf2:#fbfaf7;--mut:#6c6f78;--faint:#9a9ca3;--bd:#e6e4dd;--ac:#3a46a8;--ac-s:#e7e8f6;--good:#157a48;--good-s:#dcefe4;--warn:#9c6b15;--warn-s:#f3e8cf;--over:#b23a2c;--over-s:#f2dcd7;
+font-family:"Zen Kaku Gothic New",system-ui,sans-serif;color:var(--ink);background:var(--bg);display:flex;flex-wrap:wrap;width:100%;min-height:940px;box-sizing:border-box}
+.side{width:236px;background:var(--surf);border-right:1px solid var(--bd);padding:22px 16px;display:flex;flex-direction:column;gap:22px;box-sizing:border-box}
+.brand{display:flex;align-items:center;gap:9px;padding:0 6px}
+.nav{display:flex;flex-direction:column;gap:2px}
+.nav .lb{font-size:10px;letter-spacing:.1em;color:var(--faint);font-weight:700;margin:10px 8px 4px}
+.nav a{display:flex;align-items:center;gap:10px;padding:9px 11px;border-radius:9px;color:var(--mut);text-decoration:none;font-size:14px;font-weight:500}
+.nav a:hover{background:var(--surf2);color:var(--ink)}
+.nav a.on{background:var(--ac-s);color:var(--ac);font-weight:700}
+.nav a .ic{width:17px;height:17px;flex:none}
+.main{flex:999 1 620px;min-width:0;display:flex;flex-direction:column}
+.top{min-height:62px;border-bottom:1px solid var(--bd);background:var(--surf);display:flex;align-items:center;gap:12px;padding:10px 26px;box-sizing:border-box}
+.top h1{margin:0;font-size:20px;font-weight:700}
+.content{padding:22px 26px;display:flex;flex-direction:column;gap:18px;max-width:720px}
+.card{background:var(--surf);border:1px solid var(--bd);border-radius:14px;padding:20px 22px}
+.card h2{margin:0 0 4px;font-size:15px;font-weight:700}
+.card .desc{font-size:12.5px;color:var(--mut);margin:0 0 16px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:700px){.grid2{grid-template-columns:1fr}}
+label.fl{display:flex;flex-direction:column;gap:5px;font-size:12px;color:var(--mut);font-weight:600;margin-bottom:12px}
+input,select,textarea{font-family:inherit;font-size:13.5px;padding:9px 11px;border:1px solid var(--bd);border-radius:8px;background:var(--surf);color:var(--ink);box-sizing:border-box;width:100%}
+input:focus,textarea:focus{outline:2px solid var(--ac-s);border-color:var(--ac)}
+.btn{font-family:inherit;font-size:13px;font-weight:700;border-radius:9px;padding:10px 18px;border:1px solid var(--bd);background:var(--surf);color:var(--ink);cursor:pointer}
+.btn.pri{background:var(--ac);border-color:var(--ac);color:#fff}.btn.pri:hover{background:#30399a}
+.btn:disabled{opacity:.55;cursor:default}
+.btn.sm{padding:7px 12px;font-size:12px}
+.imgrow{display:flex;gap:18px;flex-wrap:wrap}
+.imgbox{flex:1;min-width:220px}
+.drop{border:1.5px dashed var(--bd);border-radius:12px;background:var(--surf2);padding:14px;display:flex;align-items:center;gap:14px;min-height:92px}
+.drop img{max-height:64px;max-width:150px;width:auto;border-radius:6px;background:#fff;border:1px solid var(--bd)}
+.drop .ph{width:90px;height:64px;border-radius:6px;background:#fff;border:1px dashed var(--bd);display:flex;align-items:center;justify-content:center;color:var(--faint);font-size:11px}
+.drop .act{display:flex;flex-direction:column;gap:7px}
+.sw{display:inline-flex;align-items:center;gap:9px;font-size:13.5px;font-weight:600;cursor:pointer}
+.sw input{width:18px;height:18px;accent-color:var(--good)}
+.hint{font-size:11.5px;color:var(--faint);margin-top:4px}
+.msg{font-size:12.5px;padding:9px 12px;border-radius:8px;display:none;margin-top:8px}
+.msg.ok{display:block;background:var(--good-s);color:var(--good)}.msg.err{display:block;background:var(--over-s);color:var(--over)}
+.saverow{display:flex;align-items:center;gap:12px;position:sticky;bottom:0;background:linear-gradient(transparent,var(--bg) 40%);padding:14px 0 4px}
+.toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);background:#171a21;color:#fff;font-size:13px;font-weight:600;padding:11px 18px;border-radius:10px;opacity:0;pointer-events:none;transition:.25s;z-index:9999}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="side">
+    <div class="brand"><img src="/logo.png?v=20261030" alt="Free BizDoc" style="height:30px;width:auto;display:block"></div>
+    <nav class="nav">
+      <a href="/dashboard"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>ダッシュボード</a>
+      <div class="lb">書類</div>
+      <a href="/invoice-list"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2h9l5 5v15H6z"/><path d="M14 2v6h6"/></svg>請求書</a>
+      <a href="/quotes"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v12H4z"/><path d="M8 20h8"/></svg>見積書</a>
+      <a href="/recurring"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 4v5h-5"/></svg>定期請求</a>
+      <div class="lb">お金</div>
+      <a href="/payments"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>入金管理</a>
+      <a href="/reports"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>レポート</a>
+      <div class="lb">その他</div>
+      <a class="on" href="/settings"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>設定</a>
+    </nav>
+  </aside>
+
+  <div class="main">
+    <header class="top"><h1>設定</h1></header>
+    <div class="content">
+      <div class="card">
+        <h2>自社情報</h2>
+        <p class="desc">請求書・見積書・オンライン請求書ページに表示されます。</p>
+        <label class="fl">会社名・屋号<input id="company_name" placeholder="例）サンプルデザイン"></label>
+        <div class="grid2">
+          <label class="fl">登録番号（インボイス）<input id="reg_number" placeholder="T1234567890123"></label>
+          <label class="fl">住所<input id="company_addr" placeholder="東京都渋谷区…"></label>
+        </div>
+        <label class="fl">振込先（請求書に印字）<input id="default_bank" placeholder="みずほ銀行 渋谷支店 普通 1234567"></label>
+      </div>
+
+      <div class="card">
+        <h2>ロゴ・社印</h2>
+        <p class="desc">PDF・オンラインページに表示されます。PNG / JPEG、正方形や横長の画像が最適です（自動で縮小されます）。</p>
+        <div class="imgrow">
+          <div class="imgbox">
+            <div class="fl" style="margin-bottom:6px">会社ロゴ</div>
+            <div class="drop"><span id="logo-prev" class="ph">未設定</span>
+              <div class="act"><button class="btn sm" type="button" id="logo-pick">画像を選ぶ</button><button class="btn sm" type="button" id="logo-clear" style="display:none">削除</button></div>
+            </div>
+            <input type="file" id="logo-file" accept="image/png,image/jpeg,image/webp" style="display:none">
+          </div>
+          <div class="imgbox">
+            <div class="fl" style="margin-bottom:6px">社印・角印</div>
+            <div class="drop"><span id="seal-prev" class="ph">未設定</span>
+              <div class="act"><button class="btn sm" type="button" id="seal-pick">画像を選ぶ</button><button class="btn sm" type="button" id="seal-clear" style="display:none">削除</button></div>
+            </div>
+            <input type="file" id="seal-file" accept="image/png,image/jpeg,image/webp" style="display:none">
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>オンライン決済リンク</h2>
+        <p class="desc">Stripe の決済リンク・PayPal.me・Wise などを設定すると、オンライン請求書ページに「今すぐお支払い」ボタンが表示されます。</p>
+        <label class="fl">決済リンク<input id="paylink" type="url" placeholder="https://buy.stripe.com/…"></label>
+      </div>
+
+      <div class="card">
+        <h2>未入金リマインド</h2>
+        <p class="desc">オンライン請求書リンクを送った未入金の請求書に、自動でリマインドメールを送ります（宛先メールが設定されている請求書が対象・1日1回・最大5回）。</p>
+        <label class="sw" style="margin-bottom:14px"><input type="checkbox" id="auto_remind">自動リマインドを有効にする</label>
+        <div class="grid2">
+          <label class="fl">期日の何日前に送る（カンマ区切り）<input id="remind_before" placeholder="3"><span class="hint">例）3,7 → 7日前と3日前</span></label>
+          <label class="fl">期日超過後の何日後に送る（カンマ区切り）<input id="remind_after" placeholder="0,3,7,14"><span class="hint">例）0,7,14 → 当日・7日後・14日後</span></label>
+        </div>
+        <label class="fl">リマインド本文に追記するメッセージ（任意）<textarea id="remind_msg" rows="2" placeholder="例）恐れ入りますが、ご確認のほどよろしくお願いいたします。"></textarea></label>
+      </div>
+
+      <div class="saverow"><button class="btn pri" id="save">保存する</button><span id="msg" class="msg"></span></div>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+var LOGO='', SEAL='', CO={};
+function $(id){return document.getElementById(id);}
+function toast(m){var t=$('toast');t.textContent=m;t.classList.add('on');clearTimeout(t._h);t._h=setTimeout(function(){t.classList.remove('on');},2600);}
+function esc(s){return String(s==null?'':s);}
+
+// 画像を最大480pxへ縮小して dataURL(PNG) 化（容量対策）
+function shrink(file, cb){
+  var fr=new FileReader();
+  fr.onload=function(){
+    var img=new Image();
+    img.onload=function(){
+      var max=480, w=img.width, h=img.height;
+      if(w>max||h>max){ var s=Math.min(max/w,max/h); w=Math.round(w*s); h=Math.round(h*s); }
+      var cv=document.createElement('canvas'); cv.width=w; cv.height=h;
+      cv.getContext('2d').drawImage(img,0,0,w,h);
+      var out=cv.toDataURL('image/png');
+      if(out.length>1900000){ out=cv.toDataURL('image/jpeg',0.85); }
+      cb(out);
+    };
+    img.onerror=function(){ toast('画像を読み込めませんでした'); };
+    img.src=fr.result;
+  };
+  fr.readAsDataURL(file);
+}
+function setPrev(which, durl){
+  var box=$(which+'-prev'), clr=$(which+'-clear');
+  if(durl){ box.outerHTML='<img id="'+which+'-prev" src="'+durl+'" alt="">'; clr.style.display=''; }
+  else { var cur=$(which+'-prev'); cur.outerHTML='<span id="'+which+'-prev" class="ph">未設定</span>'; clr.style.display='none'; }
+}
+['logo','seal'].forEach(function(k){
+  $(k+'-pick').addEventListener('click',function(){ $(k+'-file').click(); });
+  $(k+'-file').addEventListener('change',function(e){ var f=e.target.files[0]; if(!f)return; shrink(f,function(durl){ if(k==='logo')LOGO=durl; else SEAL=durl; setPrev(k,durl); }); });
+  $(k+'-clear').addEventListener('click',function(){ if(k==='logo')LOGO=''; else SEAL=''; setPrev(k,''); });
+});
+
+$('save').addEventListener('click',async function(){
+  var btn=this; btn.disabled=true;
+  var body={
+    company_name:$('company_name').value, company_addr:$('company_addr').value,
+    reg_number:$('reg_number').value, default_bank:$('default_bank').value,
+    paylink:$('paylink').value.trim(),
+    auto_remind:$('auto_remind').checked?1:0,
+    remind_before:$('remind_before').value, remind_after:$('remind_after').value, remind_msg:$('remind_msg').value,
+    logo:LOGO, seal:SEAL
+  };
+  try{
+    var r=await fetch('/api/company',{method:'POST',headers:{'content-type':'application/json'},credentials:'same-origin',body:JSON.stringify(body)});
+    var j=await r.json();
+    if(j&&j.ok){ var m=$('msg'); m.className='msg ok'; m.textContent='保存しました'; toast('設定を保存しました'); setTimeout(function(){m.className='msg';},3000); }
+    else { throw new Error((j&&j.error)||''); }
+  }catch(e){ var m=$('msg'); m.className='msg err'; m.textContent='保存に失敗しました'; }
+  btn.disabled=false;
+});
+
+(async function(){
+  try{
+    var c=await (await fetch('/api/company',{credentials:'same-origin'})).json();
+    CO=c.company||{};
+    $('company_name').value=CO.company_name||'';
+    $('company_addr').value=CO.company_addr||'';
+    $('reg_number').value=CO.reg_number||'';
+    $('default_bank').value=CO.default_bank||'';
+    $('paylink').value=CO.paylink||'';
+    $('auto_remind').checked=!!CO.auto_remind;
+    $('remind_before').value=CO.remind_before||'3';
+    $('remind_after').value=CO.remind_after||'0,3,7,14';
+    $('remind_msg').value=CO.remind_msg||'';
+    if(CO.logo){ LOGO=CO.logo; setPrev('logo',CO.logo); }
+    if(CO.seal){ SEAL=CO.seal; setPrev('seal',CO.seal); }
+  }catch(e){ toast('読み込みに失敗しました'); }
+})();
+</script>
+<script src="/appshell.js?v=20261103"></script>
+</body>
+</html>
