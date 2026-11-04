@@ -234,7 +234,7 @@ function renderConvertBar(){ var bar=$('convbar'); if(!bar)return; var ks=['invo
 /* ================= PDF (pdf-lib, Helvetica — no font download needed) ================= */
 var _libP=null;
 function loadScript(src){ return new Promise(function(res,rej){ var s=document.createElement('script'); s.src=src; s.onload=res; s.onerror=function(){rej(new Error('load fail '+src));}; document.head.appendChild(s); }); }
-function ensureLib(){ if(_libP)return _libP; _libP=(async function(){ if(!window.PDFLib) await loadScript('https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js'); })(); return _libP; }
+function ensureLib(){ if(_libP)return _libP; _libP=(async function(){ if(!window.PDFLib) await loadScript('/vendor/pdf-lib-1.17.1.min.js'); })(); return _libP; }
 var THEME_DEFS={ mono:[0.12,0.12,0.13], blue:[0.09,0.40,0.90], red:[0.80,0.16,0.18], green:[0.09,0.50,0.33], purple:[0.42,0.22,0.68], orange:[0.88,0.46,0.08] };
 /* WinAnsi-safe text (Helvetica cannot encode CJK etc.) */
 var OK_EXTRA='\u2018\u2019\u201c\u201d\u2013\u2014\u2026\u2022\u20ac\u2122\u00a0';
@@ -365,7 +365,7 @@ window.__buildPdf=buildPdf;
 
 /* ================= Live preview (pdf.js) ================= */
 var _pdfjsP=null;
-function ensurePdfjs(){ if(_pdfjsP)return _pdfjsP; _pdfjsP=(async function(){ if(!window.pdfjsLib) await loadScript('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js'); window.pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js'; })(); return _pdfjsP; }
+function ensurePdfjs(){ if(_pdfjsP)return _pdfjsP; _pdfjsP=(async function(){ if(!window.pdfjsLib) await loadScript('/vendor/pdf-3.11.174.min.js'); window.pdfjsLib.GlobalWorkerOptions.workerSrc='/vendor/pdf.worker-3.11.174.min.js'; })(); return _pdfjsP; }
 var _pvT=null,_pvRun=null,_pvAgain=false,_pvSeq=0;
 function schedulePv(){ clearTimeout(_pvT); _pvT=setTimeout(runPv,650); }
 /* 初回プレビューはブラウザのアイドル時に実行し、pdf-lib/pdf.js の取得を

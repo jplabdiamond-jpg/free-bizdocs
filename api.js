@@ -84,8 +84,8 @@ window.API = (function () {
   async function ensureLib() {
     if (_libReady) return _libReady;
     _libReady = (async function () {
-      if (!window.PDFLib) await loadScript('https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js');
-      if (!window.fontkit) await loadScript('https://cdn.jsdelivr.net/npm/@pdf-lib/fontkit@1.1.1/dist/fontkit.umd.min.js');
+      if (!window.PDFLib) await loadScript('/vendor/pdf-lib-1.17.1.min.js');
+      if (!window.fontkit) await loadScript('/vendor/fontkit-1.1.1.umd.min.js');
       if (!_fontBytes) _fontBytes = await fetch('/fonts/noto-jp.ttf', { cache: 'force-cache' }).then(function (r) { return r.arrayBuffer(); });
     })();
     return _libReady;
@@ -150,8 +150,8 @@ window.API = (function () {
   function ensurePdfjs() {
     if (_pdfjsP) return _pdfjsP;
     _pdfjsP = (async function () {
-      if (!window.pdfjsLib) await loadScript('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js');
-      window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+      if (!window.pdfjsLib) await loadScript('/vendor/pdf-3.11.174.min.js');
+      window.pdfjsLib.GlobalWorkerOptions.workerSrc = '/vendor/pdf.worker-3.11.174.min.js';
     })();
     return _pdfjsP;
   }
