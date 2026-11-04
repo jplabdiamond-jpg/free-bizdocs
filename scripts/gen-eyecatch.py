@@ -38,6 +38,9 @@ PRESET = {
  "退職":     {"font":"serif","weight":900,"scale":0.98,"accent":"#96aadc","pill":"#19e0ff","emphcolor":"#ff5a78"},
  "税金・計算":{"font":"sans","weight":900,"scale":1.00,"accent":"#ff5a78","pill":"#ffdd00","emphcolor":"#ff5a78"},
  "転職・就活":{"font":"sans","weight":900,"scale":1.00,"accent":"#ff9646","pill":"#19e0ff","emphcolor":"#ffd400"},
+ "電子印鑑":{"font":"sans","weight":900,"scale":1.00,"accent":"#ff6ec7","pill":"#19e0ff","emphcolor":"#ff6ec7"},
+ "税・経理":{"font":"sans","weight":900,"scale":1.00,"accent":"#ff5a78","pill":"#ffdd00","emphcolor":"#ff5a78"},
+ "発注書":{"font":"sans","weight":900,"scale":1.00,"accent":"#00e6b4","pill":"#ffdd00","emphcolor":"#00f0c0"},
 }
 st = dict(PRESET.get(category, {"font":"sans","weight":900,"scale":1.00,"accent":"#00e6ff","pill":"#ffdd00","emphcolor":"#ffd400"}))
 st.update(STYLE)
@@ -75,6 +78,9 @@ SUBJECT = {
  "退職":"a resignation letter and a white envelope",
  "税金・計算":"tax documents with a calculator and stacked coins",
  "転職・就活":"resume and job-hunting documents with a laptop",
+ "電子印鑑":"a red Japanese hanko stamp with an ink pad and business documents",
+ "税・経理":"tax and accounting documents with a calculator and stacked coins",
+ "発注書":"a purchase order document with a pen and a laptop",
 }
 subject = SUBJECT.get(category, "business documents with a laptop and a calculator")
 ARRANGE = ["a neat stack of", "scattered", "many", "an organized spread of", "a close-up of",
