@@ -74,6 +74,21 @@ input::placeholder,textarea::placeholder{color:#b4c0cd}
 .photo .pbtn{display:inline-block;font-size:12.5px;font-weight:700;color:var(--ac);background:var(--ac-s);border:none;border-radius:9px;padding:9px 14px;cursor:pointer}
 .photo input[type=file]{display:none}
 .photo .note{font-size:11px;color:var(--faint);margin-top:7px;line-height:1.5}
+.photo .padj{display:none;margin-top:8px;font-size:12px;font-weight:700;color:var(--ac);background:none;border:none;padding:0;cursor:pointer;text-decoration:underline}
+.photo .padj.on{display:inline-block}
+.cropm{position:fixed;inset:0;z-index:1000;display:none;align-items:center;justify-content:center;background:rgba(10,20,35,.55);padding:16px}
+.cropm.on{display:flex}
+.cropm-panel{background:#fff;border-radius:14px;max-width:360px;width:100%;padding:18px;box-shadow:0 20px 60px rgba(0,0,0,.35)}
+.cropm-head{font-size:15px;font-weight:800;color:#1a2231;margin-bottom:12px;text-align:center}
+.cropm-stage{display:flex;justify-content:center}
+.cropm-stage canvas{touch-action:none;border-radius:6px;cursor:grab;background:#eef1f5;box-shadow:0 0 0 1px #c6d3e6}
+.cropm-stage canvas:active{cursor:grabbing}
+.cropm-ctl{display:flex;align-items:center;gap:10px;margin-top:14px;font-size:12px;color:var(--faint)}
+.cropm-ctl input[type=range]{flex:1}
+.cropm-note{font-size:11px;color:var(--faint);line-height:1.5;margin-top:10px;text-align:center}
+.cropm-btns{display:flex;gap:10px;margin-top:14px}
+.cropm-btns .cbtn{flex:1;font-size:13.5px;font-weight:700;border:none;border-radius:10px;padding:11px 0;cursor:pointer;background:var(--ac);color:#fff}
+.cropm-btns .cbtn.ghost{background:var(--ac-s);color:var(--ac)}
 /* 可変行テーブル */
 .rows{border:1px solid var(--bd);border-radius:11px;overflow:hidden}
 .rows .hd,.rows .rw{display:grid;grid-template-columns:62px 48px 1fr 26px;gap:6px;align-items:center;padding:8px 10px}
@@ -167,7 +182,18 @@ input::placeholder,textarea::placeholder{color:#b4c0cd}
           <button class="pbtn" id="photo-btn" type="button">画像を選ぶ</button>
           <input type="file" id="photo" accept="image/jpeg,image/png">
           <div class="note">JPEG / PNG に対応。iPhoneのHEICは変換してからお使いください。画像はお使いのブラウザ内だけで処理し、サーバーには送信しません。</div>
+          <button class="padj" id="photo-adjust" type="button">写真を調整する</button>
         </div>
+      </div>
+    </div>
+
+    <div id="cropModal" class="cropm" aria-hidden="true">
+      <div class="cropm-panel">
+        <div class="cropm-head">証明写真の位置・大きさを調整</div>
+        <div class="cropm-stage"><canvas id="cropCanvas"></canvas></div>
+        <div class="cropm-ctl"><span>小</span><input type="range" id="cropZoom" min="1" max="4" step="0.01" value="1" aria-label="ズーム"><span>大</span></div>
+        <div class="cropm-note">枠が証明写真（縦4：横3）です。ドラッグで位置、スライダーで大きさを調整して「この範囲で決定」を押してください。</div>
+        <div class="cropm-btns"><button type="button" id="cropCancel" class="cbtn ghost">キャンセル</button><button type="button" id="cropApply" class="cbtn">この範囲で決定</button></div>
       </div>
     </div>
 
@@ -319,19 +345,66 @@ function showErr(t){var m=document.getElementById('msg');m.textContent=t;m.class
 function parts(v){ if(!v)return {}; var p=v.split('-'); return {y:p[0], m:String(parseInt(p[1],10)), d:String(parseInt(p[2],10))}; }
 function nonEmpty(x){return x.y||x.m||x.text;}
 
-// 写真
+// 写真（トリミング／ズーム対応）
+var cropImg=null, cropURL=null;
+var _cc=document.getElementById('cropCanvas');
+var CROP_AR=3/4; // 幅:高さ = 3:4（証明写真）
+var cst={dpr:1,W:0,H:0,base:1,z:1,ox:0,oy:0,drag:false,px:0,py:0};
+function durlToU8(durl){var i=durl.indexOf(',');var b=atob(durl.slice(i+1));var u=new Uint8Array(b.length);for(var k=0;k<b.length;k++)u[k]=b.charCodeAt(k);return u;}
+function clampCrop(){ var s=cst.base*cst.z, iw=cropImg.naturalWidth*s, ih=cropImg.naturalHeight*s;
+  if(cst.ox>0)cst.ox=0; if(cst.oy>0)cst.oy=0;
+  if(cst.ox<cst.W-iw)cst.ox=cst.W-iw; if(cst.oy<cst.H-ih)cst.oy=cst.H-ih; }
+function drawCrop(){ var g=_cc.getContext('2d'); g.setTransform(cst.dpr,0,0,cst.dpr,0,0);
+  g.clearRect(0,0,cst.W,cst.H); var s=cst.base*cst.z;
+  g.drawImage(cropImg, cst.ox, cst.oy, cropImg.naturalWidth*s, cropImg.naturalHeight*s);
+  g.strokeStyle='rgba(255,255,255,.9)'; g.lineWidth=1; g.strokeRect(.5,.5,cst.W-1,cst.H-1); }
+function openCropper(im){ cropImg=im;
+  var cssW=216, cssH=Math.round(cssW/CROP_AR);
+  cst.dpr=Math.min(window.devicePixelRatio||1,2); cst.W=cssW; cst.H=cssH;
+  _cc.style.width=cssW+'px'; _cc.style.height=cssH+'px';
+  _cc.width=Math.round(cssW*cst.dpr); _cc.height=Math.round(cssH*cst.dpr);
+  cst.base=Math.max(cssW/im.naturalWidth, cssH/im.naturalHeight); cst.z=1;
+  document.getElementById('cropZoom').value='1';
+  var s=cst.base, iw=im.naturalWidth*s, ih=im.naturalHeight*s;
+  cst.ox=(cssW-iw)/2; cst.oy=(cssH-ih)/2; clampCrop();
+  var modal=document.getElementById('cropModal'); modal.classList.add('on'); modal.setAttribute('aria-hidden','false');
+  drawCrop(); }
+function closeCropper(){ var modal=document.getElementById('cropModal'); modal.classList.remove('on'); modal.setAttribute('aria-hidden','true'); }
+_cc.addEventListener('pointerdown',function(e){cst.drag=true;cst.px=e.clientX;cst.py=e.clientY;try{_cc.setPointerCapture(e.pointerId);}catch(_){}});
+_cc.addEventListener('pointermove',function(e){ if(!cst.drag)return; cst.ox+=(e.clientX-cst.px); cst.oy+=(e.clientY-cst.py); cst.px=e.clientX; cst.py=e.clientY; clampCrop(); drawCrop(); });
+_cc.addEventListener('pointerup',function(){cst.drag=false;});
+_cc.addEventListener('pointercancel',function(){cst.drag=false;});
+document.getElementById('cropZoom').addEventListener('input',function(){
+  var zNew=parseFloat(this.value), cx=cst.W/2, cy=cst.H/2, sOld=cst.base*cst.z;
+  var imgX=(cx-cst.ox)/sOld, imgY=(cy-cst.oy)/sOld; cst.z=zNew; var sNew=cst.base*cst.z;
+  cst.ox=cx-imgX*sNew; cst.oy=cy-imgY*sNew; clampCrop(); drawCrop(); });
+document.getElementById('cropCancel').addEventListener('click',closeCropper);
+document.getElementById('cropModal').addEventListener('click',function(e){ if(e.target===this) closeCropper(); });
+document.getElementById('cropApply').addEventListener('click',function(){
+  var OUT_W=420, OUT_H=560, oc=document.createElement('canvas'); oc.width=OUT_W; oc.height=OUT_H;
+  var g=oc.getContext('2d'); g.fillStyle='#fff'; g.fillRect(0,0,OUT_W,OUT_H);
+  var s=cst.base*cst.z, sx=(0-cst.ox)/s, sy=(0-cst.oy)/s, sw=cst.W/s, sh=cst.H/s;
+  g.drawImage(cropImg, sx,sy,sw,sh, 0,0,OUT_W,OUT_H);
+  var durl=oc.toDataURL('image/jpeg',0.92);
+  photo={bytes:durlToU8(durl), type:'jpg'};
+  document.getElementById('photo-box').innerHTML='<img src="'+durl+'">';
+  document.getElementById('rv-photo').innerHTML='<img src="'+durl+'">';
+  document.getElementById('photo-adjust').classList.add('on');
+  document.getElementById('photo-btn').textContent='別の画像を選ぶ';
+  closeCropper(); });
 document.getElementById('photo-btn').addEventListener('click',function(){document.getElementById('photo').click();});
+document.getElementById('photo-adjust').addEventListener('click',function(){ if(cropImg) openCropper(cropImg); });
 document.getElementById('photo').addEventListener('change',function(e){
   var f=e.target.files[0]; if(!f)return; var t=f.type;
   if(t!=='image/jpeg'&&t!=='image/png'){ showErr('写真はJPEGまたはPNGを選んでください（iPhoneのHEICは変換が必要です）'); this.value=''; return; }
   document.getElementById('msg').className='msg';
-  var rd=new FileReader();
-  rd.onload=function(){ photo={bytes:new Uint8Array(rd.result), type:(t==='image/png'?'png':'jpg')};
-    var url=URL.createObjectURL(f);
-    document.getElementById('photo-box').innerHTML='<img src="'+url+'">';
-    document.getElementById('rv-photo').innerHTML='<img src="'+url+'">';
-  };
-  rd.readAsArrayBuffer(f);
+  if(cropURL) URL.revokeObjectURL(cropURL);
+  cropURL=URL.createObjectURL(f);
+  var im=new Image();
+  im.onload=function(){ openCropper(im); };
+  im.onerror=function(){ showErr('画像を読み込めませんでした。別の画像をお試しください。'); };
+  im.src=cropURL;
+  this.value='';
 });
 
 // 可変行
