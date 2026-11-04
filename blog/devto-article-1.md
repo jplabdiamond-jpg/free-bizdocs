@@ -1,8 +1,7 @@
 ---
 title: "Sharing an invoice without storing it anywhere: a URL that IS the document"
-published: false
+published: true
 tags: webdev, javascript, cloudflare, privacy
-canonical_url: https://free-bizdocs.com/en/blog/what-is-a-purchase-order
 ---
 
 I run a small, free invoice generator. One feature request kept coming back: *"Can I send the invoice as a link instead of a PDF attachment?"*
