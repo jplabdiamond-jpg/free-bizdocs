@@ -459,7 +459,7 @@ async function doSave(btn, mode){
         if(j.id){ editDocId=String(j.id); try{ var u=new URL(location.href); u.searchParams.set('doc', j.id); history.replaceState(null,'',u.toString()); }catch(e){} rebuildSaveButtons(); }
       }
     }
-    else if(r.status===403&&j.upsell){ if(confirm('無料プランで保存できる書類は5件までです。\nPROプラン（期間限定 月¥2,000）にアップグレードしますか？')) location.href='/pricing'; }
+    else if(r.status===403&&j.upsell){ if(confirm('無料プランで保存できる書類は3件までです。\nPROプラン（期間限定 月¥2,000）にアップグレードしますか？')) location.href='/pricing'; }
     else { toast('保存に失敗しました: '+(j.error||('HTTP '+r.status))); }
   }catch(e){ toast('通信エラーが発生しました'); }
   btn.disabled=false; btn.innerHTML=old;

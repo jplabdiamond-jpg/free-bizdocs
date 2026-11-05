@@ -69,7 +69,7 @@
             var w=document.getElementById('__acctWrap'); if(w){ w.parentNode.removeChild(w); addButton(String(j.id)); } }
         }
       }
-      else if(r.status===403&&j.upsell){ if(confirm('無料プランで保存できる書類は5件までです。\nPROプラン（期間限定 月¥2,000）にアップグレードしますか？')) location.href='/pricing'; }
+      else if(r.status===403&&j.upsell){ if(confirm('無料プランで保存できる書類は3件までです。\nPROプラン（期間限定 月¥2,000）にアップグレードしますか？')) location.href='/pricing'; }
       else { toast('保存に失敗しました: '+(j.error||('HTTP '+r.status))); }
     }catch(e){ toast('通信エラーが発生しました'); }
     btn.disabled=false; btn.textContent=old;

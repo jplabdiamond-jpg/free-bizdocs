@@ -173,7 +173,7 @@ def comp_table(c):
                 % (label, mecell, them))
     rows = []
     rows.append('<tr><th>Create &amp; download without an account</th><td class="me"><span class="yes">Yes</span></td><td><span class="no">No</span> &mdash; %s</td></tr>' % c["signup"].lower().replace("account required","account required"))
-    rows.append('<tr><th>What&rsquo;s free</th><td class="me">Unlimited creation; 2 PDF downloads/hour. Free account saves 5 docs.</td><td>%s</td></tr>' % html.escape(c["free"]))
+    rows.append('<tr><th>What&rsquo;s free</th><td class="me">Unlimited creation; 2 PDF downloads/hour. Free account saves 3 docs.</td><td>%s</td></tr>' % html.escape(c["free"]))
     rows.append('<tr><th>Your data stored on their servers</th><td class="me"><span class="yes">No</span> &mdash; made in your browser (unless you save)</td><td>%s</td></tr>' % html.escape(c["stored"]))
     rows.append('<tr><th>US / UK / AU / CA tax built in</th><td class="me"><span class="yes">Yes</span></td><td>Yes</td></tr>')
     rows.append('<tr><th>Online card payments</th><td class="me"><span class="no">No</span></td><td>%s</td></tr>' % html.escape(c["payments"]))

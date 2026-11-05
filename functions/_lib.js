@@ -174,4 +174,4 @@ export function calcTotals(items) {
 }
 
 // 無料プランの保存上限
-export const FREE_DOC_LIMIT = 5;
+export const FREE_DOC_LIMIT = 3;
