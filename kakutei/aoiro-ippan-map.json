@@ -1,0 +1,233 @@
+{
+ "page": 0,
+ "w": 842,
+ "h": 595,
+ "form": "aoiro-ippan",
+ "note": "baseTop=baseline from page top; pdf-lib y = h-baseTop. amounts keyed by NTA printed code.",
+ "amounts": {
+  "G01": {
+   "rightX": 300,
+   "baseTop": 235.2
+  },
+  "G17": {
+   "rightX": 566,
+   "baseTop": 235.0
+  },
+  "G34": {
+   "rightX": 818,
+   "baseTop": 234.9
+  },
+  "G02": {
+   "rightX": 300,
+   "baseTop": 255.9
+  },
+  "G18": {
+   "rightX": 566,
+   "baseTop": 255.9
+  },
+  "G35": {
+   "rightX": 818,
+   "baseTop": 255.8
+  },
+  "G03": {
+   "rightX": 300,
+   "baseTop": 275.8
+  },
+  "G19": {
+   "rightX": 566,
+   "baseTop": 275.5
+  },
+  "G36": {
+   "rightX": 818,
+   "baseTop": 275.4
+  },
+  "G04": {
+   "rightX": 300,
+   "baseTop": 295.4
+  },
+  "G20": {
+   "rightX": 566,
+   "baseTop": 295.4
+  },
+  "G37": {
+   "rightX": 818,
+   "baseTop": 295.3
+  },
+  "G05": {
+   "rightX": 300,
+   "baseTop": 315.3
+  },
+  "G21": {
+   "rightX": 566,
+   "baseTop": 315.1
+  },
+  "G38": {
+   "rightX": 818,
+   "baseTop": 315.1
+  },
+  "G06": {
+   "rightX": 300,
+   "baseTop": 334.6
+  },
+  "G22": {
+   "rightX": 566,
+   "baseTop": 334.4
+  },
+  "G39": {
+   "rightX": 818,
+   "baseTop": 334.7
+  },
+  "G07": {
+   "rightX": 300,
+   "baseTop": 354.3
+  },
+  "G23": {
+   "rightX": 566,
+   "baseTop": 354.3
+  },
+  "G40": {
+   "rightX": 818,
+   "baseTop": 354.3
+  },
+  "G08": {
+   "rightX": 300,
+   "baseTop": 374.2
+  },
+  "G24": {
+   "rightX": 566,
+   "baseTop": 374.0
+  },
+  "G41": {
+   "rightX": 818,
+   "baseTop": 374.2
+  },
+  "G09": {
+   "rightX": 300,
+   "baseTop": 393.8
+  },
+  "G25": {
+   "rightX": 566,
+   "baseTop": 394.1
+  },
+  "G42": {
+   "rightX": 818,
+   "baseTop": 393.7
+  },
+  "G10": {
+   "rightX": 300,
+   "baseTop": 413.5
+  },
+  "G26": {
+   "rightX": 566,
+   "baseTop": 413.8
+  },
+  "G43": {
+   "rightX": 818,
+   "baseTop": 413.7
+  },
+  "G11": {
+   "rightX": 300,
+   "baseTop": 433.2
+  },
+  "G27": {
+   "rightX": 566,
+   "baseTop": 433.2
+  },
+  "G44": {
+   "rightX": 818,
+   "baseTop": 433.3
+  },
+  "G12": {
+   "rightX": 300,
+   "baseTop": 452.7
+  },
+  "G28": {
+   "rightX": 566,
+   "baseTop": 452.9
+  },
+  "G45": {
+   "rightX": 818,
+   "baseTop": 453.1
+  },
+  "G13": {
+   "rightX": 300,
+   "baseTop": 472.8
+  },
+  "G29": {
+   "rightX": 566,
+   "baseTop": 473.0
+  },
+  "G14": {
+   "rightX": 300,
+   "baseTop": 492.3
+  },
+  "G30": {
+   "rightX": 566,
+   "baseTop": 492.3
+  },
+  "G15": {
+   "rightX": 300,
+   "baseTop": 512.0
+  },
+  "G31": {
+   "rightX": 566,
+   "baseTop": 512.0
+  },
+  "G16": {
+   "rightX": 300,
+   "baseTop": 532.4
+  },
+  "G32": {
+   "rightX": 566,
+   "baseTop": 532.3
+  },
+  "G33": {
+   "rightX": 566,
+   "baseTop": 552.1
+  }
+ },
+ "header": {
+  "year": {
+   "x": 296,
+   "baseTop": 49,
+   "align": "C",
+   "size": 11
+  },
+  "jusho": {
+   "x": 250,
+   "baseTop": 101,
+   "align": "L",
+   "size": 9
+  },
+  "furigana": {
+   "x": 492,
+   "baseTop": 96,
+   "align": "L",
+   "size": 8
+  },
+  "shimei": {
+   "x": 492,
+   "baseTop": 111,
+   "align": "L",
+   "size": 10
+  },
+  "jigyosho": {
+   "x": 250,
+   "baseTop": 133,
+   "align": "L",
+   "size": 9
+  },
+  "gyoshu": {
+   "x": 250,
+   "baseTop": 157,
+   "align": "L",
+   "size": 9
+  },
+  "yago": {
+   "x": 420,
+   "baseTop": 157,
+   "align": "L",
+   "size": 8
+  }
+ }
+}
