@@ -94,6 +94,7 @@
 
     <div class="ka-sec">売上・売上原価</div>
     <div class="ka-f ka-num"><label>売上(収入)金額</label><input id="f_uriage" inputmode="numeric" placeholder="0"></div>
+    <div id="ka-auto"></div>
     <div class="ka-f ka-num"><label>期首商品棚卸高</label><input id="f_kisho" inputmode="numeric" placeholder="0"></div>
     <div class="ka-f ka-num"><label>仕入金額</label><input id="f_shiire" inputmode="numeric" placeholder="0"></div>
     <div class="ka-f ka-num"><label>期末商品棚卸高</label><input id="f_kimatsu" inputmode="numeric" placeholder="0"></div>
@@ -209,6 +210,57 @@
   $('ka-dl').addEventListener('click',download);
 
   summary(); makePdf();
+})();
+</script>
+<script>
+(function(){
+  var $=function(id){return document.getElementById(id);};
+  var box=$('ka-auto'); if(!box) return;
+  var warekiToAD=function(n){n=parseInt(n,10); return (n>=1&&n<=99)?2018+n:null;};
+  var money=function(n){return '¥'+Number(n).toLocaleString('ja-JP');};
+  function fillUriage(v){var el=$('f_uriage'); el.value=v; el.dispatchEvent(new Event('input',{bubbles:true}));}
+  function panel(invN){
+    var note=invN?('発行済み請求書 '+invN+' 件'):'保存済みの請求書がまだありません。';
+    var nc=invN?'#7688a0':'#a36b1e';
+    return '<div style="border:1px dashed #9cc0f5;background:#f1f7ff;border-radius:10px;padding:10px 12px;margin:2px 0 6px">'
+      +'<div style="font-size:12.5px;color:#1766e6;font-weight:800;margin-bottom:6px">発行済み書類から売上を自動集計</div>'
+      +'<label style="font-size:12.5px;color:#39506c;display:inline-flex;align-items:center;gap:5px;margin-right:14px"><input type="checkbox" id="ka-inc-receipt"> 領収書も含める</label>'
+      +'<label style="font-size:12.5px;color:#39506c;display:inline-flex;align-items:center;gap:5px"><input type="checkbox" id="ka-excl"> 税抜で集計</label>'
+      +'<div style="margin-top:8px;display:flex;gap:9px;align-items:center;flex-wrap:wrap">'
+      +'<button type="button" id="ka-agg" style="background:#1766e6;color:#fff;border:none;border-radius:9px;padding:8px 15px;font-size:13px;font-weight:800;cursor:pointer">売上を自動集計</button>'
+      +'<span id="ka-agg-msg" style="font-size:12px;color:#5a6b7d"></span></div>'
+      +'<div style="font-size:11.5px;color:'+nc+';margin-top:6px">'+note+'</div></div>';
+  }
+  function wire(){
+    $('ka-agg').addEventListener('click', async function(){
+      var msg=$('ka-agg-msg');
+      var yr=warekiToAD($('f_year').value);
+      if(!yr){ msg.style.color='#c0392b'; msg.textContent='先に「年分（令和）」を入力してください'; return; }
+      var types='invoice'+($('ka-inc-receipt').checked?',receipt':'');
+      var excl=$('ka-excl').checked;
+      msg.style.color='#5a6b7d'; msg.textContent='集計中…';
+      try{
+        var d=await fetch('/api/kakutei/sales?year='+yr+'&types='+types,{credentials:'same-origin'}).then(function(r){return r.json();});
+        if(!d||d.error){ msg.style.color='#c0392b'; msg.textContent='集計できませんでした'; return; }
+        var amt=excl?d.total_excl:d.total_incl;
+        fillUriage(amt);
+        msg.style.color='#1766e6';
+        msg.textContent='令和'+$('f_year').value+'年分（'+yr+'年）: '+d.count+'件 合計 '+money(amt)+'（'+(excl?'税抜':'税込')+'）を反映';
+      }catch(e){ msg.style.color='#c0392b'; msg.textContent='集計に失敗しました'; }
+    });
+  }
+  (async function init(){
+    var me=null;
+    try{ me=await fetch('/api/auth/me',{credentials:'same-origin'}).then(function(r){return r.json();}); }catch(e){}
+    if(!me||!me.authed){
+      box.innerHTML='<div style="font-size:12px;color:#5a6b7d;background:#f6f8fb;border:1px solid #e3e9f2;border-radius:10px;padding:9px 12px;margin:2px 0 6px">'
+        +'ログインすると、Free BizDoc で発行した請求書から売上を自動集計できます。'
+        +' <a href="/login?next=kakutei/aoiro" style="color:#1766e6;font-weight:700">ログイン / 新規登録</a></div>';
+      return;
+    }
+    box.innerHTML=panel((me.doc_types&&me.doc_types.invoice)||0);
+    wire();
+  })();
 })();
 </script>
 <script src="/siteheader.js?v=20261019en" defer></script>
