@@ -100,6 +100,7 @@
     <div class="ka-f ka-num"><label>期末商品棚卸高</label><input id="f_kimatsu" inputmode="numeric" placeholder="0"></div>
 
     <div class="ka-sec">経費</div>
+    <div id="ka-csv"></div>
     <div class="ka-exp" id="ka-exp"></div>
 
     <div class="ka-sec">青色申告特別控除</div>
@@ -139,6 +140,7 @@
 <script src="/kakutei/aoiro-calc.js?v=20261105"></script>
 <script src="/kakutei/aoiro-fill.js?v=20261105"></script>
 <script src="/kakutei/aoiro.js?v=20261105"></script>
+<script src="/kakutei/expense-cats.js?v=20261106"></script>
 <script>
 (function(){
   var $=function(id){return document.getElementById(id);};
@@ -272,6 +274,115 @@
     box.innerHTML=panel((me.doc_types&&me.doc_types.invoice)||0);
     wire();
   })();
+})();
+</script>
+<script>
+(function(){
+  var $=function(id){return document.getElementById(id);};
+  var box=$('ka-csv'); if(!box||!window.ExpenseCats) return;
+  var EC=window.ExpenseCats;
+  var LKEY='fbd_aoiro_learned';
+  var rows=null, cols=null, parsed=null;
+  function esc(s){return String(s==null?'':s).replace(/[&<>]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c];});}
+  function learned(){try{return JSON.parse(localStorage.getItem(LKEY)||'{}');}catch(e){return {};}}
+  function learn(desc,code){if(!desc)return;var o=learned();o[String(desc).trim()]=code;try{localStorage.setItem(LKEY,JSON.stringify(o));}catch(e){}}
+  var CODES=['G08','G09','G10','G11','G12','G13','G14','G15','G16','G17','G18','G19','G20','G21','G22','G23','G24','G31'];
+
+  function industryOptions(){
+    var m=[['general','汎用・その他'],['it','IT・エンジニア'],['design','デザイン・クリエイター'],['construction','建設・一人親方'],['beauty','美容・サロン'],['retail','小売・EC'],['writer','ライター・編集'],['consult','コンサル・士業']];
+    return m.map(function(x){return '<option value="'+x[0]+'">'+x[1]+'</option>';}).join('');
+  }
+  function catOptions(sel){
+    var o='<option value=""'+(sel?'':' selected')+'>（除外）</option>';
+    CODES.forEach(function(c){o+='<option value="'+c+'"'+(sel===c?' selected':'')+'>'+EC.LABELS[c]+'</option>';});
+    return o;
+  }
+  function mapSel(id,sel,header){
+    var o='<option value="-1">—</option>';
+    header.forEach(function(h,i){o+='<option value="'+i+'"'+(sel===i?' selected':'')+'>'+esc(String(h).slice(0,20))+'</option>';});
+    return '<select id="'+id+'" style="border:1px solid #cfdaea;border-radius:7px;padding:4px 6px;font-size:12px">'+o+'</select>';
+  }
+  function decode(buf){
+    var u=new TextDecoder('utf-8').decode(buf);
+    if(u.indexOf('�')>=0){try{return new TextDecoder('shift_jis').decode(buf);}catch(e){}}
+    return u;
+  }
+
+  box.innerHTML=
+    '<div style="border:1px solid #cfe0f7;background:#f7fbff;border-radius:10px;padding:12px 14px;margin:2px 0 12px">'
+    +'<div style="font-size:12.5px;color:#1766e6;font-weight:800;margin-bottom:8px">CSVから経費を自動振り分け</div>'
+    +'<div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;font-size:12.5px;color:#39506c">'
+    +'<label>業種：<select id="ka-ind" style="margin-left:4px;border:1px solid #cfdaea;border-radius:7px;padding:5px 8px;font-size:12.5px">'+industryOptions()+'</select></label>'
+    +'<label style="display:inline-flex;align-items:center;gap:6px">CSV：<input type="file" id="ka-file" accept=".csv,text/csv" style="font-size:12px"></label>'
+    +'</div>'
+    +'<div id="ka-map" style="margin-top:9px;font-size:12px;color:#39506c"></div>'
+    +'<div id="ka-rev" style="margin-top:9px"></div>'
+    +'<div style="font-size:11.5px;color:#7688a0;margin-top:8px">銀行・カード・会計ソフトの明細CSVに対応（日付・摘要・金額の列を指定）。ファイルはサーバーに送信されず、ブラウザ内だけで処理します。手修正した分類は次回から自動適用されます。</div>'
+    +'</div>';
+
+  $('ka-file').addEventListener('change',function(ev){
+    var f=ev.target.files&&ev.target.files[0]; if(!f) return;
+    var rd=new FileReader();
+    rd.onload=function(){
+      var text=decode(rd.result);
+      rows=EC.parseCSV(text);
+      if(!rows.length){$('ka-map').innerHTML='<span style="color:#c0392b">読み込めませんでした</span>';return;}
+      var header=rows[0]; cols=EC.guessColumns(header);
+      $('ka-map').innerHTML='列の対応：日付 '+mapSel('m-date',cols.date,header)+' ／ 摘要 '+mapSel('m-desc',cols.desc,header)+' ／ 金額 '+mapSel('m-amt',cols.amount,header)
+        +' <button type="button" id="ka-run" style="margin-left:8px;background:#1766e6;color:#fff;border:none;border-radius:8px;padding:6px 12px;font-size:12px;font-weight:700;cursor:pointer">分類する</button>';
+      $('ka-run').addEventListener('click',runClassify);
+    };
+    rd.readAsArrayBuffer(f);
+  });
+
+  function runClassify(){
+    var di=parseInt($('m-date').value,10), xi=parseInt($('m-desc').value,10), ai=parseInt($('m-amt').value,10);
+    if(xi<0||ai<0){$('ka-rev').innerHTML='<span style="color:#c0392b">摘要と金額の列を指定してください</span>';return;}
+    var ind=$('ka-ind').value, lrn=learned();
+    var start=0, a0=String(rows[0][ai]).replace(/[^0-9.\-]/g,''); if(a0===''||isNaN(Number(a0))) start=1;
+    parsed=[];
+    for(var i=start;i<rows.length;i++){
+      var r=rows[i]; var amt=EC.parseAmount(r[ai]); if(!amt) continue;
+      var desc=r[xi]||''; var c=EC.categorize(desc,{industry:ind,learned:lrn});
+      parsed.push({date:di>=0?(r[di]||''):'', desc:desc, amt:amt, code:c.code||''});
+    }
+    renderReview();
+  }
+
+  function renderReview(){
+    if(!parsed.length){$('ka-rev').innerHTML='<span style="color:#a36b1e">対象の明細がありませんでした（金額列を確認してください）</span>';return;}
+    var h='<div style="max-height:300px;overflow:auto;border:1px solid #e3e9f2;border-radius:8px">'
+      +'<table style="width:100%;border-collapse:collapse;font-size:12px"><thead><tr style="background:#eef3fb">'
+      +'<th style="text-align:left;padding:6px 8px">日付</th><th style="text-align:left;padding:6px 8px">摘要</th><th style="text-align:right;padding:6px 8px">金額</th><th style="text-align:left;padding:6px 8px">勘定科目</th></tr></thead><tbody>';
+    parsed.forEach(function(p,idx){
+      h+='<tr style="border-top:1px solid #eef2f8">'
+        +'<td style="padding:5px 8px;color:#5a6b7d;white-space:nowrap">'+esc(p.date)+'</td>'
+        +'<td style="padding:5px 8px">'+esc(p.desc)+'</td>'
+        +'<td style="padding:5px 8px;text-align:right;font-variant-numeric:tabular-nums">'+Number(p.amt).toLocaleString('ja-JP')+'</td>'
+        +'<td style="padding:4px 8px"><select data-i="'+idx+'" class="ka-catsel" style="border:1px solid '+(p.code?'#cfdaea':'#f0b37e')+';border-radius:6px;padding:3px 5px;font-size:12px">'+catOptions(p.code)+'</select></td></tr>';
+    });
+    h+='</tbody></table></div>'
+      +'<div style="display:flex;gap:9px;align-items:center;flex-wrap:wrap;margin-top:9px">'
+      +'<button type="button" id="ka-apply" style="background:#1766e6;color:#fff;border:none;border-radius:9px;padding:8px 15px;font-size:13px;font-weight:800;cursor:pointer">この分類で経費に反映</button>'
+      +'<span id="ka-apply-msg" style="font-size:12px;color:#5a6b7d"></span></div>';
+    $('ka-rev').innerHTML=h;
+    [].slice.call(document.querySelectorAll('.ka-catsel')).forEach(function(s){
+      s.addEventListener('change',function(){var i=+s.getAttribute('data-i');parsed[i].code=s.value;learn(parsed[i].desc,s.value);s.style.borderColor=s.value?'#cfdaea':'#f0b37e';});
+    });
+    $('ka-apply').addEventListener('click',applyToForm);
+  }
+
+  function applyToForm(){
+    var agg={}, n=0;
+    parsed.forEach(function(p){if(p.code){agg[p.code]=(agg[p.code]||0)+p.amt;n++;}});
+    var codes=Object.keys(agg);
+    if(!codes.length){$('ka-apply-msg').style.color='#c0392b';$('ka-apply-msg').textContent='反映できる明細がありません';return;}
+    codes.forEach(function(c){var el=$('e_'+c);if(el){el.value=agg[c];}});
+    var any=$('e_'+codes[0]); if(any){any.dispatchEvent(new Event('input',{bubbles:true}));}
+    var total=0; codes.forEach(function(c){total+=agg[c];});
+    $('ka-apply-msg').style.color='#1766e6';
+    $('ka-apply-msg').textContent=n+'件・'+codes.length+'科目／合計 ¥'+Number(total).toLocaleString('ja-JP')+' を経費欄に反映しました';
+  }
 })();
 </script>
 <script src="/siteheader.js?v=20261019en" defer></script>
