@@ -33,6 +33,12 @@
 .ks-hero h1{font-size:clamp(24px,4.2vw,36px);line-height:1.3;margin:0 0 12px;font-weight:900;letter-spacing:-.02em;background:linear-gradient(100deg,#132742 15%,#1b56c9 75%);-webkit-background-clip:text;background-clip:text;color:transparent}
 .ks-hero p.lead{color:#2b3a4b;font-size:16px;line-height:1.9;margin:0 0 18px;max-width:60ch}
 .ks-cta{display:inline-flex;align-items:center;gap:8px;font-size:15.5px;font-weight:800;border:none;border-radius:12px;padding:14px 26px;background:linear-gradient(120deg,#1766e6,#2f8cf0 60%,#36b0f0);color:#fff;text-decoration:none;box-shadow:0 8px 22px -6px rgba(23,102,230,.5);transition:transform .12s,filter .12s}
+.ks-cta.green{background:linear-gradient(120deg,#0ea56b,#10bd7e 60%,#1fd08d);box-shadow:0 10px 26px -6px rgba(14,165,107,.55);font-size:16.5px;padding:16px 30px}
+.ks-cta.green:hover{filter:brightness(1.04)}
+.ks-cta.sec{background:#fff;color:#1766e6;border:1.5px solid #cfe0f7;box-shadow:none;font-weight:700;margin-left:10px}
+.ks-cta.sec:hover{background:#f3f8ff}
+.ks-ctas{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+.ks-new{display:inline-block;font-size:11px;font-weight:900;letter-spacing:.04em;color:#0a7d52;background:#d9f7e9;border:1px solid #abe8cd;border-radius:6px;padding:3px 8px;margin-bottom:10px}
 .ks-cta:hover{filter:brightness(1.05);transform:translateY(-1px)}
 .ks-deadline{display:inline-flex;align-items:center;gap:9px;margin-left:12px;font-size:13px;font-weight:800;color:#b23a2c;background:#fdecea;border:1px solid #f6d3cd;border-radius:999px;padding:9px 15px;vertical-align:middle}
 @media(max-width:560px){.ks-deadline{display:flex;margin:12px 0 0}}
@@ -76,17 +82,21 @@
 </style>
 </head>
 <body>
-<div class="promo"><div class="in"><span class="bdg">確定申告</span><span>申告の準備に使う書類を、登録不要・無料でそろえましょう。</span><a href="/invoice">請求書を作成 →</a></div></div>
+<div class="promo"><div class="in"><span class="bdg">確定申告</span><span>青色申告決算書（損益計算書）が、登録不要・無料でその場で作れます。</span><a href="/kakutei/aoiro">青色決算書を作成 →</a></div></div>
 <header class="hdr"><div class="in"><a class="brand" href="/invoice"><img src="/logo.png?v=20261021" alt="Free BizDocs" style="height:30px;width:auto;display:block"></a><span class="sp"></span><nav class="nav"><a href="/invoice">請求書ほか</a><a href="/compare">ツール比較</a><a href="/blog">お役立ち</a><a href="/pricing">料金・PRO</a></nav></div></header>
 <nav id="docnav" class="docnav" aria-label="書類の種類"></nav>
-<script src="/docnav.js?v=20261017" defer></script>
+<script src="/docnav.js?v=20261106" defer></script>
 
 <section class="ks-hero"><div class="in">
   <nav class="ks-bc"><a href="/">ホーム</a> › 確定申告の準備</nav>
   <span class="ks-ey"><svg class="nic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4L18.5 9.5a2 2 0 0 0-3-3L5 17z"/><path d="M13.5 6.5l3 3"/></svg> 確定申告の準備特集</span>
   <h1>確定申告の準備に必要な書類を、<br>登録不要・無料でそろえる</h1>
   <p class="lead">フリーランス・個人事業主の確定申告は、<b>売上の請求書控え</b>と<b>経費の領収書</b>、そして<b>源泉徴収された金額</b>の整理が基本です。Free BizDoc なら、これらの書類を登録不要・無料でその場で作成でき、消費税や源泉徴収も自動計算。申告前の準備をスムーズに進められます。</p>
-  <a class="ks-cta" href="/invoice">請求書・領収書を無料で作成 →</a>
+  <span class="ks-new">NEW ・ 登録不要</span>
+  <div class="ks-ctas">
+    <a class="ks-cta green" href="/kakutei/aoiro">青色申告決算書（損益計算書）を無料で作成 →</a>
+    <a class="ks-cta sec" href="/invoice">請求書・領収書を作成</a>
+  </div>
   <span class="ks-deadline"><svg class="nic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l3 2"/><path d="M4.5 3 2 5.5M19.5 3 22 5.5"/></svg> 所得税の申告は例年 2/16〜3/15</span>
 </div></section>
 
@@ -94,6 +104,12 @@
   <h2>確定申告の準備でそろえる書類と、無料でできること</h2>
   <p class="sub">売上・経費・源泉を「書類」で整理しておくと、申告書の作成がぐっと楽になります。すべて登録不要・無料で使えます。</p>
   <div class="ks-grid">
+    <a class="ks-card" href="/kakutei/aoiro" style="grid-column:1/-1;border-color:#abe8cd;background:linear-gradient(180deg,#f2fcf7,#fff 60%);box-shadow:0 1px 2px rgba(19,38,59,.04),0 18px 40px -26px rgba(14,165,107,.3)">
+      <span class="ks-new">NEW</span>
+      <h3 style="margin-top:4px">青色申告決算書（損益計算書）をその場で作成</h3>
+      <p>FBDで発行した請求書・領収書から<b>売上を自動集計</b>、経費は<b>CSVを業種別に勘定科目へ自動振り分け</b>。国税庁の様式どおりのPDFを登録不要・無料で作成できます（10万円控除／印刷・郵送提出に対応）。</p>
+      <span style="display:inline-flex;align-items:center;gap:7px;margin-top:10px;font-size:14px;font-weight:800;color:#0a7d52">青色決算書をつくる →</span>
+    </a>
     <a class="ks-card" href="/invoice">
       <span class="ic"><svg class="nic on-dark" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M8 13h8M8 17h5"/></svg></span>
       <h3>請求書の控えを作成・整理</h3>
@@ -173,9 +189,9 @@
 </section>
 
 <section class="ks-band"><div class="in">
-  <h2>申告前の書類づくりは、無料で。</h2>
-  <p>請求書・領収書の控え、源泉徴収や消費税の計算まで。登録不要・無料でその場でPDFにできます。</p>
-  <a href="/invoice">請求書を無料で作成する →</a>
+  <h2>青色申告決算書も、無料で。</h2>
+  <p>売上の自動集計と、経費CSVの業種別・勘定科目 自動振り分けに対応。国税庁様式のPDFを登録不要・無料でその場で作成できます。</p>
+  <a href="/kakutei/aoiro">青色申告決算書を無料で作成する →</a>
 </div></section>
 
 <footer class="ft"><div class="in">
@@ -186,6 +202,6 @@
       <a href="/privacy">プライバシーポリシー</a> ・ <a href="/feedback">ご意見・ご要望</a> ・ <a href="/contact">お問い合わせ</a></div>
   <div class="row" style="color:#8097ad">確定申告に関する情報は一般的な参考情報です。最新の制度・期限は国税庁等でご確認ください。© 2026 Free BizDoc</div>
 </div></footer>
-<script src="/siteheader.js?v=20261019en"></script>
+<script src="/siteheader.js?v=20261106"></script>
 </body>
 </html>

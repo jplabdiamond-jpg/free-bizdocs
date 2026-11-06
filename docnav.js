@@ -2,6 +2,7 @@
 (function(){
   'use strict';
   var DOCS=[
+    ['/kakutei/aoiro','確定申告 青色決算書'],
     ['/invoice','請求書'],['/quote','見積書'],['/delivery','納品書'],
     ['/purchase-order','発注書'],['/receipt','領収書'],['/inkan','電子印鑑'],
     ['/rirekisho','履歴書'],['/shokumu','職務経歴書'],['/soufu','送付状'],
@@ -19,7 +20,10 @@
    +'.docnav-item{flex:0 0 auto;font-size:13px;font-weight:700;color:var(--mut,#5a6b80);text-decoration:none;padding:8px 15px;border-radius:999px;'
    +'background:var(--surf2,#f1f5fb);border:1px solid var(--bd,#dce5f0);white-space:nowrap;-webkit-tap-highlight-color:transparent}'
    +'.docnav-item:hover{background:#eef4ff;color:var(--ac,#1766e6)}'
-   +'.docnav-item.on{background:linear-gradient(120deg,var(--ac,#1766e6),#2f9bf0);color:#fff;border-color:transparent;box-shadow:0 4px 12px -4px rgba(23,102,230,.5)}';
+   +'.docnav-item.on{background:linear-gradient(120deg,var(--ac,#1766e6),#2f9bf0);color:#fff;border-color:transparent;box-shadow:0 4px 12px -4px rgba(23,102,230,.5)}'
+   +'.docnav-item.kct{background:linear-gradient(120deg,#0ea56b,#10bd7e);color:#fff;border-color:transparent;font-weight:800;box-shadow:0 5px 14px -4px rgba(14,165,107,.55)}'
+   +'.docnav-item.kct:hover{color:#fff;background:linear-gradient(120deg,#0b9a62,#0eb073)}'
+   +'.docnav-item.kct::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:#eafff5;margin-right:7px;vertical-align:1px;box-shadow:0 0 0 3px rgba(255,255,255,.28)}';
   if(!document.getElementById('docnav-style')){
     var st=document.createElement('style');st.id='docnav-style';st.textContent=CSS;document.head.appendChild(st);
   }
@@ -32,6 +36,7 @@
     DOCS.forEach(function(d){
       var a=document.createElement('a');
       a.href=d[0];a.textContent=d[1];a.className='docnav-item';a.draggable=false;
+      if(d[0].indexOf('/kakutei')===0) a.className+=' kct';
       if(d[0]===path){a.className+=' on';a.setAttribute('aria-current','page');}
       frag.appendChild(a);
     });

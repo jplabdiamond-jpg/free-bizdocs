@@ -23,7 +23,12 @@
   +'.fb-ft-auth a:hover,.fb-ft-auth button:hover{text-decoration:underline}'
   +'.fb-hdr .lang-sw{font-size:12.5px;font-weight:700;color:#45607a;text-decoration:none;border:1px solid #dce5f0;border-radius:999px;padding:6px 12px;white-space:nowrap;margin-right:2px}'
   +'.fb-hdr .lang-sw:hover{background:#f1f5fb;color:#1766e6;border-color:#c7d6e8}'
-  +'@media(max-width:640px){.fb-hdr .nav{display:none}.fb-hdr .em{display:none}.fb-hdr .auth a,.fb-hdr .auth button{padding:8px 12px}.fb-hdr .lang-sw{padding:6px 10px}}';
+  +'.fb-hdr .fb-kct{display:inline-flex;align-items:center;gap:7px;flex:none;margin-left:4px;font-size:13.5px;font-weight:800;text-decoration:none;color:#fff;background:linear-gradient(120deg,#0ea56b,#10bd7e);border:1px solid #0ea56b;border-radius:10px;padding:8px 14px;white-space:nowrap;box-shadow:0 6px 16px -6px rgba(14,165,107,.6);transition:transform .12s,box-shadow .12s}'
+  +'.fb-hdr .fb-kct:hover{background:linear-gradient(120deg,#0b9a62,#0eb073);transform:translateY(-1px);box-shadow:0 9px 20px -7px rgba(14,165,107,.7)}'
+  +'.fb-hdr .fb-kct b{font-weight:800}'
+  +'.fb-hdr .fb-kct .dot{width:7px;height:7px;border-radius:50%;background:#eafff5;box-shadow:0 0 0 3px rgba(255,255,255,.28);flex:none}'
+  +'.fb-hdr .fb-kct .nw{font-size:10px;font-weight:900;letter-spacing:.04em;background:rgba(255,255,255,.22);border-radius:5px;padding:2px 5px;line-height:1}'
+  +'@media(max-width:640px){.fb-hdr .nav{display:none}.fb-hdr .em{display:none}.fb-hdr .auth a,.fb-hdr .auth button{padding:8px 12px}.fb-hdr .lang-sw{display:none}.fb-hdr .fb-kct{margin-left:0;padding:7px 11px;font-size:12.5px;gap:5px}.fb-hdr .fb-kct b,.fb-hdr .fb-kct .nw{display:none}}';
   var st=document.createElement('style'); st.textContent=css; document.head.appendChild(st);
 
   // ---- ヘッダー ----
@@ -31,6 +36,7 @@
   hdr.innerHTML='<div class="in">'
     +'<a class="brand" href="/"><img src="/logo.png?v=20261021" alt="Free BizDoc"></a>'
     +'<nav class="nav"><a href="/invoice">書類を作成</a><a href="/blog">お役立ち</a><a href="/pricing">料金・PRO</a></nav>'
+    +'<a class="fb-kct" href="/kakutei/aoiro" title="確定申告 青色申告決算書を無料作成"><span class="dot"></span>確定申告<b>青色決算書</b><span class="nw">NEW</span></a>'
     +'<span class="sp"></span>'
     +'<a class="lang-sw" href="/en/?lang=en" lang="en" title="English version">English</a>'
     +'<div class="auth" id="fbAuth">'
