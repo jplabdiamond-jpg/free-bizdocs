@@ -47,9 +47,26 @@
  .ka-prev{position:sticky;top:12px}
  .ka-prevhd{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
  .ka-prevhd b{font-size:14px;color:#13314f}
- .ka-frame{width:100%;height:760px;border:1px solid #d7e0ee;border-radius:12px;background:#f3f6fb}
- @media(max-width:900px){.ka-frame{height:520px}}
+ .ka-pvbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:8px}
+ .ka-pvtabs{display:flex;gap:4px;flex-wrap:wrap}
+ .ka-pvtabs button{appearance:none;border:1px solid #d7e0ee;background:#fff;color:#45607a;font-size:12px;font-weight:700;font-family:inherit;border-radius:8px;padding:6px 10px;cursor:pointer;white-space:nowrap}
+ .ka-pvtabs button:hover{background:#f1f5fb;color:#1766e6}
+ .ka-pvtabs button.on{background:#1766e6;border-color:#1766e6;color:#fff}
+ .ka-pvzoom{display:flex;gap:4px;align-items:center;margin-left:auto}
+ .ka-pvzoom button{appearance:none;width:30px;height:30px;border:1px solid #d7e0ee;background:#fff;color:#1766e6;font-size:17px;font-weight:800;border-radius:8px;cursor:pointer;line-height:1;font-family:inherit}
+ .ka-pvzoom button:hover{background:#eef3fb}
+ .ka-pvzoom span{font-size:12px;color:#5a6b7d;min-width:84px;text-align:center}
+ .ka-frame{width:100%;height:770px;border:1px solid #d7e0ee;border-radius:12px;background:#5b6774;overflow:auto;padding:12px;box-sizing:border-box}
+ .ka-frame canvas{display:block;margin:0 auto;background:#fff;box-shadow:0 2px 16px rgba(0,0,0,.28);border-radius:2px}
+ .ka-frame.empty{display:flex;align-items:center;justify-content:center;color:#d5dde7;font-size:13px;text-align:center;padding:24px}
+ @media(max-width:900px){.ka-frame{height:560px}}
  .ka-hint{font-size:12px;color:#7688a0;margin:6px 2px 0;line-height:1.7}
+ .ka-f label{display:inline-flex;align-items:center;gap:5px}
+ .ka-q{display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;border-radius:50%;background:#dbe6f6;color:#3b6fb5;font-size:10px;font-weight:900;cursor:help;flex:none;position:relative}
+ .ka-q:hover,.ka-q:focus{background:#1766e6;color:#fff;outline:none}
+ .ka-q::after{content:attr(data-tip);position:absolute;left:0;bottom:calc(100% + 9px);width:240px;max-width:52vw;background:#13314f;color:#fff;font-size:11.5px;font-weight:500;line-height:1.65;text-align:left;padding:9px 11px;border-radius:9px;box-shadow:0 10px 28px -10px rgba(0,0,0,.5);opacity:0;visibility:hidden;transition:opacity .12s;z-index:60;pointer-events:none}
+ .ka-q::before{content:"";position:absolute;left:5px;bottom:calc(100% + 3px);border:6px solid transparent;border-top-color:#13314f;opacity:0;visibility:hidden;transition:opacity .12s;z-index:60}
+ .ka-q:hover::after,.ka-q:focus::after,.ka-q:hover::before,.ka-q:focus::before{opacity:1;visibility:visible}
 </style>
 </head>
 <body>
@@ -84,27 +101,27 @@
 
   <div class="ka-card">
     <div class="ka-sec">事業者情報</div>
-    <div class="ka-f"><label>年分（令和）</label><input id="f_year" inputmode="numeric" placeholder="7"></div>
-    <div class="ka-f"><label>氏名</label><input id="f_shimei" placeholder="沖 実篤"></div>
-    <div class="ka-f"><label>フリガナ</label><input id="f_furigana" placeholder="オキ サネアツ"></div>
-    <div class="ka-f"><label>住所</label><input id="f_jusho" placeholder="東京都〇〇区〇〇1-2-3"></div>
-    <div class="ka-f"><label>事業所所在地</label><input id="f_jigyosho" placeholder="同上"></div>
-    <div class="ka-f"><label>業種名</label><input id="f_gyoshu" placeholder="ソフトウェア開発業"></div>
-    <div class="ka-f"><label>屋号</label><input id="f_yago" placeholder="（あれば）"></div>
+    <div class="ka-f"><label>年分（令和）<span class="ka-q" tabindex="0" data-tip="申告する年分を令和で入力します。例：令和7年分なら「7」。">?</span></label><input id="f_year" inputmode="numeric" placeholder="7"></div>
+    <div class="ka-f"><label>氏名<span class="ka-q" tabindex="0" data-tip="申告する本人の氏名です。">?</span></label><input id="f_shimei" placeholder="沖 実篤"></div>
+    <div class="ka-f"><label>フリガナ<span class="ka-q" tabindex="0" data-tip="氏名のフリガナ（カタカナ）です。">?</span></label><input id="f_furigana" placeholder="オキ サネアツ"></div>
+    <div class="ka-f"><label>住所<span class="ka-q" tabindex="0" data-tip="納税地となる住所です（原則はお住まいの住所）。">?</span></label><input id="f_jusho" placeholder="東京都〇〇区〇〇1-2-3"></div>
+    <div class="ka-f"><label>事業所所在地<span class="ka-q" tabindex="0" data-tip="お店・事務所の所在地。自宅と同じなら「同上」でOK。">?</span></label><input id="f_jigyosho" placeholder="同上"></div>
+    <div class="ka-f"><label>業種名<span class="ka-q" tabindex="0" data-tip="主な事業の種類。例：ソフトウェア開発業、小売業、美容業。">?</span></label><input id="f_gyoshu" placeholder="ソフトウェア開発業"></div>
+    <div class="ka-f"><label>屋号<span class="ka-q" tabindex="0" data-tip="屋号・商号があれば入力します（なければ空欄でOK）。">?</span></label><input id="f_yago" placeholder="（あれば）"></div>
 
     <div class="ka-sec">売上・売上原価</div>
-    <div class="ka-f ka-num"><label>売上(収入)金額</label><input id="f_uriage" inputmode="numeric" placeholder="0"></div>
+    <div class="ka-f ka-num"><label>売上(収入)金額<span class="ka-q" tabindex="0" data-tip="その年の事業の売上(収入)の合計。原則は請求書ベース（発生主義）で集計します。下の「売上を自動集計」も使えます。">?</span></label><input id="f_uriage" inputmode="numeric" placeholder="0"></div>
     <div id="ka-auto"></div>
-    <div class="ka-f ka-num"><label>期首商品棚卸高</label><input id="f_kisho" inputmode="numeric" placeholder="0"></div>
-    <div class="ka-f ka-num"><label>仕入金額</label><input id="f_shiire" inputmode="numeric" placeholder="0"></div>
-    <div class="ka-f ka-num"><label>期末商品棚卸高</label><input id="f_kimatsu" inputmode="numeric" placeholder="0"></div>
+    <div class="ka-f ka-num"><label>期首商品棚卸高<span class="ka-q" tabindex="0" data-tip="年初(1/1)時点の在庫（売れ残り商品）の金額。仕入れがなければ0でOK。">?</span></label><input id="f_kisho" inputmode="numeric" placeholder="0"></div>
+    <div class="ka-f ka-num"><label>仕入金額<span class="ka-q" tabindex="0" data-tip="その年に仕入れた商品・材料の金額（売上原価の仕入）。">?</span></label><input id="f_shiire" inputmode="numeric" placeholder="0"></div>
+    <div class="ka-f ka-num"><label>期末商品棚卸高<span class="ka-q" tabindex="0" data-tip="年末(12/31)時点の在庫（売れ残り商品）の金額。仕入れがなければ0でOK。">?</span></label><input id="f_kimatsu" inputmode="numeric" placeholder="0"></div>
 
     <div class="ka-sec">経費</div>
     <div id="ka-csv"></div>
     <div class="ka-exp" id="ka-exp"></div>
 
     <div class="ka-sec">青色申告特別控除</div>
-    <div class="ka-f"><label>控除額</label><select id="f_kojo">
+    <div class="ka-f"><label>控除額<span class="ka-q" tabindex="0" data-tip="青色申告特別控除。損益計算書のみの提出なら10万円。55万円・65万円には貸借対照表などが必要です。">?</span></label><select id="f_kojo">
       <option value="100000" selected>10万円（損益計算書のみ）</option>
       <option value="550000">55万円（要・貸借対照表）</option>
       <option value="650000">65万円（要・貸借対照表＋e-Tax等）</option>
@@ -121,9 +138,22 @@
   </div>
 
   <div class="ka-card ka-prev">
-    <div class="ka-prevhd"><b>プレビュー（損益計算書）</b><span class="ka-hint" id="ka-status"></span></div>
-    <iframe id="ka-frame" class="ka-frame" title="青色申告決算書プレビュー"></iframe>
-    <div class="ka-hint">公式様式そのままに記入されます。右の罫線に金額が収まっているかご確認ください。</div>
+    <div class="ka-prevhd"><b>プレビュー</b><span class="ka-hint" id="ka-status"></span></div>
+    <div class="ka-pvbar">
+      <div class="ka-pvtabs" id="ka-pvtabs">
+        <button type="button" data-p="0" class="on">1 損益計算書</button>
+        <button type="button" data-p="1">2 月別・給料</button>
+        <button type="button" data-p="2">3 減価償却・地代</button>
+        <button type="button" data-p="3">4 貸借対照表</button>
+      </div>
+      <div class="ka-pvzoom">
+        <button type="button" id="ka-zoomout" title="縮小">−</button>
+        <span id="ka-zoomlbl">幅に合わせる</span>
+        <button type="button" id="ka-zoomin" title="拡大">＋</button>
+      </div>
+    </div>
+    <div class="ka-frame empty" id="ka-frame"><span>入力すると、ここに記入済みの書類が表示されます。<br>数字が罫線に収まっているかご確認ください。</span></div>
+    <div class="ka-hint">1枚目（損益計算書）に入力内容が記入されます。タブでページ切替、＋/−で拡大できます。印刷してそのまま郵送提出できます。</div>
   </div>
 
 </div></div>
@@ -148,11 +178,33 @@
   var num=function(id){var v=($(id).value||'').replace(/[^0-9\-]/g,'');return v===''?0:parseInt(v,10)||0;};
   var _blob=null,_url=null,_t=null;
 
+  // 経費科目の説明tips
+  var ETIPS={
+    G08:'事業に関する税金（個人事業税・固定資産税・自動車税・印紙代など）。所得税・住民税は含めません。',
+    G09:'商品の梱包材・発送の送料など、荷造り・運賃の費用。',
+    G10:'事業で使う電気・ガス・水道代。自宅兼用は事業分だけ（家事按分後）。',
+    G11:'電車・バス・タクシー・ガソリン・出張の宿泊費など。',
+    G12:'電話・インターネット・切手・サーバー代・ドメイン代など。',
+    G13:'広告・チラシ・Web広告・名刺・看板など宣伝の費用。',
+    G14:'取引先との飲食・手土産・慶弔費など交際の費用。',
+    G15:'事業用の火災保険・損害保険などの保険料。',
+    G16:'店舗・機械・車両・PCなどの修理・メンテナンス費用。',
+    G17:'10万円未満の備品・文具・ソフトなど、使って消耗する物品。',
+    G18:'10万円以上の資産を耐用年数で分けて計上する額（別途計算が必要）。',
+    G19:'従業員のための費用（健康診断・まかない・慶弔など）。従業員がいる場合。',
+    G20:'従業員へ支払う給料・賃金。家族への専従者給与は別欄です。',
+    G21:'外部に委託した加工・制作・業務などの費用。',
+    G22:'事業用の借入の支払利息・手形の割引料など。',
+    G23:'事務所・店舗・駐車場などの家賃。自宅兼用は事業分だけ（家事按分後）。',
+    G24:'回収できなくなった売掛金・貸付金などの損失。',
+    G31:'他の科目に当てはまらない少額の経費。'
+  };
   // 経費入力欄を生成
   var expWrap=$('ka-exp');
   AoiroCalc.EXPENSES.forEach(function(e){
     var d=document.createElement('div'); d.className='ka-f ka-num';
-    d.innerHTML='<label>'+e[1]+'</label><input id="e_'+e[0]+'" inputmode="numeric" placeholder="0">';
+    var tip=ETIPS[e[0]]?' <span class="ka-q" tabindex="0" data-tip="'+ETIPS[e[0]]+'">?</span>':'';
+    d.innerHTML='<label>'+e[1]+tip+'</label><input id="e_'+e[0]+'" inputmode="numeric" placeholder="0">';
     expWrap.appendChild(d);
   });
 
@@ -177,14 +229,51 @@
       row('青色申告特別控除額',a.G44)+
       row('所得金額',a.G45,true);
   }
+  // --- PDF.js でプレビューを1ページずつ大きく描画 ---
+  var _pdfjsP=null;
+  function ensurePdfjs(){
+    if(_pdfjsP) return _pdfjsP;
+    _pdfjsP=(async function(){
+      if(!window.pdfjsLib) await new Promise(function(res,rej){var s=document.createElement('script');s.src='/vendor/pdf-3.11.174.min.js';s.onload=res;s.onerror=rej;document.head.appendChild(s);});
+      window.pdfjsLib.GlobalWorkerOptions.workerSrc='/vendor/pdf.worker-3.11.174.min.js';
+    })();
+    return _pdfjsP;
+  }
+  var _pdoc=null,_pg=0,_zoom=1,_rendering=false,_rerender=false;
+  var ZOOMS=[1,1.5,2,2.5,3];
+  async function renderPage(){
+    if(!_pdoc) return;
+    if(_rendering){ _rerender=true; return; }
+    _rendering=true;
+    try{
+      var host=$('ka-frame');
+      var pg=await _pdoc.getPage(_pg+1);
+      var vp0=pg.getViewport({scale:1});
+      var avail=Math.max(220,(host.clientWidth||600)-24);
+      var dpr=Math.min(window.devicePixelRatio||1,2);
+      var cssW=avail*_zoom;
+      var vp=pg.getViewport({scale:(cssW/vp0.width)*dpr});
+      var cv=document.createElement('canvas');
+      cv.width=Math.floor(vp.width); cv.height=Math.floor(vp.height);
+      cv.style.width=Math.floor(vp.width/dpr)+'px'; cv.style.height=Math.floor(vp.height/dpr)+'px';
+      var cx=cv.getContext('2d'); cx.fillStyle='#fff'; cx.fillRect(0,0,cv.width,cv.height);
+      await pg.render({canvasContext:cx,viewport:vp,intent:'print'}).promise;
+      host.classList.remove('empty'); host.innerHTML=''; host.appendChild(cv);
+    }catch(e){ console.error(e); }
+    _rendering=false;
+    if(_rerender){ _rerender=false; renderPage(); }
+  }
   async function makePdf(){
-    var s=$('ka-status'); s.textContent='PDFを生成中…';
+    var s=$('ka-status'); s.textContent='更新中…';
     try{
       var bytes=await AOIRO.buildPdf(gather());
       _blob=new Blob([bytes],{type:'application/pdf'});
       if(_url)URL.revokeObjectURL(_url);
       _url=URL.createObjectURL(_blob);
-      $('ka-frame').src=_url;
+      await ensurePdfjs();
+      if(_pdoc){ try{_pdoc.destroy();}catch(e){} }
+      _pdoc=await window.pdfjsLib.getDocument({data:bytes.slice(0)}).promise;
+      await renderPage();
       s.textContent='最新の内容で更新しました';
     }catch(err){ s.textContent='生成に失敗しました'; console.error(err); }
   }
@@ -206,10 +295,30 @@
   document.addEventListener('input',function(ev){
     if(!ev.target.closest('.ka-card'))return;
     summary(); saveHdr();
-    clearTimeout(_t); _t=setTimeout(makePdf,1100);
+    clearTimeout(_t); _t=setTimeout(makePdf,500);
   });
   $('ka-make').addEventListener('click',makePdf);
   $('ka-dl').addEventListener('click',download);
+
+  // ページタブ切替
+  var tabs=$('ka-pvtabs');
+  if(tabs) tabs.addEventListener('click',function(ev){
+    var b=ev.target.closest('button[data-p]'); if(!b) return;
+    _pg=parseInt(b.getAttribute('data-p'),10)||0;
+    [].slice.call(tabs.querySelectorAll('button')).forEach(function(x){x.classList.toggle('on',x===b);});
+    renderPage();
+  });
+  // 拡大・縮小
+  function zoomLabel(){ $('ka-zoomlbl').textContent=(_zoom<=1?'幅に合わせる':'拡大 ×'+_zoom); }
+  function setZoom(dir){
+    var i=ZOOMS.indexOf(_zoom); if(i<0)i=0;
+    i=Math.max(0,Math.min(ZOOMS.length-1,i+dir)); _zoom=ZOOMS[i]; zoomLabel(); renderPage();
+  }
+  $('ka-zoomin').addEventListener('click',function(){setZoom(1);});
+  $('ka-zoomout').addEventListener('click',function(){setZoom(-1);});
+  // 幅合わせ時はリサイズで再描画
+  var _rt=null;
+  window.addEventListener('resize',function(){ clearTimeout(_rt); _rt=setTimeout(function(){ if(_zoom<=1) renderPage(); },250); });
 
   summary(); makePdf();
 })();
@@ -235,11 +344,11 @@
     var nc=invN?'#7688a0':'#a36b1e';
     return '<div style="border:1px dashed #9cc0f5;background:#f1f7ff;border-radius:10px;padding:10px 12px;margin:2px 0 6px">'
       +'<div style="font-size:12.5px;color:#1766e6;font-weight:800;margin-bottom:7px">発行済み書類から売上を自動集計</div>'
-      +'<div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap;font-size:12.5px;color:#39506c">'
-      +'<span>集計方式：</span>'
-      +'<label style="display:inline-flex;align-items:center;gap:5px"><input type="radio" name="ka-basis" id="ka-basis-incl" checked> 税込</label>'
-      +'<label style="display:inline-flex;align-items:center;gap:5px"><input type="radio" name="ka-basis" id="ka-basis-excl"> 税抜</label>'
-      +'<label style="display:inline-flex;align-items:center;gap:5px;margin-left:4px"><input type="checkbox" id="ka-inc-receipt"> 領収書も含める</label>'
+      +'<div style="display:flex;gap:10px 14px;align-items:center;flex-wrap:wrap;font-size:12.5px;color:#39506c">'
+      +'<span style="white-space:nowrap">集計方式：</span>'
+      +'<label style="display:inline-flex;align-items:center;gap:5px;white-space:nowrap;flex:none"><input type="radio" name="ka-basis" id="ka-basis-incl" checked> 税込</label>'
+      +'<label style="display:inline-flex;align-items:center;gap:5px;white-space:nowrap;flex:none"><input type="radio" name="ka-basis" id="ka-basis-excl"> 税抜</label>'
+      +'<label style="display:inline-flex;align-items:center;gap:5px;margin-left:4px;white-space:nowrap;flex:none"><input type="checkbox" id="ka-inc-receipt"> 領収書も含める</label>'
       +'</div>'
       +'<div style="margin-top:9px;display:flex;gap:9px;align-items:center;flex-wrap:wrap">'
       +'<button type="button" id="ka-agg" style="background:#1766e6;color:#fff;border:none;border-radius:9px;padding:8px 15px;font-size:13px;font-weight:800;cursor:pointer">売上を自動集計</button>'
