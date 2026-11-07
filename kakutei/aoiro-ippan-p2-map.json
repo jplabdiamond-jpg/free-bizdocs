@@ -1,0 +1,144 @@
+{
+ "page": 1,
+ "w": 842,
+ "h": 595,
+ "amounts": {
+  "G01": {
+   "rightX": 196,
+   "baseTop": 115.3
+  },
+  "G17": {
+   "rightX": 340,
+   "baseTop": 115.3
+  },
+  "G02": {
+   "rightX": 196,
+   "baseTop": 133.0
+  },
+  "G18": {
+   "rightX": 340,
+   "baseTop": 133.0
+  },
+  "G03": {
+   "rightX": 196,
+   "baseTop": 150.4
+  },
+  "G19": {
+   "rightX": 340,
+   "baseTop": 150.4
+  },
+  "G04": {
+   "rightX": 196,
+   "baseTop": 168.2
+  },
+  "G20": {
+   "rightX": 340,
+   "baseTop": 168.2
+  },
+  "G05": {
+   "rightX": 196,
+   "baseTop": 186.1
+  },
+  "G21": {
+   "rightX": 340,
+   "baseTop": 186.1
+  },
+  "G06": {
+   "rightX": 196,
+   "baseTop": 203.8
+  },
+  "G22": {
+   "rightX": 340,
+   "baseTop": 203.8
+  },
+  "G31": {
+   "rightX": 514,
+   "baseTop": 200.5
+  },
+  "G32": {
+   "rightX": 816,
+   "baseTop": 200.5
+  },
+  "G07": {
+   "rightX": 196,
+   "baseTop": 221.4
+  },
+  "G23": {
+   "rightX": 340,
+   "baseTop": 221.4
+  },
+  "G08": {
+   "rightX": 196,
+   "baseTop": 239.1
+  },
+  "G24": {
+   "rightX": 340,
+   "baseTop": 239.1
+  },
+  "G09": {
+   "rightX": 196,
+   "baseTop": 256.9
+  },
+  "G25": {
+   "rightX": 340,
+   "baseTop": 256.9
+  },
+  "G10": {
+   "rightX": 196,
+   "baseTop": 274.6
+  },
+  "G26": {
+   "rightX": 340,
+   "baseTop": 274.6
+  },
+  "G11": {
+   "rightX": 196,
+   "baseTop": 292.1
+  },
+  "G27": {
+   "rightX": 340,
+   "baseTop": 292.1
+  },
+  "G12": {
+   "rightX": 196,
+   "baseTop": 310.0
+  },
+  "G28": {
+   "rightX": 340,
+   "baseTop": 310.0
+  },
+  "G33": {
+   "rightX": 514,
+   "baseTop": 319.9
+  },
+  "G34": {
+   "rightX": 816,
+   "baseTop": 320.1
+  },
+  "G13": {
+   "rightX": 196,
+   "baseTop": 327.8
+  },
+  "G14": {
+   "rightX": 196,
+   "baseTop": 345.6
+  },
+  "G15": {
+   "rightX": 196,
+   "baseTop": 363.6
+  },
+  "G29": {
+   "rightX": 340,
+   "baseTop": 363.6
+  },
+  "G16": {
+   "rightX": 196,
+   "baseTop": 381.7
+  },
+  "G30": {
+   "rightX": 340,
+   "baseTop": 381.7
+  }
+ },
+ "header": {}
+}

@@ -36,5 +36,19 @@
     a.G45=shotokuMae-kojo;                                 // 所得金額(43-44)
     return {amounts:a, header:(d.header||{})};
   }
-  return {calc:calc, EXPENSES:EXPENSES};
+  // 2枚目：月別の売上（収入）金額及び仕入金額
+  function calcP2(p2){
+    p2=p2||{}; var a={};
+    var uri=p2.uri||[], shi=p2.shi||[], su=0, ss=0, i;
+    for(i=0;i<12;i++){ var u=N(uri[i]); a['G'+('0'+(i+1)).slice(-2)]=u; su+=u; }      // G01..G12 月別売上
+    for(i=0;i<12;i++){ var s=N(shi[i]); a['G'+(17+i)]=s; ss+=s; }                     // G17..G28 月別仕入
+    a.G13=N(p2.kaji);                                                                  // 家事消費等
+    a.G14=N(p2.zatsu);                                                                 // 雑収入
+    a.G15=su+a.G13+a.G14;                                                              // 売上(収入)計
+    a.G16=N(p2.keigenUri);                                                             // うち軽減税率対象(売上)
+    a.G29=ss;                                                                          // 仕入 計
+    a.G30=N(p2.keigenShi);                                                             // うち軽減税率対象(仕入)
+    return a;
+  }
+  return {calc:calc, calcP2:calcP2, EXPENSES:EXPENSES};
 }));

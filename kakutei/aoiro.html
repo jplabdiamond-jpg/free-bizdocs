@@ -67,6 +67,17 @@
  .ka-q::after{content:attr(data-tip);position:absolute;left:0;bottom:calc(100% + 9px);width:240px;max-width:52vw;background:#13314f;color:#fff;font-size:11.5px;font-weight:500;line-height:1.65;text-align:left;padding:9px 11px;border-radius:9px;box-shadow:0 10px 28px -10px rgba(0,0,0,.5);opacity:0;visibility:hidden;transition:opacity .12s;z-index:60;pointer-events:none}
  .ka-q::before{content:"";position:absolute;left:5px;bottom:calc(100% + 3px);border:6px solid transparent;border-top-color:#13314f;opacity:0;visibility:hidden;transition:opacity .12s;z-index:60}
  .ka-q:hover::after,.ka-q:focus::after,.ka-q:hover::before,.ka-q:focus::before{opacity:1;visibility:visible}
+ .ka-p2hint{font-size:11.5px;color:#7688a0;margin:2px 0 6px}
+ .ka-p2t{width:100%;border-collapse:collapse;font-size:12.5px}
+ .ka-p2t th{font-size:11px;color:#5a6b7d;font-weight:700;padding:4px 6px;border-bottom:1px solid #e3e9f2;text-align:right}
+ .ka-p2t th:first-child{text-align:center}
+ .ka-p2t td{padding:2px 4px;border-bottom:1px solid #f0f3f8}
+ .ka-p2t td.mm{color:#45607a;font-size:11.5px;white-space:nowrap;text-align:center;font-weight:600}
+ .ka-p2t input{width:100%;box-sizing:border-box;border:1px solid #dce5f0;border-radius:6px;padding:5px 7px;font-size:12.5px;text-align:right;font-variant-numeric:tabular-nums;font-family:inherit;background:#fff}
+ .ka-p2t input:focus{outline:none;border-color:#1766e6;box-shadow:0 0 0 2px rgba(23,102,230,.1)}
+ .ka-p2t td.x{background:repeating-linear-gradient(135deg,#f6f8fb,#f6f8fb 4px,#eef2f8 4px,#eef2f8 8px)}
+ .ka-p2t tr.tot td{font-weight:800;color:#13314f;text-align:right;font-variant-numeric:tabular-nums;border-top:1.5px solid #cfdaea;padding:6px 7px}
+ .ka-p2t tr.tot td.mm{text-align:center}
 </style>
 </head>
 <body>
@@ -135,7 +146,10 @@
       <option value="650000">65万円（要・貸借対照表＋e-Tax等）</option>
       <option value="0">0円（適用しない）</option>
     </select></div>
-    <div class="ka-hint">※ 55万円・65万円控除には貸借対照表（4枚目）等が必要です。本ツールは現在1枚目のみのため、該当ページはご自身で用意してください。</div>
+    <div class="ka-hint">※ 55万円・65万円控除には貸借対照表（4枚目）等が必要です。該当ページは下部で入力できます（準備中の項目を除く）。</div>
+
+    <div class="ka-sec">月別の売上・仕入（2枚目・任意）<span class="ka-q" tabindex="0" data-tip="決算書2枚目の「月別の売上（収入）金額及び仕入金額」。月ごとに入力すると計が自動計算されます。合計は1枚目の売上・仕入と一致させてください。">?</span></div>
+    <div id="ka-p2"></div>
 
     <div class="ka-sum" id="ka-sum"></div>
     <div class="ka-btns">
@@ -175,9 +189,9 @@
   </div>
 </footer>
 
-<script src="/kakutei/aoiro-calc.js?v=20261105"></script>
+<script src="/kakutei/aoiro-calc.js?v=20261107b"></script>
 <script src="/kakutei/aoiro-fill.js?v=20261105"></script>
-<script src="/kakutei/aoiro.js?v=20261107"></script>
+<script src="/kakutei/aoiro.js?v=20261107b"></script>
 <script src="/kakutei/expense-cats.js?v=20261106"></script>
 <script>
 (function(){
@@ -216,6 +230,31 @@
     expWrap.appendChild(d);
   });
 
+  // 2枚目：月別の売上・仕入テーブルを生成
+  (function(){
+    var box=$('ka-p2'); if(!box) return;
+    var rows='';
+    for(var m=1;m<=12;m++){
+      rows+='<tr><td class="mm">'+m+'月</td>'
+        +'<td><input id="p2u_'+(m-1)+'" inputmode="numeric" placeholder="0"></td>'
+        +'<td><input id="p2s_'+(m-1)+'" inputmode="numeric" placeholder="0"></td></tr>';
+    }
+    box.innerHTML='<div class="ka-p2hint">月ごとの売上・仕入を入力すると、決算書2枚目に記入されます（任意）。合計は1枚目の売上・仕入と一致させてください。</div>'
+      +'<table class="ka-p2t"><thead><tr><th>月</th><th>売上(収入)</th><th>仕入</th></tr></thead><tbody>'+rows
+      +'<tr><td class="mm">家事消費</td><td><input id="p2_kaji" inputmode="numeric" placeholder="0"></td><td class="x"></td></tr>'
+      +'<tr><td class="mm">雑収入</td><td><input id="p2_zatsu" inputmode="numeric" placeholder="0"></td><td class="x"></td></tr>'
+      +'<tr class="tot"><td class="mm">計</td><td id="p2tu">0</td><td id="p2ts">0</td></tr>'
+      +'<tr><td class="mm">うち軽減</td><td><input id="p2_kuri" inputmode="numeric" placeholder="0"></td><td><input id="p2_kshi" inputmode="numeric" placeholder="0"></td></tr>'
+      +'</tbody></table>';
+  })();
+  function gatherP2(){
+    var p2={uri:[],shi:[]};
+    for(var i=0;i<12;i++){ p2.uri.push(num('p2u_'+i)); p2.shi.push(num('p2s_'+i)); }
+    p2.kaji=num('p2_kaji'); p2.zatsu=num('p2_zatsu');
+    p2.keigenUri=num('p2_kuri'); p2.keigenShi=num('p2_kshi');
+    return p2;
+  }
+
   function gather(){
     var exp={};
     AoiroCalc.EXPENSES.forEach(function(e){exp[e[0]]=num('e_'+e[0]);});
@@ -225,7 +264,7 @@
         tel_home:val('f_tel_home'),tel_office:val('f_tel_office'),kanyu:val('f_kanyu'),
         zei_name:val('f_zei_name'),zei_tel:val('f_zei_tel'),zei_jusho:val('f_zei_jusho')},
       uriage:num('f_uriage'),kisho:num('f_kisho'),shiire:num('f_shiire'),kimatsu:num('f_kimatsu'),
-      exp:exp, kojo:num('f_kojo')
+      exp:exp, kojo:num('f_kojo'), p2:gatherP2()
     };
   }
   var yen=function(n){return Number(n).toLocaleString('ja-JP')+' 円';};
@@ -238,6 +277,10 @@
       row('差引金額（＝控除前所得）',a.G33)+
       row('青色申告特別控除額',a.G44)+
       row('所得金額',a.G45,true);
+    var p2=AoiroCalc.calcP2(gatherP2());
+    var tu=$('p2tu'), ts=$('p2ts');
+    if(tu) tu.textContent=Number(p2.G15).toLocaleString('ja-JP');
+    if(ts) ts.textContent=Number(p2.G29).toLocaleString('ja-JP');
   }
   // --- PDF.js でプレビューを1ページずつ大きく描画 ---
   var _pdfjsP=null;
