@@ -39,6 +39,8 @@ PRESET = {
  "転職・就活":{"accent":"#f07c1e","pill":"#19e0ff"},
  "電子印鑑":  {"accent":"#e6468f","pill":"#19e0ff"},
  "発注書":    {"accent":"#0f9d8f","pill":"#ffdd00"},
+ "納品書":    {"accent":"#1f8fff","pill":"#ffdd00"},
+ "送付状":    {"accent":"#5a6b80","pill":"#19e0ff"},
 }
 pr = PRESET.get(category, {"accent":"#1766e6","pill":"#ffdd00"})
 accent = T.hx(STYLE.get("accent", pr["accent"]))
@@ -58,6 +60,8 @@ SUBJECT = {
  "転職・就活":"resume and job-hunting documents with a laptop",
  "電子印鑑":"a red Japanese hanko stamp with an ink pad and business documents",
  "発注書":"a purchase order document with a pen and a laptop",
+ "納品書":"a delivery note document with boxes and a pen",
+ "送付状":"a cover letter document on top of a stack of business papers",
 }
 subject = SUBJECT.get(category, "business documents with a laptop and a calculator")
 COMPOS = ["top-down flat lay from directly above","straight-on eye-level view",
