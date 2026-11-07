@@ -4,7 +4,7 @@
          /fonts/noto-jp.ttf, aoiro-calc.js, aoiro-fill.js */
 (function(){
   var FORM='/kakutei/forms/aoiro-ippan-r05.pdf';
-  var MAP ='/kakutei/aoiro-ippan-map.json';
+  var MAP ='/kakutei/aoiro-ippan-map.json?v=20261107';
   var FONT='/fonts/noto-jp.ttf';
   var _p, _font, _map, _form;
   function loadScript(src){return new Promise(function(res,rej){

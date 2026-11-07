@@ -187,47 +187,18 @@
   }
  },
  "header": {
-  "year": {
-   "x": 296,
-   "baseTop": 49,
-   "align": "C",
-   "size": 11
-  },
-  "jusho": {
-   "x": 250,
-   "baseTop": 101,
-   "align": "L",
-   "size": 9
-  },
-  "furigana": {
-   "x": 492,
-   "baseTop": 96,
-   "align": "L",
-   "size": 8
-  },
-  "shimei": {
-   "x": 492,
-   "baseTop": 111,
-   "align": "L",
-   "size": 10
-  },
-  "jigyosho": {
-   "x": 250,
-   "baseTop": 133,
-   "align": "L",
-   "size": 9
-  },
-  "gyoshu": {
-   "x": 250,
-   "baseTop": 157,
-   "align": "L",
-   "size": 9
-  },
-  "yago": {
-   "x": 420,
-   "baseTop": 157,
-   "align": "L",
-   "size": 8
-  }
+  "year":       {"x":296,"baseTop":49,"align":"C","size":11},
+  "jusho":      {"x":250,"baseTop":101,"align":"L","size":9,"maxW":198},
+  "jigyosho":   {"x":250,"baseTop":130,"align":"L","size":9,"maxW":198},
+  "gyoshu":     {"x":250,"baseTop":156,"align":"L","size":9,"maxW":84},
+  "yago":       {"x":374,"baseTop":156,"align":"L","size":8,"maxW":78},
+  "furigana":   {"x":490,"baseTop":93,"align":"L","size":8,"maxW":155},
+  "shimei":     {"x":490,"baseTop":106,"align":"L","size":10,"maxW":155},
+  "tel_home":   {"x":528,"baseTop":120,"align":"L","size":8.5,"maxW":118},
+  "tel_office": {"x":528,"baseTop":134,"align":"L","size":8.5,"maxW":118},
+  "kanyu":      {"x":490,"baseTop":158,"align":"L","size":8,"maxW":158},
+  "zei_jusho":  {"x":706,"baseTop":106,"align":"L","size":8,"maxW":110},
+  "zei_name":   {"x":706,"baseTop":124,"align":"L","size":8.5,"maxW":110},
+  "zei_tel":    {"x":706,"baseTop":161,"align":"L","size":8.5,"maxW":110}
  }
 }

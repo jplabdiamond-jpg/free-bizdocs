@@ -108,6 +108,14 @@
     <div class="ka-f"><label>事業所所在地<span class="ka-q" tabindex="0" data-tip="お店・事務所の所在地。自宅と同じなら「同上」でOK。">?</span></label><input id="f_jigyosho" placeholder="同上"></div>
     <div class="ka-f"><label>業種名<span class="ka-q" tabindex="0" data-tip="主な事業の種類。例：ソフトウェア開発業、小売業、美容業。">?</span></label><input id="f_gyoshu" placeholder="ソフトウェア開発業"></div>
     <div class="ka-f"><label>屋号<span class="ka-q" tabindex="0" data-tip="屋号・商号があれば入力します（なければ空欄でOK）。">?</span></label><input id="f_yago" placeholder="（あれば）"></div>
+    <div class="ka-f"><label>電話番号（自宅）<span class="ka-q" tabindex="0" data-tip="自宅の電話番号。固定電話がなければ携帯番号でもOK。">?</span></label><input id="f_tel_home" inputmode="tel" placeholder="06-1234-5678"></div>
+    <div class="ka-f"><label>電話番号（事業所）<span class="ka-q" tabindex="0" data-tip="事業所の電話番号。自宅と同じ・無い場合は空欄でOK。">?</span></label><input id="f_tel_office" inputmode="tel" placeholder="（あれば）"></div>
+    <div class="ka-f"><label>加入団体名<span class="ka-q" tabindex="0" data-tip="加入している商工会・商工会議所・同業組合などがあれば入力（任意）。">?</span></label><input id="f_kanyu" placeholder="（あれば）"></div>
+
+    <div class="ka-sec">関与税理士（任意）</div>
+    <div class="ka-f"><label>氏名（名称）<span class="ka-q" tabindex="0" data-tip="申告を依頼する税理士・税理士法人の氏名（名称）。いなければ空欄でOK。">?</span></label><input id="f_zei_name" placeholder="（あれば）"></div>
+    <div class="ka-f"><label>電話番号<span class="ka-q" tabindex="0" data-tip="関与税理士の電話番号。">?</span></label><input id="f_zei_tel" inputmode="tel" placeholder="（あれば）"></div>
+    <div class="ka-f"><label>事務所所在地<span class="ka-q" tabindex="0" data-tip="関与税理士の事務所所在地。">?</span></label><input id="f_zei_jusho" placeholder="（あれば）"></div>
 
     <div class="ka-sec">売上・売上原価</div>
     <div class="ka-f ka-num"><label>売上(収入)金額<span class="ka-q" tabindex="0" data-tip="その年の事業の売上(収入)の合計。原則は請求書ベース（発生主義）で集計します。下の「売上を自動集計」も使えます。">?</span></label><input id="f_uriage" inputmode="numeric" placeholder="0"></div>
@@ -169,7 +177,7 @@
 
 <script src="/kakutei/aoiro-calc.js?v=20261105"></script>
 <script src="/kakutei/aoiro-fill.js?v=20261105"></script>
-<script src="/kakutei/aoiro.js?v=20261105"></script>
+<script src="/kakutei/aoiro.js?v=20261107"></script>
 <script src="/kakutei/expense-cats.js?v=20261106"></script>
 <script>
 (function(){
@@ -213,7 +221,9 @@
     AoiroCalc.EXPENSES.forEach(function(e){exp[e[0]]=num('e_'+e[0]);});
     return {
       header:{year:val('f_year'),furigana:val('f_furigana'),shimei:val('f_shimei'),
-        jusho:val('f_jusho'),jigyosho:val('f_jigyosho'),gyoshu:val('f_gyoshu'),yago:val('f_yago')},
+        jusho:val('f_jusho'),jigyosho:val('f_jigyosho'),gyoshu:val('f_gyoshu'),yago:val('f_yago'),
+        tel_home:val('f_tel_home'),tel_office:val('f_tel_office'),kanyu:val('f_kanyu'),
+        zei_name:val('f_zei_name'),zei_tel:val('f_zei_tel'),zei_jusho:val('f_zei_jusho')},
       uriage:num('f_uriage'),kisho:num('f_kisho'),shiire:num('f_shiire'),kimatsu:num('f_kimatsu'),
       exp:exp, kojo:num('f_kojo')
     };
@@ -285,7 +295,7 @@
   }
 
   // 事業者情報をこの端末に保存／復元
-  var HKEYS=['f_year','f_shimei','f_furigana','f_jusho','f_jigyosho','f_gyoshu','f_yago'];
+  var HKEYS=['f_year','f_shimei','f_furigana','f_jusho','f_jigyosho','f_gyoshu','f_yago','f_tel_home','f_tel_office','f_kanyu','f_zei_name','f_zei_tel','f_zei_jusho'];
   try{var saved=JSON.parse(localStorage.getItem('fbd_aoiro_hdr')||'{}');
     HKEYS.forEach(function(k){if(saved[k]!=null)$(k).value=saved[k];});}catch(e){}
   function saveHdr(){try{var o={};HKEYS.forEach(function(k){o[k]=$(k).value;});
