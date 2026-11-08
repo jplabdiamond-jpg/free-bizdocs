@@ -27,7 +27,9 @@
     Object.keys(computed).forEach(function(code){
       var v=computed[code]; if(!v)return;        // 0・空欄は記入しない
       var c=map.amounts[code]; if(!c)return;
-      draw(yen(v), c.rightX, c.baseTop, 9, 'R');
+      var val=v;
+      if(c.strip){ val=Math.round(v/Math.pow(10,c.strip)); if(!val)return; } // 印字済み末尾0の左に非0部を記入
+      draw(yen(val), c.rightX, c.baseTop, c.size||9, 'R', c.maxW);
     });
   }
   return {fillPage:fillPage};

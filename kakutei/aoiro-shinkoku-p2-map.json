@@ -1,0 +1,18 @@
+{
+ "page": 1,
+ "w": 595,
+ "h": 842,
+ "amounts": {},
+ "header": {
+  "year":        {"x": 58,  "baseTop": 43,  "size": 10, "align": "L"},
+  "jusho":       {"x": 110, "baseTop": 97,  "size": 9,  "align": "L", "maxW": 430},
+  "yago":        {"x": 110, "baseTop": 113, "size": 9,  "align": "L", "maxW": 430},
+  "furigana":    {"x": 110, "baseTop": 128, "size": 8,  "align": "L", "maxW": 430},
+  "shimei":      {"x": 110, "baseTop": 140, "size": 10, "align": "L", "maxW": 430},
+  "shaho_type":  {"x": 95,  "baseTop": 171, "size": 8,  "align": "L", "maxW": 56},
+  "shaho_amt":   {"x": 214, "baseTop": 171, "size": 8.5, "align": "R"},
+  "shaho_amt2":  {"x": 288, "baseTop": 171, "size": 8.5, "align": "R"},
+  "seimei_shin": {"x": 214, "baseTop": 238, "size": 8.5, "align": "R"},
+  "jishin_amt":  {"x": 214, "baseTop": 315, "size": 8.5, "align": "R"}
+ }
+}

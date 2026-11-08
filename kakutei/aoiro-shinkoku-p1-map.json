@@ -1,0 +1,38 @@
+{
+ "page": 0,
+ "w": 595,
+ "h": 842,
+ "amounts": {
+  "G09": {"rightX": 289, "baseTop": 217.9, "size": 8.5},
+  "G39": {"rightX": 289, "baseTop": 380.1, "size": 8.5},
+  "G48": {"rightX": 289, "baseTop": 512.7, "size": 8.5},
+  "G50": {"rightX": 289, "baseTop": 541.9, "size": 8.5},
+  "G51": {"rightX": 289, "baseTop": 556.9, "size": 8.5},
+  "G52": {"rightX": 289, "baseTop": 571.7, "size": 8.5},
+  "G53": {"rightX": 289, "baseTop": 586.1, "size": 8.5},
+  "G54": {"rightX": 289, "baseTop": 601.1, "size": 8.5},
+  "G57": {"rightX": 253, "baseTop": 645.4, "size": 8.5, "strip": 4},
+  "G58": {"rightX": 253, "baseTop": 660.1, "size": 8.5, "strip": 4},
+  "G59": {"rightX": 253, "baseTop": 674.9, "size": 8.5, "strip": 4},
+  "G60": {"rightX": 289, "baseTop": 689.7, "size": 8.5},
+  "G64": {"rightX": 289, "baseTop": 748.6, "size": 8.5},
+  "G65": {"rightX": 523, "baseTop": 217.9, "size": 8.5, "strip": 3},
+  "G66": {"rightX": 550, "baseTop": 232.7, "size": 8.5},
+  "G72": {"rightX": 550, "baseTop": 321.1, "size": 8.5},
+  "G74": {"rightX": 550, "baseTop": 350.5, "size": 8.5},
+  "G75": {"rightX": 550, "baseTop": 365.1, "size": 8.5},
+  "G76": {"rightX": 550, "baseTop": 380.1, "size": 8.5},
+  "G78": {"rightX": 550, "baseTop": 409.6, "size": 8.5},
+  "G79": {"rightX": 550, "baseTop": 424.2, "size": 8.5},
+  "G81": {"rightX": 533, "baseTop": 453.7, "size": 8.5, "strip": 2}
+ },
+ "header": {
+  "year":     {"x": 125, "baseTop": 65,  "size": 11, "align": "C"},
+  "jusho":    {"x": 84,  "baseTop": 136, "size": 9,  "align": "L", "maxW": 280},
+  "furigana": {"x": 388, "baseTop": 136, "size": 8,  "align": "L", "maxW": 160},
+  "shimei":   {"x": 388, "baseTop": 153, "size": 10, "align": "L", "maxW": 160},
+  "shokugyo": {"x": 367, "baseTop": 172, "size": 9,  "align": "L", "maxW": 68},
+  "yago":     {"x": 470, "baseTop": 172, "size": 9,  "align": "L", "maxW": 80},
+  "tel":      {"x": 449, "baseTop": 190, "size": 9,  "align": "L", "maxW": 100}
+ }
+}

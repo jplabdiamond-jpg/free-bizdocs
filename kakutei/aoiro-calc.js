@@ -69,5 +69,69 @@
     a.G97=sum(P4.liabLast)+a.G94+a.G95+a.G96;        // 負債・資本 期末合計（＋事業主借＋元入金＋所得）
     return a;
   }
-  return {calc:calc, calcP2:calcP2, calcP4:calcP4, EXPENSES:EXPENSES};
+  // 申告書 第一表：事業所得・主要所得控除から課税所得と税額目安を計算（令和5年分 総合課税）
+  function incomeTax(a){ // a=課税される所得金額（1000円未満切捨て済み）
+    var t;
+    if(a< 1950000) t=a*0.05;
+    else if(a< 3300000) t=a*0.10-97500;
+    else if(a< 6950000) t=a*0.20-427500;
+    else if(a< 9000000) t=a*0.23-636000;
+    else if(a<18000000) t=a*0.33-1536000;
+    else if(a<40000000) t=a*0.40-2796000;
+    else t=a*0.45-4796000;
+    return Math.floor(Math.max(0,t));
+  }
+  function kisoKojo(gokei){ // 基礎控除（合計所得金額ベース）
+    if(gokei<=24000000) return 480000;
+    if(gokei<=24500000) return 320000;
+    if(gokei<=25000000) return 160000;
+    return 0;
+  }
+  function seimeiKojo(pay){ // 生命保険料控除（新制度・一般、1区分, 上限4万）
+    pay=N(pay); if(pay<=0) return 0;
+    if(pay<=20000) return pay;
+    if(pay<=40000) return Math.floor(pay*0.5+10000);
+    if(pay<=80000) return Math.floor(pay*0.25+20000);
+    return 40000;
+  }
+  function jishinKojo(pay){ pay=N(pay); return Math.min(pay,50000); } // 地震保険料控除（上限5万）
+  function calcShinkoku(d){
+    d=d||{}; var a={};
+    var jigyo=N(d.jigyo);                       // 事業所得（決算書 G45）
+    var shunyu=N(d.shunyu);                      // 売上（収入）金額（決算書 G01）
+    var gokei=jigyo;                             // 総所得金額（コア版：事業所得のみ）
+    a.G09=shunyu;                                // 収入 事業・営業等
+    a.G39=jigyo;                                 // 所得 事業・営業等（①）
+    a.G50=gokei;                                 // 合計（⑫）
+    var shaho=N(d.shaho), shokibo=N(d.shokibo);
+    var seimei=seimeiKojo(d.seimei_pay);
+    var jishin=jishinKojo(d.jishin_pay);
+    var haiguu=(d.haiguu && gokei<=9000000) ? 380000 : 0;  // 配偶者控除（本人合計所得900万以下・一般）
+    var fuyou=N(d.fuyou_n)*380000;               // 扶養控除（一般・1人38万）
+    var kiso=kisoKojo(gokei);
+    a.G51=shaho; a.G52=shokibo; a.G53=seimei; a.G54=jishin;
+    a.G57=haiguu; a.G58=fuyou; a.G59=kiso;
+    var kojoKei=shaho+shokibo+seimei+jishin+haiguu+fuyou+kiso;
+    a.G60=kojoKei;                               // ⑬〜㉔の計（㉕）
+    a.G64=kojoKei;                               // 合計（㉙）
+    var kazei=Math.max(0, gokei-kojoKei);
+    kazei=Math.floor(kazei/1000)*1000;           // 課税所得（1000円未満切捨て）
+    a.G65=kazei;                                 // 課税される所得金額（㉚）
+    var zei=incomeTax(kazei);
+    a.G66=zei;                                   // 上の㉚に対する税額（㉛）
+    a.G72=zei;                                   // 差引所得税額（㊶）配当控除・住宅控除なし
+    a.G74=zei;                                   // 再差引所得税額（基準所得税額）（㊸）
+    var fukko=Math.floor(zei*0.021);
+    a.G75=fukko;                                 // 復興特別所得税額（㊹）
+    var goukei=zei+fukko;
+    a.G76=goukei;                                // 所得税及び復興特別所得税の額（㊺）
+    var genzen=N(d.genzen);
+    a.G78=genzen;                                // 源泉徴収税額（㊽）
+    var nouzei=goukei-genzen;                    // 申告納税額（㊾）
+    a.G79=Math.abs(nouzei);                      // セルには絶対値（符号は注記で案内）
+    var dai3=(nouzei>0)?Math.floor(nouzei/100)*100:0;
+    a.G81=dai3;                                  // 第3期分の税額 納める税金（㊿）
+    return {amounts:a, kanpu:(nouzei<0?-nouzei:0), nouzei:nouzei, kazei:kazei, kojoKei:kojoKei, gokei:gokei};
+  }
+  return {calc:calc, calcP2:calcP2, calcP4:calcP4, calcShinkoku:calcShinkoku, EXPENSES:EXPENSES};
 }));
