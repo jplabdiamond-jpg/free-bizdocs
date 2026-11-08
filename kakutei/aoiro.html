@@ -127,7 +127,7 @@
   </div>
   <div class="ka-note">
     このツールは<b>申告書類の「記入補助」</b>です。入力内容の正確性はご自身でご確認ください。出力したPDFは<b>印刷して郵送提出</b>できます（e-Tax送信には対応していません）。<br>
-<b>青色申告</b>は決算書（1枚目 損益計算書〜4枚目 貸借対照表）、<b>白色申告</b>は<b>収支内訳書（一般用）</b>に対応。いずれも<b>確定申告書 第一表・第二表</b>と<b>所得税額の目安</b>まで自動計算します（事業所得・主要な所得控除に対応した簡易版。配当・住宅ローン控除・分離課税などは未対応）。青色は<b>10万円・55万円・65万円控除</b>いずれの様式も作成でき（65万円控除はe-Tax送信または電子帳簿保存が別途必要）、各ページは下部の該当セクションで入力できます。上部の「申告の種類」で青色／白色を切り替えられます。
+<b>青色申告</b>は決算書（1枚目 損益計算書〜4枚目 貸借対照表）、<b>白色申告</b>は<b>収支内訳書（一般用）</b>に対応。いずれも<b>確定申告書 第一表・第二表</b>と<b>所得税額の目安</b>まで自動計算します（事業所得中心の簡易版。主要な所得控除＋配偶者特別控除・扶養区分・配当控除・住宅ローン控除に対応。分離課税・雑損控除などは未対応）。青色は<b>10万円・55万円・65万円控除</b>いずれの様式も作成でき（65万円控除はe-Tax送信または電子帳簿保存が別途必要）、各ページは下部の該当セクションで入力できます。上部の「申告の種類」で青色／白色を切り替えられます。
   </div>
 </div>
 
@@ -173,7 +173,10 @@
       <div class="ka-sec">収支内訳書（白色申告）の追加項目<span class="ka-q" tabindex="0" data-tip="白色申告の収支内訳書に必要な項目です。売上・仕入・経費は上の欄と共通で使われます。">?</span></div>
       <div class="ka-f ka-num"><label>家事消費<span class="ka-q" tabindex="0" data-tip="商品を自家用に消費した分などの金額。なければ0でOK。">?</span></label><input id="f_sh_kaji" inputmode="numeric" placeholder="0"></div>
       <div class="ka-f ka-num"><label>その他の収入<span class="ka-q" tabindex="0" data-tip="売上以外の事業に関する収入（補助金・リベート等）。なければ0でOK。">?</span></label><input id="f_sh_sonota" inputmode="numeric" placeholder="0"></div>
-      <div class="ka-f ka-num"><label>専従者控除<span class="ka-q" tabindex="0" data-tip="白色申告の事業専従者控除。配偶者は最高86万円、その他の親族は1人50万円（事業所得等を専従者数+1で割った金額が上限）。該当がなければ0。">?</span></label><input id="f_sh_senju" inputmode="numeric" placeholder="0"></div>
+      <div class="ka-f"><label>配偶者の専従者<span class="ka-q" tabindex="0" data-tip="配偶者が事業専従者（その事業にもっぱら従事する家族）の場合にチェック。最高86万円を、事業所得÷(専従者数+1)を上限に自動計算します。">?</span></label>
+        <label style="display:inline-flex;align-items:center;gap:7px;font-size:13.5px;color:#2b3b4e"><input type="checkbox" id="f_sh_senju_haiguu" style="width:auto"> 配偶者が専従者（最高86万円）</label></div>
+      <div class="ka-f ka-num"><label>その他の専従者の人数<span class="ka-q" tabindex="0" data-tip="配偶者以外の事業専従者（15歳以上の親族）の人数。1人につき最高50万円を、事業所得÷(専従者数+1)を上限に自動計算します。">?</span></label><input id="f_sh_senju_other" inputmode="numeric" placeholder="0"></div>
+      <div class="ka-hint" id="ka-senju-hint" style="margin-top:2px"></div>
     </div>
 
     <div id="ka-aoiro-sections">
@@ -202,10 +205,18 @@
     <div class="ka-f ka-num"><label>小規模企業共済等掛金<span class="ka-q" tabindex="0" data-tip="小規模企業共済・iDeCo（確定拠出年金）などの掛金の合計額。全額が控除されます。">?</span></label><input id="f_sk_shokibo" inputmode="numeric" placeholder="0"></div>
     <div class="ka-f ka-num"><label>生命保険料（支払額）<span class="ka-q" tabindex="0" data-tip="一般の生命保険料（新制度）の年間支払額。支払額に応じて最大4万円が控除されます。複数区分がある場合は国税庁の案内で計算してください。">?</span></label><input id="f_sk_seimei" inputmode="numeric" placeholder="0"></div>
     <div class="ka-f ka-num"><label>地震保険料（支払額）<span class="ka-q" tabindex="0" data-tip="地震保険料の年間支払額。最大5万円が控除されます。">?</span></label><input id="f_sk_jishin" inputmode="numeric" placeholder="0"></div>
-    <div class="ka-f"><label>配偶者控除<span class="ka-q" tabindex="0" data-tip="配偶者（合計所得48万円以下）を扶養している場合にチェック。本人の合計所得900万円以下で38万円を控除します（配偶者特別控除・老人控除は未対応）。">?</span></label>
-      <label style="display:inline-flex;align-items:center;gap:7px;font-size:13.5px;color:#2b3b4e"><input type="checkbox" id="f_sk_haiguu" style="width:auto"> 配偶者控除を適用する（38万円）</label></div>
-    <div class="ka-f ka-num"><label>扶養親族の人数（一般）<span class="ka-q" tabindex="0" data-tip="控除対象扶養親族（16歳以上・一般）の人数。1人につき38万円を控除します。特定扶養（19〜22歳・63万円）・老人扶養は未対応のため、国税庁の案内で金額を調整してください。">?</span></label><input id="f_sk_fuyou" inputmode="numeric" placeholder="0"></div>
+    <div class="ka-f"><label>配偶者控除<span class="ka-q" tabindex="0" data-tip="配偶者がいる場合にチェックし、配偶者の合計所得を入力します。合計所得48万円以下なら配偶者控除、48万円超133万円以下なら配偶者特別控除が、本人の合計所得（1000万円以下）に応じて自動計算されます。">?</span></label>
+      <label style="display:inline-flex;align-items:center;gap:7px;font-size:13.5px;color:#2b3b4e"><input type="checkbox" id="f_sk_haiguu" style="width:auto"> 配偶者がいる（控除対象）</label></div>
+    <div class="ka-f ka-num" id="ka-haiguu-income" style="display:none"><label>配偶者の合計所得<span class="ka-q" tabindex="0" data-tip="配偶者本人の年間の合計所得金額。給与のみなら「給与収入−給与所得控除」。パート年収103万円なら合計所得48万円です。48万円以下＝配偶者控除、48万円超133万円以下＝配偶者特別控除。">?</span></label><input id="f_sk_haiguu_income" inputmode="numeric" placeholder="0"></div>
+    <div class="ka-f" id="ka-haiguu-old" style="display:none"><label>老人配偶者<span class="ka-q" tabindex="0" data-tip="配偶者が70歳以上（昭和31年1月1日以前生まれ）の場合にチェック。控除額が上がります（最高48万円）。">?</span></label>
+      <label style="display:inline-flex;align-items:center;gap:7px;font-size:13.5px;color:#2b3b4e"><input type="checkbox" id="f_sk_haiguu_old" style="width:auto"> 70歳以上（老人控除対象配偶者）</label></div>
+    <div class="ka-f ka-num"><label>一般の扶養親族<span class="ka-q" tabindex="0" data-tip="16〜18歳・23〜69歳の控除対象扶養親族の人数（1人38万円）。16歳未満は扶養控除の対象外です。">?</span></label><input id="f_sk_fuyou_ippan" inputmode="numeric" placeholder="0"></div>
+    <div class="ka-f ka-num"><label>特定扶養親族（19〜22歳）<span class="ka-q" tabindex="0" data-tip="19〜22歳の扶養親族の人数（1人63万円）。大学生の子などが該当します。">?</span></label><input id="f_sk_fuyou_tokutei" inputmode="numeric" placeholder="0"></div>
+    <div class="ka-f ka-num"><label>老人扶養親族（70歳以上）<span class="ka-q" tabindex="0" data-tip="70歳以上の扶養親族の人数（1人48万円）。同居の老親等は下の欄に入れてください。">?</span></label><input id="f_sk_fuyou_rojin" inputmode="numeric" placeholder="0"></div>
+    <div class="ka-f ka-num"><label>同居老親等（70歳以上）<span class="ka-q" tabindex="0" data-tip="同居している直系尊属（父母・祖父母など）で70歳以上の人数（1人58万円）。">?</span></label><input id="f_sk_fuyou_doukyo" inputmode="numeric" placeholder="0"></div>
     <div class="ka-f ka-num"><label>源泉徴収税額<span class="ka-q" tabindex="0" data-tip="報酬などからあらかじめ天引きされた所得税の合計額。支払調書などで確認できます。納める税額から差し引かれます。">?</span></label><input id="f_sk_genzen" inputmode="numeric" placeholder="0"></div>
+    <div class="ka-f ka-num"><label>配当控除<span class="ka-q" tabindex="0" data-tip="総合課税を選んだ配当所得がある場合の税額控除。配当所得×10%（課税所得1000万円超の部分は5%）が目安。該当がなければ0。">?</span></label><input id="f_sk_haitou" inputmode="numeric" placeholder="0"></div>
+    <div class="ka-f ka-num"><label>住宅ローン控除<span class="ka-q" tabindex="0" data-tip="住宅借入金等特別控除（住宅ローン控除）の金額。年末残高×控除率で計算した額を入力します。2年目以降は年末調整済みでも確定申告書には記載します。該当がなければ0。">?</span></label><input id="f_sk_jutaku" inputmode="numeric" placeholder="0"></div>
     <div class="ka-tax" id="ka-tax"></div>
 
     <div class="ka-sum" id="ka-sum"></div>
@@ -248,9 +259,9 @@
   </div>
 </footer>
 
-<script src="/kakutei/aoiro-calc.js?v=20261108d"></script>
+<script src="/kakutei/aoiro-calc.js?v=20261108e"></script>
 <script src="/kakutei/aoiro-fill.js?v=20261108c"></script>
-<script src="/kakutei/aoiro.js?v=20261108e"></script>
+<script src="/kakutei/aoiro.js?v=20261108f"></script>
 <script src="/kakutei/expense-cats.js?v=20261106"></script>
 <script>
 (function(){
@@ -396,10 +407,14 @@
       exp:exp, kojo:num('f_kojo'), p2:gatherP2(), p3:gatherP3(), p4:gatherP4(),
       year:val('f_year'),
       mode:(document.querySelector('input[name=ka-mode]:checked')||{}).value||'青色',
-      kaji:num('f_sh_kaji'), sonota:num('f_sh_sonota'), senju:num('f_sh_senju'),
+      kaji:num('f_sh_kaji'), sonota:num('f_sh_sonota'),
+      senju_haiguu:$('f_sh_senju_haiguu').checked, senju_other:num('f_sh_senju_other'),
       shinkoku:{ shaho:num('f_sk_shaho'), shokibo:num('f_sk_shokibo'), seimei_pay:num('f_sk_seimei'),
-        jishin_pay:num('f_sk_jishin'), haiguu:$('f_sk_haiguu').checked, fuyou_n:num('f_sk_fuyou'),
-        genzen:num('f_sk_genzen') }
+        jishin_pay:num('f_sk_jishin'),
+        haiguu:$('f_sk_haiguu').checked, haiguu_income:num('f_sk_haiguu_income'), haiguu_old:$('f_sk_haiguu_old').checked,
+        fuyou_ippan:num('f_sk_fuyou_ippan'), fuyou_tokutei:num('f_sk_fuyou_tokutei'),
+        fuyou_rojin:num('f_sk_fuyou_rojin'), fuyou_doukyo:num('f_sk_fuyou_doukyo'),
+        genzen:num('f_sk_genzen'), haitou_kojo:num('f_sk_haitou'), jutaku_kojo:num('f_sk_jutaku') }
     };
   }
   var yen=function(n){return Number(n).toLocaleString('ja-JP')+' 円';};
@@ -409,7 +424,7 @@
     var a=AoiroCalc.calc(g).amounts;
     var shiro=(g.mode==='白色'), jigyo, shunyu;
     if(shiro){
-      var c=AoiroCalc.calcShushi(g).amounts;
+      var cr=AoiroCalc.calcShushi(g), c=cr.amounts;
       jigyo=c.G39; shunyu=c.G05;
       $('ka-sum').innerHTML =
         row('収入金額 計',c.G05)+
@@ -418,6 +433,10 @@
         row('経費 計',c.G36)+
         row('専従者控除',c.G38)+
         row('所得金額',c.G39,true);
+      var sh=$('ka-senju-hint');
+      if(sh){ sh.textContent=(g.senju_haiguu||g.senju_other)
+        ? '専従者控除 '+Number(c.G38).toLocaleString('ja-JP')+'円を自動計算（1人あたり上限 '+Number(cr.senjuCap).toLocaleString('ja-JP')+'円＝所得÷専従者数+1）'
+        : ''; }
     } else {
       jigyo=a.G45; shunyu=a.G01;
       $('ka-sum').innerHTML =
@@ -431,14 +450,14 @@
     var tx=$('ka-tax');
     if(tx){
       var sk=g.shinkoku||{};
-      var sr=AoiroCalc.calcShinkoku({ jigyo:jigyo, shunyu:shunyu, shaho:sk.shaho, shokibo:sk.shokibo,
-        seimei_pay:sk.seimei_pay, jishin_pay:sk.jishin_pay, haiguu:sk.haiguu, fuyou_n:sk.fuyou_n, genzen:sk.genzen });
+      var sr=AoiroCalc.calcShinkoku(Object.assign({}, sk, { jigyo:jigyo, shunyu:shunyu }));
       var x=sr.amounts;
       var html=row(shiro?'事業所得（収支内訳書より）':'事業所得（決算書より）',x.G39)+
         row('所得控除 合計',x.G64)+
         row('課税される所得金額',x.G65)+
-        row('所得税額',x.G66)+
-        row('復興特別所得税',x.G75)+
+        row('所得税額',x.G66);
+      if((x.G67||0)+(x.G69||0)>0) html+=row('税額控除（配当・住宅ローン）',(x.G67||0)+(x.G69||0))+row('差引所得税額',x.G72);
+      html+=row('復興特別所得税',x.G75)+
         row('所得税＋復興税',x.G76);
       if(sr.kanpu>0) html+='<div class="row big"><span>還付される見込み</span><span class="n" style="color:#1a7f46"><b>'+yen(sr.kanpu)+'</b></span></div>';
       else html+=row('納める税金（第3期分）',x.G81,true);
@@ -491,7 +510,7 @@
       var cx=cv.getContext('2d'); cx.fillStyle='#fff'; cx.fillRect(0,0,cv.width,cv.height);
       await pg.render({canvasContext:cx,viewport:vp,intent:'print'}).promise;
       host.classList.remove('empty'); host.innerHTML=''; host.appendChild(cv);
-    }catch(e){ console.error(e); }
+    }catch(e){ if(!e||e.name!=='RenderingCancelledException') console.error(e); }
     _rendering=false;
     if(_rerender){ _rerender=false; renderPage(); }
   }
@@ -566,6 +585,13 @@
   [].slice.call(document.querySelectorAll('input[name=ka-mode]')).forEach(function(r){
     r.addEventListener('change', applyMode);
   });
+  // 配偶者がいる場合のみ、配偶者の合計所得・老人配偶者の欄を表示
+  function applyHaiguu(){
+    var on=$('f_sk_haiguu').checked;
+    $('ka-haiguu-income').style.display=on?'':'none';
+    $('ka-haiguu-old').style.display=on?'':'none';
+  }
+  $('f_sk_haiguu').addEventListener('change', applyHaiguu);
   // 拡大・縮小
   function zoomLabel(){ $('ka-zoomlbl').textContent=(_zoom<=1?'幅に合わせる':'拡大 ×'+_zoom); }
   function setZoom(dir){
@@ -578,7 +604,7 @@
   var _rt=null;
   window.addEventListener('resize',function(){ clearTimeout(_rt); _rt=setTimeout(function(){ if(_zoom<=1) renderPage(); },250); });
 
-  applyMode();
+  applyHaiguu(); applyMode();
 })();
 </script>
 <script>

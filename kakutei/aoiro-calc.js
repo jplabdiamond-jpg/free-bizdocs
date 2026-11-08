@@ -95,6 +95,32 @@
     return 40000;
   }
   function jishinKojo(pay){ pay=N(pay); return Math.min(pay,50000); } // 地震保険料控除（上限5万）
+  // 配偶者控除・配偶者特別控除（令和5年分）。honIncome=本人の合計所得、haiIncome=配偶者の合計所得
+  function haiguuKojo(opt, honIncome){
+    if(!opt || !opt.has) return 0;
+    if(honIncome>10000000) return 0;             // 本人合計所得1000万超は対象外
+    // 本人所得の段階（0:≤900万, 1:900-950万, 2:950-1000万）
+    var tier=(honIncome<=9000000)?0:(honIncome<=9500000?1:2);
+    var hi=N(opt.income);                         // 配偶者の合計所得
+    var old=!!opt.old;                            // 老人配偶者（70歳以上）
+    if(hi<=480000){                               // 配偶者控除
+      return old ? [480000,320000,160000][tier] : [380000,260000,130000][tier];
+    }
+    // 配偶者特別控除（48万超133万以下）
+    var tbl=[ // [上限(円), [≤900,900-950,950-1000]]
+      [950000,[380000,260000,130000]],[1000000,[360000,240000,120000]],
+      [1050000,[310000,210000,110000]],[1100000,[260000,180000,90000]],
+      [1150000,[210000,140000,70000]],[1200000,[160000,110000,60000]],
+      [1250000,[110000,80000,40000]],[1300000,[60000,40000,20000]],
+      [1330000,[30000,20000,10000]]
+    ];
+    for(var i=0;i<tbl.length;i++){ if(hi<=tbl[i][0]) return tbl[i][1][tier]; }
+    return 0;                                     // 133万超
+  }
+  function fuyouKojo(opt){                         // 扶養控除（区分別）
+    opt=opt||{};
+    return N(opt.ippan)*380000 + N(opt.tokutei)*630000 + N(opt.rojin)*480000 + N(opt.doukyo)*580000;
+  }
   function calcShinkoku(d){
     d=d||{}; var a={};
     var jigyo=N(d.jigyo);                       // 事業所得（決算書 G45）
@@ -106,8 +132,8 @@
     var shaho=N(d.shaho), shokibo=N(d.shokibo);
     var seimei=seimeiKojo(d.seimei_pay);
     var jishin=jishinKojo(d.jishin_pay);
-    var haiguu=(d.haiguu && gokei<=9000000) ? 380000 : 0;  // 配偶者控除（本人合計所得900万以下・一般）
-    var fuyou=N(d.fuyou_n)*380000;               // 扶養控除（一般・1人38万）
+    var haiguu=haiguuKojo({has:d.haiguu, income:d.haiguu_income, old:d.haiguu_old}, gokei);
+    var fuyou=fuyouKojo({ippan:d.fuyou_ippan, tokutei:d.fuyou_tokutei, rojin:d.fuyou_rojin, doukyo:d.fuyou_doukyo});
     var kiso=kisoKojo(gokei);
     a.G51=shaho; a.G52=shokibo; a.G53=seimei; a.G54=jishin;
     a.G57=haiguu; a.G58=fuyou; a.G59=kiso;
@@ -119,8 +145,12 @@
     a.G65=kazei;                                 // 課税される所得金額（㉚）
     var zei=incomeTax(kazei);
     a.G66=zei;                                   // 上の㉚に対する税額（㉛）
-    a.G72=zei;                                   // 差引所得税額（㊶）配当控除・住宅控除なし
-    a.G74=zei;                                   // 再差引所得税額（基準所得税額）（㊸）
+    var haitou=N(d.haitou_kojo), jutaku=N(d.jutaku_kojo); // 配当控除㉜・住宅借入金等特別控除㉞
+    a.G67=haitou; a.G69=jutaku;
+    var zei2=Math.max(0, zei-haitou-jutaku);
+    a.G72=zei2;                                  // 差引所得税額（㊶）＝㉛−配当控除−住宅控除
+    a.G74=zei2;                                  // 再差引所得税額（基準所得税額）（㊸）
+    zei=zei2;
     var fukko=Math.floor(zei*0.021);
     a.G75=fukko;                                 // 復興特別所得税額（㊹）
     var goukei=zei+fukko;
@@ -156,9 +186,16 @@
     a.G35=other;                                            // 小計(イ〜レ)
     a.G36=a.G12+a.G13+a.G14+a.G15+a.G16+a.G17+a.G35;        // 経費計
     a.G37=a.G11-a.G36;                                      // 専従者控除前の所得金額
-    a.G38=N(d.senju);                                       // 専従者控除
+    // 専従者控除：人数指定があれば上限を自動判定、なければ手入力額
+    var sHai=!!d.senju_haiguu, sOther=N(d.senju_other), sn=(sHai?1:0)+sOther;
+    if(sn>0){
+      var cap=Math.floor(Math.max(0,a.G37)/(sn+1));         // 所得÷(専従者数+1)
+      a.G38=(sHai?Math.min(860000,cap):0)+sOther*Math.min(500000,cap);
+    } else {
+      a.G38=N(d.senju);
+    }
     a.G39=a.G37-a.G38;                                      // 所得金額
-    return {amounts:a, header:(d.header||{})};
+    return {amounts:a, header:(d.header||{}), senjuCap:(sn>0?Math.floor(Math.max(0,a.G37)/(sn+1)):0)};
   }
   return {calc:calc, calcP2:calcP2, calcP4:calcP4, calcShinkoku:calcShinkoku, calcShushi:calcShushi, EXPENSES:EXPENSES};
 }));

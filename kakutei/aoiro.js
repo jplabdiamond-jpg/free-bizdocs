@@ -11,7 +11,7 @@
   var MAP2='/kakutei/aoiro-ippan-p2-map.json?v=20261107';
   var MAP3='/kakutei/aoiro-ippan-p3-map.json?v=20261108';
   var MAP4='/kakutei/aoiro-ippan-p4-map.json?v=20261108';
-  var MAPS1='/kakutei/aoiro-shinkoku-p1-map.json?v=20261108';
+  var MAPS1='/kakutei/aoiro-shinkoku-p1-map.json?v=20261108b';
   var MAPS2='/kakutei/aoiro-shinkoku-p2-map.json?v=20261108';
   var MAPC1='/kakutei/shushi-ippan-p1-map.json?v=20261108';
   var FONT='/fonts/noto-jp.ttf';
@@ -50,9 +50,7 @@
     sdoc.registerFontkit(window.fontkit);
     var sfont=await sdoc.embedFont(_font,{subset:false});
     var sk=data.shinkoku||{}, h=data.header||{};
-    var sr=window.AoiroCalc.calcShinkoku({ jigyo:jigyo, shunyu:shunyu,
-      shaho:sk.shaho, shokibo:sk.shokibo, seimei_pay:sk.seimei_pay,
-      jishin_pay:sk.jishin_pay, haiguu:sk.haiguu, fuyou_n:sk.fuyou_n, genzen:sk.genzen });
+    var sr=window.AoiroCalc.calcShinkoku(Object.assign({}, sk, { jigyo:jigyo, shunyu:shunyu }));
     var sHead={ year:data.year||'', jusho:h.jusho, furigana:h.furigana, shimei:h.shimei,
                 shokugyo:h.gyoshu, yago:h.yago, tel:(h.tel_office||h.tel_home||'') };
     window.AoiroFill.fillPage(sdoc.getPages()[_maps1.page], sfont, _maps1, sr.amounts, sHead, color);
@@ -114,9 +112,7 @@
     await ready();
     var r=window.AoiroCalc.calc(data);
     var sk=data.shinkoku||{};
-    return window.AoiroCalc.calcShinkoku({ jigyo:r.amounts.G45, shunyu:r.amounts.G01,
-      shaho:sk.shaho, shokibo:sk.shokibo, seimei_pay:sk.seimei_pay, jishin_pay:sk.jishin_pay,
-      haiguu:sk.haiguu, fuyou_n:sk.fuyou_n, genzen:sk.genzen });
+    return window.AoiroCalc.calcShinkoku(Object.assign({}, sk, { jigyo:r.amounts.G45, shunyu:r.amounts.G01 }));
   }
   window.AOIRO={
     buildPdf: buildPdf,
