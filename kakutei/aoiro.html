@@ -197,6 +197,9 @@
     <div id="ka-p3"></div>
 
     <div id="ka-shiro2-sections" style="display:none">
+      <div class="ka-sec">売上先・仕入先の明細（収支内訳書2枚目・任意）<span class="ka-q" tabindex="0" data-tip="主な売上先・仕入先を記入します。「計」は1枚目の売上・仕入と自動で一致し、「上記以外の計」は差額が自動計算されます。">?</span></div>
+      <div id="ka-uriage-list"></div>
+      <div id="ka-shiire-list"></div>
       <div class="ka-sec">利子割引料・地代家賃の内訳（収支内訳書2枚目・任意）<span class="ka-q" tabindex="0" data-tip="収支内訳書2枚目の内訳欄。支払先と金額を記入します。金額は1枚目の利子割引料・地代家賃と一致させてください。">?</span></div>
       <div id="ka-risi"></div>
       <div id="ka-jidai"></div>
@@ -269,7 +272,7 @@
 
 <script src="/kakutei/aoiro-calc.js?v=20261108e"></script>
 <script src="/kakutei/aoiro-fill.js?v=20261108c"></script>
-<script src="/kakutei/aoiro.js?v=20261109"></script>
+<script src="/kakutei/aoiro.js?v=20261109b"></script>
 <script src="/kakutei/expense-cats.js?v=20261106"></script>
 <script>
 (function(){
@@ -403,6 +406,21 @@
     return p4;
   }
 
+  // 収支内訳書2枚目：売上先・仕入先の明細テーブル（白色・任意）
+  (function(){
+    function listTable(box,prefix,nameph){
+      if(!box) return;
+      var rows='';
+      for(var i=0;i<4;i++) rows+='<tr><td><input id="'+prefix+'_'+i+'_name" placeholder="'+nameph+'"></td>'
+        +'<td><input id="'+prefix+'_'+i+'_addr" placeholder="所在地"></td>'
+        +'<td><input id="'+prefix+'_'+i+'_amt" class="n" inputmode="numeric" placeholder="0"></td></tr>';
+      box.innerHTML='<div class="ka-p3wrap"><table class="ka-p3t"><thead><tr><th>'+(prefix==='u'?'売上先':'仕入先')+'名</th><th>所在地</th><th>'+(prefix==='u'?'売上':'仕入')+'金額</th></tr></thead><tbody>'+rows+'</tbody></table></div>';
+    }
+    listTable($('ka-uriage-list'),'u','株式会社〇〇');
+    listTable($('ka-shiire-list'),'s','〇〇商会');
+    var ul=$('ka-uriage-list'); if(ul) ul.insertAdjacentHTML('afterbegin','<div class="ka-p2hint">主な売上先。「計」は1枚目の売上と自動で一致し、記入分との差額が「上記以外の計」に入ります。</div>');
+    var sl=$('ka-shiire-list'); if(sl) sl.insertAdjacentHTML('afterbegin','<div class="ka-p2hint" style="margin-top:8px">主な仕入先。「計」は1枚目の仕入と自動で一致します。</div>');
+  })();
   // 収支内訳書2枚目：利子割引料・地代家賃の内訳テーブル（白色・任意）
   (function(){
     var rb=$('ka-risi'); if(rb){
@@ -433,6 +451,17 @@
       var jp=val('jidai_'+i+'_payee'), jbk=val('jidai_'+i+'_bukken'), jr=num('jidai_'+i+'_rent'), jk=num('jidai_'+i+'_keihi');
       if(jp||jbk||jr||jk){ h['j'+i+'_payee']=jp; h['j'+i+'_bukken']=jbk; h['j'+i+'_rent']=fmtY2(jr); h['j'+i+'_keihi']=fmtY2(jk); }
     }
+    // 売上先・仕入先の明細（計＝1枚目の売上/仕入、上記以外の計＝差額を自動計算）
+    function detail(prefix, total){
+      var listed=0, used=false;
+      for(var i=0;i<4;i++){
+        var nm=val(prefix+'_'+i+'_name'), ad=val(prefix+'_'+i+'_addr'), am=num(prefix+'_'+i+'_amt');
+        if(nm||ad||am){ used=true; h[prefix+i+'_name']=nm; h[prefix+i+'_addr']=ad; h[prefix+i+'_amt']=fmtY2(am); listed+=am; }
+      }
+      if(used){ h[prefix+'_total']=fmtY2(total); h[prefix+'_other']=fmtY2(Math.max(0,total-listed)); }
+    }
+    detail('u', num('f_uriage'));
+    detail('s', num('f_shiire'));
     return h;
   }
 

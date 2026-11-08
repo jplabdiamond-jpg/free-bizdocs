@@ -14,7 +14,7 @@
   var MAPS1='/kakutei/aoiro-shinkoku-p1-map.json?v=20261108b';
   var MAPS2='/kakutei/aoiro-shinkoku-p2-map.json?v=20261108';
   var MAPC1='/kakutei/shushi-ippan-p1-map.json?v=20261108';
-  var MAPC2='/kakutei/shushi-ippan-p2-map.json?v=20261109';
+  var MAPC2='/kakutei/shushi-ippan-p2-map.json?v=20261109b';
   var FONT='/fonts/noto-jp.ttf';
   var _p, _font, _map, _map2, _map3, _map4, _maps1, _maps2, _mapc1, _mapc2, _form, _formb, _formc;
   function loadScript(src){return new Promise(function(res,rej){

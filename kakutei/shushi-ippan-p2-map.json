@@ -507,6 +507,216 @@
    "align": "R",
    "size": 8,
    "maxW": 64
+  },
+  "u0_name": {
+   "x": 44,
+   "baseTop": 52.7,
+   "align": "L",
+   "size": 8,
+   "maxW": 98
+  },
+  "u0_addr": {
+   "x": 162,
+   "baseTop": 52.7,
+   "align": "L",
+   "size": 7.5,
+   "maxW": 175
+  },
+  "u0_amt": {
+   "x": 559,
+   "baseTop": 52.4,
+   "align": "R",
+   "size": 8.5,
+   "maxW": 108
+  },
+  "u1_name": {
+   "x": 44,
+   "baseTop": 71.9,
+   "align": "L",
+   "size": 8,
+   "maxW": 98
+  },
+  "u1_addr": {
+   "x": 162,
+   "baseTop": 71.9,
+   "align": "L",
+   "size": 7.5,
+   "maxW": 175
+  },
+  "u1_amt": {
+   "x": 559,
+   "baseTop": 71.5,
+   "align": "R",
+   "size": 8.5,
+   "maxW": 108
+  },
+  "u2_name": {
+   "x": 44,
+   "baseTop": 91.2,
+   "align": "L",
+   "size": 8,
+   "maxW": 98
+  },
+  "u2_addr": {
+   "x": 162,
+   "baseTop": 91.2,
+   "align": "L",
+   "size": 7.5,
+   "maxW": 175
+  },
+  "u2_amt": {
+   "x": 559,
+   "baseTop": 90.8,
+   "align": "R",
+   "size": 8.5,
+   "maxW": 108
+  },
+  "u3_name": {
+   "x": 44,
+   "baseTop": 110.5,
+   "align": "L",
+   "size": 8,
+   "maxW": 98
+  },
+  "u3_addr": {
+   "x": 162,
+   "baseTop": 110.5,
+   "align": "L",
+   "size": 7.5,
+   "maxW": 175
+  },
+  "u3_amt": {
+   "x": 559,
+   "baseTop": 110.1,
+   "align": "R",
+   "size": 8.5,
+   "maxW": 108
+  },
+  "u_other": {
+   "x": 559,
+   "baseTop": 130.1,
+   "align": "R",
+   "size": 8.5,
+   "maxW": 108
+  },
+  "u_total": {
+   "x": 559,
+   "baseTop": 145.1,
+   "align": "R",
+   "size": 8.5,
+   "maxW": 108
+  },
+  "u_keigen": {
+   "x": 334,
+   "baseTop": 144.8,
+   "align": "R",
+   "size": 8,
+   "maxW": 48
+  },
+  "s0_name": {
+   "x": 44,
+   "baseTop": 177.2,
+   "align": "L",
+   "size": 8,
+   "maxW": 98
+  },
+  "s0_addr": {
+   "x": 162,
+   "baseTop": 177.2,
+   "align": "L",
+   "size": 7.5,
+   "maxW": 175
+  },
+  "s0_amt": {
+   "x": 559,
+   "baseTop": 177.0,
+   "align": "R",
+   "size": 8.5,
+   "maxW": 108
+  },
+  "s1_name": {
+   "x": 44,
+   "baseTop": 196.4,
+   "align": "L",
+   "size": 8,
+   "maxW": 98
+  },
+  "s1_addr": {
+   "x": 162,
+   "baseTop": 196.4,
+   "align": "L",
+   "size": 7.5,
+   "maxW": 175
+  },
+  "s1_amt": {
+   "x": 559,
+   "baseTop": 196.1,
+   "align": "R",
+   "size": 8.5,
+   "maxW": 108
+  },
+  "s2_name": {
+   "x": 44,
+   "baseTop": 215.7,
+   "align": "L",
+   "size": 8,
+   "maxW": 98
+  },
+  "s2_addr": {
+   "x": 162,
+   "baseTop": 215.7,
+   "align": "L",
+   "size": 7.5,
+   "maxW": 175
+  },
+  "s2_amt": {
+   "x": 559,
+   "baseTop": 215.5,
+   "align": "R",
+   "size": 8.5,
+   "maxW": 108
+  },
+  "s3_name": {
+   "x": 44,
+   "baseTop": 234.6,
+   "align": "L",
+   "size": 8,
+   "maxW": 98
+  },
+  "s3_addr": {
+   "x": 162,
+   "baseTop": 234.6,
+   "align": "L",
+   "size": 7.5,
+   "maxW": 175
+  },
+  "s3_amt": {
+   "x": 559,
+   "baseTop": 234.8,
+   "align": "R",
+   "size": 8.5,
+   "maxW": 108
+  },
+  "s_other": {
+   "x": 559,
+   "baseTop": 253.2,
+   "align": "R",
+   "size": 8.5,
+   "maxW": 108
+  },
+  "s_total": {
+   "x": 559,
+   "baseTop": 270.0,
+   "align": "R",
+   "size": 8.5,
+   "maxW": 108
+  },
+  "s_keigen": {
+   "x": 334,
+   "baseTop": 270.0,
+   "align": "R",
+   "size": 8,
+   "maxW": 48
   }
  }
 }
