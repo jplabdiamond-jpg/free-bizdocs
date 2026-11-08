@@ -1,0 +1,203 @@
+{
+ "page": 0,
+ "w": 842,
+ "h": 595,
+ "amounts": {
+  "G02": {
+   "rightX": 261,
+   "baseTop": 210.5
+  },
+  "G03": {
+   "rightX": 261,
+   "baseTop": 229.4
+  },
+  "G04": {
+   "rightX": 261,
+   "baseTop": 248.1
+  },
+  "G05": {
+   "rightX": 261,
+   "baseTop": 267.0
+  },
+  "G06": {
+   "rightX": 261,
+   "baseTop": 286.5
+  },
+  "G07": {
+   "rightX": 261,
+   "baseTop": 305.6
+  },
+  "G08": {
+   "rightX": 261,
+   "baseTop": 324.4
+  },
+  "G09": {
+   "rightX": 261,
+   "baseTop": 343.6
+  },
+  "G10": {
+   "rightX": 261,
+   "baseTop": 362.5
+  },
+  "G11": {
+   "rightX": 261,
+   "baseTop": 381.4
+  },
+  "G12": {
+   "rightX": 261,
+   "baseTop": 400.0
+  },
+  "G13": {
+   "rightX": 261,
+   "baseTop": 419.2
+  },
+  "G14": {
+   "rightX": 261,
+   "baseTop": 438.2
+  },
+  "G15": {
+   "rightX": 261,
+   "baseTop": 457.2
+  },
+  "G16": {
+   "rightX": 261,
+   "baseTop": 476.0
+  },
+  "G17": {
+   "rightX": 261,
+   "baseTop": 494.6
+  },
+  "G18": {
+   "rightX": 261,
+   "baseTop": 513.5
+  },
+  "G19": {
+   "rightX": 261,
+   "baseTop": 532.4
+  },
+  "G20": {
+   "rightX": 261,
+   "baseTop": 551.4
+  },
+  "G21": {
+   "rightX": 499,
+   "baseTop": 210.5
+  },
+  "G22": {
+   "rightX": 499,
+   "baseTop": 229.4
+  },
+  "G23": {
+   "rightX": 499,
+   "baseTop": 248.1
+  },
+  "G24": {
+   "rightX": 499,
+   "baseTop": 267.0
+  },
+  "G25": {
+   "rightX": 499,
+   "baseTop": 286.5
+  },
+  "G26": {
+   "rightX": 499,
+   "baseTop": 305.6
+  },
+  "G27": {
+   "rightX": 499,
+   "baseTop": 324.4
+  },
+  "G28": {
+   "rightX": 499,
+   "baseTop": 343.6
+  },
+  "G34": {
+   "rightX": 499,
+   "baseTop": 457.2
+  },
+  "G35": {
+   "rightX": 499,
+   "baseTop": 476.0
+  },
+  "G36": {
+   "rightX": 499,
+   "baseTop": 494.6
+  },
+  "G37": {
+   "rightX": 499,
+   "baseTop": 513.5
+  },
+  "G38": {
+   "rightX": 499,
+   "baseTop": 532.4
+  },
+  "G39": {
+   "rightX": 499,
+   "baseTop": 551.4
+  }
+ },
+ "header": {
+  "year": {
+   "x": 270,
+   "baseTop": 58,
+   "size": 12,
+   "align": "C"
+  },
+  "jusho": {
+   "x": 245,
+   "baseTop": 100,
+   "size": 9,
+   "align": "L",
+   "maxW": 200
+  },
+  "jigyosho": {
+   "x": 245,
+   "baseTop": 127,
+   "size": 9,
+   "align": "L",
+   "maxW": 200
+  },
+  "gyoshu": {
+   "x": 236,
+   "baseTop": 152,
+   "size": 8,
+   "align": "L",
+   "maxW": 84
+  },
+  "yago": {
+   "x": 370,
+   "baseTop": 152,
+   "size": 9,
+   "align": "L",
+   "maxW": 78
+  },
+  "furigana": {
+   "x": 486,
+   "baseTop": 92,
+   "size": 8,
+   "align": "L",
+   "maxW": 150
+  },
+  "shimei": {
+   "x": 486,
+   "baseTop": 105,
+   "size": 10,
+   "align": "L",
+   "maxW": 150
+  },
+  "tel_home": {
+   "x": 534,
+   "baseTop": 117,
+   "size": 8,
+   "align": "L",
+   "maxW": 100
+  },
+  "kanyu": {
+   "x": 486,
+   "baseTop": 152,
+   "size": 8,
+   "align": "L",
+   "maxW": 150
+  }
+ }
+}

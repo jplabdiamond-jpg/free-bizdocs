@@ -133,5 +133,32 @@
     a.G81=dai3;                                  // 第3期分の税額 納める税金（㊿）
     return {amounts:a, kanpu:(nouzei<0?-nouzei:0), nouzei:nouzei, kazei:kazei, kojoKei:kojoKei, gokei:gokei};
   }
-  return {calc:calc, calcP2:calcP2, calcP4:calcP4, calcShinkoku:calcShinkoku, EXPENSES:EXPENSES};
+  // 白色申告 収支内訳書(一般用) 1枚目：収入・売上原価・経費・専従者控除→所得金額
+  // 決算書の経費コード → 収支内訳書の経費コード（同じ科目名で対応づけ）
+  var SHUSHI_EXP={
+    G08:'G18', G09:'G19', G10:'G20', G11:'G21', G12:'G22', G13:'G23', G14:'G24',
+    G15:'G25', G16:'G26', G17:'G27', G18:'G14', G19:'G28', G20:'G12', G21:'G13',
+    G22:'G17', G23:'G16', G24:'G15', G31:'G34'
+  };
+  function calcShushi(d){
+    d=d||{}; var a={};
+    var uriage=N(d.uriage), kaji=N(d.kaji), sonota=N(d.sonota);
+    a.G02=uriage; a.G03=kaji; a.G04=sonota;
+    a.G05=uriage+kaji+sonota;                               // 収入金額 計
+    var kisho=N(d.kisho), shiire=N(d.shiire), kimatsu=N(d.kimatsu);
+    a.G06=kisho; a.G07=shiire; a.G08=kisho+shiire;          // 小計
+    a.G09=kimatsu; a.G10=a.G08-kimatsu;                     // 差引原価
+    a.G11=a.G05-a.G10;                                      // 差引金額(④−⑨)
+    var exp=d.exp||{};
+    Object.keys(SHUSHI_EXP).forEach(function(k){ a[SHUSHI_EXP[k]]=N(exp[k]); });
+    // その他経費小計（イ〜レ＝G18〜G34）
+    var other=0; ['G18','G19','G20','G21','G22','G23','G24','G25','G26','G27','G28','G29','G30','G31','G32','G33','G34'].forEach(function(c){ other+=a[c]||0; });
+    a.G35=other;                                            // 小計(イ〜レ)
+    a.G36=a.G12+a.G13+a.G14+a.G15+a.G16+a.G17+a.G35;        // 経費計
+    a.G37=a.G11-a.G36;                                      // 専従者控除前の所得金額
+    a.G38=N(d.senju);                                       // 専従者控除
+    a.G39=a.G37-a.G38;                                      // 所得金額
+    return {amounts:a, header:(d.header||{})};
+  }
+  return {calc:calc, calcP2:calcP2, calcP4:calcP4, calcShinkoku:calcShinkoku, calcShushi:calcShushi, EXPENSES:EXPENSES};
 }));

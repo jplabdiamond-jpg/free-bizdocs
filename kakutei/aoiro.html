@@ -44,6 +44,13 @@
  .ka-tax .row.big{font-size:16px;font-weight:800;border-bottom:none;padding-top:10px}
  .ka-tax .row.big b{color:#5fe0a0}
  .ka-tax .n{font-variant-numeric:tabular-nums}
+ .ka-modesel{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+ @media(max-width:560px){.ka-modesel{grid-template-columns:1fr}}
+ .ka-modesel label{display:block;border:2px solid #d7e0ee;border-radius:12px;padding:11px 13px;cursor:pointer;background:#fff;transition:border-color .12s,background .12s}
+ .ka-modesel label.on{border-color:#1766e6;background:#f3f8ff}
+ .ka-modesel label input{margin-right:7px}
+ .ka-modesel label b{font-size:14px;color:#13314f}
+ .ka-modesel label span{display:block;margin-top:3px;font-size:11.5px;color:#5a6b7d;padding-left:22px}
  .ka-btns{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0 2px}
  .ka-btn{appearance:none;border:none;border-radius:11px;padding:12px 20px;font-size:14.5px;font-weight:800;cursor:pointer}
  .ka-btn.p{background:#1766e6;color:#fff}
@@ -120,13 +127,20 @@
   </div>
   <div class="ka-note">
     このツールは<b>申告書類の「記入補助」</b>です。入力内容の正確性はご自身でご確認ください。出力したPDFは<b>印刷して郵送提出</b>できます（e-Tax送信には対応していません）。<br>
-決算書は<b>1枚目（損益計算書）〜4枚目（貸借対照表）</b>、さらに<b>確定申告書 第一表・第二表</b>に対応し、<b>所得税額の目安</b>まで自動計算します（事業所得・主要な所得控除に対応した簡易版。配当・住宅ローン控除・分離課税などは未対応）。<b>10万円・55万円・65万円控除</b>いずれの様式も作成でき（65万円控除はe-Tax送信または電子帳簿保存が別途必要）、各ページは下部の該当セクションで入力できます。
+<b>青色申告</b>は決算書（1枚目 損益計算書〜4枚目 貸借対照表）、<b>白色申告</b>は<b>収支内訳書（一般用）</b>に対応。いずれも<b>確定申告書 第一表・第二表</b>と<b>所得税額の目安</b>まで自動計算します（事業所得・主要な所得控除に対応した簡易版。配当・住宅ローン控除・分離課税などは未対応）。青色は<b>10万円・55万円・65万円控除</b>いずれの様式も作成でき（65万円控除はe-Tax送信または電子帳簿保存が別途必要）、各ページは下部の該当セクションで入力できます。上部の「申告の種類」で青色／白色を切り替えられます。
   </div>
 </div>
 
 <div class="ka-wrap"><div class="ka-grid">
 
   <div class="ka-card">
+    <div class="ka-sec">申告の種類</div>
+    <div class="ka-modesel" id="ka-modesel">
+      <label class="on"><input type="radio" name="ka-mode" value="青色" checked> <b>青色申告</b><span>決算書（損益計算書〜貸借対照表）＋申告書</span></label>
+      <label><input type="radio" name="ka-mode" value="白色"> <b>白色申告</b><span>収支内訳書（一般用）＋申告書</span></label>
+    </div>
+    <div class="ka-hint" id="ka-modehint">青色申告：帳簿にもとづく決算書を作成し、10万円・55万円・65万円の特別控除に対応します。</div>
+
     <div class="ka-sec">事業者情報</div>
     <div class="ka-f"><label>年分（令和）<span class="ka-q" tabindex="0" data-tip="申告する年分を令和で入力します。例：令和7年分なら「7」。">?</span></label><input id="f_year" inputmode="numeric" placeholder="7"></div>
     <div class="ka-f"><label>氏名<span class="ka-q" tabindex="0" data-tip="申告する本人の氏名です。">?</span></label><input id="f_shimei" placeholder="沖 実篤"></div>
@@ -155,6 +169,14 @@
     <div id="ka-csv"></div>
     <div class="ka-exp" id="ka-exp"></div>
 
+    <div id="ka-shiro-sections" style="display:none">
+      <div class="ka-sec">収支内訳書（白色申告）の追加項目<span class="ka-q" tabindex="0" data-tip="白色申告の収支内訳書に必要な項目です。売上・仕入・経費は上の欄と共通で使われます。">?</span></div>
+      <div class="ka-f ka-num"><label>家事消費<span class="ka-q" tabindex="0" data-tip="商品を自家用に消費した分などの金額。なければ0でOK。">?</span></label><input id="f_sh_kaji" inputmode="numeric" placeholder="0"></div>
+      <div class="ka-f ka-num"><label>その他の収入<span class="ka-q" tabindex="0" data-tip="売上以外の事業に関する収入（補助金・リベート等）。なければ0でOK。">?</span></label><input id="f_sh_sonota" inputmode="numeric" placeholder="0"></div>
+      <div class="ka-f ka-num"><label>専従者控除<span class="ka-q" tabindex="0" data-tip="白色申告の事業専従者控除。配偶者は最高86万円、その他の親族は1人50万円（事業所得等を専従者数+1で割った金額が上限）。該当がなければ0。">?</span></label><input id="f_sh_senju" inputmode="numeric" placeholder="0"></div>
+    </div>
+
+    <div id="ka-aoiro-sections">
     <div class="ka-sec">青色申告特別控除</div>
     <div class="ka-f"><label>控除額<span class="ka-q" tabindex="0" data-tip="青色申告特別控除。損益計算書のみの提出なら10万円。55万円・65万円には貸借対照表などが必要です。">?</span></label><select id="f_kojo">
       <option value="100000" selected>10万円（損益計算書のみ）</option>
@@ -172,6 +194,7 @@
 
     <div class="ka-sec">貸借対照表（4枚目・55/65万円控除用）<span class="ka-q" tabindex="0" data-tip="決算書4枚目。55万円・65万円の青色申告特別控除を受けるには貸借対照表が必要です。資産・負債・資本の期首（1/1）と期末（12/31）の残高を記入します。青色申告特別控除前の所得金額（期末）は1枚目から自動で入ります。資産合計と負債・資本合計は一致している必要があります。">?</span></div>
     <div id="ka-p4"></div>
+    </div>
 
     <div class="ka-sec">確定申告書 第一表・第二表（所得控除・税額の目安）<span class="ka-q" tabindex="0" data-tip="決算書の所得金額をもとに、確定申告書 第一表・第二表を作成し、納める所得税の目安を計算します。事業所得のみ・主要な所得控除に対応した簡易版です（配当・住宅ローン控除・分離課税などには未対応）。">?</span></div>
     <div class="ka-p2hint">事業所得（決算書の所得金額）は自動で反映されます。下の所得控除を入力すると、課税所得・所得税額の目安が計算され、申告書 第一表・第二表に記入されます。</div>
@@ -225,9 +248,9 @@
   </div>
 </footer>
 
-<script src="/kakutei/aoiro-calc.js?v=20261108c"></script>
+<script src="/kakutei/aoiro-calc.js?v=20261108d"></script>
 <script src="/kakutei/aoiro-fill.js?v=20261108c"></script>
-<script src="/kakutei/aoiro.js?v=20261108c"></script>
+<script src="/kakutei/aoiro.js?v=20261108e"></script>
 <script src="/kakutei/expense-cats.js?v=20261106"></script>
 <script>
 (function(){
@@ -372,6 +395,8 @@
       uriage:num('f_uriage'),kisho:num('f_kisho'),shiire:num('f_shiire'),kimatsu:num('f_kimatsu'),
       exp:exp, kojo:num('f_kojo'), p2:gatherP2(), p3:gatherP3(), p4:gatherP4(),
       year:val('f_year'),
+      mode:(document.querySelector('input[name=ka-mode]:checked')||{}).value||'青色',
+      kaji:num('f_sh_kaji'), sonota:num('f_sh_sonota'), senju:num('f_sh_senju'),
       shinkoku:{ shaho:num('f_sk_shaho'), shokibo:num('f_sk_shokibo'), seimei_pay:num('f_sk_seimei'),
         jishin_pay:num('f_sk_jishin'), haiguu:$('f_sk_haiguu').checked, fuyou_n:num('f_sk_fuyou'),
         genzen:num('f_sk_genzen') }
@@ -382,20 +407,34 @@
   function summary(){
     var g=gather();
     var a=AoiroCalc.calc(g).amounts;
-    $('ka-sum').innerHTML =
-      row('差引金額（売上－原価）',a.G07)+
-      row('経費 計',a.G32)+
-      row('差引金額（＝控除前所得）',a.G33)+
-      row('青色申告特別控除額',a.G44)+
-      row('所得金額',a.G45,true);
+    var shiro=(g.mode==='白色'), jigyo, shunyu;
+    if(shiro){
+      var c=AoiroCalc.calcShushi(g).amounts;
+      jigyo=c.G39; shunyu=c.G05;
+      $('ka-sum').innerHTML =
+        row('収入金額 計',c.G05)+
+        row('売上原価（差引）',c.G10)+
+        row('差引金額（収入－原価）',c.G11)+
+        row('経費 計',c.G36)+
+        row('専従者控除',c.G38)+
+        row('所得金額',c.G39,true);
+    } else {
+      jigyo=a.G45; shunyu=a.G01;
+      $('ka-sum').innerHTML =
+        row('差引金額（売上－原価）',a.G07)+
+        row('経費 計',a.G32)+
+        row('差引金額（＝控除前所得）',a.G33)+
+        row('青色申告特別控除額',a.G44)+
+        row('所得金額',a.G45,true);
+    }
     // 確定申告書 第一表：課税所得・税額の目安
     var tx=$('ka-tax');
     if(tx){
       var sk=g.shinkoku||{};
-      var sr=AoiroCalc.calcShinkoku({ jigyo:a.G45, shunyu:a.G01, shaho:sk.shaho, shokibo:sk.shokibo,
+      var sr=AoiroCalc.calcShinkoku({ jigyo:jigyo, shunyu:shunyu, shaho:sk.shaho, shokibo:sk.shokibo,
         seimei_pay:sk.seimei_pay, jishin_pay:sk.jishin_pay, haiguu:sk.haiguu, fuyou_n:sk.fuyou_n, genzen:sk.genzen });
       var x=sr.amounts;
-      var html=row('事業所得（決算書より）',x.G39)+
+      var html=row(shiro?'事業所得（収支内訳書より）':'事業所得（決算書より）',x.G39)+
         row('所得控除 合計',x.G64)+
         row('課税される所得金額',x.G65)+
         row('所得税額',x.G66)+
@@ -502,6 +541,31 @@
     [].slice.call(tabs.querySelectorAll('button')).forEach(function(x){x.classList.toggle('on',x===b);});
     renderPage();
   });
+  // 申告種別（青色／白色）によってタブ・入力欄・注記を切り替える
+  var TABS_AO=[['1 損益計算書'],['2 月別・給料'],['3 減価償却・地代'],['4 貸借対照表'],['5 申告書 第一表'],['6 申告書 第二表']];
+  var TABS_SH=[['1 収支内訳書'],['2 申告書 第一表'],['3 申告書 第二表']];
+  function buildTabs(mode){
+    var t=(mode==='白色')?TABS_SH:TABS_AO, h='';
+    for(var i=0;i<t.length;i++) h+='<button type="button" data-p="'+i+'"'+(i===0?' class="on"':'')+'>'+t[i][0]+'</button>';
+    tabs.innerHTML=h; _pg=0;
+  }
+  function applyMode(){
+    var mode=(document.querySelector('input[name=ka-mode]:checked')||{}).value||'青色';
+    var shiro=(mode==='白色');
+    $('ka-aoiro-sections').style.display=shiro?'none':'';
+    $('ka-shiro-sections').style.display=shiro?'':'none';
+    [].slice.call($('ka-modesel').querySelectorAll('label')).forEach(function(l){
+      l.classList.toggle('on', !!l.querySelector('input:checked'));
+    });
+    $('ka-modehint').textContent=shiro
+      ? '白色申告：帳簿づけが簡易な方向け。収支内訳書（一般用）を作成します。専従者控除・家事消費などの欄が表示されます。'
+      : '青色申告：帳簿にもとづく決算書を作成し、10万円・55万円・65万円の特別控除に対応します。';
+    buildTabs(mode);
+    summary(); makePdf();
+  }
+  [].slice.call(document.querySelectorAll('input[name=ka-mode]')).forEach(function(r){
+    r.addEventListener('change', applyMode);
+  });
   // 拡大・縮小
   function zoomLabel(){ $('ka-zoomlbl').textContent=(_zoom<=1?'幅に合わせる':'拡大 ×'+_zoom); }
   function setZoom(dir){
@@ -514,7 +578,7 @@
   var _rt=null;
   window.addEventListener('resize',function(){ clearTimeout(_rt); _rt=setTimeout(function(){ if(_zoom<=1) renderPage(); },250); });
 
-  summary(); makePdf();
+  applyMode();
 })();
 </script>
 <script>

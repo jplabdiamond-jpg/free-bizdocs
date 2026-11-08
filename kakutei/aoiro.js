@@ -6,14 +6,16 @@
 (function(){
   var FORM ='/kakutei/forms/aoiro-ippan-r05.pdf';
   var FORMB='/kakutei/forms/aoiro-shinkoku-b-r05.pdf';
+  var FORMC='/kakutei/forms/shushi-ippan-r05.pdf';
   var MAP ='/kakutei/aoiro-ippan-map.json?v=20261107';
   var MAP2='/kakutei/aoiro-ippan-p2-map.json?v=20261107';
   var MAP3='/kakutei/aoiro-ippan-p3-map.json?v=20261108';
   var MAP4='/kakutei/aoiro-ippan-p4-map.json?v=20261108';
   var MAPS1='/kakutei/aoiro-shinkoku-p1-map.json?v=20261108';
   var MAPS2='/kakutei/aoiro-shinkoku-p2-map.json?v=20261108';
+  var MAPC1='/kakutei/shushi-ippan-p1-map.json?v=20261108';
   var FONT='/fonts/noto-jp.ttf';
-  var _p, _font, _map, _map2, _map3, _map4, _maps1, _maps2, _form, _formb;
+  var _p, _font, _map, _map2, _map3, _map4, _maps1, _maps2, _mapc1, _form, _formb, _formc;
   function loadScript(src){return new Promise(function(res,rej){
     var s=document.createElement('script'); s.src=src; s.onload=res; s.onerror=rej;
     document.head.appendChild(s);
@@ -33,59 +35,77 @@
       if(!_map4) jobs.push(fetchJson(MAP4,function(j){_map4=j;}));
       if(!_maps1)jobs.push(fetchJson(MAPS1,function(j){_maps1=j;}));
       if(!_maps2)jobs.push(fetchJson(MAPS2,function(j){_maps2=j;}));
+      if(!_mapc1)jobs.push(fetchJson(MAPC1,function(j){_mapc1=j;}));
       if(!_form) jobs.push(fetchBuf(FORM, function(b){_form=b;}));
       if(!_formb)jobs.push(fetchBuf(FORMB,function(b){_formb=b;}));
+      if(!_formc)jobs.push(fetchBuf(FORMC,function(b){_formc=b;}));
       await Promise.all(jobs);
     })();
     return _p;
   }
   function yen(n){return Number(n||0).toLocaleString('en-US');}
-  async function buildPdf(data){
-    await ready();
-    var P=window.PDFLib, color=P.rgb(0.09,0.11,0.17);
-    // ---- 決算書（4枚） ----
-    var doc=await P.PDFDocument.load(_form);
-    doc.registerFontkit(window.fontkit);
-    var font=await doc.embedFont(_font,{subset:false});
-    var r=window.AoiroCalc.calc(data);
-    window.AoiroFill.fillPage(doc.getPages()[_map.page], font, _map, r.amounts, r.header, color);
-    if(_map2 && data.p2){
-      var a2=window.AoiroCalc.calcP2(data.p2);
-      window.AoiroFill.fillPage(doc.getPages()[_map2.page], font, _map2, a2, {}, color);
-    }
-    if(_map3 && data.p3){
-      window.AoiroFill.fillPage(doc.getPages()[_map3.page], font, _map3, {}, data.p3, color);
-    }
-    if(_map4 && data.p4){
-      var a4=window.AoiroCalc.calcP4(data.p4, r.amounts.G43);
-      window.AoiroFill.fillPage(doc.getPages()[_map4.page], font, _map4, a4, {}, color);
-    }
-    // ---- 申告書 第一表・第二表（2枚） ----
+  // 申告書 第一表・第二表（2枚）を作成して返す
+  async function buildShinkoku(P,color,data,jigyo,shunyu){
     var sdoc=await P.PDFDocument.load(_formb);
     sdoc.registerFontkit(window.fontkit);
     var sfont=await sdoc.embedFont(_font,{subset:false});
-    var sk=data.shinkoku||{};
-    var sin={ jigyo:r.amounts.G45, shunyu:r.amounts.G01,
-              shaho:sk.shaho, shokibo:sk.shokibo, seimei_pay:sk.seimei_pay,
-              jishin_pay:sk.jishin_pay, haiguu:sk.haiguu, fuyou_n:sk.fuyou_n, genzen:sk.genzen };
-    var sr=window.AoiroCalc.calcShinkoku(sin);
-    var h=data.header||{};
+    var sk=data.shinkoku||{}, h=data.header||{};
+    var sr=window.AoiroCalc.calcShinkoku({ jigyo:jigyo, shunyu:shunyu,
+      shaho:sk.shaho, shokibo:sk.shokibo, seimei_pay:sk.seimei_pay,
+      jishin_pay:sk.jishin_pay, haiguu:sk.haiguu, fuyou_n:sk.fuyou_n, genzen:sk.genzen });
     var sHead={ year:data.year||'', jusho:h.jusho, furigana:h.furigana, shimei:h.shimei,
                 shokugyo:h.gyoshu, yago:h.yago, tel:(h.tel_office||h.tel_home||'') };
     window.AoiroFill.fillPage(sdoc.getPages()[_maps1.page], sfont, _maps1, sr.amounts, sHead, color);
-    // 第二表：控除の内訳（整合する支払額を記入）
     var shaho=Number(sk.shaho||0);
     var sHead2={ year:data.year||'', jusho:h.jusho, yago:h.yago, furigana:h.furigana, shimei:h.shimei };
     if(shaho>0){ sHead2.shaho_type='国民健康保険・国民年金等'; sHead2.shaho_amt=yen(shaho); sHead2.shaho_amt2=yen(shaho); }
     if(Number(sk.seimei_pay||0)>0) sHead2.seimei_shin=yen(sk.seimei_pay);
     if(Number(sk.jishin_pay||0)>0) sHead2.jishin_amt=yen(sk.jishin_pay);
     window.AoiroFill.fillPage(sdoc.getPages()[_maps2.page], sfont, _maps2, {}, sHead2, color);
-    // ---- 6ページに結合 ----
+    return {doc:sdoc, sr:sr};
+  }
+  async function buildPdf(data){
+    await ready();
+    var P=window.PDFLib, color=P.rgb(0.09,0.11,0.17);
     var out=await P.PDFDocument.create();
-    var dp=await out.copyPages(doc, doc.getPageIndices());
-    dp.forEach(function(p){ out.addPage(p); });
-    var sp=await out.copyPages(sdoc, sdoc.getPageIndices());
-    sp.forEach(function(p){ out.addPage(p); });
+    var sr;
+    if((data.mode||'青色')==='白色'){
+      // ---- 白色：収支内訳書（1枚目） ----
+      var cdoc=await P.PDFDocument.load(_formc);
+      cdoc.registerFontkit(window.fontkit);
+      var cfont=await cdoc.embedFont(_font,{subset:false});
+      var h=data.header||{};
+      var cr=window.AoiroCalc.calcShushi({ uriage:data.uriage, kaji:data.kaji, sonota:data.sonota,
+        kisho:data.kisho, shiire:data.shiire, kimatsu:data.kimatsu, exp:data.exp, senju:data.senju,
+        header:{ year:data.year||'', jusho:h.jusho, jigyosho:h.jigyosho, gyoshu:h.gyoshu, yago:h.yago,
+                 furigana:h.furigana, shimei:h.shimei, tel_home:(h.tel_home||h.tel_office||''), kanyu:h.kanyu } });
+      window.AoiroFill.fillPage(cdoc.getPages()[_mapc1.page], cfont, _mapc1, cr.amounts, cr.header, color);
+      // ---- 申告書（事業所得＝収支内訳書 G39、収入＝G05） ----
+      var sb=await buildShinkoku(P,color,data,cr.amounts.G39,cr.amounts.G05); sr=sb.sr;
+      // 収支内訳書は1枚目（収入・経費・所得）のみ出力（2枚目の明細は未対応）
+      (await out.copyPages(cdoc, [0])).forEach(function(p){ out.addPage(p); });
+      (await out.copyPages(sb.doc, sb.doc.getPageIndices())).forEach(function(p){ out.addPage(p); });
+    } else {
+      // ---- 青色：決算書（4枚） ----
+      var doc=await P.PDFDocument.load(_form);
+      doc.registerFontkit(window.fontkit);
+      var font=await doc.embedFont(_font,{subset:false});
+      var r=window.AoiroCalc.calc(data);
+      window.AoiroFill.fillPage(doc.getPages()[_map.page], font, _map, r.amounts, r.header, color);
+      if(_map2 && data.p2){
+        window.AoiroFill.fillPage(doc.getPages()[_map2.page], font, _map2, window.AoiroCalc.calcP2(data.p2), {}, color);
+      }
+      if(_map3 && data.p3){
+        window.AoiroFill.fillPage(doc.getPages()[_map3.page], font, _map3, {}, data.p3, color);
+      }
+      if(_map4 && data.p4){
+        window.AoiroFill.fillPage(doc.getPages()[_map4.page], font, _map4, window.AoiroCalc.calcP4(data.p4, r.amounts.G43), {}, color);
+      }
+      // ---- 申告書（事業所得＝決算書 G45、収入＝G01） ----
+      var sb2=await buildShinkoku(P,color,data,r.amounts.G45,r.amounts.G01); sr=sb2.sr;
+      (await out.copyPages(doc, doc.getPageIndices())).forEach(function(p){ out.addPage(p); });
+      (await out.copyPages(sb2.doc, sb2.doc.getPageIndices())).forEach(function(p){ out.addPage(p); });
+    }
     var bytes=await out.save();
     bytes.__sr=sr;
     return bytes;
