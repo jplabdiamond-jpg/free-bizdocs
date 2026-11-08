@@ -78,6 +78,17 @@
  .ka-p2t td.x{background:repeating-linear-gradient(135deg,#f6f8fb,#f6f8fb 4px,#eef2f8 4px,#eef2f8 8px)}
  .ka-p2t tr.tot td{font-weight:800;color:#13314f;text-align:right;font-variant-numeric:tabular-nums;border-top:1.5px solid #cfdaea;padding:6px 7px}
  .ka-p2t tr.tot td.mm{text-align:center}
+ .ka-p3wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+ .ka-p3t{border-collapse:collapse;font-size:12px;min-width:620px}
+ .ka-p3t th{font-size:10.5px;color:#5a6b7d;font-weight:700;padding:3px 5px;border-bottom:1px solid #e3e9f2;white-space:nowrap;text-align:center}
+ .ka-p3t td{padding:2px 3px;border-bottom:1px solid #f0f3f8}
+ .ka-p3t td.rn{color:#8097ad;font-size:11px;text-align:center;font-weight:700}
+ .ka-p3t input{box-sizing:border-box;border:1px solid #dce5f0;border-radius:6px;padding:4px 6px;font-size:12px;font-family:inherit;background:#fff}
+ .ka-p3t input:focus{outline:none;border-color:#1766e6;box-shadow:0 0 0 2px rgba(23,102,230,.1)}
+ .ka-p3t input.t{text-align:left}
+ .ka-p3t input.n{text-align:right;font-variant-numeric:tabular-nums}
+ .ka-p3t input.s{text-align:center}
+ .ka-p3t tfoot td{font-weight:800;color:#13314f;text-align:right;font-variant-numeric:tabular-nums;border-top:1.5px solid #cfdaea;padding:6px 5px}
 </style>
 </head>
 <body>
@@ -151,6 +162,9 @@
     <div class="ka-sec">月別の売上・仕入（2枚目・任意）<span class="ka-q" tabindex="0" data-tip="決算書2枚目の「月別の売上（収入）金額及び仕入金額」。月ごとに入力すると計が自動計算されます。合計は1枚目の売上・仕入と一致させてください。">?</span></div>
     <div id="ka-p2"></div>
 
+    <div class="ka-sec">減価償却費の計算（3枚目・任意）<span class="ka-q" tabindex="0" data-tip="決算書3枚目。10万円以上の資産を耐用年数で按分した本年分の償却費を資産ごとに記入します。本ツールは計算補助のため、償却費は国税庁の「決算の手引き」等で計算した額を入力してください。必要経費算入額の計は1枚目の減価償却費と一致させます。">?</span></div>
+    <div id="ka-p3"></div>
+
     <div class="ka-sum" id="ka-sum"></div>
     <div class="ka-btns">
       <button class="ka-btn p" id="ka-make">プレビュー / PDF作成</button>
@@ -191,7 +205,7 @@
 
 <script src="/kakutei/aoiro-calc.js?v=20261107b"></script>
 <script src="/kakutei/aoiro-fill.js?v=20261105"></script>
-<script src="/kakutei/aoiro.js?v=20261107b"></script>
+<script src="/kakutei/aoiro.js?v=20261108"></script>
 <script src="/kakutei/expense-cats.js?v=20261106"></script>
 <script>
 (function(){
@@ -255,6 +269,48 @@
     return p2;
   }
 
+  // 3枚目：減価償却費の計算テーブルを生成
+  var P3ROWS=5;
+  (function(){
+    var box=$('ka-p3'); if(!box) return;
+    var vv=function(id,cls){return '<td><input id="'+id+'" class="'+cls+'" inputmode="'+(cls==='n'?'numeric':'text')+'" style="width:100%"></td>';};
+    var rows='';
+    for(var i=0;i<P3ROWS;i++){
+      rows+='<tr><td class="rn">'+(i+1)+'</td>'
+        +vv('p3_'+i+'_name','t')+vv('p3_'+i+'_shutoku','n')+vv('p3_'+i+'_method','s')
+        +vv('p3_'+i+'_years','s')+vv('p3_'+i+'_shokyaku','n')+vv('p3_'+i+'_ratio','s')
+        +vv('p3_'+i+'_hitsuyo','n')+vv('p3_'+i+'_zan','n')+'</tr>';
+    }
+    box.innerHTML='<div class="ka-p2hint">10万円以上の資産を資産ごとに記入します（任意）。償却費は計算済みの額を入力してください。必要経費算入額の計は1枚目の減価償却費と一致させます。</div>'
+      +'<div class="ka-p3wrap"><table class="ka-p3t"><thead><tr>'
+      +'<th>#</th><th>名称</th><th>取得価額</th><th>償却方法</th><th>耐用年数</th><th>本年分償却費</th><th>専用%</th><th>必要経費算入額</th><th>未償却残高</th></tr></thead>'
+      +'<tbody>'+rows+'</tbody>'
+      +'<tfoot><tr><td colspan="7" style="text-align:right;color:#5a6b7d;font-size:11.5px">必要経費算入額の計</td><td id="p3tot">0</td><td></td></tr></tfoot>'
+      +'</table></div>';
+    // widths
+    ['name:108','shutoku:92','method:56','years:46','shokyaku:92','ratio:50','hitsuyo:92','zan:92'].forEach(function(w){
+      var p=w.split(':'); for(var i=0;i<P3ROWS;i++){ var el=$('p3_'+i+'_'+p[0]); if(el) el.style.width=p[1]+'px'; }
+    });
+  })();
+  function fmtY(n){ return n>0?Number(n).toLocaleString('ja-JP'):''; }
+  function gatherP3(){
+    var h={}, tot=0, used=false;
+    for(var i=0;i<P3ROWS;i++){
+      var name=val('p3_'+i+'_name'), shu=num('p3_'+i+'_shutoku'), met=val('p3_'+i+'_method'),
+          yrs=val('p3_'+i+'_years'), sho=num('p3_'+i+'_shokyaku'), rat=val('p3_'+i+'_ratio'),
+          hit=num('p3_'+i+'_hitsuyo'), zan=num('p3_'+i+'_zan');
+      if(name||shu||sho||hit||zan){ used=true;
+        h['d'+i+'_name']=name; h['d'+i+'_shutoku']=fmtY(shu); h['d'+i+'_method']=met;
+        h['d'+i+'_years']=yrs; h['d'+i+'_shokyaku']=fmtY(sho); h['d'+i+'_ratio']=rat;
+        h['d'+i+'_hitsuyo']=fmtY(hit); h['d'+i+'_zan']=fmtY(zan);
+        tot+=hit;
+      }
+    }
+    if(used) h['d_total']=fmtY(tot);
+    h.__total=tot;
+    return h;
+  }
+
   function gather(){
     var exp={};
     AoiroCalc.EXPENSES.forEach(function(e){exp[e[0]]=num('e_'+e[0]);});
@@ -264,7 +320,7 @@
         tel_home:val('f_tel_home'),tel_office:val('f_tel_office'),kanyu:val('f_kanyu'),
         zei_name:val('f_zei_name'),zei_tel:val('f_zei_tel'),zei_jusho:val('f_zei_jusho')},
       uriage:num('f_uriage'),kisho:num('f_kisho'),shiire:num('f_shiire'),kimatsu:num('f_kimatsu'),
-      exp:exp, kojo:num('f_kojo'), p2:gatherP2()
+      exp:exp, kojo:num('f_kojo'), p2:gatherP2(), p3:gatherP3()
     };
   }
   var yen=function(n){return Number(n).toLocaleString('ja-JP')+' 円';};
@@ -281,6 +337,7 @@
     var tu=$('p2tu'), ts=$('p2ts');
     if(tu) tu.textContent=Number(p2.G15).toLocaleString('ja-JP');
     if(ts) ts.textContent=Number(p2.G29).toLocaleString('ja-JP');
+    var p3t=$('p3tot'); if(p3t) p3t.textContent=Number(gatherP3().__total||0).toLocaleString('ja-JP');
   }
   // --- PDF.js でプレビューを1ページずつ大きく描画 ---
   var _pdfjsP=null;
@@ -324,9 +381,10 @@
       if(_url)URL.revokeObjectURL(_url);
       _url=URL.createObjectURL(_blob);
       await ensurePdfjs();
-      if(_pdoc){ try{_pdoc.destroy();}catch(e){} }
+      var _old=_pdoc;
       _pdoc=await window.pdfjsLib.getDocument({data:bytes.slice(0),cMapUrl:'/vendor/cmaps/',cMapPacked:true,standardFontDataUrl:'/vendor/standard_fonts/'}).promise;
       await renderPage();
+      if(_old){ try{_old.destroy();}catch(e){} }
       s.textContent='最新の内容で更新しました';
     }catch(err){ s.textContent='生成に失敗しました'; console.error(err); }
   }

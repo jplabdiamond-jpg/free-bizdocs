@@ -1,0 +1,295 @@
+{
+ "page": 2,
+ "w": 842.0,
+ "h": 595.0,
+ "amounts": {},
+ "header": {
+  "d0_name": {
+   "x": 50,
+   "baseTop": 333,
+   "align": "L",
+   "size": 8.0,
+   "maxW": 54
+  },
+  "d0_shutoku": {
+   "x": 240,
+   "baseTop": 329,
+   "align": "R",
+   "size": 8.5,
+   "maxW": 64
+  },
+  "d0_method": {
+   "x": 321,
+   "baseTop": 337,
+   "align": "C",
+   "size": 7.5,
+   "maxW": 24
+  },
+  "d0_years": {
+   "x": 346,
+   "baseTop": 337,
+   "align": "C",
+   "size": 7.5,
+   "maxW": 20
+  },
+  "d0_shokyaku": {
+   "x": 601,
+   "baseTop": 337,
+   "align": "R",
+   "size": 8.5,
+   "maxW": 56
+  },
+  "d0_ratio": {
+   "x": 631,
+   "baseTop": 337,
+   "align": "R",
+   "size": 8.0,
+   "maxW": 26
+  },
+  "d0_hitsuyo": {
+   "x": 693,
+   "baseTop": 337,
+   "align": "R",
+   "size": 8.5,
+   "maxW": 56
+  },
+  "d0_zan": {
+   "x": 756,
+   "baseTop": 337,
+   "align": "R",
+   "size": 8.5,
+   "maxW": 56
+  },
+  "d1_name": {
+   "x": 50,
+   "baseTop": 355,
+   "align": "L",
+   "size": 8.0,
+   "maxW": 54
+  },
+  "d1_shutoku": {
+   "x": 240,
+   "baseTop": 351,
+   "align": "R",
+   "size": 8.5,
+   "maxW": 64
+  },
+  "d1_method": {
+   "x": 321,
+   "baseTop": 359,
+   "align": "C",
+   "size": 7.5,
+   "maxW": 24
+  },
+  "d1_years": {
+   "x": 346,
+   "baseTop": 359,
+   "align": "C",
+   "size": 7.5,
+   "maxW": 20
+  },
+  "d1_shokyaku": {
+   "x": 601,
+   "baseTop": 359,
+   "align": "R",
+   "size": 8.5,
+   "maxW": 56
+  },
+  "d1_ratio": {
+   "x": 631,
+   "baseTop": 359,
+   "align": "R",
+   "size": 8.0,
+   "maxW": 26
+  },
+  "d1_hitsuyo": {
+   "x": 693,
+   "baseTop": 359,
+   "align": "R",
+   "size": 8.5,
+   "maxW": 56
+  },
+  "d1_zan": {
+   "x": 756,
+   "baseTop": 359,
+   "align": "R",
+   "size": 8.5,
+   "maxW": 56
+  },
+  "d2_name": {
+   "x": 50,
+   "baseTop": 377,
+   "align": "L",
+   "size": 8.0,
+   "maxW": 54
+  },
+  "d2_shutoku": {
+   "x": 240,
+   "baseTop": 373,
+   "align": "R",
+   "size": 8.5,
+   "maxW": 64
+  },
+  "d2_method": {
+   "x": 321,
+   "baseTop": 381,
+   "align": "C",
+   "size": 7.5,
+   "maxW": 24
+  },
+  "d2_years": {
+   "x": 346,
+   "baseTop": 381,
+   "align": "C",
+   "size": 7.5,
+   "maxW": 20
+  },
+  "d2_shokyaku": {
+   "x": 601,
+   "baseTop": 381,
+   "align": "R",
+   "size": 8.5,
+   "maxW": 56
+  },
+  "d2_ratio": {
+   "x": 631,
+   "baseTop": 381,
+   "align": "R",
+   "size": 8.0,
+   "maxW": 26
+  },
+  "d2_hitsuyo": {
+   "x": 693,
+   "baseTop": 381,
+   "align": "R",
+   "size": 8.5,
+   "maxW": 56
+  },
+  "d2_zan": {
+   "x": 756,
+   "baseTop": 381,
+   "align": "R",
+   "size": 8.5,
+   "maxW": 56
+  },
+  "d3_name": {
+   "x": 50,
+   "baseTop": 399,
+   "align": "L",
+   "size": 8.0,
+   "maxW": 54
+  },
+  "d3_shutoku": {
+   "x": 240,
+   "baseTop": 395,
+   "align": "R",
+   "size": 8.5,
+   "maxW": 64
+  },
+  "d3_method": {
+   "x": 321,
+   "baseTop": 403,
+   "align": "C",
+   "size": 7.5,
+   "maxW": 24
+  },
+  "d3_years": {
+   "x": 346,
+   "baseTop": 403,
+   "align": "C",
+   "size": 7.5,
+   "maxW": 20
+  },
+  "d3_shokyaku": {
+   "x": 601,
+   "baseTop": 403,
+   "align": "R",
+   "size": 8.5,
+   "maxW": 56
+  },
+  "d3_ratio": {
+   "x": 631,
+   "baseTop": 403,
+   "align": "R",
+   "size": 8.0,
+   "maxW": 26
+  },
+  "d3_hitsuyo": {
+   "x": 693,
+   "baseTop": 403,
+   "align": "R",
+   "size": 8.5,
+   "maxW": 56
+  },
+  "d3_zan": {
+   "x": 756,
+   "baseTop": 403,
+   "align": "R",
+   "size": 8.5,
+   "maxW": 56
+  },
+  "d4_name": {
+   "x": 50,
+   "baseTop": 421,
+   "align": "L",
+   "size": 8.0,
+   "maxW": 54
+  },
+  "d4_shutoku": {
+   "x": 240,
+   "baseTop": 417,
+   "align": "R",
+   "size": 8.5,
+   "maxW": 64
+  },
+  "d4_method": {
+   "x": 321,
+   "baseTop": 425,
+   "align": "C",
+   "size": 7.5,
+   "maxW": 24
+  },
+  "d4_years": {
+   "x": 346,
+   "baseTop": 425,
+   "align": "C",
+   "size": 7.5,
+   "maxW": 20
+  },
+  "d4_shokyaku": {
+   "x": 601,
+   "baseTop": 425,
+   "align": "R",
+   "size": 8.5,
+   "maxW": 56
+  },
+  "d4_ratio": {
+   "x": 631,
+   "baseTop": 425,
+   "align": "R",
+   "size": 8.0,
+   "maxW": 26
+  },
+  "d4_hitsuyo": {
+   "x": 693,
+   "baseTop": 425,
+   "align": "R",
+   "size": 8.5,
+   "maxW": 56
+  },
+  "d4_zan": {
+   "x": 756,
+   "baseTop": 425,
+   "align": "R",
+   "size": 8.5,
+   "maxW": 56
+  },
+  "d_total": {
+   "x": 693,
+   "baseTop": 483,
+   "align": "R",
+   "size": 8.5,
+   "maxW": 56
+  }
+ }
+}
