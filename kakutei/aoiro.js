@@ -14,8 +14,9 @@
   var MAPS1='/kakutei/aoiro-shinkoku-p1-map.json?v=20261108b';
   var MAPS2='/kakutei/aoiro-shinkoku-p2-map.json?v=20261108';
   var MAPC1='/kakutei/shushi-ippan-p1-map.json?v=20261108';
+  var MAPC2='/kakutei/shushi-ippan-p2-map.json?v=20261109';
   var FONT='/fonts/noto-jp.ttf';
-  var _p, _font, _map, _map2, _map3, _map4, _maps1, _maps2, _mapc1, _form, _formb, _formc;
+  var _p, _font, _map, _map2, _map3, _map4, _maps1, _maps2, _mapc1, _mapc2, _form, _formb, _formc;
   function loadScript(src){return new Promise(function(res,rej){
     var s=document.createElement('script'); s.src=src; s.onload=res; s.onerror=rej;
     document.head.appendChild(s);
@@ -36,6 +37,7 @@
       if(!_maps1)jobs.push(fetchJson(MAPS1,function(j){_maps1=j;}));
       if(!_maps2)jobs.push(fetchJson(MAPS2,function(j){_maps2=j;}));
       if(!_mapc1)jobs.push(fetchJson(MAPC1,function(j){_mapc1=j;}));
+      if(!_mapc2)jobs.push(fetchJson(MAPC2,function(j){_mapc2=j;}));
       if(!_form) jobs.push(fetchBuf(FORM, function(b){_form=b;}));
       if(!_formb)jobs.push(fetchBuf(FORMB,function(b){_formb=b;}));
       if(!_formc)jobs.push(fetchBuf(FORMC,function(b){_formc=b;}));
@@ -78,10 +80,18 @@
         header:{ year:data.year||'', jusho:h.jusho, jigyosho:h.jigyosho, gyoshu:h.gyoshu, yago:h.yago,
                  furigana:h.furigana, shimei:h.shimei, tel_home:(h.tel_home||h.tel_office||''), kanyu:h.kanyu } });
       window.AoiroFill.fillPage(cdoc.getPages()[_mapc1.page], cfont, _mapc1, cr.amounts, cr.header, color);
+      // ---- 収支内訳書2枚目（氏名・減価償却・利子割引料/地代家賃の内訳） ----
+      var p2h={ shimei:h.shimei };
+      var p3=data.p3||{};
+      Object.keys(p3).forEach(function(k){ if(k.charAt(0)==='d') p2h[k]=p3[k]; });
+      // 本年分の償却費合計＝普通償却費（特別償却なし）として複製
+      for(var i=0;i<6;i++){ if(p3['d'+i+'_shokyaku']) p2h['d'+i+'_goukei']=p3['d'+i+'_shokyaku']; }
+      var s2=data.shushi2||{};
+      Object.keys(s2).forEach(function(k){ p2h[k]=s2[k]; });
+      window.AoiroFill.fillPage(cdoc.getPages()[_mapc2.page], cfont, _mapc2, {}, p2h, color);
       // ---- 申告書（事業所得＝収支内訳書 G39、収入＝G05） ----
       var sb=await buildShinkoku(P,color,data,cr.amounts.G39,cr.amounts.G05); sr=sb.sr;
-      // 収支内訳書は1枚目（収入・経費・所得）のみ出力（2枚目の明細は未対応）
-      (await out.copyPages(cdoc, [0])).forEach(function(p){ out.addPage(p); });
+      (await out.copyPages(cdoc, [0,1])).forEach(function(p){ out.addPage(p); });
       (await out.copyPages(sb.doc, sb.doc.getPageIndices())).forEach(function(p){ out.addPage(p); });
     } else {
       // ---- 青色：決算書（4枚） ----

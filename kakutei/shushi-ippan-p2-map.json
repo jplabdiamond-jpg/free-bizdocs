@@ -1,0 +1,512 @@
+{
+ "page": 1,
+ "w": 842,
+ "h": 595,
+ "amounts": {},
+ "header": {
+  "shimei": {
+   "x": 200,
+   "baseTop": 27,
+   "size": 10,
+   "align": "L",
+   "maxW": 150
+  },
+  "d0_name": {
+   "x": 44,
+   "baseTop": 327.5,
+   "align": "L",
+   "size": 8,
+   "maxW": 64
+  },
+  "d0_shutoku": {
+   "x": 280,
+   "baseTop": 322.5,
+   "align": "R",
+   "size": 8.5,
+   "maxW": 84
+  },
+  "d0_method": {
+   "x": 359,
+   "baseTop": 327.5,
+   "align": "C",
+   "size": 7.5,
+   "maxW": 24
+  },
+  "d0_years": {
+   "x": 389,
+   "baseTop": 327.5,
+   "align": "C",
+   "size": 7.5,
+   "maxW": 28
+  },
+  "d0_shokyaku": {
+   "x": 531,
+   "baseTop": 327.5,
+   "align": "R",
+   "size": 8.5,
+   "maxW": 54
+  },
+  "d0_goukei": {
+   "x": 634,
+   "baseTop": 327.5,
+   "align": "R",
+   "size": 8.5,
+   "maxW": 54
+  },
+  "d0_ratio": {
+   "x": 658,
+   "baseTop": 327.5,
+   "align": "R",
+   "size": 8,
+   "maxW": 20
+  },
+  "d0_hitsuyo": {
+   "x": 718,
+   "baseTop": 327.5,
+   "align": "R",
+   "size": 8.5,
+   "maxW": 54
+  },
+  "d0_zan": {
+   "x": 773,
+   "baseTop": 327.5,
+   "align": "R",
+   "size": 8.5,
+   "maxW": 50
+  },
+  "d1_name": {
+   "x": 44,
+   "baseTop": 348.6,
+   "align": "L",
+   "size": 8,
+   "maxW": 64
+  },
+  "d1_shutoku": {
+   "x": 280,
+   "baseTop": 343.6,
+   "align": "R",
+   "size": 8.5,
+   "maxW": 84
+  },
+  "d1_method": {
+   "x": 359,
+   "baseTop": 348.6,
+   "align": "C",
+   "size": 7.5,
+   "maxW": 24
+  },
+  "d1_years": {
+   "x": 389,
+   "baseTop": 348.6,
+   "align": "C",
+   "size": 7.5,
+   "maxW": 28
+  },
+  "d1_shokyaku": {
+   "x": 531,
+   "baseTop": 348.6,
+   "align": "R",
+   "size": 8.5,
+   "maxW": 54
+  },
+  "d1_goukei": {
+   "x": 634,
+   "baseTop": 348.6,
+   "align": "R",
+   "size": 8.5,
+   "maxW": 54
+  },
+  "d1_ratio": {
+   "x": 658,
+   "baseTop": 348.6,
+   "align": "R",
+   "size": 8,
+   "maxW": 20
+  },
+  "d1_hitsuyo": {
+   "x": 718,
+   "baseTop": 348.6,
+   "align": "R",
+   "size": 8.5,
+   "maxW": 54
+  },
+  "d1_zan": {
+   "x": 773,
+   "baseTop": 348.6,
+   "align": "R",
+   "size": 8.5,
+   "maxW": 50
+  },
+  "d2_name": {
+   "x": 44,
+   "baseTop": 368.8,
+   "align": "L",
+   "size": 8,
+   "maxW": 64
+  },
+  "d2_shutoku": {
+   "x": 280,
+   "baseTop": 363.8,
+   "align": "R",
+   "size": 8.5,
+   "maxW": 84
+  },
+  "d2_method": {
+   "x": 359,
+   "baseTop": 368.8,
+   "align": "C",
+   "size": 7.5,
+   "maxW": 24
+  },
+  "d2_years": {
+   "x": 389,
+   "baseTop": 368.8,
+   "align": "C",
+   "size": 7.5,
+   "maxW": 28
+  },
+  "d2_shokyaku": {
+   "x": 531,
+   "baseTop": 368.8,
+   "align": "R",
+   "size": 8.5,
+   "maxW": 54
+  },
+  "d2_goukei": {
+   "x": 634,
+   "baseTop": 368.8,
+   "align": "R",
+   "size": 8.5,
+   "maxW": 54
+  },
+  "d2_ratio": {
+   "x": 658,
+   "baseTop": 368.8,
+   "align": "R",
+   "size": 8,
+   "maxW": 20
+  },
+  "d2_hitsuyo": {
+   "x": 718,
+   "baseTop": 368.8,
+   "align": "R",
+   "size": 8.5,
+   "maxW": 54
+  },
+  "d2_zan": {
+   "x": 773,
+   "baseTop": 368.8,
+   "align": "R",
+   "size": 8.5,
+   "maxW": 50
+  },
+  "d3_name": {
+   "x": 44,
+   "baseTop": 389.9,
+   "align": "L",
+   "size": 8,
+   "maxW": 64
+  },
+  "d3_shutoku": {
+   "x": 280,
+   "baseTop": 384.9,
+   "align": "R",
+   "size": 8.5,
+   "maxW": 84
+  },
+  "d3_method": {
+   "x": 359,
+   "baseTop": 389.9,
+   "align": "C",
+   "size": 7.5,
+   "maxW": 24
+  },
+  "d3_years": {
+   "x": 389,
+   "baseTop": 389.9,
+   "align": "C",
+   "size": 7.5,
+   "maxW": 28
+  },
+  "d3_shokyaku": {
+   "x": 531,
+   "baseTop": 389.9,
+   "align": "R",
+   "size": 8.5,
+   "maxW": 54
+  },
+  "d3_goukei": {
+   "x": 634,
+   "baseTop": 389.9,
+   "align": "R",
+   "size": 8.5,
+   "maxW": 54
+  },
+  "d3_ratio": {
+   "x": 658,
+   "baseTop": 389.9,
+   "align": "R",
+   "size": 8,
+   "maxW": 20
+  },
+  "d3_hitsuyo": {
+   "x": 718,
+   "baseTop": 389.9,
+   "align": "R",
+   "size": 8.5,
+   "maxW": 54
+  },
+  "d3_zan": {
+   "x": 773,
+   "baseTop": 389.9,
+   "align": "R",
+   "size": 8.5,
+   "maxW": 50
+  },
+  "d4_name": {
+   "x": 44,
+   "baseTop": 411.1,
+   "align": "L",
+   "size": 8,
+   "maxW": 64
+  },
+  "d4_shutoku": {
+   "x": 280,
+   "baseTop": 406.1,
+   "align": "R",
+   "size": 8.5,
+   "maxW": 84
+  },
+  "d4_method": {
+   "x": 359,
+   "baseTop": 411.1,
+   "align": "C",
+   "size": 7.5,
+   "maxW": 24
+  },
+  "d4_years": {
+   "x": 389,
+   "baseTop": 411.1,
+   "align": "C",
+   "size": 7.5,
+   "maxW": 28
+  },
+  "d4_shokyaku": {
+   "x": 531,
+   "baseTop": 411.1,
+   "align": "R",
+   "size": 8.5,
+   "maxW": 54
+  },
+  "d4_goukei": {
+   "x": 634,
+   "baseTop": 411.1,
+   "align": "R",
+   "size": 8.5,
+   "maxW": 54
+  },
+  "d4_ratio": {
+   "x": 658,
+   "baseTop": 411.1,
+   "align": "R",
+   "size": 8,
+   "maxW": 20
+  },
+  "d4_hitsuyo": {
+   "x": 718,
+   "baseTop": 411.1,
+   "align": "R",
+   "size": 8.5,
+   "maxW": 54
+  },
+  "d4_zan": {
+   "x": 773,
+   "baseTop": 411.1,
+   "align": "R",
+   "size": 8.5,
+   "maxW": 50
+  },
+  "d5_name": {
+   "x": 44,
+   "baseTop": 432.8,
+   "align": "L",
+   "size": 8,
+   "maxW": 64
+  },
+  "d5_shutoku": {
+   "x": 280,
+   "baseTop": 427.8,
+   "align": "R",
+   "size": 8.5,
+   "maxW": 84
+  },
+  "d5_method": {
+   "x": 359,
+   "baseTop": 432.8,
+   "align": "C",
+   "size": 7.5,
+   "maxW": 24
+  },
+  "d5_years": {
+   "x": 389,
+   "baseTop": 432.8,
+   "align": "C",
+   "size": 7.5,
+   "maxW": 28
+  },
+  "d5_shokyaku": {
+   "x": 531,
+   "baseTop": 432.8,
+   "align": "R",
+   "size": 8.5,
+   "maxW": 54
+  },
+  "d5_goukei": {
+   "x": 634,
+   "baseTop": 432.8,
+   "align": "R",
+   "size": 8.5,
+   "maxW": 54
+  },
+  "d5_ratio": {
+   "x": 658,
+   "baseTop": 432.8,
+   "align": "R",
+   "size": 8,
+   "maxW": 20
+  },
+  "d5_hitsuyo": {
+   "x": 718,
+   "baseTop": 432.8,
+   "align": "R",
+   "size": 8.5,
+   "maxW": 54
+  },
+  "d5_zan": {
+   "x": 773,
+   "baseTop": 432.8,
+   "align": "R",
+   "size": 8.5,
+   "maxW": 50
+  },
+  "d_total": {
+   "x": 718,
+   "baseTop": 450,
+   "align": "R",
+   "size": 8.5,
+   "maxW": 54
+  },
+  "j0_payee": {
+   "x": 522,
+   "baseTop": 531,
+   "align": "L",
+   "size": 7.5,
+   "maxW": 84
+  },
+  "j0_bukken": {
+   "x": 614,
+   "baseTop": 531,
+   "align": "L",
+   "size": 7.5,
+   "maxW": 64
+  },
+  "j0_rent": {
+   "x": 750,
+   "baseTop": 531,
+   "align": "R",
+   "size": 8,
+   "maxW": 68
+  },
+  "j0_keihi": {
+   "x": 822,
+   "baseTop": 531,
+   "align": "R",
+   "size": 8,
+   "maxW": 68
+  },
+  "j1_payee": {
+   "x": 522,
+   "baseTop": 562,
+   "align": "L",
+   "size": 7.5,
+   "maxW": 84
+  },
+  "j1_bukken": {
+   "x": 614,
+   "baseTop": 562,
+   "align": "L",
+   "size": 7.5,
+   "maxW": 64
+  },
+  "j1_rent": {
+   "x": 750,
+   "baseTop": 562,
+   "align": "R",
+   "size": 8,
+   "maxW": 68
+  },
+  "j1_keihi": {
+   "x": 822,
+   "baseTop": 562,
+   "align": "R",
+   "size": 8,
+   "maxW": 68
+  },
+  "r0_payee": {
+   "x": 30,
+   "baseTop": 516,
+   "align": "L",
+   "size": 7.5,
+   "maxW": 178
+  },
+  "r0_zan": {
+   "x": 278,
+   "baseTop": 516,
+   "align": "R",
+   "size": 8,
+   "maxW": 64
+  },
+  "r0_risi": {
+   "x": 347,
+   "baseTop": 516,
+   "align": "R",
+   "size": 8,
+   "maxW": 64
+  },
+  "r0_keihi": {
+   "x": 417,
+   "baseTop": 516,
+   "align": "R",
+   "size": 8,
+   "maxW": 64
+  },
+  "r1_payee": {
+   "x": 30,
+   "baseTop": 548,
+   "align": "L",
+   "size": 7.5,
+   "maxW": 178
+  },
+  "r1_zan": {
+   "x": 278,
+   "baseTop": 548,
+   "align": "R",
+   "size": 8,
+   "maxW": 64
+  },
+  "r1_risi": {
+   "x": 347,
+   "baseTop": 548,
+   "align": "R",
+   "size": 8,
+   "maxW": 64
+  },
+  "r1_keihi": {
+   "x": 417,
+   "baseTop": 548,
+   "align": "R",
+   "size": 8,
+   "maxW": 64
+  }
+ }
+}
