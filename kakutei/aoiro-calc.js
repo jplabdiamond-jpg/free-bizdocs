@@ -121,6 +121,37 @@
     opt=opt||{};
     return N(opt.ippan)*380000 + N(opt.tokutei)*630000 + N(opt.rojin)*480000 + N(opt.doukyo)*580000;
   }
+  // 申告書第三表（分離課税用）：主要な分離所得の税額を計算し、第一表㉛へ合算
+  // soogoAll=総合課税の合計(第一表⑫/G50)、kojoKei=所得控除(第一表㉙/G64)
+  function calcDai3(bunri, soogoAll, kojoKei){
+    bunri=bunri||{}; var a={};
+    var tanki=N(bunri.tanki), chouki=N(bunri.chouki);
+    var ippanKabu=N(bunri.ippan_kabu), jojoKabu=N(bunri.jojo_kabu);
+    var haito=N(bunri.haito), sakimono=N(bunri.sakimono);
+    var kabuAll=ippanKabu+jojoKabu;
+    // 所得金額
+    a.G30=tanki; a.G32=chouki; a.G35=ippanKabu; a.G36=jojoKabu; a.G37=haito; a.G38=sakimono;
+    a.G41=soogoAll; a.G42=kojoKei;                // ⑫総合合計・㉙所得控除
+    function fl(n){return Math.floor(Math.max(0,n)/1000)*1000;}
+    var rem=Math.max(0, kojoKei-soogoAll);        // 総合で使い切れなかった所得控除を分離へ充当
+    function ap(inc){ var k=Math.max(0,inc-rem); rem=Math.max(0,rem-inc); return k; }
+    a.G43=fl(Math.max(0, soogoAll-kojoKei));      // 総合課税分の課税所得（第一表㉚と同じ）
+    a.G44=fl(ap(tanki));                          // 短期譲渡
+    a.G45=fl(ap(chouki));                         // 長期譲渡
+    a.G46=fl(ap(kabuAll));                        // 株式等譲渡
+    a.G47=fl(ap(haito));                          // 上場配当
+    a.G48=fl(ap(sakimono));                       // 先物取引
+    a.G51=incomeTax(a.G43);                       // 総合分の税額
+    a.G52=Math.floor(a.G44*0.30);                 // 短期譲渡30%
+    a.G53=Math.floor(a.G45*0.15);                 // 長期譲渡15%
+    a.G54=Math.floor(a.G46*0.15);                 // 株式等15%
+    a.G55=Math.floor(a.G47*0.15);                 // 上場配当15%
+    a.G56=Math.floor(a.G48*0.15);                 // 先物15%
+    a.G59=a.G51+a.G52+a.G53+a.G54+a.G55+a.G56;    // 93＝第一表㉛へ転記
+    a.G67=N(bunri.jojo_genzen);                   // 上場株式等の源泉徴収税額
+    var has=(tanki+chouki+kabuAll+haito+sakimono)>0;
+    return {amounts:a, total:a.G59, genzen:a.G67, has:has};
+  }
   function calcShinkoku(d){
     d=d||{}; var a={};
     var jigyo=N(d.jigyo);                       // 事業所得（決算書 G45）
@@ -143,8 +174,10 @@
     var kazei=Math.max(0, gokei-kojoKei);
     kazei=Math.floor(kazei/1000)*1000;           // 課税所得（1000円未満切捨て）
     a.G65=kazei;                                 // 課税される所得金額（㉚）
-    var zei=incomeTax(kazei);
-    a.G66=zei;                                   // 上の㉚に対する税額（㉛）
+    // 分離課税（第三表）：該当があれば㉛税額を第三表93に差し替え
+    var d3=calcDai3(d.bunri, gokei, kojoKei);
+    var zei = d3.has ? d3.total : incomeTax(kazei);
+    a.G66=zei;                                   // 上の㉚に対する税額 又は第三表の93（㉛）
     var haitou=N(d.haitou_kojo), jutaku=N(d.jutaku_kojo); // 配当控除㉜・住宅借入金等特別控除㉞
     a.G67=haitou; a.G69=jutaku;
     var zei2=Math.max(0, zei-haitou-jutaku);
@@ -155,13 +188,13 @@
     a.G75=fukko;                                 // 復興特別所得税額（㊹）
     var goukei=zei+fukko;
     a.G76=goukei;                                // 所得税及び復興特別所得税の額（㊺）
-    var genzen=N(d.genzen);
-    a.G78=genzen;                                // 源泉徴収税額（㊽）
+    var genzen=N(d.genzen)+d3.genzen;            // 源泉徴収税額（㊽）＝給与等＋上場株式等の源泉
+    a.G78=genzen;
     var nouzei=goukei-genzen;                    // 申告納税額（㊾）
     a.G79=Math.abs(nouzei);                      // セルには絶対値（符号は注記で案内）
     var dai3=(nouzei>0)?Math.floor(nouzei/100)*100:0;
     a.G81=dai3;                                  // 第3期分の税額 納める税金（㊿）
-    return {amounts:a, kanpu:(nouzei<0?-nouzei:0), nouzei:nouzei, kazei:kazei, kojoKei:kojoKei, gokei:gokei};
+    return {amounts:a, kanpu:(nouzei<0?-nouzei:0), nouzei:nouzei, kazei:kazei, kojoKei:kojoKei, gokei:gokei, dai3:d3};
   }
   // 白色申告 収支内訳書(一般用) 1枚目：収入・売上原価・経費・専従者控除→所得金額
   // 決算書の経費コード → 収支内訳書の経費コード（同じ科目名で対応づけ）
@@ -197,5 +230,5 @@
     a.G39=a.G37-a.G38;                                      // 所得金額
     return {amounts:a, header:(d.header||{}), senjuCap:(sn>0?Math.floor(Math.max(0,a.G37)/(sn+1)):0)};
   }
-  return {calc:calc, calcP2:calcP2, calcP4:calcP4, calcShinkoku:calcShinkoku, calcShushi:calcShushi, EXPENSES:EXPENSES};
+  return {calc:calc, calcP2:calcP2, calcP4:calcP4, calcShinkoku:calcShinkoku, calcShushi:calcShushi, calcDai3:calcDai3, EXPENSES:EXPENSES};
 }));

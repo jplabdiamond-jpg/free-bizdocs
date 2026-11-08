@@ -51,6 +51,15 @@
  .ka-modesel label input{margin-right:7px}
  .ka-modesel label b{font-size:14px;color:#13314f}
  .ka-modesel label span{display:block;margin-top:3px;font-size:11.5px;color:#5a6b7d;padding-left:22px}
+ .ka-bunri{margin:10px 0 2px;border:1px solid #d7e0ee;border-radius:10px;overflow:hidden}
+ .ka-bunri>summary{cursor:pointer;padding:11px 14px;background:#f3f8ff;color:#1766e6;font-size:13px;font-weight:700;list-style:none}
+ .ka-bunri>summary::-webkit-details-marker{display:none}
+ .ka-bunri>summary::before{content:'▸ ';font-size:11px}
+ .ka-bunri[open]>summary::before{content:'▾ '}
+ .ka-bunri[open]>summary{border-bottom:1px solid #d7e0ee}
+ .ka-bunri>div,.ka-bunri>.ka-f{margin-left:14px;margin-right:14px}
+ .ka-bunri>.ka-p2hint{margin-top:10px}
+ .ka-bunri>.ka-f:first-of-type{margin-top:8px}
  .ka-btns{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0 2px}
  .ka-btn{appearance:none;border:none;border-radius:11px;padding:12px 20px;font-size:14.5px;font-weight:800;cursor:pointer}
  .ka-btn.p{background:#1766e6;color:#fff}
@@ -228,6 +237,17 @@
     <div class="ka-f ka-num"><label>源泉徴収税額<span class="ka-q" tabindex="0" data-tip="報酬などからあらかじめ天引きされた所得税の合計額。支払調書などで確認できます。納める税額から差し引かれます。">?</span></label><input id="f_sk_genzen" inputmode="numeric" placeholder="0"></div>
     <div class="ka-f ka-num"><label>配当控除<span class="ka-q" tabindex="0" data-tip="総合課税を選んだ配当所得がある場合の税額控除。配当所得×10%（課税所得1000万円超の部分は5%）が目安。該当がなければ0。">?</span></label><input id="f_sk_haitou" inputmode="numeric" placeholder="0"></div>
     <div class="ka-f ka-num"><label>住宅ローン控除<span class="ka-q" tabindex="0" data-tip="住宅借入金等特別控除（住宅ローン控除）の金額。年末残高×控除率で計算した額を入力します。2年目以降は年末調整済みでも確定申告書には記載します。該当がなければ0。">?</span></label><input id="f_sk_jutaku" inputmode="numeric" placeholder="0"></div>
+    <details class="ka-bunri" id="ka-bunri"><summary>分離課税（株式・不動産の譲渡など）を申告する　＋申告書 第三表</summary>
+      <div class="ka-p2hint">株式の売却・配当（申告分離）、土地建物の譲渡、先物取引などの<b>所得金額</b>を入力すると、申告書 第三表を作成し、税額を第一表㉛に合算します。各所得は「収入−必要経費・取得費等」を差し引いた後の金額を入力してください。</div>
+      <div class="ka-f ka-num"><label>上場株式等の譲渡所得<span class="ka-q" tabindex="0" data-tip="証券口座での上場株式・ETF・投資信託などの売却益（申告分離課税）。税率15%（住民税5%は別）。特定口座(源泉あり)なら源泉徴収税額も下に入力。">?</span></label><input id="f_bn_jojo_kabu" inputmode="numeric" placeholder="0"></div>
+      <div class="ka-f ka-num"><label>上場株式等の配当所得<span class="ka-q" tabindex="0" data-tip="上場株式等の配当で申告分離課税を選んだ分の所得金額。税率15%。総合課税を選ぶ場合はここではなく配当控除欄で扱います。">?</span></label><input id="f_bn_haito" inputmode="numeric" placeholder="0"></div>
+      <div class="ka-f ka-num"><label>一般株式等の譲渡所得<span class="ka-q" tabindex="0" data-tip="非上場株式などの譲渡所得（申告分離課税）。税率15%。">?</span></label><input id="f_bn_ippan_kabu" inputmode="numeric" placeholder="0"></div>
+      <div class="ka-f ka-num"><label>先物取引の所得<span class="ka-q" tabindex="0" data-tip="先物取引・FX・オプション取引などの雑所得（申告分離課税）。税率15%。">?</span></label><input id="f_bn_sakimono" inputmode="numeric" placeholder="0"></div>
+      <div class="ka-f ka-num"><label>長期譲渡所得（土地建物）<span class="ka-q" tabindex="0" data-tip="所有期間5年超の土地・建物の譲渡所得（収入−取得費−譲渡費用−特別控除）。税率15%。">?</span></label><input id="f_bn_chouki" inputmode="numeric" placeholder="0"></div>
+      <div class="ka-f ka-num"><label>短期譲渡所得（土地建物）<span class="ka-q" tabindex="0" data-tip="所有期間5年以下の土地・建物の譲渡所得。税率30%。">?</span></label><input id="f_bn_tanki" inputmode="numeric" placeholder="0"></div>
+      <div class="ka-f ka-num"><label>上場株式等の源泉徴収税額<span class="ka-q" tabindex="0" data-tip="特定口座（源泉徴収あり）で既に天引きされた所得税額。納める税額から差し引かれます。該当がなければ0。">?</span></label><input id="f_bn_genzen" inputmode="numeric" placeholder="0"></div>
+      <div class="ka-hint">※ 山林所得・退職所得・住民税率は未対応です。復興特別所得税は全体に自動加算されます。</div>
+    </details>
     <div class="ka-tax" id="ka-tax"></div>
 
     <div class="ka-sum" id="ka-sum"></div>
@@ -270,9 +290,9 @@
   </div>
 </footer>
 
-<script src="/kakutei/aoiro-calc.js?v=20261108e"></script>
+<script src="/kakutei/aoiro-calc.js?v=20261109c"></script>
 <script src="/kakutei/aoiro-fill.js?v=20261108c"></script>
-<script src="/kakutei/aoiro.js?v=20261109b"></script>
+<script src="/kakutei/aoiro.js?v=20261109c"></script>
 <script src="/kakutei/expense-cats.js?v=20261106"></script>
 <script>
 (function(){
@@ -484,7 +504,10 @@
         haiguu:$('f_sk_haiguu').checked, haiguu_income:num('f_sk_haiguu_income'), haiguu_old:$('f_sk_haiguu_old').checked,
         fuyou_ippan:num('f_sk_fuyou_ippan'), fuyou_tokutei:num('f_sk_fuyou_tokutei'),
         fuyou_rojin:num('f_sk_fuyou_rojin'), fuyou_doukyo:num('f_sk_fuyou_doukyo'),
-        genzen:num('f_sk_genzen'), haitou_kojo:num('f_sk_haitou'), jutaku_kojo:num('f_sk_jutaku') }
+        genzen:num('f_sk_genzen'), haitou_kojo:num('f_sk_haitou'), jutaku_kojo:num('f_sk_jutaku'),
+        bunri:{ tanki:num('f_bn_tanki'), chouki:num('f_bn_chouki'), ippan_kabu:num('f_bn_ippan_kabu'),
+          jojo_kabu:num('f_bn_jojo_kabu'), haito:num('f_bn_haito'), sakimono:num('f_bn_sakimono'),
+          jojo_genzen:num('f_bn_genzen') } }
     };
   }
   var yen=function(n){return Number(n).toLocaleString('ja-JP')+' 円';};
@@ -522,10 +545,17 @@
       var sk=g.shinkoku||{};
       var sr=AoiroCalc.calcShinkoku(Object.assign({}, sk, { jigyo:jigyo, shunyu:shunyu }));
       var x=sr.amounts;
+      var d3=sr.dai3, bunri=!!(d3&&d3.has);
       var html=row(shiro?'事業所得（収支内訳書より）':'事業所得（決算書より）',x.G39)+
         row('所得控除 合計',x.G64)+
-        row('課税される所得金額',x.G65)+
-        row('所得税額',x.G66);
+        row(bunri?'課税所得（総合課税分）':'課税される所得金額',x.G65);
+      if(bunri){
+        html+=row('総合課税分の税額',d3.amounts.G51)+
+          row('分離課税分の税額',d3.amounts.G59-d3.amounts.G51)+
+          row('所得税額（第三表93＝㉛）',x.G66);
+      } else {
+        html+=row('所得税額',x.G66);
+      }
       if((x.G67||0)+(x.G69||0)>0) html+=row('税額控除（配当・住宅ローン）',(x.G67||0)+(x.G69||0))+row('差引所得税額',x.G72);
       html+=row('復興特別所得税',x.G75)+
         row('所得税＋復興税',x.G76);
@@ -594,6 +624,8 @@
       await ensurePdfjs();
       var _old=_pdoc;
       _pdoc=await window.pdfjsLib.getDocument({data:bytes.slice(0),cMapUrl:'/vendor/cmaps/',cMapPacked:true,standardFontDataUrl:'/vendor/standard_fonts/'}).promise;
+      var _mode=(document.querySelector('input[name=ka-mode]:checked')||{}).value||'青色';
+      buildTabs(_mode, _pdoc.numPages);
       await renderPage();
       if(_old){ try{_old.destroy();}catch(e){} }
       s.textContent='最新の内容で更新しました';
@@ -631,12 +663,18 @@
     renderPage();
   });
   // 申告種別（青色／白色）によってタブ・入力欄・注記を切り替える
-  var TABS_AO=[['1 損益計算書'],['2 月別・給料'],['3 減価償却・地代'],['4 貸借対照表'],['5 申告書 第一表'],['6 申告書 第二表']];
-  var TABS_SH=[['1 収支内訳書'],['2 内訳（売上・減価償却）'],['3 申告書 第一表'],['4 申告書 第二表']];
-  function buildTabs(mode){
-    var t=(mode==='白色')?TABS_SH:TABS_AO, h='';
-    for(var i=0;i<t.length;i++) h+='<button type="button" data-p="'+i+'"'+(i===0?' class="on"':'')+'>'+t[i][0]+'</button>';
-    tabs.innerHTML=h; _pg=0;
+  var TABS_AO=['1 損益計算書','2 月別・給料','3 減価償却・地代','4 貸借対照表','5 申告書 第一表','6 申告書 第二表'];
+  var TABS_SH=['1 収支内訳書','2 内訳（売上・減価償却）','3 申告書 第一表','4 申告書 第二表'];
+  var _tabN=0;
+  function buildTabs(mode, nPages){
+    var base=(mode==='白色')?TABS_SH.slice():TABS_AO.slice();
+    if(nPages && nPages>base.length) base.push((base.length+1)+' 申告書 第三表');
+    if(base.length===_tabN && tabs.querySelectorAll('button').length===base.length) return; // 枚数不変なら作り直さない
+    _tabN=base.length;
+    if(_pg>=base.length) _pg=0;
+    var h='';
+    for(var i=0;i<base.length;i++) h+='<button type="button" data-p="'+i+'"'+(i===_pg?' class="on"':'')+'>'+base[i]+'</button>';
+    tabs.innerHTML=h;
   }
   function applyMode(){
     var mode=(document.querySelector('input[name=ka-mode]:checked')||{}).value||'青色';

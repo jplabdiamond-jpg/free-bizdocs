@@ -15,8 +15,10 @@
   var MAPS2='/kakutei/aoiro-shinkoku-p2-map.json?v=20261108';
   var MAPC1='/kakutei/shushi-ippan-p1-map.json?v=20261108';
   var MAPC2='/kakutei/shushi-ippan-p2-map.json?v=20261109b';
+  var FORMD='/kakutei/forms/aoiro-shinkoku-c-r05.pdf';
+  var MAPD='/kakutei/aoiro-shinkoku-c-map.json?v=20261109';
   var FONT='/fonts/noto-jp.ttf';
-  var _p, _font, _map, _map2, _map3, _map4, _maps1, _maps2, _mapc1, _mapc2, _form, _formb, _formc;
+  var _p, _font, _map, _map2, _map3, _map4, _maps1, _maps2, _mapc1, _mapc2, _mapd, _form, _formb, _formc, _formd;
   function loadScript(src){return new Promise(function(res,rej){
     var s=document.createElement('script'); s.src=src; s.onload=res; s.onerror=rej;
     document.head.appendChild(s);
@@ -38,9 +40,11 @@
       if(!_maps2)jobs.push(fetchJson(MAPS2,function(j){_maps2=j;}));
       if(!_mapc1)jobs.push(fetchJson(MAPC1,function(j){_mapc1=j;}));
       if(!_mapc2)jobs.push(fetchJson(MAPC2,function(j){_mapc2=j;}));
+      if(!_mapd) jobs.push(fetchJson(MAPD, function(j){_mapd=j;}));
       if(!_form) jobs.push(fetchBuf(FORM, function(b){_form=b;}));
       if(!_formb)jobs.push(fetchBuf(FORMB,function(b){_formb=b;}));
       if(!_formc)jobs.push(fetchBuf(FORMC,function(b){_formc=b;}));
+      if(!_formd)jobs.push(fetchBuf(FORMD,function(b){_formd=b;}));
       await Promise.all(jobs);
     })();
     return _p;
@@ -62,7 +66,16 @@
     if(Number(sk.seimei_pay||0)>0) sHead2.seimei_shin=yen(sk.seimei_pay);
     if(Number(sk.jishin_pay||0)>0) sHead2.jishin_amt=yen(sk.jishin_pay);
     window.AoiroFill.fillPage(sdoc.getPages()[_maps2.page], sfont, _maps2, {}, sHead2, color);
-    return {doc:sdoc, sr:sr};
+    // 第三表（分離課税）：該当があれば作成
+    var ddoc=null;
+    if(sr.dai3 && sr.dai3.has){
+      ddoc=await P.PDFDocument.load(_formd);
+      ddoc.registerFontkit(window.fontkit);
+      var dfont=await ddoc.embedFont(_font,{subset:false});
+      var dHead={ year:data.year||'', jusho:h.jusho, yago:h.yago, furigana:h.furigana, shimei:h.shimei };
+      window.AoiroFill.fillPage(ddoc.getPages()[_mapd.page], dfont, _mapd, sr.dai3.amounts, dHead, color);
+    }
+    return {doc:sdoc, sr:sr, dai3doc:ddoc};
   }
   async function buildPdf(data){
     await ready();
@@ -93,6 +106,7 @@
       var sb=await buildShinkoku(P,color,data,cr.amounts.G39,cr.amounts.G05); sr=sb.sr;
       (await out.copyPages(cdoc, [0,1])).forEach(function(p){ out.addPage(p); });
       (await out.copyPages(sb.doc, sb.doc.getPageIndices())).forEach(function(p){ out.addPage(p); });
+      if(sb.dai3doc){ (await out.copyPages(sb.dai3doc, [0])).forEach(function(p){ out.addPage(p); }); }
     } else {
       // ---- 青色：決算書（4枚） ----
       var doc=await P.PDFDocument.load(_form);
@@ -113,6 +127,7 @@
       var sb2=await buildShinkoku(P,color,data,r.amounts.G45,r.amounts.G01); sr=sb2.sr;
       (await out.copyPages(doc, doc.getPageIndices())).forEach(function(p){ out.addPage(p); });
       (await out.copyPages(sb2.doc, sb2.doc.getPageIndices())).forEach(function(p){ out.addPage(p); });
+      if(sb2.dai3doc){ (await out.copyPages(sb2.dai3doc, [0])).forEach(function(p){ out.addPage(p); }); }
     }
     var bytes=await out.save();
     bytes.__sr=sr;
