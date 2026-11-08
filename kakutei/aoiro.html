@@ -115,7 +115,7 @@
   </div>
   <div class="ka-note">
     このツールは<b>申告書類の「記入補助」</b>です。入力内容の正確性はご自身でご確認ください。出力したPDFは<b>印刷して郵送提出</b>できます（e-Tax送信には対応していません）。<br>
-    現在は<b>損益計算書（1枚目）</b>に対応。55万円・65万円控除に必要な<b>貸借対照表（4枚目）</b>は準備中のため、確実に受けられるのは<b>10万円控除</b>です。
+    決算書は<b>1枚目（損益計算書）〜4枚目（貸借対照表）</b>に対応し、<b>10万円・55万円・65万円控除</b>いずれの様式も作成できます（65万円控除はe-Tax送信または電子帳簿保存が別途必要）。各ページは下部の該当セクションで入力できます。
   </div>
 </div>
 
@@ -165,6 +165,9 @@
     <div class="ka-sec">減価償却費の計算（3枚目・任意）<span class="ka-q" tabindex="0" data-tip="決算書3枚目。10万円以上の資産を耐用年数で按分した本年分の償却費を資産ごとに記入します。本ツールは計算補助のため、償却費は国税庁の「決算の手引き」等で計算した額を入力してください。必要経費算入額の計は1枚目の減価償却費と一致させます。">?</span></div>
     <div id="ka-p3"></div>
 
+    <div class="ka-sec">貸借対照表（4枚目・55/65万円控除用）<span class="ka-q" tabindex="0" data-tip="決算書4枚目。55万円・65万円の青色申告特別控除を受けるには貸借対照表が必要です。資産・負債・資本の期首（1/1）と期末（12/31）の残高を記入します。青色申告特別控除前の所得金額（期末）は1枚目から自動で入ります。資産合計と負債・資本合計は一致している必要があります。">?</span></div>
+    <div id="ka-p4"></div>
+
     <div class="ka-sum" id="ka-sum"></div>
     <div class="ka-btns">
       <button class="ka-btn p" id="ka-make">プレビュー / PDF作成</button>
@@ -203,9 +206,9 @@
   </div>
 </footer>
 
-<script src="/kakutei/aoiro-calc.js?v=20261107b"></script>
+<script src="/kakutei/aoiro-calc.js?v=20261108b"></script>
 <script src="/kakutei/aoiro-fill.js?v=20261105"></script>
-<script src="/kakutei/aoiro.js?v=20261108"></script>
+<script src="/kakutei/aoiro.js?v=20261108b"></script>
 <script src="/kakutei/expense-cats.js?v=20261106"></script>
 <script>
 (function(){
@@ -311,6 +314,34 @@
     return h;
   }
 
+  // 4枚目：貸借対照表テーブルを生成
+  var P4A=[['現金','G01','G25'],['当座預金','G02','G26'],['定期預金','G03','G27'],['その他の預金','G04','G28'],['受取手形','G05','G29'],['売掛金','G06','G30'],['有価証券','G07','G31'],['棚卸資産','G08','G32'],['前払金','G09','G33'],['貸付金','G10','G34'],['建物','G11','G35'],['建物附属設備','G12','G36'],['機械装置','G13','G37'],['車両運搬具','G14','G38'],['工具器具備品','G15','G39'],['土地','G16','G40'],['事業主貸','','G48']];
+  var P4L=[['支払手形','G50','G73'],['買掛金','G51','G74'],['借入金','G52','G75'],['未払金','G53','G76'],['前受金','G54','G77'],['預り金','G55','G78'],['貸倒引当金','G63','G86'],['事業主借','','G94'],['元入金','G71','G95']];
+  (function(){
+    var box=$('ka-p4'); if(!box) return;
+    function cell(code){ return code? '<td><input id="b_'+code+'" class="n" inputmode="numeric" style="width:100%"></td>' : '<td class="x"></td>'; }
+    function tbl(title,rows,fid,eid){
+      var h='<div style="font-size:12px;font-weight:800;color:#13314f;margin:8px 0 3px">'+title+'</div>'
+        +'<table class="ka-p2t"><thead><tr><th style="text-align:left">科目</th><th>期首</th><th>期末</th></tr></thead><tbody>';
+      rows.forEach(function(r){ h+='<tr><td class="mm" style="text-align:left">'+r[0]+'</td>'+cell(r[1])+cell(r[2])+'</tr>'; });
+      h+='<tr class="tot"><td class="mm" style="text-align:left">合計</td><td id="'+fid+'">0</td><td id="'+eid+'">0</td></tr></tbody></table>';
+      return h;
+    }
+    box.innerHTML='<div class="ka-p2hint">55/65万円控除に必要。期首（1/1）・期末（12/31）の残高を記入します。「青色申告特別控除前の所得金額（期末）」は1枚目から自動反映。資産合計＝負債・資本合計になるように調整してください。</div>'
+      +tbl('資産の部',P4A,'p4af','p4al')
+      +tbl('負債・資本の部',P4L,'p4lf','p4ll')
+      +'<div style="display:flex;justify-content:space-between;font-size:12px;margin-top:4px"><span style="color:#5a6b7d">青色申告特別控除前の所得金額（期末・自動）</span><span id="p4inc" style="font-variant-numeric:tabular-nums;font-weight:700">0</span></div>'
+      +'<div id="p4bal" style="font-size:12px;margin-top:6px;padding:7px 10px;border-radius:8px"></div>';
+  })();
+  function gatherP4(){
+    var p4={};
+    P4A.concat(P4L).forEach(function(r){
+      if(r[1]) p4[r[1]]=num('b_'+r[1]);
+      if(r[2]) p4[r[2]]=num('b_'+r[2]);
+    });
+    return p4;
+  }
+
   function gather(){
     var exp={};
     AoiroCalc.EXPENSES.forEach(function(e){exp[e[0]]=num('e_'+e[0]);});
@@ -320,7 +351,7 @@
         tel_home:val('f_tel_home'),tel_office:val('f_tel_office'),kanyu:val('f_kanyu'),
         zei_name:val('f_zei_name'),zei_tel:val('f_zei_tel'),zei_jusho:val('f_zei_jusho')},
       uriage:num('f_uriage'),kisho:num('f_kisho'),shiire:num('f_shiire'),kimatsu:num('f_kimatsu'),
-      exp:exp, kojo:num('f_kojo'), p2:gatherP2(), p3:gatherP3()
+      exp:exp, kojo:num('f_kojo'), p2:gatherP2(), p3:gatherP3(), p4:gatherP4()
     };
   }
   var yen=function(n){return Number(n).toLocaleString('ja-JP')+' 円';};
@@ -338,6 +369,17 @@
     if(tu) tu.textContent=Number(p2.G15).toLocaleString('ja-JP');
     if(ts) ts.textContent=Number(p2.G29).toLocaleString('ja-JP');
     var p3t=$('p3tot'); if(p3t) p3t.textContent=Number(gatherP3().__total||0).toLocaleString('ja-JP');
+    // 貸借対照表の合計・残高チェック
+    if($('p4af')){
+      var b=AoiroCalc.calcP4(gatherP4(), a.G43), jy=function(n){return Number(n).toLocaleString('ja-JP');};
+      $('p4af').textContent=jy(b.G24); $('p4al').textContent=jy(b.G49);
+      $('p4lf').textContent=jy(b.G72); $('p4ll').textContent=jy(b.G97);
+      $('p4inc').textContent=jy(b.G96);
+      var bal=$('p4bal'), okF=(b.G24===b.G72), okE=(b.G49===b.G97), any=(b.G24||b.G49||b.G72||b.G97);
+      if(!any){ bal.textContent=''; bal.style.cssText='font-size:12px;margin-top:6px'; }
+      else if(okF&&okE){ bal.textContent='✓ 貸借が一致しています（期首・期末とも）'; bal.style.cssText='font-size:12px;margin-top:6px;padding:7px 10px;border-radius:8px;background:#e8f6ee;color:#1a7f46;font-weight:700'; }
+      else{ bal.textContent='⚠ 資産合計と負債・資本合計が一致していません（期首 '+jy(b.G24)+' / '+jy(b.G72)+'、期末 '+jy(b.G49)+' / '+jy(b.G97)+'）'; bal.style.cssText='font-size:12px;margin-top:6px;padding:7px 10px;border-radius:8px;background:#fdecea;color:#b23a2c;font-weight:700'; }
+    }
   }
   // --- PDF.js でプレビューを1ページずつ大きく描画 ---
   var _pdfjsP=null;

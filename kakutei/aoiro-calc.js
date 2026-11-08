@@ -50,5 +50,24 @@
     a.G30=N(p2.keigenShi);                                                             // うち軽減税率対象(仕入)
     return a;
   }
-  return {calc:calc, calcP2:calcP2, EXPENSES:EXPENSES};
+  // 4枚目：貸借対照表（資産負債調）。p4={code:値}、g43=青色申告特別控除前の所得金額
+  var P4={
+    assetFirst:['G01','G02','G03','G04','G05','G06','G07','G08','G09','G10','G11','G12','G13','G14','G15','G16'],
+    assetLast :['G25','G26','G27','G28','G29','G30','G31','G32','G33','G34','G35','G36','G37','G38','G39','G40'],
+    liabFirst :['G50','G51','G52','G53','G54','G55','G63'],
+    liabLast  :['G73','G74','G75','G76','G77','G78','G86']
+  };
+  function calcP4(p4, g43){
+    p4=p4||{}; var a={};
+    var all=P4.assetFirst.concat(P4.assetLast,P4.liabFirst,P4.liabLast,['G48','G71','G94','G95']);
+    all.forEach(function(c){ a[c]=N(p4[c]); });
+    a.G96=N(g43);                                   // 青色申告特別控除前の所得金額（期末）
+    function sum(arr){var t=0;arr.forEach(function(c){t+=a[c]||0;});return t;}
+    a.G24=sum(P4.assetFirst);                        // 資産 期首合計
+    a.G49=sum(P4.assetLast)+a.G48;                   // 資産 期末合計（＋事業主貸）
+    a.G72=sum(P4.liabFirst)+a.G71;                   // 負債・資本 期首合計（＋元入金）
+    a.G97=sum(P4.liabLast)+a.G94+a.G95+a.G96;        // 負債・資本 期末合計（＋事業主借＋元入金＋所得）
+    return a;
+  }
+  return {calc:calc, calcP2:calcP2, calcP4:calcP4, EXPENSES:EXPENSES};
 }));

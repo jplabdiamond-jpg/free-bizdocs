@@ -7,8 +7,9 @@
   var MAP ='/kakutei/aoiro-ippan-map.json?v=20261107';
   var MAP2='/kakutei/aoiro-ippan-p2-map.json?v=20261107';
   var MAP3='/kakutei/aoiro-ippan-p3-map.json?v=20261108';
+  var MAP4='/kakutei/aoiro-ippan-p4-map.json?v=20261108';
   var FONT='/fonts/noto-jp.ttf';
-  var _p, _font, _map, _map2, _map3, _form;
+  var _p, _font, _map, _map2, _map3, _map4, _form;
   function loadScript(src){return new Promise(function(res,rej){
     var s=document.createElement('script'); s.src=src; s.onload=res; s.onerror=rej;
     document.head.appendChild(s);
@@ -23,6 +24,7 @@
       if(!_map)  jobs.push(fetch(MAP).then(function(r){return r.json();}).then(function(j){_map=j;}));
       if(!_map2) jobs.push(fetch(MAP2).then(function(r){return r.json();}).then(function(j){_map2=j;}));
       if(!_map3) jobs.push(fetch(MAP3).then(function(r){return r.json();}).then(function(j){_map3=j;}));
+      if(!_map4) jobs.push(fetch(MAP4).then(function(r){return r.json();}).then(function(j){_map4=j;}));
       if(!_form) jobs.push(fetch(FORM).then(function(r){return r.arrayBuffer();}).then(function(b){_form=b;}));
       await Promise.all(jobs);
     })();
@@ -46,6 +48,11 @@
     // 3枚目：減価償却費の計算（データはフォーマット済み文字列）
     if(_map3 && data.p3){
       window.AoiroFill.fillPage(doc.getPages()[_map3.page], font, _map3, {}, data.p3, color);
+    }
+    // 4枚目：貸借対照表
+    if(_map4 && data.p4){
+      var a4=window.AoiroCalc.calcP4(data.p4, r.amounts.G43);
+      window.AoiroFill.fillPage(doc.getPages()[_map4.page], font, _map4, a4, {}, color);
     }
     return await doc.save();
   }
