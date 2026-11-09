@@ -11,10 +11,10 @@
   var MAP2='/kakutei/aoiro-ippan-p2-map.json?v=20261107';
   var MAP3='/kakutei/aoiro-ippan-p3-map.json?v=20261108';
   var MAP4='/kakutei/aoiro-ippan-p4-map.json?v=20261108';
-  var MAPS1='/kakutei/aoiro-shinkoku-p1-map.json?v=20261108b';
+  var MAPS1='/kakutei/aoiro-shinkoku-p1-map.json?v=20261109d';
   var MAPS2='/kakutei/aoiro-shinkoku-p2-map.json?v=20261108';
   var MAPC1='/kakutei/shushi-ippan-p1-map.json?v=20261108';
-  var MAPC2='/kakutei/shushi-ippan-p2-map.json?v=20261109b';
+  var MAPC2='/kakutei/shushi-ippan-p2-map.json?v=20261109d';
   var FORMD='/kakutei/forms/aoiro-shinkoku-c-r05.pdf';
   var MAPD='/kakutei/aoiro-shinkoku-c-map.json?v=20261109';
   var FONT='/fonts/noto-jp.ttf';

@@ -127,6 +127,11 @@
    "rightX": 550,
    "baseTop": 276.9,
    "size": 8.5
+  },
+  "G61": {
+   "rightX": 289,
+   "baseTop": 704.7,
+   "size": 8.5
   }
  },
  "header": {

@@ -717,6 +717,69 @@
    "align": "R",
    "size": 8,
    "maxW": 48
+  },
+  "u0_toroku": {
+   "x": 358,
+   "baseTop": 47.8,
+   "align": "L",
+   "size": 7,
+   "maxW": 86
+  },
+  "u1_toroku": {
+   "x": 358,
+   "baseTop": 67.1,
+   "align": "L",
+   "size": 7,
+   "maxW": 86
+  },
+  "u2_toroku": {
+   "x": 358,
+   "baseTop": 86.3,
+   "align": "L",
+   "size": 7,
+   "maxW": 86
+  },
+  "u3_toroku": {
+   "x": 358,
+   "baseTop": 105.8,
+   "align": "L",
+   "size": 7,
+   "maxW": 86
+  },
+  "s0_toroku": {
+   "x": 358,
+   "baseTop": 172.4,
+   "align": "L",
+   "size": 7,
+   "maxW": 86
+  },
+  "s1_toroku": {
+   "x": 358,
+   "baseTop": 191.7,
+   "align": "L",
+   "size": 7,
+   "maxW": 86
+  },
+  "s2_toroku": {
+   "x": 358,
+   "baseTop": 210.9,
+   "align": "L",
+   "size": 7,
+   "maxW": 86
+  },
+  "s3_toroku": {
+   "x": 358,
+   "baseTop": 230.4,
+   "align": "L",
+   "size": 7,
+   "maxW": 86
+  },
+  "tokusou": {
+   "x": 570,
+   "baseTop": 197,
+   "align": "L",
+   "size": 8,
+   "maxW": 128
   }
  }
 }

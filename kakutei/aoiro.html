@@ -212,6 +212,7 @@
       <div class="ka-sec">利子割引料・地代家賃の内訳（収支内訳書2枚目・任意）<span class="ka-q" tabindex="0" data-tip="収支内訳書2枚目の内訳欄。支払先と金額を記入します。金額は1枚目の利子割引料・地代家賃と一致させてください。">?</span></div>
       <div id="ka-risi"></div>
       <div id="ka-jidai"></div>
+      <div id="ka-tokusou" style="margin-top:8px"></div>
     </div>
 
     <div class="ka-aoiro-only">
@@ -234,6 +235,7 @@
     <div class="ka-f ka-num"><label>特定扶養親族（19〜22歳）<span class="ka-q" tabindex="0" data-tip="19〜22歳の扶養親族の人数（1人63万円）。大学生の子などが該当します。">?</span></label><input id="f_sk_fuyou_tokutei" inputmode="numeric" placeholder="0"></div>
     <div class="ka-f ka-num"><label>老人扶養親族（70歳以上）<span class="ka-q" tabindex="0" data-tip="70歳以上の扶養親族の人数（1人48万円）。同居の老親等は下の欄に入れてください。">?</span></label><input id="f_sk_fuyou_rojin" inputmode="numeric" placeholder="0"></div>
     <div class="ka-f ka-num"><label>同居老親等（70歳以上）<span class="ka-q" tabindex="0" data-tip="同居している直系尊属（父母・祖父母など）で70歳以上の人数（1人58万円）。">?</span></label><input id="f_sk_fuyou_doukyo" inputmode="numeric" placeholder="0"></div>
+    <div class="ka-f ka-num"><label>雑損控除<span class="ka-q" tabindex="0" data-tip="災害・盗難・横領などで資産に損害を受けた場合の控除。(損失額−保険金等)−総所得×10% など国税庁の計算で求めた控除額を入力します。該当がなければ0。">?</span></label><input id="f_sk_zatsuson" inputmode="numeric" placeholder="0"></div>
     <div class="ka-f ka-num"><label>源泉徴収税額<span class="ka-q" tabindex="0" data-tip="報酬などからあらかじめ天引きされた所得税の合計額。支払調書などで確認できます。納める税額から差し引かれます。">?</span></label><input id="f_sk_genzen" inputmode="numeric" placeholder="0"></div>
     <div class="ka-f ka-num"><label>配当控除<span class="ka-q" tabindex="0" data-tip="総合課税を選んだ配当所得がある場合の税額控除。配当所得×10%（課税所得1000万円超の部分は5%）が目安。該当がなければ0。">?</span></label><input id="f_sk_haitou" inputmode="numeric" placeholder="0"></div>
     <div class="ka-f ka-num"><label>住宅ローン控除<span class="ka-q" tabindex="0" data-tip="住宅借入金等特別控除（住宅ローン控除）の金額。年末残高×控除率で計算した額を入力します。2年目以降は年末調整済みでも確定申告書には記載します。該当がなければ0。">?</span></label><input id="f_sk_jutaku" inputmode="numeric" placeholder="0"></div>
@@ -290,9 +292,9 @@
   </div>
 </footer>
 
-<script src="/kakutei/aoiro-calc.js?v=20261109c"></script>
+<script src="/kakutei/aoiro-calc.js?v=20261109d"></script>
 <script src="/kakutei/aoiro-fill.js?v=20261108c"></script>
-<script src="/kakutei/aoiro.js?v=20261109c"></script>
+<script src="/kakutei/aoiro.js?v=20261109d"></script>
 <script src="/kakutei/expense-cats.js?v=20261106"></script>
 <script>
 (function(){
@@ -433,13 +435,15 @@
       var rows='';
       for(var i=0;i<4;i++) rows+='<tr><td><input id="'+prefix+'_'+i+'_name" placeholder="'+nameph+'"></td>'
         +'<td><input id="'+prefix+'_'+i+'_addr" placeholder="所在地"></td>'
+        +'<td><input id="'+prefix+'_'+i+'_toroku" placeholder="T1234…(任意)"></td>'
         +'<td><input id="'+prefix+'_'+i+'_amt" class="n" inputmode="numeric" placeholder="0"></td></tr>';
-      box.innerHTML='<div class="ka-p3wrap"><table class="ka-p3t"><thead><tr><th>'+(prefix==='u'?'売上先':'仕入先')+'名</th><th>所在地</th><th>'+(prefix==='u'?'売上':'仕入')+'金額</th></tr></thead><tbody>'+rows+'</tbody></table></div>';
+      box.innerHTML='<div class="ka-p3wrap"><table class="ka-p3t"><thead><tr><th>'+(prefix==='u'?'売上先':'仕入先')+'名</th><th>所在地</th><th>登録番号</th><th>'+(prefix==='u'?'売上':'仕入')+'金額</th></tr></thead><tbody>'+rows+'</tbody></table></div>';
     }
     listTable($('ka-uriage-list'),'u','株式会社〇〇');
     listTable($('ka-shiire-list'),'s','〇〇商会');
-    var ul=$('ka-uriage-list'); if(ul) ul.insertAdjacentHTML('afterbegin','<div class="ka-p2hint">主な売上先。「計」は1枚目の売上と自動で一致し、記入分との差額が「上記以外の計」に入ります。</div>');
+    var ul=$('ka-uriage-list'); if(ul) ul.insertAdjacentHTML('afterbegin','<div class="ka-p2hint">主な売上先。「計」は1枚目の売上と自動で一致し、記入分との差額が「上記以外の計」に入ります。登録番号はインボイス登録番号（T＋13桁）。</div>');
     var sl=$('ka-shiire-list'); if(sl) sl.insertAdjacentHTML('afterbegin','<div class="ka-p2hint" style="margin-top:8px">主な仕入先。「計」は1枚目の仕入と自動で一致します。</div>');
+    var tk=$('ka-tokusou'); if(tk) tk.innerHTML='<div class="ka-f"><label>本年中における特殊事情<span class="ka-q" tabindex="0" data-tip="収支内訳書2枚目の「本年中における特殊事情」欄。開業・廃業・大きな変動の理由などを1行で記入します（任意）。">?</span></label><input id="f_tokusou" placeholder="例：令和6年4月に開業"></div>';
   })();
   // 収支内訳書2枚目：利子割引料・地代家賃の内訳テーブル（白色・任意）
   (function(){
@@ -475,13 +479,14 @@
     function detail(prefix, total){
       var listed=0, used=false;
       for(var i=0;i<4;i++){
-        var nm=val(prefix+'_'+i+'_name'), ad=val(prefix+'_'+i+'_addr'), am=num(prefix+'_'+i+'_amt');
-        if(nm||ad||am){ used=true; h[prefix+i+'_name']=nm; h[prefix+i+'_addr']=ad; h[prefix+i+'_amt']=fmtY2(am); listed+=am; }
+        var nm=val(prefix+'_'+i+'_name'), ad=val(prefix+'_'+i+'_addr'), tr=val(prefix+'_'+i+'_toroku'), am=num(prefix+'_'+i+'_amt');
+        if(nm||ad||tr||am){ used=true; h[prefix+i+'_name']=nm; h[prefix+i+'_addr']=ad; h[prefix+i+'_toroku']=tr; h[prefix+i+'_amt']=fmtY2(am); listed+=am; }
       }
       if(used){ h[prefix+'_total']=fmtY2(total); h[prefix+'_other']=fmtY2(Math.max(0,total-listed)); }
     }
     detail('u', num('f_uriage'));
     detail('s', num('f_shiire'));
+    var tok=val('f_tokusou'); if(tok) h.tokusou=tok;
     return h;
   }
 
@@ -504,6 +509,7 @@
         haiguu:$('f_sk_haiguu').checked, haiguu_income:num('f_sk_haiguu_income'), haiguu_old:$('f_sk_haiguu_old').checked,
         fuyou_ippan:num('f_sk_fuyou_ippan'), fuyou_tokutei:num('f_sk_fuyou_tokutei'),
         fuyou_rojin:num('f_sk_fuyou_rojin'), fuyou_doukyo:num('f_sk_fuyou_doukyo'),
+        zatsuson:num('f_sk_zatsuson'),
         genzen:num('f_sk_genzen'), haitou_kojo:num('f_sk_haitou'), jutaku_kojo:num('f_sk_jutaku'),
         bunri:{ tanki:num('f_bn_tanki'), chouki:num('f_bn_chouki'), ippan_kabu:num('f_bn_ippan_kabu'),
           jojo_kabu:num('f_bn_jojo_kabu'), haito:num('f_bn_haito'), sakimono:num('f_bn_sakimono'),

@@ -170,6 +170,9 @@
     a.G57=haiguu; a.G58=fuyou; a.G59=kiso;
     var kojoKei=shaho+shokibo+seimei+jishin+haiguu+fuyou+kiso;
     a.G60=kojoKei;                               // ⑬〜㉔の計（㉕）
+    var zatsuson=N(d.zatsuson);                  // 雑損控除（㉖）
+    a.G61=zatsuson;
+    kojoKei=kojoKei+zatsuson;                     // 所得控除の合計に雑損を加える
     a.G64=kojoKei;                               // 合計（㉙）
     var kazei=Math.max(0, gokei-kojoKei);
     kazei=Math.floor(kazei/1000)*1000;           // 課税所得（1000円未満切捨て）
