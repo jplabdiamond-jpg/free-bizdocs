@@ -152,6 +152,37 @@
     var has=(tanki+chouki+kabuAll+haito+sakimono)>0;
     return {amounts:a, total:a.G59, genzen:a.G67, has:has};
   }
+  // 個人住民税の概算（所得割10%＋均等割＋分離課税分）。住民税は所得税と控除額が異なる
+  function seimeiJuminKojo(pay){ pay=N(pay); if(pay<=0)return 0;
+    if(pay<=12000)return pay; if(pay<=32000)return Math.floor(pay*0.5+6000);
+    if(pay<=56000)return Math.floor(pay*0.25+14000); return 28000; }
+  function kisoJumin(gokei){ if(gokei<=24000000)return 430000; if(gokei<=24500000)return 290000; if(gokei<=25000000)return 150000; return 0; }
+  function haiguuJumin(opt, hon){ if(!opt||!opt.has)return 0; if(hon>10000000)return 0;
+    var t=(hon<=9000000)?0:(hon<=9500000?1:2), hi=N(opt.income), old=!!opt.old;
+    if(hi<=480000) return old?[380000,260000,130000][t]:[330000,220000,110000][t];
+    var tb=[[950000,[330000,220000,110000]],[1000000,[330000,220000,110000]],[1050000,[310000,210000,110000]],[1100000,[260000,180000,90000]],[1150000,[210000,140000,70000]],[1200000,[160000,110000,60000]],[1250000,[110000,80000,40000]],[1300000,[60000,40000,20000]],[1330000,[30000,20000,10000]]];
+    for(var i=0;i<tb.length;i++) if(hi<=tb[i][0]) return tb[i][1][t]; return 0; }
+  function fuyouJumin(o){ o=o||{}; return N(o.ippan)*330000+N(o.tokutei)*450000+N(o.rojin)*380000+N(o.doukyo)*450000; }
+  function calcJuminzei(d, gokei){
+    d=d||{};
+    var kojo=N(d.shaho)+N(d.shokibo)+seimeiJuminKojo(d.seimei_pay)+Math.min(N(d.jishin_pay),25000)
+      +haiguuJumin({has:d.haiguu,income:d.haiguu_income,old:d.haiguu_old},gokei)
+      +fuyouJumin({ippan:d.fuyou_ippan,tokutei:d.fuyou_tokutei,rojin:d.fuyou_rojin,doukyo:d.fuyou_doukyo})
+      +kisoJumin(gokei)+N(d.zatsuson);
+    var kazei=Math.max(0,gokei-kojo); kazei=Math.floor(kazei/1000)*1000;
+    var wari=Math.floor(kazei*0.10);
+    // 調整控除（人的控除差）
+    var jinteki=((gokei<=25000000)?50000:0)
+      +((d.haiguu&&gokei<=10000000&&N(d.haiguu_income)<=480000)?50000:0)
+      +N(d.fuyou_ippan)*50000+N(d.fuyou_tokutei)*180000+N(d.fuyou_rojin)*100000+N(d.fuyou_doukyo)*130000;
+    var chousei=(kazei<=2000000)?Math.floor(Math.min(jinteki,kazei)*0.05):Math.floor(Math.max(jinteki-(kazei-2000000),50000)*0.05);
+    wari=Math.max(0,wari-chousei);
+    var b=d.bunri||{};
+    var bunri=Math.floor(N(b.jojo_kabu)*0.05)+Math.floor(N(b.haito)*0.05)+Math.floor(N(b.ippan_kabu)*0.05)
+      +Math.floor(N(b.sakimono)*0.05)+Math.floor(N(b.chouki)*0.05)+Math.floor(N(b.tanki)*0.09);
+    var kintou=5000;
+    return {total:wari+bunri+kintou, shotokuwari:wari, bunriWari:bunri, kintou:kintou, kazei:kazei};
+  }
   function calcShinkoku(d){
     d=d||{}; var a={};
     var jigyo=N(d.jigyo);                       // 事業所得（決算書 G45）
@@ -233,5 +264,5 @@
     a.G39=a.G37-a.G38;                                      // 所得金額
     return {amounts:a, header:(d.header||{}), senjuCap:(sn>0?Math.floor(Math.max(0,a.G37)/(sn+1)):0)};
   }
-  return {calc:calc, calcP2:calcP2, calcP4:calcP4, calcShinkoku:calcShinkoku, calcShushi:calcShushi, calcDai3:calcDai3, EXPENSES:EXPENSES};
+  return {calc:calc, calcP2:calcP2, calcP4:calcP4, calcShinkoku:calcShinkoku, calcShushi:calcShushi, calcDai3:calcDai3, calcJuminzei:calcJuminzei, EXPENSES:EXPENSES};
 }));

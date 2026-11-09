@@ -44,6 +44,12 @@
  .ka-tax .row.big{font-size:16px;font-weight:800;border-bottom:none;padding-top:10px}
  .ka-tax .row.big b{color:#5fe0a0}
  .ka-tax .n{font-variant-numeric:tabular-nums}
+ .ka-jumin{background:#2a240d;color:#f6efe0;border-radius:12px;padding:12px 16px;margin-top:8px}
+ .ka-jumin .row{display:flex;justify-content:space-between;align-items:baseline;padding:4px 0;font-size:13px;border-bottom:1px solid rgba(255,255,255,.08)}
+ .ka-jumin .row.big{font-size:15px;font-weight:800;border-bottom:none;padding-top:9px}
+ .ka-jumin .row.big b{color:#f0c674}
+ .ka-jumin .n{font-variant-numeric:tabular-nums}
+ .ka-jumin .note{font-size:11px;color:#c9bfa8;margin-top:7px;line-height:1.6}
  .ka-modesel{display:grid;grid-template-columns:1fr 1fr;gap:10px}
  @media(max-width:560px){.ka-modesel{grid-template-columns:1fr}}
  .ka-modesel label{display:block;border:2px solid #d7e0ee;border-radius:12px;padding:11px 13px;cursor:pointer;background:#fff;transition:border-color .12s,background .12s}
@@ -248,9 +254,10 @@
       <div class="ka-f ka-num"><label>長期譲渡所得（土地建物）<span class="ka-q" tabindex="0" data-tip="所有期間5年超の土地・建物の譲渡所得（収入−取得費−譲渡費用−特別控除）。税率15%。">?</span></label><input id="f_bn_chouki" inputmode="numeric" placeholder="0"></div>
       <div class="ka-f ka-num"><label>短期譲渡所得（土地建物）<span class="ka-q" tabindex="0" data-tip="所有期間5年以下の土地・建物の譲渡所得。税率30%。">?</span></label><input id="f_bn_tanki" inputmode="numeric" placeholder="0"></div>
       <div class="ka-f ka-num"><label>上場株式等の源泉徴収税額<span class="ka-q" tabindex="0" data-tip="特定口座（源泉徴収あり）で既に天引きされた所得税額。納める税額から差し引かれます。該当がなければ0。">?</span></label><input id="f_bn_genzen" inputmode="numeric" placeholder="0"></div>
-      <div class="ka-hint">※ 山林所得・退職所得・住民税率は未対応です。復興特別所得税は全体に自動加算されます。</div>
+      <div class="ka-hint">※ 山林所得・退職所得は未対応です。復興特別所得税は全体に自動加算されます。</div>
     </details>
     <div class="ka-tax" id="ka-tax"></div>
+    <div class="ka-jumin" id="ka-jumin"></div>
 
     <div class="ka-sum" id="ka-sum"></div>
     <div class="ka-btns">
@@ -292,7 +299,7 @@
   </div>
 </footer>
 
-<script src="/kakutei/aoiro-calc.js?v=20261109d"></script>
+<script src="/kakutei/aoiro-calc.js?v=20261109e"></script>
 <script src="/kakutei/aoiro-fill.js?v=20261108c"></script>
 <script src="/kakutei/aoiro.js?v=20261109d"></script>
 <script src="/kakutei/expense-cats.js?v=20261106"></script>
@@ -568,6 +575,18 @@
       if(sr.kanpu>0) html+='<div class="row big"><span>還付される見込み</span><span class="n" style="color:#1a7f46"><b>'+yen(sr.kanpu)+'</b></span></div>';
       else html+=row('納める税金（第3期分）',x.G81,true);
       tx.innerHTML=html;
+    }
+    // 住民税の概算（参考）
+    var jm=$('ka-jumin');
+    if(jm){
+      var sk2=g.shinkoku||{};
+      var ju=AoiroCalc.calcJuminzei(Object.assign({}, sk2), jigyo);
+      var jh=row('所得割（約10%）',ju.shotokuwari);
+      if(ju.bunriWari>0) jh+=row('分離課税分（株式5%等）',ju.bunriWari);
+      jh+=row('均等割',ju.kintou)+
+        '<div class="row big"><span>住民税の概算（年額）</span><span class="n"><b>'+yen(ju.total)+'</b></span></div>'+
+        '<div class="note">※ あくまで目安です。住民税は市区町村が計算し、所得税と控除額（基礎43万・配偶者/扶養33万など）や均等割額が異なります。ふるさと納税・配当控除・住宅ローン控除の住民税分などは未反映です。</div>';
+      jm.innerHTML=jh;
     }
     var p2=AoiroCalc.calcP2(gatherP2());
     var tu=$('p2tu'), ts=$('p2ts');
