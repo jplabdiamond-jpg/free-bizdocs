@@ -48,9 +48,9 @@ priority,category,title,slug,tool_page,status
 47,電子印鑑,電子印鑑は法的に有効？契約書・請求書で使うときの注意点,inkan-legal,/inkan,済
 48,電子印鑑,会社の角印と丸印（代表者印）の違いと押す場所,inkan-kakuin-maruin,/inkan,済
 49,電子印鑑,請求書・見積書への印鑑の押し方｜位置とサイズのマナー,inkan-how-to-press,/inkan,済
-50,税・経理,源泉徴収が必要な報酬とは？対象になる職種と請求書の書き方,genzei-taishou,/invoice,未
-51,税・経理,インボイス制度とは？個人事業主がやるべきことをわかりやすく,invoice-system-basics,/invoice,未
-52,税・経理,適格請求書発行事業者の登録番号とは｜確認・記載方法,tekikaku-number,/invoice,未
+50,税・経理,源泉徴収が必要な報酬とは？対象になる職種と請求書の書き方,genzei-taishou,/invoice,済
+51,税・経理,インボイス制度とは？個人事業主がやるべきことをわかりやすく,invoice-system-basics,/invoice,済
+52,税・経理,適格請求書発行事業者の登録番号とは｜確認・記載方法,tekikaku-number,/invoice,済
 53,税・経理,消費税の端数処理のルール｜インボイスでの正しい計算方法,shouhizei-hasu,/invoice,未
 54,税・経理,請求書の保存期間は何年？電子帳簿保存法の対応ポイント,invoice-storage-period,/invoice,未
 55,発注書,発注書の無料テンプレート｜注文書との違いと書き方,purchase-order-template,/purchase-order,未
