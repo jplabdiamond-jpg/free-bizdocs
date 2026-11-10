@@ -121,11 +121,28 @@
     opt=opt||{};
     return N(opt.ippan)*380000 + N(opt.tokutei)*630000 + N(opt.rojin)*480000 + N(opt.doukyo)*580000;
   }
+  // 譲渡の内訳（土地建物）→ 短期/長期の所得・差引合計・特別控除合計
+  function joutoSum(bunri){
+    var t=N(bunri.tanki), c=N(bunri.chouki), sabikiKei=0, tokubetsuKei=0, jo=bunri.jouto||[], used=false;
+    if(jo.length){
+      t=0; c=0;
+      for(var k=0;k<jo.length;k++){
+        var j=jo[k], shu=N(j.shunyu), kh=N(j.keihi), tk=N(j.tokubetsu);
+        if(!(shu||kh||tk)) continue;
+        used=true;
+        var sabiki=Math.max(0,shu-kh), sho=Math.max(0,sabiki-tk);
+        sabikiKei+=sabiki; tokubetsuKei+=tk;
+        if(j.kubun==='長期') c+=sho; else t+=sho;
+      }
+    }
+    return {tanki:t, chouki:c, sabiki:sabikiKei, tokubetsu:tokubetsuKei, used:used};
+  }
   // 申告書第三表（分離課税用）：主要な分離所得の税額を計算し、第一表㉛へ合算
   // soogoAll=総合課税の合計(第一表⑫/G50)、kojoKei=所得控除(第一表㉙/G64)
   function calcDai3(bunri, soogoAll, kojoKei){
     bunri=bunri||{}; var a={};
-    var tanki=N(bunri.tanki), chouki=N(bunri.chouki);
+    var js=joutoSum(bunri), tanki=js.tanki, chouki=js.chouki, jouto=bunri.jouto||[];
+    if(js.used){ a.G65=js.sabiki; a.G66=js.tokubetsu; }  // 差引金額・特別控除額の合計
     var ippanKabu=N(bunri.ippan_kabu), jojoKabu=N(bunri.jojo_kabu);
     var haito=N(bunri.haito), sakimono=N(bunri.sakimono);
     var kabuAll=ippanKabu+jojoKabu;
@@ -150,7 +167,7 @@
     a.G59=a.G51+a.G52+a.G53+a.G54+a.G55+a.G56;    // 93＝第一表㉛へ転記
     a.G67=N(bunri.jojo_genzen);                   // 上場株式等の源泉徴収税額
     var has=(tanki+chouki+kabuAll+haito+sakimono)>0;
-    return {amounts:a, total:a.G59, genzen:a.G67, has:has};
+    return {amounts:a, total:a.G59, genzen:a.G67, has:has, jouto:jouto};
   }
   // 個人住民税の概算（所得割10%＋均等割＋分離課税分）。住民税は所得税と控除額が異なる
   function seimeiJuminKojo(pay){ pay=N(pay); if(pay<=0)return 0;
@@ -177,9 +194,9 @@
       +N(d.fuyou_ippan)*50000+N(d.fuyou_tokutei)*180000+N(d.fuyou_rojin)*100000+N(d.fuyou_doukyo)*130000;
     var chousei=(kazei<=2000000)?Math.floor(Math.min(jinteki,kazei)*0.05):Math.floor(Math.max(jinteki-(kazei-2000000),50000)*0.05);
     wari=Math.max(0,wari-chousei);
-    var b=d.bunri||{};
+    var b=d.bunri||{}, js=joutoSum(b);
     var bunri=Math.floor(N(b.jojo_kabu)*0.05)+Math.floor(N(b.haito)*0.05)+Math.floor(N(b.ippan_kabu)*0.05)
-      +Math.floor(N(b.sakimono)*0.05)+Math.floor(N(b.chouki)*0.05)+Math.floor(N(b.tanki)*0.09);
+      +Math.floor(N(b.sakimono)*0.05)+Math.floor(js.chouki*0.05)+Math.floor(js.tanki*0.09);
     var kintou=5000;
     return {total:wari+bunri+kintou, shotokuwari:wari, bunriWari:bunri, kintou:kintou, kazei:kazei};
   }

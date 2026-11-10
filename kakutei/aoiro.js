@@ -16,7 +16,7 @@
   var MAPC1='/kakutei/shushi-ippan-p1-map.json?v=20261108';
   var MAPC2='/kakutei/shushi-ippan-p2-map.json?v=20261109d';
   var FORMD='/kakutei/forms/aoiro-shinkoku-c-r05.pdf';
-  var MAPD='/kakutei/aoiro-shinkoku-c-map.json?v=20261109';
+  var MAPD='/kakutei/aoiro-shinkoku-c-map.json?v=20261109b';
   var FONT='/fonts/noto-jp.ttf';
   var _p, _font, _map, _map2, _map3, _map4, _maps1, _maps2, _mapc1, _mapc2, _mapd, _form, _formb, _formc, _formd;
   function loadScript(src){return new Promise(function(res,rej){
@@ -73,6 +73,16 @@
       ddoc.registerFontkit(window.fontkit);
       var dfont=await ddoc.embedFont(_font,{subset:false});
       var dHead={ year:data.year||'', jusho:h.jusho, yago:h.yago, furigana:h.furigana, shimei:h.shimei };
+      // 譲渡の内訳欄（最初の記入行を転記、合計はG65/G66で表示）
+      var jo=(sr.dai3.jouto||[]).filter(function(j){ return Number(j.shunyu||0)||Number(j.keihi||0)||Number(j.tokubetsu||0); });
+      if(jo.length){
+        var j0=jo[0], shu=Number(j0.shunyu||0), kh=Number(j0.keihi||0), tk=Number(j0.tokubetsu||0);
+        dHead.iv_kubun=(j0.kubun==='長期')?'長期':'短期';
+        dHead.iv_basho=j0.basho||'';
+        if(kh>0) dHead.iv_keihi=yen(kh);
+        dHead.iv_sabiki=yen(Math.max(0,shu-kh));
+        if(tk>0) dHead.iv_tokubetsu=yen(tk);
+      }
       window.AoiroFill.fillPage(ddoc.getPages()[_mapd.page], dfont, _mapd, sr.dai3.amounts, dHead, color);
     }
     return {doc:sdoc, sr:sr, dai3doc:ddoc};

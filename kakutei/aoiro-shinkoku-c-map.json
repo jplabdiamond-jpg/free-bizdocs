@@ -148,6 +148,16 @@
    "rightX": 552,
    "baseTop": 607.8,
    "size": 8.5
+  },
+  "G65": {
+   "rightX": 552,
+   "baseTop": 539.8,
+   "size": 8.5
+  },
+  "G66": {
+   "rightX": 552,
+   "baseTop": 556.7,
+   "size": 8.5
   }
  },
  "header": {
@@ -184,6 +194,41 @@
    "size": 10,
    "align": "L",
    "maxW": 420
+  },
+  "iv_kubun": {
+   "x": 322,
+   "baseTop": 512,
+   "align": "C",
+   "size": 7,
+   "maxW": 22
+  },
+  "iv_basho": {
+   "x": 338,
+   "baseTop": 512,
+   "align": "L",
+   "size": 7,
+   "maxW": 66
+  },
+  "iv_keihi": {
+   "x": 452,
+   "baseTop": 512,
+   "align": "R",
+   "size": 7.5,
+   "maxW": 44
+  },
+  "iv_sabiki": {
+   "x": 500,
+   "baseTop": 512,
+   "align": "R",
+   "size": 7.5,
+   "maxW": 44
+  },
+  "iv_tokubetsu": {
+   "x": 552,
+   "baseTop": 512,
+   "align": "R",
+   "size": 7.5,
+   "maxW": 44
   }
  }
 }
