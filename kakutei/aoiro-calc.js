@@ -137,6 +137,21 @@
     }
     return {tanki:t, chouki:c, sabiki:sabikiKei, tokubetsu:tokubetsuKei, used:used};
   }
+  // 山林所得：収入−必要経費−特別控除（最高50万）＝所得金額
+  function sanrinCalc(s){ s=s||{}; var shu=N(s.shunyu), kh=N(s.keihi);
+    var sabiki=Math.max(0, shu-kh);
+    var tok=Math.min(500000, sabiki);            // 山林所得の特別控除（最高50万円）
+    return {shunyu:shu, keihi:kh, tokubetsu:tok, shotoku:Math.max(0, sabiki-tok)}; }
+  // 退職所得：退職所得控除を差し引き、原則1/2課税（役員等で勤続5年以下は1/2なし）
+  function taishokuCalc(t){ t=t||{}; var shu=N(t.shunyu), yrsRaw=N(t.years);
+    if(shu<=0) return {shunyu:0, years:0, kojo:0, shotoku:0, half:true};
+    var y=Math.max(1, Math.ceil(yrsRaw));        // 勤続年数（1年未満は切上げ）
+    var kojo = (y<=20) ? 400000*y : 8000000+700000*(y-20);
+    kojo=Math.max(800000, kojo);                 // 最低80万円
+    var base=Math.max(0, shu-kojo);
+    var half = !(t.yakuin5);                      // 役員等かつ勤続5年以下は1/2なし
+    var sho = half ? Math.floor(base/2) : base;
+    return {shunyu:shu, years:y, kojo:kojo, shotoku:sho, half:half}; }
   // 申告書第三表（分離課税用）：主要な分離所得の税額を計算し、第一表㉛へ合算
   // soogoAll=総合課税の合計(第一表⑫/G50)、kojoKei=所得控除(第一表㉙/G64)
   function calcDai3(bunri, soogoAll, kojoKei){
@@ -146,8 +161,12 @@
     var ippanKabu=N(bunri.ippan_kabu), jojoKabu=N(bunri.jojo_kabu);
     var haito=N(bunri.haito), sakimono=N(bunri.sakimono);
     var kabuAll=ippanKabu+jojoKabu;
+    var sr=sanrinCalc(bunri.sanrin), tx=taishokuCalc(bunri.taishoku);
+    // 収入金額
+    a.G28=sr.shunyu; a.G29=tx.shunyu;             // ㉘山林・㉙退職の収入金額
     // 所得金額
     a.G30=tanki; a.G32=chouki; a.G35=ippanKabu; a.G36=jojoKabu; a.G37=haito; a.G38=sakimono;
+    a.G39=sr.shotoku; a.G40=tx.shotoku;           // ㊵山林・㊶退職の所得金額
     a.G41=soogoAll; a.G42=kojoKei;                // ⑫総合合計・㉙所得控除
     function fl(n){return Math.floor(Math.max(0,n)/1000)*1000;}
     var rem=Math.max(0, kojoKei-soogoAll);        // 総合で使い切れなかった所得控除を分離へ充当
@@ -158,16 +177,21 @@
     a.G46=fl(ap(kabuAll));                        // 株式等譲渡
     a.G47=fl(ap(haito));                          // 上場配当
     a.G48=fl(ap(sakimono));                       // 先物取引
+    a.G49=fl(ap(sr.shotoku));                     // 課税山林所得
+    a.G50=fl(ap(tx.shotoku));                     // 課税退職所得
     a.G51=incomeTax(a.G43);                       // 総合分の税額
     a.G52=Math.floor(a.G44*0.30);                 // 短期譲渡30%
     a.G53=Math.floor(a.G45*0.15);                 // 長期譲渡15%
     a.G54=Math.floor(a.G46*0.15);                 // 株式等15%
     a.G55=Math.floor(a.G47*0.15);                 // 上場配当15%
     a.G56=Math.floor(a.G48*0.15);                 // 先物15%
-    a.G59=a.G51+a.G52+a.G53+a.G54+a.G55+a.G56;    // 93＝第一表㉛へ転記
+    a.G57=incomeTax(Math.floor(a.G49/5))*5;       // 山林（5分5乗）
+    a.G58=incomeTax(a.G50);                        // 退職（1/2後の課税退職所得に通常税率）
+    a.G59=a.G51+a.G52+a.G53+a.G54+a.G55+a.G56+a.G57+a.G58;  // 93＝第一表㉛へ転記
     a.G67=N(bunri.jojo_genzen);                   // 上場株式等の源泉徴収税額
-    var has=(tanki+chouki+kabuAll+haito+sakimono)>0;
-    return {amounts:a, total:a.G59, genzen:a.G67, has:has, jouto:jouto};
+    var has=(tanki+chouki+kabuAll+haito+sakimono+sr.shotoku+tx.shotoku)>0;
+    return {amounts:a, total:a.G59, genzen:a.G67, has:has, jouto:jouto,
+      sanrin:sr, taishoku:tx};
   }
   // 個人住民税の概算（所得割10%＋均等割＋分離課税分）。住民税は所得税と控除額が異なる
   function seimeiJuminKojo(pay){ pay=N(pay); if(pay<=0)return 0;
@@ -194,9 +218,11 @@
       +N(d.fuyou_ippan)*50000+N(d.fuyou_tokutei)*180000+N(d.fuyou_rojin)*100000+N(d.fuyou_doukyo)*130000;
     var chousei=(kazei<=2000000)?Math.floor(Math.min(jinteki,kazei)*0.05):Math.floor(Math.max(jinteki-(kazei-2000000),50000)*0.05);
     wari=Math.max(0,wari-chousei);
-    var b=d.bunri||{}, js=joutoSum(b);
+    var b=d.bunri||{}, js=joutoSum(b), sanr=sanrinCalc(b.sanrin);
+    // 山林所得は住民税も5分5乗だが税率一律10%のため課税山林×10%で同値（退職は原則特別徴収済みのため概算に含めない）
     var bunri=Math.floor(N(b.jojo_kabu)*0.05)+Math.floor(N(b.haito)*0.05)+Math.floor(N(b.ippan_kabu)*0.05)
-      +Math.floor(N(b.sakimono)*0.05)+Math.floor(js.chouki*0.05)+Math.floor(js.tanki*0.09);
+      +Math.floor(N(b.sakimono)*0.05)+Math.floor(js.chouki*0.05)+Math.floor(js.tanki*0.09)
+      +Math.floor(sanr.shotoku*0.10);
     var kintou=5000;
     return {total:wari+bunri+kintou, shotokuwari:wari, bunriWari:bunri, kintou:kintou, kazei:kazei};
   }

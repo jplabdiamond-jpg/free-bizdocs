@@ -1,234 +1,318 @@
 {
- "page": 0,
- "w": 595,
- "h": 842,
- "amounts": {
-  "G19": {
-   "rightX": 291,
-   "baseTop": 234.9,
-   "size": 8.5
+  "page": 0,
+  "w": 595,
+  "h": 842,
+  "amounts": {
+    "G19": {
+      "rightX": 291,
+      "baseTop": 234.9,
+      "size": 8.5
+    },
+    "G21": {
+      "rightX": 291,
+      "baseTop": 268.5,
+      "size": 8.5
+    },
+    "G24": {
+      "rightX": 291,
+      "baseTop": 319.3,
+      "size": 8.5
+    },
+    "G25": {
+      "rightX": 291,
+      "baseTop": 336.3,
+      "size": 8.5
+    },
+    "G26": {
+      "rightX": 291,
+      "baseTop": 353.3,
+      "size": 8.5
+    },
+    "G27": {
+      "rightX": 291,
+      "baseTop": 370.2,
+      "size": 8.5
+    },
+    "G30": {
+      "rightX": 291,
+      "baseTop": 421.1,
+      "size": 8.5
+    },
+    "G32": {
+      "rightX": 291,
+      "baseTop": 454.9,
+      "size": 8.5
+    },
+    "G35": {
+      "rightX": 291,
+      "baseTop": 505.8,
+      "size": 8.5
+    },
+    "G36": {
+      "rightX": 291,
+      "baseTop": 522.7,
+      "size": 8.5
+    },
+    "G37": {
+      "rightX": 291,
+      "baseTop": 539.8,
+      "size": 8.5
+    },
+    "G38": {
+      "rightX": 291,
+      "baseTop": 556.7,
+      "size": 8.5
+    },
+    "G41": {
+      "rightX": 291,
+      "baseTop": 607.6,
+      "size": 8.5
+    },
+    "G42": {
+      "rightX": 291,
+      "baseTop": 624.5,
+      "size": 8.5
+    },
+    "G43": {
+      "rightX": 267,
+      "baseTop": 641.4,
+      "size": 8.5,
+      "strip": 3
+    },
+    "G44": {
+      "rightX": 267,
+      "baseTop": 658.3,
+      "size": 8.5,
+      "strip": 3
+    },
+    "G45": {
+      "rightX": 267,
+      "baseTop": 675.4,
+      "size": 8.5,
+      "strip": 3
+    },
+    "G46": {
+      "rightX": 267,
+      "baseTop": 692.3,
+      "size": 8.5,
+      "strip": 3
+    },
+    "G47": {
+      "rightX": 267,
+      "baseTop": 709.2,
+      "size": 8.5,
+      "strip": 3
+    },
+    "G48": {
+      "rightX": 267,
+      "baseTop": 726.1,
+      "size": 8.5,
+      "strip": 3
+    },
+    "G51": {
+      "rightX": 552,
+      "baseTop": 234.9,
+      "size": 8.5
+    },
+    "G52": {
+      "rightX": 552,
+      "baseTop": 251.5,
+      "size": 8.5
+    },
+    "G53": {
+      "rightX": 552,
+      "baseTop": 268.5,
+      "size": 8.5
+    },
+    "G54": {
+      "rightX": 552,
+      "baseTop": 285.5,
+      "size": 8.5
+    },
+    "G55": {
+      "rightX": 552,
+      "baseTop": 302.4,
+      "size": 8.5
+    },
+    "G56": {
+      "rightX": 552,
+      "baseTop": 319.3,
+      "size": 8.5
+    },
+    "G59": {
+      "rightX": 552,
+      "baseTop": 370.2,
+      "size": 8.5
+    },
+    "G67": {
+      "rightX": 552,
+      "baseTop": 607.8,
+      "size": 8.5
+    },
+    "G65": {
+      "rightX": 552,
+      "baseTop": 539.8,
+      "size": 8.5
+    },
+    "G66": {
+      "rightX": 552,
+      "baseTop": 556.7,
+      "size": 8.5
+    },
+    "G28": {
+      "rightX": 291,
+      "baseTop": 387.1,
+      "size": 8.5
+    },
+    "G29": {
+      "rightX": 291,
+      "baseTop": 404.0,
+      "size": 8.5
+    },
+    "G39": {
+      "rightX": 291,
+      "baseTop": 573.6,
+      "size": 8.5
+    },
+    "G40": {
+      "rightX": 291,
+      "baseTop": 590.5,
+      "size": 8.5
+    },
+    "G49": {
+      "rightX": 267,
+      "baseTop": 743.0,
+      "size": 8.5,
+      "strip": 3
+    },
+    "G50": {
+      "rightX": 267,
+      "baseTop": 760.0,
+      "size": 8.5,
+      "strip": 3
+    },
+    "G57": {
+      "rightX": 552,
+      "baseTop": 336.3,
+      "size": 8.5
+    },
+    "G58": {
+      "rightX": 552,
+      "baseTop": 353.3,
+      "size": 8.5
+    }
   },
-  "G21": {
-   "rightX": 291,
-   "baseTop": 268.5,
-   "size": 8.5
-  },
-  "G24": {
-   "rightX": 291,
-   "baseTop": 319.3,
-   "size": 8.5
-  },
-  "G25": {
-   "rightX": 291,
-   "baseTop": 336.3,
-   "size": 8.5
-  },
-  "G26": {
-   "rightX": 291,
-   "baseTop": 353.3,
-   "size": 8.5
-  },
-  "G27": {
-   "rightX": 291,
-   "baseTop": 370.2,
-   "size": 8.5
-  },
-  "G30": {
-   "rightX": 291,
-   "baseTop": 421.1,
-   "size": 8.5
-  },
-  "G32": {
-   "rightX": 291,
-   "baseTop": 454.9,
-   "size": 8.5
-  },
-  "G35": {
-   "rightX": 291,
-   "baseTop": 505.8,
-   "size": 8.5
-  },
-  "G36": {
-   "rightX": 291,
-   "baseTop": 522.7,
-   "size": 8.5
-  },
-  "G37": {
-   "rightX": 291,
-   "baseTop": 539.8,
-   "size": 8.5
-  },
-  "G38": {
-   "rightX": 291,
-   "baseTop": 556.7,
-   "size": 8.5
-  },
-  "G41": {
-   "rightX": 291,
-   "baseTop": 607.6,
-   "size": 8.5
-  },
-  "G42": {
-   "rightX": 291,
-   "baseTop": 624.5,
-   "size": 8.5
-  },
-  "G43": {
-   "rightX": 267,
-   "baseTop": 641.4,
-   "size": 8.5,
-   "strip": 3
-  },
-  "G44": {
-   "rightX": 267,
-   "baseTop": 658.3,
-   "size": 8.5,
-   "strip": 3
-  },
-  "G45": {
-   "rightX": 267,
-   "baseTop": 675.4,
-   "size": 8.5,
-   "strip": 3
-  },
-  "G46": {
-   "rightX": 267,
-   "baseTop": 692.3,
-   "size": 8.5,
-   "strip": 3
-  },
-  "G47": {
-   "rightX": 267,
-   "baseTop": 709.2,
-   "size": 8.5,
-   "strip": 3
-  },
-  "G48": {
-   "rightX": 267,
-   "baseTop": 726.1,
-   "size": 8.5,
-   "strip": 3
-  },
-  "G51": {
-   "rightX": 552,
-   "baseTop": 234.9,
-   "size": 8.5
-  },
-  "G52": {
-   "rightX": 552,
-   "baseTop": 251.5,
-   "size": 8.5
-  },
-  "G53": {
-   "rightX": 552,
-   "baseTop": 268.5,
-   "size": 8.5
-  },
-  "G54": {
-   "rightX": 552,
-   "baseTop": 285.5,
-   "size": 8.5
-  },
-  "G55": {
-   "rightX": 552,
-   "baseTop": 302.4,
-   "size": 8.5
-  },
-  "G56": {
-   "rightX": 552,
-   "baseTop": 319.3,
-   "size": 8.5
-  },
-  "G59": {
-   "rightX": 552,
-   "baseTop": 370.2,
-   "size": 8.5
-  },
-  "G67": {
-   "rightX": 552,
-   "baseTop": 607.8,
-   "size": 8.5
-  },
-  "G65": {
-   "rightX": 552,
-   "baseTop": 539.8,
-   "size": 8.5
-  },
-  "G66": {
-   "rightX": 552,
-   "baseTop": 556.7,
-   "size": 8.5
+  "header": {
+    "year": {
+      "x": 100,
+      "baseTop": 79,
+      "size": 11,
+      "align": "C"
+    },
+    "jusho": {
+      "x": 80,
+      "baseTop": 152,
+      "size": 9,
+      "align": "L",
+      "maxW": 420
+    },
+    "yago": {
+      "x": 80,
+      "baseTop": 171,
+      "size": 9,
+      "align": "L",
+      "maxW": 420
+    },
+    "furigana": {
+      "x": 80,
+      "baseTop": 190,
+      "size": 8,
+      "align": "L",
+      "maxW": 420
+    },
+    "shimei": {
+      "x": 80,
+      "baseTop": 204,
+      "size": 10,
+      "align": "L",
+      "maxW": 420
+    },
+    "iv_kubun": {
+      "x": 322,
+      "baseTop": 512,
+      "align": "C",
+      "size": 7,
+      "maxW": 22
+    },
+    "iv_basho": {
+      "x": 338,
+      "baseTop": 512,
+      "align": "L",
+      "size": 7,
+      "maxW": 66
+    },
+    "iv_keihi": {
+      "x": 452,
+      "baseTop": 512,
+      "align": "R",
+      "size": 7.5,
+      "maxW": 44
+    },
+    "iv_sabiki": {
+      "x": 500,
+      "baseTop": 512,
+      "align": "R",
+      "size": 7.5,
+      "maxW": 44
+    },
+    "iv_tokubetsu": {
+      "x": 552,
+      "baseTop": 512,
+      "align": "R",
+      "size": 7.5,
+      "maxW": 44
+    },
+    "rt_ippan_shunyu": {
+      "x": 450,
+      "baseTop": 675.5,
+      "align": "R",
+      "size": 8,
+      "maxW": 95
+    },
+    "rt_ippan_kojo": {
+      "x": 552,
+      "baseTop": 675.5,
+      "align": "R",
+      "size": 8,
+      "maxW": 100
+    },
+    "rt_tanki_shunyu": {
+      "x": 450,
+      "baseTop": 693.0,
+      "align": "R",
+      "size": 8,
+      "maxW": 95
+    },
+    "rt_tanki_kojo": {
+      "x": 552,
+      "baseTop": 693.0,
+      "align": "R",
+      "size": 8,
+      "maxW": 100
+    },
+    "rt_yakuin_shunyu": {
+      "x": 450,
+      "baseTop": 710.0,
+      "align": "R",
+      "size": 8,
+      "maxW": 95
+    },
+    "rt_yakuin_kojo": {
+      "x": 552,
+      "baseTop": 710.0,
+      "align": "R",
+      "size": 8,
+      "maxW": 100
+    }
   }
- },
- "header": {
-  "year": {
-   "x": 100,
-   "baseTop": 79,
-   "size": 11,
-   "align": "C"
-  },
-  "jusho": {
-   "x": 80,
-   "baseTop": 152,
-   "size": 9,
-   "align": "L",
-   "maxW": 420
-  },
-  "yago": {
-   "x": 80,
-   "baseTop": 171,
-   "size": 9,
-   "align": "L",
-   "maxW": 420
-  },
-  "furigana": {
-   "x": 80,
-   "baseTop": 190,
-   "size": 8,
-   "align": "L",
-   "maxW": 420
-  },
-  "shimei": {
-   "x": 80,
-   "baseTop": 204,
-   "size": 10,
-   "align": "L",
-   "maxW": 420
-  },
-  "iv_kubun": {
-   "x": 322,
-   "baseTop": 512,
-   "align": "C",
-   "size": 7,
-   "maxW": 22
-  },
-  "iv_basho": {
-   "x": 338,
-   "baseTop": 512,
-   "align": "L",
-   "size": 7,
-   "maxW": 66
-  },
-  "iv_keihi": {
-   "x": 452,
-   "baseTop": 512,
-   "align": "R",
-   "size": 7.5,
-   "maxW": 44
-  },
-  "iv_sabiki": {
-   "x": 500,
-   "baseTop": 512,
-   "align": "R",
-   "size": 7.5,
-   "maxW": 44
-  },
-  "iv_tokubetsu": {
-   "x": 552,
-   "baseTop": 512,
-   "align": "R",
-   "size": 7.5,
-   "maxW": 44
-  }
- }
 }

@@ -276,7 +276,15 @@
         </div>
       </div>
       <div class="ka-f ka-num"><label>上場株式等の源泉徴収税額<span class="ka-q" tabindex="0" data-tip="特定口座（源泉徴収あり）で既に天引きされた所得税額。納める税額から差し引かれます。該当がなければ0。">?</span></label><input id="f_bn_genzen" inputmode="numeric" placeholder="0"></div>
-      <div class="ka-hint">※ 山林所得・退職所得は未対応です。復興特別所得税は全体に自動加算されます。</div>
+      <div class="ka-p2hint" style="margin-top:12px"><b>山林所得</b>（保有5年超の山林の伐採・譲渡）。収入−必要経費−特別控除（最高50万円）で所得を求め、税額は「5分5乗」方式（課税山林所得×1/5に税率を適用し5倍）で計算します。</div>
+      <div class="ka-f ka-num"><label>山林所得の収入金額<span class="ka-q" tabindex="0" data-tip="山林（保有5年超）の伐採・譲渡による総収入金額。5年以下は事業/雑所得となり対象外です。">?</span></label><input id="f_bn_sanrin_shunyu" inputmode="numeric" placeholder="0"></div>
+      <div class="ka-f ka-num"><label>山林所得の必要経費<span class="ka-q" tabindex="0" data-tip="植林費・取得費・管理費・伐採搬出費など。特別控除（最高50万円）は収入−必要経費から自動で差し引きます。">?</span></label><input id="f_bn_sanrin_keihi" inputmode="numeric" placeholder="0"></div>
+      <div class="ka-p2hint" style="margin-top:12px"><b>退職所得</b>。収入金額から退職所得控除（勤続20年以下＝40万円×年数、20年超＝800万円＋70万円×超過年数、最低80万円）を差し引き、原則1/2を課税対象とします。通常は支払時に源泉徴収で完結しますが、源泉されていない・退職所得の受給に関する申告書を提出していない等の場合に申告します。</div>
+      <div class="ka-f ka-num"><label>退職所得の収入金額<span class="ka-q" tabindex="0" data-tip="退職手当・一時恩給などの収入金額（源泉徴収前の額面）。複数の退職金がある場合は合算してください。">?</span></label><input id="f_bn_taishoku_shunyu" inputmode="numeric" placeholder="0"></div>
+      <div class="ka-f ka-num"><label>勤続年数<span class="ka-q" tabindex="0" data-tip="退職金の計算の基礎となった勤続年数。1年未満の端数は切り上げます（例: 10年3か月→11年）。退職所得控除の計算に使います。">?</span></label><input id="f_bn_taishoku_years" inputmode="numeric" placeholder="0"></div>
+      <div class="ka-f" style="margin-top:4px">
+        <label style="display:inline-flex;align-items:center;gap:7px;font-size:13.5px;color:#2b3b4e"><input type="checkbox" id="f_bn_taishoku_yakuin5" style="width:auto"> 役員等で勤続5年以下（1/2課税の対象外）</label></div>
+      <div class="ka-hint">※ 復興特別所得税は全体に自動加算されます。退職所得の住民税は原則支払時に特別徴収されるため、住民税の概算には含めていません。</div>
     </details>
     <div class="ka-tax" id="ka-tax"></div>
     <div class="ka-jumin" id="ka-jumin"></div>
@@ -321,9 +329,9 @@
   </div>
 </footer>
 
-<script src="/kakutei/aoiro-calc.js?v=20261109f"></script>
+<script src="/kakutei/aoiro-calc.js?v=20261109g"></script>
 <script src="/kakutei/aoiro-fill.js?v=20261108c"></script>
-<script src="/kakutei/aoiro.js?v=20261109e"></script>
+<script src="/kakutei/aoiro.js?v=20261109g"></script>
 <script src="/kakutei/expense-cats.js?v=20261106"></script>
 <script>
 (function(){
@@ -554,7 +562,10 @@
         genzen:num('f_sk_genzen'), haitou_kojo:num('f_sk_haitou'), jutaku_kojo:num('f_sk_jutaku'),
         bunri:{ jouto:gatherJouto(), ippan_kabu:num('f_bn_ippan_kabu'),
           jojo_kabu:num('f_bn_jojo_kabu'), haito:num('f_bn_haito'), sakimono:num('f_bn_sakimono'),
-          jojo_genzen:num('f_bn_genzen') } }
+          jojo_genzen:num('f_bn_genzen'),
+          sanrin:{ shunyu:num('f_bn_sanrin_shunyu'), keihi:num('f_bn_sanrin_keihi') },
+          taishoku:{ shunyu:num('f_bn_taishoku_shunyu'), years:num('f_bn_taishoku_years'),
+            yakuin5:$('f_bn_taishoku_yakuin5').checked } } }
     };
   }
   var yen=function(n){return Number(n).toLocaleString('ja-JP')+' 円';};

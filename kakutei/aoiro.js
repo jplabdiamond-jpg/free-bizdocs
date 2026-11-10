@@ -16,7 +16,7 @@
   var MAPC1='/kakutei/shushi-ippan-p1-map.json?v=20261108';
   var MAPC2='/kakutei/shushi-ippan-p2-map.json?v=20261109d';
   var FORMD='/kakutei/forms/aoiro-shinkoku-c-r05.pdf';
-  var MAPD='/kakutei/aoiro-shinkoku-c-map.json?v=20261109b';
+  var MAPD='/kakutei/aoiro-shinkoku-c-map.json?v=20261109d';
   var FONT='/fonts/noto-jp.ttf';
   var _p, _font, _map, _map2, _map3, _map4, _maps1, _maps2, _mapc1, _mapc2, _mapd, _form, _formb, _formc, _formd;
   function loadScript(src){return new Promise(function(res,rej){
@@ -82,6 +82,13 @@
         if(kh>0) dHead.iv_keihi=yen(kh);
         dHead.iv_sabiki=yen(Math.max(0,shu-kh));
         if(tk>0) dHead.iv_tokubetsu=yen(tk);
+      }
+      // 退職所得に関する事項（収入金額・退職所得控除額）
+      var tx=sr.dai3.taishoku;
+      if(tx && tx.shunyu>0){
+        var rp = tx.half ? (tx.years<=5 ? 'rt_tanki' : 'rt_ippan') : 'rt_yakuin';
+        dHead[rp+'_shunyu']=yen(tx.shunyu);
+        dHead[rp+'_kojo']=yen(tx.kojo);
       }
       window.AoiroFill.fillPage(ddoc.getPages()[_mapd.page], dfont, _mapd, sr.dai3.amounts, dHead, color);
     }
