@@ -293,8 +293,9 @@
     <div class="ka-btns">
       <button class="ka-btn p" id="ka-make">プレビュー / PDF作成</button>
       <button class="ka-btn s" id="ka-dl">PDFをダウンロード</button>
+      <button class="ka-btn s" id="ka-clear" style="margin-left:auto">入力をクリア</button>
     </div>
-    <div class="ka-hint">入力内容はサーバーに送信されません（PDFはお使いのブラウザ内で生成します）。事業者情報のみ、次回の入力を楽にするためこの端末にだけ保存します。</div>
+    <div class="ka-hint">入力内容はサーバーに送信されません（PDFはお使いのブラウザ内で生成します）。入力はこの端末にだけ自動保存され、次回アクセス時に「続きから」入力できます。共用端末では終了後に「入力をクリア」してください。</div>
   </div>
 
   <div class="ka-card ka-prev">
@@ -708,19 +709,63 @@
     a.download='確定申告一式_決算書と申告書.pdf'; document.body.appendChild(a); a.click(); a.remove();
   }
 
-  // 事業者情報をこの端末に保存／復元
+  // 入力内容をこの端末に保存／復元（続きから）
+  // 旧版の事業者情報キーは後方互換のため復元時のフォールバックに使う
   var HKEYS=['f_year','f_shimei','f_furigana','f_jusho','f_jigyosho','f_gyoshu','f_yago','f_tel_home','f_tel_office','f_kanyu','f_zei_name','f_zei_tel','f_zei_jusho'];
-  try{var saved=JSON.parse(localStorage.getItem('fbd_aoiro_hdr')||'{}');
-    HKEYS.forEach(function(k){if(saved[k]!=null)$(k).value=saved[k];});}catch(e){}
-  function saveHdr(){try{var o={};HKEYS.forEach(function(k){o[k]=$(k).value;});
-    localStorage.setItem('fbd_aoiro_hdr',JSON.stringify(o));}catch(e){}}
+  var AKEY='fbd_aoiro_all';
+  function collectAll(){
+    var o={fields:{}, jouto:[], mode:(document.querySelector('input[name=ka-mode]:checked')||{}).value||'青色', t:Date.now()};
+    document.querySelectorAll('.ka-card input[id], .ka-card select[id], .ka-card textarea[id]').forEach(function(el){
+      if(el.type==='radio') return;              // ラジオはmodeで扱う
+      o.fields[el.id]=(el.type==='checkbox')?(el.checked?1:0):el.value;
+    });
+    document.querySelectorAll('#bn_jouto .bn-jt-row').forEach(function(r){
+      o.jouto.push({k:(r.querySelector('.f_jt_kubun')||{}).value||'長期',
+        b:(r.querySelector('.f_jt_basho')||{}).value||'', s:(r.querySelector('.f_jt_shunyu')||{}).value||'',
+        e:(r.querySelector('.f_jt_keihi')||{}).value||'', t:(r.querySelector('.f_jt_tokubetsu')||{}).value||''});
+    });
+    return o;
+  }
+  function saveAll(){ try{ localStorage.setItem(AKEY, JSON.stringify(collectAll())); }catch(e){} }
+  function restoreAll(){
+    var o=null; try{ o=JSON.parse(localStorage.getItem(AKEY)||'null'); }catch(e){}
+    if(!o){ // 旧・事業者情報のみのデータがあれば復元（後方互換）
+      try{var s=JSON.parse(localStorage.getItem('fbd_aoiro_hdr')||'{}');
+        HKEYS.forEach(function(k){if(s[k]!=null&&$(k))$(k).value=s[k];});}catch(e){}
+      return false;
+    }
+    try{
+      if(o.mode){ var r=document.querySelector('input[name=ka-mode][value="'+o.mode+'"]');
+        if(r&&!r.checked){ r.checked=true; r.dispatchEvent(new Event('change',{bubbles:true})); } }
+      Object.keys(o.fields||{}).forEach(function(id){ var el=$(id); if(!el)return;
+        if(el.type==='checkbox') el.checked=!!o.fields[id]; else el.value=o.fields[id]; });
+      var rows=document.querySelectorAll('#bn_jouto .bn-jt-row');
+      (o.jouto||[]).forEach(function(j,i){ var r=rows[i]; if(!r)return;
+        if(r.querySelector('.f_jt_kubun')) r.querySelector('.f_jt_kubun').value=j.k||'長期';
+        if(r.querySelector('.f_jt_basho')) r.querySelector('.f_jt_basho').value=j.b||'';
+        if(r.querySelector('.f_jt_shunyu')) r.querySelector('.f_jt_shunyu').value=j.s||'';
+        if(r.querySelector('.f_jt_keihi')) r.querySelector('.f_jt_keihi').value=j.e||'';
+        if(r.querySelector('.f_jt_tokubetsu')) r.querySelector('.f_jt_tokubetsu').value=j.t||''; });
+      // 依存UIを反映（配偶者欄の表示切替など）
+      var hg=$('f_sk_haiguu'); if(hg) hg.dispatchEvent(new Event('change',{bubbles:true}));
+      return true;
+    }catch(e){ return false; }
+  }
+  function clearAll(){
+    if(!confirm('入力内容をすべて消去して最初からやり直しますか？この端末に保存した内容も削除されます。')) return;
+    try{ localStorage.removeItem(AKEY); localStorage.removeItem('fbd_aoiro_hdr'); }catch(e){}
+    location.reload();
+  }
+  var saveHdr=saveAll;  // 後方互換の呼び出し名を保持
 
   // 入力に応じてサマリーを即時更新、プレビューは少し待ってから再生成
-  document.addEventListener('input',function(ev){
+  function onFormChange(ev){
     if(!ev.target.closest('.ka-card'))return;
-    summary(); saveHdr();
+    summary(); saveAll();
     clearTimeout(_t); _t=setTimeout(makePdf,500);
-  });
+  }
+  document.addEventListener('input',onFormChange);
+  document.addEventListener('change',onFormChange);  // select/checkbox/radio
   $('ka-make').addEventListener('click',makePdf);
   $('ka-dl').addEventListener('click',download);
 
@@ -783,6 +828,10 @@
   // 幅合わせ時はリサイズで再描画
   var _rt=null;
   window.addEventListener('resize',function(){ clearTimeout(_rt); _rt=setTimeout(function(){ if(_zoom<=1) renderPage(); },250); });
+
+  // 入力クリア＆前回の続きから復元
+  $('ka-clear').addEventListener('click', clearAll);
+  restoreAll();
 
   applyHaiguu(); applyMode();
 })();
