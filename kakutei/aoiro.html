@@ -72,6 +72,21 @@
  .bn-jt-row{margin-bottom:5px}
  .bn-jt-row select,.bn-jt-row input{width:100%;box-sizing:border-box;padding:7px 6px;border:1px solid #d7e0ee;border-radius:7px;font-size:13px}
  .bn-jt-row input[inputmode=numeric]{text-align:right}
+ .ka-submit{margin:12px 0 2px;border:1px solid #cfe6d6;border-radius:10px;overflow:hidden;background:#f6fbf7}
+ .ka-submit>summary{cursor:pointer;padding:11px 14px;background:#edf7f0;color:#1a8f4c;font-size:13px;font-weight:800;list-style:none}
+ .ka-submit>summary::-webkit-details-marker{display:none}
+ .ka-submit>summary::before{content:"▸ ";font-size:11px}
+ .ka-submit[open]>summary::before{content:"▾ "}
+ .ka-submit .sb{padding:2px 14px 13px}
+ .ka-submit h4{font-size:12.5px;color:#13314f;margin:13px 0 4px}
+ .ka-submit ul{margin:3px 0 4px 18px;padding:0;font-size:12.5px;color:#2b3b4e;line-height:1.7}
+ .ka-submit .mth{border:1px solid #e3e9f2;border-radius:9px;padding:9px 11px;margin:7px 0;background:#fff}
+ .ka-submit .mth b{font-size:12.5px;color:#13314f}
+ .ka-submit .mth p{margin:3px 0 0;font-size:12px;color:#5a6b7d;line-height:1.65}
+ .ka-submit a{color:#1766e6;font-weight:700;text-decoration:none}
+ .ka-submit a:hover{text-decoration:underline}
+ .ka-submit .lk{display:flex;flex-wrap:wrap;gap:7px 15px;margin-top:9px;font-size:12.5px}
+ .ka-submit .warn{font-size:11.5px;color:#8a6d3b;background:#fdf6e3;border:1px solid #f0e3bf;border-radius:8px;padding:7px 10px;margin-top:9px;line-height:1.6}
  .ka-btns{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0 2px}
  .ka-btn{appearance:none;border:none;border-radius:11px;padding:12px 20px;font-size:14.5px;font-weight:800;cursor:pointer}
  .ka-btn.p{background:#1766e6;color:#fff}
@@ -296,6 +311,35 @@
       <button class="ka-btn s" id="ka-clear" style="margin-left:auto">入力をクリア</button>
     </div>
     <div class="ka-hint">入力内容はサーバーに送信されません（PDFはお使いのブラウザ内で生成します）。入力はこの端末にだけ自動保存され、次回アクセス時に「続きから」入力できます。共用端末では終了後に「入力をクリア」してください。</div>
+
+    <details class="ka-submit" id="ka-submit">
+      <summary>📮 作成後の提出方法（e-Tax・郵送・窓口）とチェックリスト</summary>
+      <div class="sb">
+        <p style="font-size:12.5px;color:#2b3b4e;line-height:1.7;margin:9px 0 2px">所得税の確定申告は<b>原則 翌年3月15日まで</b>（土日の場合は翌平日）。還付のための申告は翌年1月から5年間できます。このツールは国税庁の様式に沿った<b>記入補助</b>です。印刷して郵送・窓口提出にそのまま使えます。e-Taxで提出する場合は、下記「確定申告書等作成コーナー」で作成・送信するのが確実です（本ツールは下書きとしてご活用ください）。</p>
+
+        <h4>提出書類チェックリスト</h4>
+        <ul>
+          <li>申告書 第一表・第二表（分離課税があれば第三表）</li>
+          <li><b>青色申告の方</b>：青色申告決算書（損益計算書〜貸借対照表）／ <b>白色申告の方</b>：収支内訳書（一般用）</li>
+          <li>各種控除証明書（社会保険・生命保険・地震保険・小規模企業共済・iDeCo・寄附金受領証 など）</li>
+          <li>本人確認書類（マイナンバーの確認＋身元確認。郵送はコピーを添付）</li>
+        </ul>
+
+        <h4>提出方法は3つ</h4>
+        <div class="mth"><b>① e-Tax（おすすめ）</b><p>自宅から24時間提出でき、添付書類の多くが省略でき、還付も早い（3週間程度）。マイナンバーカード＋読取対応スマホ（またはICカードリーダ）、もしくは税務署発行のID・パスワード方式で利用できます。マイナポータル連携を使うと、控除証明書・源泉徴収票・特定口座などのデータを自動入力できます（事前準備に数日かかるため早めに）。</p></div>
+        <div class="mth"><b>② 郵送</b><p>本ツールで作ったPDFを印刷し、所轄の税務署へ郵送します（通信日付印が提出日）。控えに受付印が必要な場合は、控えのコピーと返信用封筒（切手貼付）を同封してください。</p></div>
+        <div class="mth"><b>③ 税務署の窓口</b><p>開庁時間に持参するか、時間外は税務署の時間外収受箱へ投函します。</p></div>
+
+        <div class="lk">
+          <a href="https://www.keisan.nta.go.jp/kyoutu/ky/sm/top" target="_blank" rel="noopener">▶ 確定申告書等作成コーナー（e-Taxで作成・送信）</a>
+          <a href="https://www.e-tax.nta.go.jp/" target="_blank" rel="noopener">▶ e-Tax（国税電子申告）</a>
+          <a href="https://www.nta.go.jp/taxes/tetsuzuki/mynumberinfo/mynapo.htm" target="_blank" rel="noopener">▶ マイナポータル連携のご案内</a>
+          <a href="https://www.nta.go.jp/taxes/shiraberu/shinkoku/kakutei.htm" target="_blank" rel="noopener">▶ 国税庁 確定申告特集</a>
+          <a href="https://www.nta.go.jp/about/organization/access/chizu.htm" target="_blank" rel="noopener">▶ 所轄の税務署を調べる</a>
+        </div>
+        <div class="warn">本ツールは記入補助です。提出内容の最終確認はご自身または税理士にお願いします。提出期限・必要書類は年により変わることがあるため、提出前に国税庁の最新案内をご確認ください。</div>
+      </div>
+    </details>
   </div>
 
   <div class="ka-card ka-prev">
