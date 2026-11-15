@@ -65,7 +65,7 @@ priority,category,title,slug,tool_page,status
 64,請求書,請求書の振込先の書き方｜銀行名・支店・口座の正しい記載,invoice-bank-info,/invoice,済
 65,請求書,内税と外税の違い｜請求書はどちらで書くべきか,invoice-tax-in-out,/invoice,済
 66,請求書,英語の請求書（インボイス）の書き方｜海外取引の英訳例,invoice-english,/invoice,済
-67,請求書,月締め請求と都度請求の違い｜取引先に合わせた運用,invoice-monthly-each,/invoice,未
+67,請求書,月締め請求と都度請求の違い｜取引先に合わせた運用,invoice-monthly-each,/invoice,済
 68,請求書,請求書の前受金・相殺の書き方｜入金済み分の処理,invoice-advance-offset,/invoice,未
 69,請求書,請求書を間違えて送ったときの対応｜訂正とお詫びの文例,invoice-wrong-send,/invoice,未
 70,請求書,請求書の角印はどこに押す？位置と大きさのマナー,invoice-kakuin-position,/invoice,未
