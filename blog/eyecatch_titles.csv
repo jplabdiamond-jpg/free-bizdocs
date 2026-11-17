@@ -69,9 +69,9 @@ priority,category,title,slug,tool_page,status
 68,請求書,請求書の前受金・相殺の書き方｜入金済み分の処理,invoice-advance-offset,/invoice,済
 69,請求書,請求書を間違えて送ったときの対応｜訂正とお詫びの文例,invoice-wrong-send,/invoice,済
 70,請求書,請求書の角印はどこに押す？位置と大きさのマナー,invoice-kakuin-position,/invoice,済
-71,領収書,領収書を紛失したときの対応｜再発行の可否と代わりの証明,receipt-lost,/receipt,未
+71,領収書,領収書を紛失したときの対応｜再発行の可否と代わりの証明,receipt-lost,/receipt,済
 72,領収書,領収書の割印（消印）の押し方｜収入印紙のルール,receipt-warihan,/receipt,未
-73,領収書,手書き領収書の書き方｜複写式の正しい記入例,receipt-handwritten,/receipt,未
+73,領収書,手書き領収書の書き方｜複写式の正しい記入例,receipt-handwritten,/receipt,済
 74,領収書,領収書の金額の書き方｜「¥」「-」「也」の使い方,receipt-amount-format,/receipt,未
 75,領収書,領収書を電子化する方法｜スキャン保存と電子帳簿保存法,receipt-scan-save,/receipt,未
 76,領収書,個人が領収書を発行するときの書き方と注意点,receipt-individual,/receipt,未
