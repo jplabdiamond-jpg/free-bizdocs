@@ -22,7 +22,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          fetch-depth: 2  # 直前コミットとの差分（変更URL抽出）に必要
+          fetch-depth: 0  # push範囲（複数コミット）の差分でURL抽出するため全履歴取得
 
       - name: Deploy to Cloudflare Pages
         env:
@@ -33,7 +33,9 @@ jobs:
       - name: IndexNow ping (changed pages)
         if: github.event_name == 'push'
         run: |
-          git diff --name-only HEAD~1 HEAD > /tmp/changed.txt 2>/dev/null || true
+          BEFORE='${{ github.event.before }}'
+          if [ -z "$BEFORE" ] || [ "$BEFORE" = "0000000000000000000000000000000000000000" ]; then BEFORE="HEAD~1"; fi
+          git diff --name-only "$BEFORE" HEAD > /tmp/changed.txt 2>/dev/null || git diff --name-only HEAD~1 HEAD > /tmp/changed.txt 2>/dev/null || true
           node -e '
           const fs=require("fs"),https=require("https");
           const key="a443fe2d01c64cdaa0d1e4a37a44edb3aac13d4e7e36461ab60734c6ac1bb773";
