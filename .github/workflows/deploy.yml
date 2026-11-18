@@ -48,7 +48,7 @@ jobs:
             if(f==="llms.txt"||f==="sitemap.xml"){ continue; }       // ページではない
             else if(m=f.match(/^blog\/([a-z0-9-]+)\.html$/)) urls.add(base+"blog/"+m[1]);
             else if(m=f.match(/^en\/(.+)\.html$/)) urls.add(base+"en/"+m[1]);                 // en配下（記事・ツール・国別）
-            else if(m=f.match(/^invoice\/([a-z0-9-]+)\.html$/)) urls.add(base+"invoice/"+m[1]); // 業種別LP等
+            else if(m=f.match(/^(invoice|quote|receipt|delivery|purchase-order|rirekisho)\/([a-z0-9-]+)\.html$/)) urls.add(base+m[1]+"/"+m[2]); // 業種別LP・サブディレクトリ各種
             else if(m=f.match(/^([a-z0-9-]+)\.html$/)){ const b=m[1]; if(!skipRoot.has(b)&&!b.startsWith("google")) urls.add(base+b); }
           }
           const list=[...urls];
