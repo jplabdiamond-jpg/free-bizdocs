@@ -26,6 +26,7 @@
 - [スキルシート](https://free-bizdocs.com/skillsheet)：IT・エンジニア向け技術経歴
 
 ## 用語解説
+- [用語集（請求書・インボイス・源泉徴収ほか）](https://free-bizdocs.com/glossary)
 
 - [請求書とは](https://free-bizdocs.com/blog/invoice-towa)：意味・記載項目・発行のタイミング・インボイスとの関係
 - [請求書と領収書の違い](https://free-bizdocs.com/blog/invoice-vs-receipt)：役割・発行タイミング・税務上の扱い

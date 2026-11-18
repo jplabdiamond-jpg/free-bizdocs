@@ -2,6 +2,7 @@ name: deploy-site
 
 # main への push で本番 Cloudflare Pages へ即デプロイする。
 # （記事の自動公開は auto-publish.yml が担当。こちらはコード/デザイン変更の反映用。）
+# デプロイ後、この push で変更された公開ページを IndexNow に自動通知して再クロールを前倒しする。
 on:
   push:
     branches: [main]
@@ -21,10 +22,39 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          fetch-depth: 1
+          fetch-depth: 2  # 直前コミットとの差分（変更URL抽出）に必要
 
       - name: Deploy to Cloudflare Pages
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: "7969ecaa0a1b9bacae1861547c2ec3fe"
         run: npx --yes wrangler@3 pages deploy . --project-name=seikyu-hub-demo --branch=main --commit-dirty=true
+
+      - name: IndexNow ping (changed pages)
+        if: github.event_name == 'push'
+        run: |
+          git diff --name-only HEAD~1 HEAD > /tmp/changed.txt 2>/dev/null || true
+          node -e '
+          const fs=require("fs"),https=require("https");
+          const key="a443fe2d01c64cdaa0d1e4a37a44edb3aac13d4e7e36461ab60734c6ac1bb773";
+          const host="free-bizdocs.com", base="https://"+host+"/";
+          let files=[]; try{files=fs.readFileSync("/tmp/changed.txt","utf8").split("\n").map(s=>s.trim()).filter(Boolean);}catch(e){}
+          // 公開対象外（アプリ画面・検証ファイル等）
+          const skipRoot=new Set(["index","404","coming-soon","dashboard","doclist","feedback-admin","invoice-create","invoice-list","pass","payments","quotes","recurring","referrals","reports","settings"]);
+          const urls=new Set();
+          for(const f of files){
+            if(f.includes("_drafts/"))continue;
+            let m;
+            if(f==="llms.txt"||f==="sitemap.xml"){ continue; }       // ページではない
+            else if(m=f.match(/^blog\/([a-z0-9-]+)\.html$/)) urls.add(base+"blog/"+m[1]);
+            else if(m=f.match(/^en\/(.+)\.html$/)) urls.add(base+"en/"+m[1]);                 // en配下（記事・ツール・国別）
+            else if(m=f.match(/^invoice\/([a-z0-9-]+)\.html$/)) urls.add(base+"invoice/"+m[1]); // 業種別LP等
+            else if(m=f.match(/^([a-z0-9-]+)\.html$/)){ const b=m[1]; if(!skipRoot.has(b)&&!b.startsWith("google")) urls.add(base+b); }
+          }
+          const list=[...urls];
+          if(!list.length){console.log("IndexNow: no indexable page changed");process.exit(0);}
+          const body=JSON.stringify({host,key,keyLocation:base+key+".txt",urlList:list});
+          const req=https.request("https://api.indexnow.org/indexnow",{method:"POST",headers:{"Content-Type":"application/json; charset=utf-8"}},r=>{console.log("IndexNow status",r.statusCode,"| urls",list.length);r.resume();});
+          req.on("error",e=>console.log("IndexNow error",e.message));
+          req.write(body);req.end();
+          '
