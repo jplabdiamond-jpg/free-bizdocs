@@ -25,6 +25,10 @@
 - [エントリーシート](https://free-bizdocs.com/entrysheet)：自己PR・ガクチカ・志望動機
 - [スキルシート](https://free-bizdocs.com/skillsheet)：IT・エンジニア向け技術経歴
 
+## 業種別の見積書・請求書テンプレート
+- [業種別の見積書（建設・リフォーム・Web制作ほか）](https://free-bizdocs.com/quote/industries)
+- [業種別の請求書（フリーランス・建設ほか）](https://free-bizdocs.com/invoice/industries)
+
 ## 用語解説
 - [用語集（請求書・インボイス・源泉徴収ほか）](https://free-bizdocs.com/glossary)
 
