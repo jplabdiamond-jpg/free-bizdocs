@@ -78,8 +78,8 @@ priority,category,title,slug,tool_page,status
 77,領収書,領収書の収入印紙は誰が負担する？印紙税の基礎,receipt-stamp-bearer,/receipt,未
 78,領収書,領収書の宛名を空欄で渡すのは問題ない？,receipt-blank-name,/receipt,済
 79,見積書,見積書と請求書の違い｜役割と発行タイミング,quote-vs-invoice,/quote,未
-80,見積書,はじめての見積書の作り方｜必須の記載項目,quote-first-time,/quote,未
-81,見積書,見積書の送付メールの文例｜依頼への返信テンプレ,quote-email-template,/quote,未
+80,見積書,はじめての見積書の作り方｜必須の記載項目,quote-first-time,/quote,済
+81,見積書,見積書の送付メールの文例｜依頼への返信テンプレ,quote-email-template,/quote,済
 82,見積書,相見積もりの上手な断り方｜お断りメールの文例,quote-kotowari,/quote,未
 83,見積書,見積書の単価・数量・単位の書き方｜内訳の見せ方,quote-breakdown,/quote,未
 84,見積書,見積書の有効期限が切れたら？再見積もりの対応,quote-expired-reissue,/quote,未
