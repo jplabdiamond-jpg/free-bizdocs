@@ -120,6 +120,39 @@ input:focus,textarea:focus{outline:2px solid var(--ac-s);border-color:var(--ac)}
       </div>
 
       <div class="saverow"><button class="btn pri" id="save">保存する</button><span id="msg" class="msg"></span></div>
+
+      <div class="card">
+        <h2>アカウント</h2>
+        <div class="acct-sec">
+          <h3 style="font-size:15px;margin:0 0 8px">メールアドレスの変更</h3>
+          <p class="desc" style="margin-top:0">現在：<b id="acct-email">—</b></p>
+          <div class="grid2">
+            <label class="fl">新しいメールアドレス<input id="new_email" type="email" placeholder="you@example.com" autocomplete="email"></label>
+            <label class="fl">現在のパスワード<input id="email_pw" type="password" placeholder="確認のため入力" autocomplete="current-password"></label>
+          </div>
+          <div class="saverow"><button class="btn" id="email_save">メールを変更</button><span id="email_msg" class="msg"></span></div>
+        </div>
+        <hr style="border:none;border-top:1px solid #eef2f6;margin:18px 0">
+        <div class="acct-sec">
+          <h3 style="font-size:15px;margin:0 0 8px">パスワードの変更</h3>
+          <div class="grid2">
+            <label class="fl">現在のパスワード<input id="cur_pw" type="password" placeholder="Googleログインのみの方は空欄で可" autocomplete="current-password"></label>
+            <label class="fl">新しいパスワード（8文字以上）<input id="new_pw" type="password" autocomplete="new-password"></label>
+          </div>
+          <label class="fl">新しいパスワード（確認）<input id="new_pw2" type="password" autocomplete="new-password"></label>
+          <div class="saverow"><button class="btn" id="pw_save">パスワードを変更</button><span id="pw_msg" class="msg"></span></div>
+        </div>
+        <hr style="border:none;border-top:1px solid #eef2f6;margin:18px 0">
+        <details class="acct-danger">
+          <summary style="cursor:pointer;color:#b4232a;font-weight:700">アカウントを削除（退会）</summary>
+          <div style="margin-top:12px">
+            <p class="desc">退会すると、保存した書類・取引先・品目などのデータは<b>30日後に完全に削除</b>されます。30日以内に同じアカウントで再度ログインすれば復元できます。</p>
+            <label class="fl">パスワード（確認のため）<input id="del_pw" type="password" placeholder="Googleログインのみの方は空欄で可" autocomplete="current-password"></label>
+            <label class="sw" style="margin:10px 0"><input type="checkbox" id="del_ok">上記を理解し、退会することに同意します</label>
+            <div class="saverow"><button class="btn" id="del_btn" style="background:#b4232a;color:#fff;border-color:#b4232a" disabled>退会する</button><span id="del_msg" class="msg"></span></div>
+          </div>
+        </details>
+      </div>
     </div>
   </div>
 </div>
@@ -188,6 +221,7 @@ $('save').addEventListener('click',async function(){
     $('reg_number').value=CO.reg_number||'';
     $('default_bank').value=CO.default_bank||'';
     $('paylink').value=CO.paylink||'';
+    var _ae=$('acct-email'); if(_ae) _ae.textContent=CO.email||'—';
     $('auto_remind').checked=!!CO.auto_remind;
     $('remind_before').value=CO.remind_before||'3';
     $('remind_after').value=CO.remind_after||'0,3,7,14';
@@ -195,6 +229,44 @@ $('save').addEventListener('click',async function(){
     if(CO.logo){ LOGO=CO.logo; setPrev('logo',CO.logo); }
     if(CO.seal){ SEAL=CO.seal; setPrev('seal',CO.seal); }
   }catch(e){ toast('読み込みに失敗しました'); }
+})();
+</script>
+<script>
+// アカウント管理（メール変更・パスワード変更・退会）
+(function(){
+  function $(id){return document.getElementById(id);}
+  function setMsg(id,txt,ok){var m=$(id);if(!m)return;m.className='msg '+(ok?'ok':'err');m.textContent=txt;if(ok)setTimeout(function(){m.className='msg';m.textContent='';},4000);}
+  var es=$('email_save'); if(es) es.addEventListener('click',async function(){
+    var btn=this,email=$('new_email').value.trim(),pw=$('email_pw').value;
+    if(!email){ setMsg('email_msg','新しいメールアドレスを入力してください'); return; }
+    btn.disabled=true;
+    try{ var r=await fetch('/api/auth/email',{method:'POST',headers:{'content-type':'application/json'},credentials:'same-origin',body:JSON.stringify({email:email,password:pw})}); var j=await r.json();
+      if(j&&j.ok){ var ae=$('acct-email'); if(ae) ae.textContent=j.email; $('new_email').value='';$('email_pw').value=''; setMsg('email_msg','メールアドレスを変更しました',true); }
+      else setMsg('email_msg',(j&&j.error)||'変更に失敗しました');
+    }catch(e){ setMsg('email_msg','変更に失敗しました'); }
+    btn.disabled=false;
+  });
+  var ps=$('pw_save'); if(ps) ps.addEventListener('click',async function(){
+    var btn=this,cur=$('cur_pw').value,n1=$('new_pw').value,n2=$('new_pw2').value;
+    if(n1.length<8){ setMsg('pw_msg','新しいパスワードは8文字以上にしてください'); return; }
+    if(n1!==n2){ setMsg('pw_msg','新しいパスワード（確認）が一致しません'); return; }
+    btn.disabled=true;
+    try{ var r=await fetch('/api/auth/password',{method:'POST',headers:{'content-type':'application/json'},credentials:'same-origin',body:JSON.stringify({current:cur,next:n1})}); var j=await r.json();
+      if(j&&j.ok){ $('cur_pw').value='';$('new_pw').value='';$('new_pw2').value=''; setMsg('pw_msg','パスワードを変更しました',true); }
+      else setMsg('pw_msg',(j&&j.error)||'変更に失敗しました');
+    }catch(e){ setMsg('pw_msg','変更に失敗しました'); }
+    btn.disabled=false;
+  });
+  var dok=$('del_ok'); if(dok) dok.addEventListener('change',function(){ $('del_btn').disabled=!this.checked; });
+  var db=$('del_btn'); if(db) db.addEventListener('click',async function(){
+    if(!$('del_ok').checked) return;
+    if(!confirm('本当に退会しますか？\n30日以内に再ログインすれば復元できます。')) return;
+    var btn=this; btn.disabled=true;
+    try{ var r=await fetch('/api/auth/delete',{method:'POST',headers:{'content-type':'application/json'},credentials:'same-origin',body:JSON.stringify({password:$('del_pw').value})}); var j=await r.json();
+      if(j&&j.ok){ alert('退会処理を受け付けました。30日以内に同じアカウントで再ログインすると復元できます。'); location.href='/'; }
+      else { setMsg('del_msg',(j&&j.error)||'退会に失敗しました'); btn.disabled=false; }
+    }catch(e){ setMsg('del_msg','退会に失敗しました'); btn.disabled=false; }
+  });
 })();
 </script>
 <script src="/appshell.js?v=20261103"></script>

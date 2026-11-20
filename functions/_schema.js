@@ -36,6 +36,8 @@ const ALTERS = [
   'ALTER TABLE documents ADD COLUMN accepted_by TEXT',
   // ② 取引先ポータル用トークン（取引先の全書類一覧 /c/<token>）
   'ALTER TABLE clients ADD COLUMN portal_token TEXT',
+  // 退会（論理削除）: 退会処理日時。30日猶予の後に cron が完全削除する。
+  'ALTER TABLE users ADD COLUMN deleted_at TEXT',
 ];
 
 // ⑥ 品目マスタ（よく使う明細）。自動作成（Mac非依存）

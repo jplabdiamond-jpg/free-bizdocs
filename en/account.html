@@ -85,6 +85,42 @@
       <a href="/en/invoice">+ New document</a>
     </div>
     <div class="docs" id="docs"></div>
+
+    <style>
+    .fbset-in{display:block;width:100%;max-width:440px;padding:9px 11px;border:1px solid #d7dee6;border-radius:8px;margin-bottom:8px;font-size:14px;box-sizing:border-box}
+    .fbset-row{display:flex;align-items:center;gap:12px;margin-top:6px}
+    .fbset-msg{font-size:13px}.fbset-msg.ok{color:#127a3b}.fbset-msg.err{color:#b4232a}
+    .fbset-btn{display:inline-block;padding:9px 16px;border-radius:8px;border:1px solid #d7dee6;background:#f4f7fa;font-weight:600;cursor:pointer;font-size:14px}
+    .fbset-card h3{margin:0 0 8px;font-size:15px}
+    </style>
+    <div class="sec-h"><h2>Account settings</h2></div>
+    <div class="pcard fbset-card" style="display:block">
+      <div style="margin-bottom:18px">
+        <h3>Change email</h3>
+        <div style="font-size:13px;color:#667;margin-bottom:8px">Current: <b id="ac-email">&mdash;</b></div>
+        <input id="new_email" type="email" placeholder="you@example.com" autocomplete="email" class="fbset-in">
+        <input id="email_pw" type="password" placeholder="Current password" autocomplete="current-password" class="fbset-in">
+        <div class="fbset-row"><button class="fbset-btn" id="email_save">Update email</button><span id="email_msg" class="fbset-msg"></span></div>
+      </div>
+      <hr style="border:none;border-top:1px solid #eef2f6;margin:16px 0">
+      <div style="margin-bottom:6px">
+        <h3>Change password</h3>
+        <input id="cur_pw" type="password" placeholder="Current password (leave blank if you only use Google sign-in)" autocomplete="current-password" class="fbset-in">
+        <input id="new_pw" type="password" placeholder="New password (min. 8 characters)" autocomplete="new-password" class="fbset-in">
+        <input id="new_pw2" type="password" placeholder="Confirm new password" autocomplete="new-password" class="fbset-in">
+        <div class="fbset-row"><button class="fbset-btn" id="pw_save">Update password</button><span id="pw_msg" class="fbset-msg"></span></div>
+      </div>
+      <hr style="border:none;border-top:1px solid #eef2f6;margin:16px 0">
+      <details>
+        <summary style="cursor:pointer;color:#b4232a;font-weight:700">Delete account</summary>
+        <div style="margin-top:12px">
+          <p style="font-size:13px;color:#667">Deleting your account permanently removes your saved documents, clients and items <b>after 30 days</b>. Sign back in within 30 days to restore it.</p>
+          <input id="del_pw" type="password" placeholder="Password (leave blank if you only use Google sign-in)" autocomplete="current-password" class="fbset-in">
+          <label style="display:flex;gap:8px;align-items:center;font-size:13px;margin:8px 0"><input type="checkbox" id="del_ok"> I understand and want to delete my account</label>
+          <div class="fbset-row"><button class="fbset-btn" id="del_btn" style="background:#b4232a;color:#fff;border-color:#b4232a;opacity:.5" disabled>Delete account</button><span id="del_msg" class="fbset-msg"></span></div>
+        </div>
+      </details>
+    </div>
   </div>
 </section>
 
@@ -128,6 +164,7 @@
     document.getElementById('loading').style.display='none';
     document.getElementById('main').style.display='block';
     document.getElementById('email').textContent=m.email||'';
+    var _ae=document.getElementById('ac-email'); if(_ae) _ae.textContent=m.email||'—';
     var pro=(m.plan==='pro');
     var badge=document.getElementById('planbadge');
     var meta=document.getElementById('planmeta');
@@ -186,6 +223,43 @@
 
   document.getElementById('logout').addEventListener('click',function(){
     fetch('/api/auth/logout',{method:'POST',credentials:'same-origin'}).then(function(){ location.href='/en/'; }).catch(function(){ location.href='/en/'; });
+  });
+
+  // --- Account settings: change email / password / delete ---
+  var ERR_EN={auth:'Please sign in again.',weak:'New password must be at least 8 characters.',wrong_current:'Current password is incorrect.',bad_email:'Enter a valid email address.',same:'That is already your email address.',wrong_password:'Password is incorrect.',taken:'That email address is already in use.'};
+  function emsg(j,f){ return (j&&j.code&&ERR_EN[j.code])||(j&&j.error)||f; }
+  function smsg(id,t,ok){ var m=document.getElementById(id); if(!m)return; m.className='fbset-msg '+(ok?'ok':'err'); m.textContent=t; if(ok)setTimeout(function(){m.className='fbset-msg';m.textContent='';},4000); }
+  function byId(id){ return document.getElementById(id); }
+  var es=byId('email_save'); if(es) es.addEventListener('click',async function(){
+    var btn=this,email=byId('new_email').value.trim(),pw=byId('email_pw').value;
+    if(!email){ smsg('email_msg','Enter a new email address.'); return; }
+    btn.disabled=true;
+    try{ var r=await fetch('/api/auth/email',{method:'POST',headers:{'content-type':'application/json'},credentials:'same-origin',body:JSON.stringify({email:email,password:pw})}); var j=await r.json();
+      if(j&&j.ok){ var ae=byId('ac-email'); if(ae) ae.textContent=j.email; byId('new_email').value='';byId('email_pw').value=''; smsg('email_msg','Email updated.',true); }
+      else smsg('email_msg',emsg(j,'Could not update email.'));
+    }catch(e){ smsg('email_msg','Could not update email.'); }
+    btn.disabled=false;
+  });
+  var ps=byId('pw_save'); if(ps) ps.addEventListener('click',async function(){
+    var btn=this,cur=byId('cur_pw').value,n1=byId('new_pw').value,n2=byId('new_pw2').value;
+    if(n1.length<8){ smsg('pw_msg','New password must be at least 8 characters.'); return; }
+    if(n1!==n2){ smsg('pw_msg','New passwords do not match.'); return; }
+    btn.disabled=true;
+    try{ var r=await fetch('/api/auth/password',{method:'POST',headers:{'content-type':'application/json'},credentials:'same-origin',body:JSON.stringify({current:cur,next:n1})}); var j=await r.json();
+      if(j&&j.ok){ byId('cur_pw').value='';byId('new_pw').value='';byId('new_pw2').value=''; smsg('pw_msg','Password updated.',true); }
+      else smsg('pw_msg',emsg(j,'Could not update password.'));
+    }catch(e){ smsg('pw_msg','Could not update password.'); }
+    btn.disabled=false;
+  });
+  var dok=byId('del_ok'); if(dok) dok.addEventListener('change',function(){ var b=byId('del_btn'); b.disabled=!this.checked; b.style.opacity=this.checked?'1':'.5'; });
+  var db=byId('del_btn'); if(db) db.addEventListener('click',async function(){
+    if(!byId('del_ok').checked) return;
+    if(!confirm('Delete your account?\nYou can restore it by signing back in within 30 days.')) return;
+    var btn=this; btn.disabled=true;
+    try{ var r=await fetch('/api/auth/delete',{method:'POST',headers:{'content-type':'application/json'},credentials:'same-origin',body:JSON.stringify({password:byId('del_pw').value})}); var j=await r.json();
+      if(j&&j.ok){ alert('Your account is scheduled for deletion. Sign back in within 30 days to restore it.'); location.href='/en/'; }
+      else { smsg('del_msg',emsg(j,'Could not delete account.')); btn.disabled=false; }
+    }catch(e){ smsg('del_msg','Could not delete account.'); btn.disabled=false; }
   });
 })();
 </script>

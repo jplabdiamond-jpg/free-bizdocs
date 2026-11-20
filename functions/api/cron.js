@@ -89,10 +89,39 @@ async function handle(context) {
   const url = new URL(request.url);
   if (!authed(env, url, request)) return json({ ok: false, error: 'forbidden' }, 403);
   await ensureCols(env);
-  let recurring = { users: 0, made: 0 }, reminders = { checked: 0, sent: 0 };
+  let recurring = { users: 0, made: 0 }, reminders = { checked: 0, sent: 0 }, purged = { purged: 0 };
   try { recurring = await generateDueAllUsers(env); } catch (e) {}
   try { reminders = await runReminders(env); } catch (e) {}
-  return json({ ok: true, date: todayISO(), recurring: recurring, reminders: reminders });
+  try { purged = await purgeDeletedAccounts(env); } catch (e) {}
+  return json({ ok: true, date: todayISO(), recurring: recurring, reminders: reminders, purged: purged });
+}
+
+// 退会（論理削除）から30日を過ぎたアカウントを関連データごと完全削除。
+// 1回につき最大50件。列やテーブルが無い環境でも落ちないよう個別 try/catch。
+async function purgeDeletedAccounts(env) {
+  let purged = 0;
+  let rows = [];
+  try {
+    rows = (await env.DB.prepare(
+      "SELECT id FROM users WHERE deleted_at IS NOT NULL AND deleted_at <= datetime('now','-30 days') LIMIT 50"
+    ).all()).results || [];
+  } catch (e) { return { purged: 0 }; }
+  for (const r of rows) {
+    const uid = r.id;
+    const del = async function (sql) { try { await env.DB.prepare(sql).bind(uid).run(); } catch (e) {} };
+    await del('DELETE FROM line_items WHERE document_id IN (SELECT id FROM documents WHERE user_id = ?)');
+    await del('DELETE FROM payments WHERE document_id IN (SELECT id FROM documents WHERE user_id = ?)');
+    await del('DELETE FROM documents WHERE user_id = ?');
+    await del('DELETE FROM saved_docs WHERE user_id = ?');
+    await del('DELETE FROM clients WHERE user_id = ?');
+    await del('DELETE FROM recurring WHERE user_id = ?');
+    await del('DELETE FROM items_master WHERE user_id = ?');
+    await del('DELETE FROM signup_attrib WHERE user_id = ?');
+    await del('DELETE FROM stripe_pending WHERE user_id = ?');
+    await del('DELETE FROM users WHERE id = ?');
+    purged++;
+  }
+  return { purged: purged };
 }
 
 export async function onRequestGet(context) { return handle(context); }

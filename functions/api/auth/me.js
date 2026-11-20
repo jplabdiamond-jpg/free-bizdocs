@@ -6,6 +6,11 @@ export async function onRequestGet(context) {
   if (!uid) return json({ authed: false });
   const u = await env.DB.prepare('SELECT id, email, plan FROM users WHERE id = ?').bind(uid).first();
   if (!u) return json({ authed: false });
+  // 退会処理中（論理削除）のアカウントはログアウト扱い。再ログインで復元できる。
+  try {
+    const du = await env.DB.prepare('SELECT deleted_at FROM users WHERE id = ?').bind(uid).first();
+    if (du && du.deleted_at) return json({ authed: false });
+  } catch (e) { /* deleted_at 未マイグレーション環境は無視 */ }
 
   // Stripe で支払い済みだが登録前だった場合の照合（webhook が stripe_pending に記録）。
   let plan = u.plan || 'free';

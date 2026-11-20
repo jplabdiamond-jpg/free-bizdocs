@@ -43,7 +43,11 @@ export async function onRequestGet(context) {
 
   let u = await env.DB.prepare('SELECT id FROM users WHERE email = ?').bind(email).first();
   let uid;
-  if (u) { uid = u.id; }
+  if (u) {
+    uid = u.id;
+    // 退会猶予中の再ログインは「復元」扱いで deleted_at をクリア。
+    try { await env.DB.prepare('UPDATE users SET deleted_at = NULL WHERE id = ? AND deleted_at IS NOT NULL').bind(uid).run(); } catch (e) {}
+  }
   else {
     const r = await env.DB.prepare(
       "INSERT INTO users (email, company_name, plan, invoice_seq) VALUES (?, '', 'free', 0)"
