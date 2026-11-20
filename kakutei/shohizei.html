@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>消費税の納付税額シミュレーター（2割特例・簡易課税）｜無料・登録不要｜Free BizDoc</title>
+<meta name="description" content="インボイス登録した個人事業主向け。課税売上を入力すると、2割特例・簡易課税（業種別みなし仕入率）・本則課税の消費税＋地方消費税の納付額の目安を自動計算。登録不要・無料。">
+<link rel="canonical" href="https://free-bizdocs.com/kakutei/shohizei">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Free BizDoc">
+<meta property="og:title" content="消費税の納付税額シミュレーター（2割特例・簡易課税）">
+<meta property="og:description" content="課税売上を入力すると、2割特例・簡易課税・本則課税の消費税納付額の目安を自動計算。インボイス登録事業者向け。無料・登録不要。">
+<meta property="og:url" content="https://free-bizdocs.com/kakutei/shohizei">
+<link rel="stylesheet" href="/suite.css?v=20261017d">
+<style>
+ .ka-wrap{max-width:1320px;margin:0 auto;padding:0 18px}
+ .ka-intro{background:#f4f8ff;border:1px solid #d9e6fb;border-left:4px solid #1766e6;border-radius:12px;padding:15px 18px;margin:16px 0 0}
+ .ka-intro strong{display:block;font-size:13.5px;color:#1766e6;margin-bottom:5px}
+ .ka-intro p{margin:0;font-size:15px;line-height:1.85;color:#243}
+ .ka-note{background:#fff7ed;border:1px solid #fed7aa;border-left:4px solid #ea8a1e;border-radius:12px;padding:12px 16px;margin:12px 0 0;font-size:13px;line-height:1.8;color:#6b4414}
+ .ka-grid{display:grid;grid-template-columns:minmax(0,460px) minmax(0,1fr);gap:22px;margin:18px 0 40px;align-items:start}
+ @media(max-width:900px){.ka-grid{grid-template-columns:1fr}}
+ .ka-card{background:#fff;border:1px solid #e3e9f2;border-radius:14px;padding:18px 18px 16px;box-shadow:0 1px 2px rgba(20,40,80,.04);min-width:0}
+ .ka-sec{font-size:14px;font-weight:800;color:#13314f;margin:4px 0 12px;padding-bottom:8px;border-bottom:1px solid #eef2f8}
+ .ka-sec:not(:first-child){margin-top:18px}
+ .ka-f{display:grid;grid-template-columns:150px 1fr;gap:8px 12px;align-items:center;margin-bottom:11px}
+ .ka-f label{font-size:13px;color:#39506c;font-weight:600}
+ .ka-f input,.ka-f select{width:100%;box-sizing:border-box;border:1px solid #cfdaea;border-radius:9px;padding:9px 11px;font-size:14px;font-family:inherit;background:#fff}
+ .ka-f input:focus,.ka-f select:focus{outline:none;border-color:#1766e6;box-shadow:0 0 0 3px rgba(23,102,230,.12)}
+ .ka-num input{text-align:right;font-variant-numeric:tabular-nums}
+ .sz-q{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;background:#dbe7f7;color:#1766e6;font-size:11px;font-weight:800;margin-left:5px;cursor:help}
+ .sz-seg{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:4px 0 6px}
+ @media(max-width:560px){.sz-seg{grid-template-columns:1fr}}
+ .sz-seg label{display:block;border:2px solid #d7e0ee;border-radius:11px;padding:10px 11px;cursor:pointer;background:#fff;transition:border-color .12s,background .12s}
+ .sz-seg label.on{border-color:#1766e6;background:#f3f8ff}
+ .sz-seg label input{margin-right:6px}
+ .sz-seg label b{font-size:13px;color:#13314f}
+ .sz-seg label span{display:block;margin-top:2px;font-size:11px;color:#5a6b7d;padding-left:20px;line-height:1.5}
+ .sz-basis{display:inline-flex;gap:14px;align-items:center;font-size:13px;color:#39506c}
+ .sz-basis label{display:inline-flex;align-items:center;gap:5px;font-weight:600;cursor:pointer}
+ .ka-sum{background:#0d2a1e;color:#e7f6ee;border-radius:12px;padding:16px 18px;margin-top:4px}
+ .ka-sum .row{display:flex;justify-content:space-between;align-items:baseline;padding:6px 0;font-size:13.5px;border-bottom:1px solid rgba(255,255,255,.08)}
+ .ka-sum .row.sub{color:#9fc7b4;font-size:12.5px}
+ .ka-sum .row.big{font-size:19px;font-weight:800;border-bottom:none;padding-top:12px}
+ .ka-sum .row.big b{color:#5fe0a0}
+ .ka-sum .n{font-variant-numeric:tabular-nums}
+ .ka-sum .hd{font-size:12px;color:#8fb8a6;font-weight:700;margin:12px 0 2px;letter-spacing:.02em}
+ .sz-hint{font-size:11.5px;color:#5a6b7d;margin:-4px 0 10px;line-height:1.6}
+ .sz-cmp{display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px;margin-top:14px}
+ @media(max-width:560px){.sz-cmp{grid-template-columns:1fr}}
+ .sz-cmp .c{border:1px solid #e3e9f2;border-radius:11px;padding:11px 12px;background:#fff;text-align:center}
+ .sz-cmp .c.best{border-color:#1a8f4c;background:#f1faf4}
+ .sz-cmp .c .t{font-size:12px;color:#5a6b7d;font-weight:700}
+ .sz-cmp .c .v{font-size:17px;font-weight:800;color:#13314f;margin-top:4px;font-variant-numeric:tabular-nums}
+ .sz-cmp .c .badge{display:inline-block;font-size:10.5px;color:#1a8f4c;font-weight:800;margin-top:3px}
+ .sz-warn{font-size:11.5px;color:#8a6d3b;background:#fdf6e3;border:1px solid #f0e3bf;border-radius:8px;padding:9px 11px;margin-top:12px;line-height:1.7}
+ .sz-links{display:flex;flex-wrap:wrap;gap:7px 15px;margin-top:12px;font-size:12.5px}
+ .sz-links a{color:#1766e6;font-weight:700;text-decoration:none}
+ .sz-links a:hover{text-decoration:underline}
+</style>
+</head>
+<body>
+
+<div class="promo"><div class="in">
+  <span class="bdg">NEW</span>
+  <span>インボイス登録した個人事業主向け。消費税の納付額（2割特例・簡易課税）をその場で試算。</span>
+  <a href="/kakutei/aoiro">確定申告の書類を作る →</a>
+</div></div>
+<header class="hdr"><div class="in">
+  <a class="brand" href="/" style="text-decoration:none"><img src="/logo.png?v=20261021" alt="Free BizDoc" style="height:30px;width:auto;display:block"></a>
+  <span class="sp"></span>
+  <a class="pro" href="/pricing">PRO<span class="pro-ex">（保存・管理）へ</span></a>
+</div></header>
+
+<section class="hero"><div class="in"><div class="htext">
+  <span class="ey">無料・登録不要のビジネス書類メーカー</span>
+  <h1>消費税の納付税額シミュレーター</h1>
+  <p>インボイス登録した個人事業主向け。課税売上を入力すると、<b>2割特例</b>・<b>簡易課税</b>（業種別みなし仕入率）・<b>本則課税</b>の消費税＋地方消費税の納付額の目安をその場で計算します。登録不要・完全無料。</p>
+</div></div></section>
+
+<div class="ka-wrap">
+  <div class="ka-intro"><strong>かんたんに言うと</strong>
+    <p>「インボイス登録したけれど、結局いくら消費税を納めるの？」に答える試算ツールです。1年間の課税売上（と、本則なら課税仕入）を入れるだけで、<b>2割特例・簡易課税・本則課税</b>の3方式の納付額を比べられます。計算は概算で、実際の申告書作成の前チェックにお使いください。</p>
+  </div>
+  <div class="ka-note">
+    このツールは<b>消費税額の概算シミュレーター</b>です（割戻し計算による目安。積上げ計算・端数処理の特例・中間納付・貸倒れ等は反映しません）。<b>2割特例</b>は、インボイス制度を機に免税事業者から課税事業者になった方向けの経過措置で、<b>令和5年10月1日〜令和8年12月31日を含む課税期間</b>に使えます（基準期間の課税売上高が1,000万円以下等の要件あり）。個人事業主の消費税の申告・納付期限は<b>原則 翌年3月31日</b>です。
+  </div>
+</div>
+
+<div class="ka-wrap"><div class="ka-grid">
+
+  <div class="ka-card">
+    <div class="ka-sec">1. 課税売上高（1年分）</div>
+    <div class="sz-hint">インボイスを発行した売上など、消費税の課税対象となる売上の合計を入れてください（非課税・不課税の売上は除く）。</div>
+    <div style="margin-bottom:10px"><span class="sz-basis">
+      <label><input type="radio" name="sz-basis" id="sz-basis-incl" checked> 税込で入力</label>
+      <label><input type="radio" name="sz-basis" id="sz-basis-excl"> 税抜で入力</label>
+    </span></div>
+    <div class="ka-f ka-num"><label>標準税率10%の売上<span class="sz-q" title="軽減税率(飲食料品・新聞)を除く通常の売上。">?</span></label><input id="sz_std" inputmode="numeric" placeholder="0"></div>
+    <div class="ka-f ka-num"><label>軽減税率8%の売上<span class="sz-q" title="飲食料品の譲渡や定期購読の新聞など、軽減税率が適用される売上。なければ0。">?</span></label><input id="sz_red" inputmode="numeric" placeholder="0"></div>
+
+    <div class="ka-sec">2. 計算方式</div>
+    <div class="sz-seg" id="sz-method">
+      <label class="on"><input type="radio" name="sz-method" value="nitwari" checked> <b>2割特例</b><span>売上税額の20%を納付</span></label>
+      <label><input type="radio" name="sz-method" value="kani"> <b>簡易課税</b><span>業種別みなし仕入率で控除</span></label>
+      <label><input type="radio" name="sz-method" value="honsoku"> <b>本則課税</b><span>実際の課税仕入で控除</span></label>
+    </div>
+
+    <div id="sz-kani-box" style="display:none">
+      <div class="ka-f"><label>業種区分<span class="sz-q" title="主たる事業の区分。複数事業がある場合は簡易化のため主たる区分で概算します。">?</span></label>
+        <select id="sz_minashi">
+          <option value="0.9">第1種 卸売業（90%）</option>
+          <option value="0.8">第2種 小売業・農林漁業(飲食料品)（80%）</option>
+          <option value="0.7" selected>第3種 製造・建設・農業ほか（70%）</option>
+          <option value="0.6">第4種 飲食店・その他（60%）</option>
+          <option value="0.5">第5種 サービス・金融保険（50%）</option>
+          <option value="0.4">第6種 不動産業（40%）</option>
+        </select></div>
+      <div class="sz-hint">みなし仕入率で仕入税額を概算します。実際の仕入に関係なく売上から控除額が決まります。</div>
+    </div>
+
+    <div id="sz-honsoku-box" style="display:none">
+      <div class="sz-hint">課税仕入（経費・仕入のうち消費税がかかるもの）の合計を、売上と同じ税込/税抜の別で入れてください。</div>
+      <div class="ka-f ka-num"><label>10%の課税仕入<span class="sz-q" title="標準税率10%が課された仕入・経費の合計。">?</span></label><input id="sz_ka_std" inputmode="numeric" placeholder="0"></div>
+      <div class="ka-f ka-num"><label>8%の課税仕入<span class="sz-q" title="軽減税率8%が課された仕入の合計。なければ0。">?</span></label><input id="sz_ka_red" inputmode="numeric" placeholder="0"></div>
+    </div>
+
+    <div class="sz-warn">複数の事業区分がある簡易課税、特定収入のある場合、調整対象固定資産、中間納付、貸倒れ・返還等は反映していません。正確な金額は申告書作成時にご確認ください。</div>
+  </div>
+
+  <div class="ka-card" style="position:sticky;top:12px">
+    <div class="ka-sec">試算結果（概算）</div>
+    <div class="ka-sum" id="sz-result"></div>
+    <div class="sz-cmp" id="sz-cmp"></div>
+    <div class="sz-warn">本ツールは記入補助・試算用です。最終的な税額・申告の判断はご自身または税理士にご確認ください。</div>
+    <div class="sz-links">
+      <a href="/kakutei/aoiro">▶ 確定申告の書類（決算書・申告書）を作る</a>
+      <a href="https://www.nta.go.jp/taxes/shiraberu/shinkoku/kakutei.htm" target="_blank" rel="noopener">▶ 国税庁 確定申告特集</a>
+      <a href="https://www.keisan.nta.go.jp/kyoutu/ky/sm/top" target="_blank" rel="noopener">▶ 確定申告書等作成コーナー</a>
+    </div>
+  </div>
+
+</div></div>
+
+<footer style="border-top:1px solid #e6ecf4;margin-top:20px;padding:22px 18px;text-align:center;color:#7688a0;font-size:12.5px">
+  <div style="max-width:1180px;margin:0 auto">
+    <a href="/kakutei/aoiro" style="color:#1766e6;text-decoration:none">確定申告の書類作成</a> ・
+    <a href="/invoice" style="color:#1766e6;text-decoration:none">請求書作成</a> ・
+    <a href="/" style="color:#1766e6;text-decoration:none">Free BizDoc トップ</a>
+    <div style="margin-top:8px">消費税の計算・申告に関する最終的な判断は国税庁の案内または税理士にご確認ください。</div>
+  </div>
+</footer>
+
+<script src="/kakutei/shohizei-calc.js?v=20261111"></script>
+<script>
+(function(){
+  var $=function(id){return document.getElementById(id);};
+  var num=function(id){var v=($(id).value||'').replace(/[^0-9]/g,'');return v===''?0:parseInt(v,10)||0;};
+  var yen=function(n){return '¥'+Number(Math.round(n)).toLocaleString('ja-JP');};
+
+  function gather(){
+    return {
+      basis: $('sz-basis-incl').checked?'incl':'excl',
+      std: num('sz_std'), red: num('sz_red'),
+      method: (document.querySelector('input[name=sz-method]:checked')||{}).value||'nitwari',
+      minashi: parseFloat($('sz_minashi').value)||0.7,
+      kaStd: num('sz_ka_std'), kaRed: num('sz_ka_red')
+    };
+  }
+  function row(l,v,cls){ return '<div class="row'+(cls?' '+cls:'')+'"><span>'+l+'</span><span class="n">'+v+'</span></div>'; }
+
+  function render(){
+    var g=gather();
+    var S=window.ShohiCalc;
+    var r=S.calc(g);
+    var methodName={nitwari:'2割特例',kani:'簡易課税',honsoku:'本則課税'}[g.method];
+    var html='';
+    html+='<div class="hd">売上の消費税</div>';
+    html+=row('税抜課税売上', yen(r.nukiTotal));
+    html+=row('課税標準額（千円未満切捨て）', yen(r.kazeiHyojun), 'sub');
+    html+=row('売上の消費税額（国税7.8/6.24%）', yen(r.uriTax));
+    html+='<div class="hd">控除・差引（'+methodName+'）</div>';
+    if(g.method==='nitwari') html+=row('控除税額（売上税額×80%）', yen(r.kojo), 'sub');
+    else if(g.method==='kani') html+=row('控除税額（みなし仕入率 '+Math.round(g.minashi*100)+'%）', yen(r.kojo), 'sub');
+    else html+=row('控除税額（課税仕入の消費税）', yen(r.kojo), 'sub');
+    html+=row('差引（国税）', yen(r.kokuzei));
+    html+=row('地方消費税（譲渡割 22/78）', yen(r.chihou));
+    html+=row('納める消費税＋地方消費税', '<b>'+yen(r.total)+'</b>', 'big');
+    if(r.kanpu) html+=row('※ 控除が売上税額を上回るため、本則では還付の可能性があります', '', 'sub');
+    $('sz-result').innerHTML=html;
+
+    // 3方式の比較
+    var cmp=S.compareAll(g);
+    var vals=[['2割特例',cmp.nitwari],['簡易課税',cmp.kani],['本則課税',cmp.honsoku]];
+    var min=Math.min(cmp.nitwari,cmp.kani,cmp.honsoku);
+    var ch='';
+    vals.forEach(function(x){
+      var best=(x[1]===min);
+      ch+='<div class="c'+(best?' best':'')+'"><div class="t">'+x[0]+'</div><div class="v">'+yen(x[1])+'</div>'+(best?'<div class="badge">最も少ない</div>':'<div class="badge">&nbsp;</div>')+'</div>';
+    });
+    $('sz-cmp').innerHTML=ch;
+  }
+
+  // 方式セグメントの表示切替
+  function applyMethod(){
+    var m=(document.querySelector('input[name=sz-method]:checked')||{}).value;
+    $('sz-kani-box').style.display=(m==='kani')?'':'none';
+    $('sz-honsoku-box').style.display=(m==='honsoku')?'':'none';
+    [].slice.call($('sz-method').querySelectorAll('label')).forEach(function(l){
+      l.classList.toggle('on', l.querySelector('input').checked);
+    });
+    render();
+  }
+  [].slice.call(document.querySelectorAll('input[name=sz-method]')).forEach(function(r){ r.addEventListener('change',applyMethod); });
+  document.addEventListener('input', function(ev){ if(ev.target.closest('.ka-card')) render(); });
+  document.addEventListener('change', function(ev){ if(ev.target.closest('.ka-card')) render(); });
+
+  applyMethod();
+})();
+</script>
+<script src="/siteheader.js?v=20261106" defer></script>
+</body>
+</html>
