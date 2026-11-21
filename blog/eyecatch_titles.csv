@@ -74,8 +74,8 @@ priority,category,title,slug,tool_page,status
 73,領収書,手書き領収書の書き方｜複写式の正しい記入例,receipt-handwritten,/receipt,済
 74,領収書,領収書の金額の書き方｜「¥」「-」「也」の使い方,receipt-amount-format,/receipt,済
 75,領収書,領収書を電子化する方法｜スキャン保存と電子帳簿保存法,receipt-scan-save,/receipt,済
-76,領収書,個人が領収書を発行するときの書き方と注意点,receipt-individual,/receipt,未
-77,領収書,領収書の収入印紙は誰が負担する？印紙税の基礎,receipt-stamp-bearer,/receipt,未
+76,領収書,個人が領収書を発行するときの書き方と注意点,receipt-individual,/receipt,済
+77,領収書,領収書の収入印紙は誰が負担する？印紙税の基礎,receipt-stamp-bearer,/receipt,済
 78,領収書,領収書の宛名を空欄で渡すのは問題ない？,receipt-blank-name,/receipt,済
 79,見積書,見積書と請求書の違い｜役割と発行タイミング,quote-vs-invoice,/quote,未
 80,見積書,はじめての見積書の作り方｜必須の記載項目,quote-first-time,/quote,済
