@@ -81,8 +81,8 @@ priority,category,title,slug,tool_page,status
 80,見積書,はじめての見積書の作り方｜必須の記載項目,quote-first-time,/quote,済
 81,見積書,見積書の送付メールの文例｜依頼への返信テンプレ,quote-email-template,/quote,済
 82,見積書,相見積もりの上手な断り方｜お断りメールの文例,quote-kotowari,/quote,済
-83,見積書,見積書の単価・数量・単位の書き方｜内訳の見せ方,quote-breakdown,/quote,未
-84,見積書,見積書の有効期限が切れたら？再見積もりの対応,quote-expired-reissue,/quote,未
+83,見積書,見積書の単価・数量・単位の書き方｜内訳の見せ方,quote-breakdown,/quote,済
+84,見積書,見積書の有効期限が切れたら？再見積もりの対応,quote-expired-reissue,/quote,済
 85,発注書,発注書と注文書の違い｜どちらを使う？記載項目,purchase-order-vs-chumon,/purchase-order,未
 86,発注書,発注請書の書き方｜発注書との違いと印紙の要否,order-acknowledgment,/purchase-order,未
 87,納品書,納品書兼請求書の作り方｜1枚にまとめる注意点,delivery-invoice-one,/delivery,未
