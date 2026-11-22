@@ -84,7 +84,7 @@ priority,category,title,slug,tool_page,status
 83,見積書,見積書の単価・数量・単位の書き方｜内訳の見せ方,quote-breakdown,/quote,済
 84,見積書,見積書の有効期限が切れたら？再見積もりの対応,quote-expired-reissue,/quote,済
 85,発注書,発注書と注文書の違い｜どちらを使う？記載項目,purchase-order-vs-chumon,/purchase-order,未
-86,発注書,発注請書の書き方｜発注書との違いと印紙の要否,order-acknowledgment,/purchase-order,未
+86,発注書,発注請書の書き方｜発注書との違いと印紙の要否,order-acknowledgment,/purchase-order,済
 87,納品書,納品書兼請求書の作り方｜1枚にまとめる注意点,delivery-invoice-one,/delivery,未
 88,納品書,受領書の書き方｜納品書・検収書との違い,juryosho-how-to,/delivery,済
 89,発注書,下請法で必要な発注書の記載事項｜3条書面とは,purchase-order-shitauke,/purchase-order,未
